@@ -1,0 +1,29 @@
+[project]
+name = "python_notification_service"
+version = "2023.03.a1"
+description = "Python wrapper for broadcasting messages and emails using web API protocol or similar approaches"
+readme = {file = "README.md", content-type = "text/markdown" }
+requires-python = ">=3.7"
+license = {file = "LICENSE.txt"}
+keywords = ["messaging", "SMS", "notice", "notification"]
+authors = [
+  {name = "Alpha 17 Solutions", email = "solutions@a17s.co"},
+  {name = "frier17"}
+]
+maintainers = [
+  {name = "frier17"}
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python"
+]
+
+dependencies = [
+  "requests",
+  "dotenv"
+]
+
+# dynamic = ["version", "description"]
+
+[project.urls]
+repository = "https://gitlab.com/frier17/python-notification-service.git"

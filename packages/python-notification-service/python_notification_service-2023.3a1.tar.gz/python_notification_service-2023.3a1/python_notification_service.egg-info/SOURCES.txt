@@ -1,0 +1,16 @@
+LICENSE.txt
+README.md
+pyproject.toml
+notification/__init__.py
+notification/mailgun.py
+notification/settings.py
+notification/tests.py
+notification/zepto.py
+notification/aws/__init__.py
+notification/aws/ses.py
+notification/aws/sns.py
+python_notification_service.egg-info/PKG-INFO
+python_notification_service.egg-info/SOURCES.txt
+python_notification_service.egg-info/dependency_links.txt
+python_notification_service.egg-info/requires.txt
+python_notification_service.egg-info/top_level.txt
