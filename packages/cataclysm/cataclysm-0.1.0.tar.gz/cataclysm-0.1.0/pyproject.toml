@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "cataclysm"
+version = "0.1.0"
+description = "End of the world as we know it"
+authors = ["Mattie Casper"]
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+plunkylib = "^0.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
