@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: hauntedhouse
+Version: 0.0.9
+Summary: Client for hauntedhouse yara search engine.
+License: MIT Licence
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp
+Requires-Dist: assemblyline
+Requires-Dist: assemblyline-client
+Requires-Dist: pydantic
+Requires-Dist: mquery-query-lib
+Requires-Dist: arrow
+Requires-Dist: requests
+
