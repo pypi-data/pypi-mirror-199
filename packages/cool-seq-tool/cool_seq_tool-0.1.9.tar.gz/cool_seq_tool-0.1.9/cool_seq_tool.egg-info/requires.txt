@@ -1,0 +1,16 @@
+aiofiles
+asyncpg
+biocommons.seqrepo
+boto3
+fastapi
+gene-normalizer
+hgvs
+pandas
+pydantic
+pyliftover
+uvicorn
+
+[dev]
+psycopg2-binary
+pytest
+pytest-cov
