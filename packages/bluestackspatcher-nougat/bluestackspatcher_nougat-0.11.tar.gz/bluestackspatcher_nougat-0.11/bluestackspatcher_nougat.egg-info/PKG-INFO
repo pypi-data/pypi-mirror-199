@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: bluestackspatcher-nougat
+Version: 0.11
+Summary: Updates IMEI/IMSI on BlueStacks 5.11.1002 / N32 / 32 bit / Android Nougat (probably other versions as well)
+Home-page: https://github.com/hansalemaos/bluestackspatcher_nougat
+Author: Johannes Fischer
+Author-email: <aulasparticularesdealemaosp@gmail.com>
+License: MIT
+Keywords: bluestacks,android,adb
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Editors :: Text Processing
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Text Processing :: Indexing
+Classifier: Topic :: Text Processing :: Filters
+Classifier: Topic :: Utilities
+Description-Content-Type: text/markdown
+License-File: LICENSE.rst
+
+
+# Updates IMEI/IMSI on BlueStacks 5.11.1002 / N32 / 32 bit / Android Nougat (probably other versions as well)
+
+## Make a backup of your BlueStacks folder before using it! 
+
+### You must root your BlueStacks instances! 
+
+#### pip install bluestackspatcher-nougat 
+
+```python
+from bluestackspatcher_nougat import BlueStacksPatcher
+bstackpatcher = BlueStacksPatcher(
+    adb_path="C:\\Users\\Gamer\\AppData\\Local\\Android\\Sdk\\platform-tools\\adb.exe",
+    bluestacks_config=r"C:\ProgramData\BlueStacks_nxt\bluestacks.conf",
+    hdplayer=r"C:\Program Files\BlueStacks_nxt\HD-Player.exe",
+)
+bstackpatcher.connect_to_all_bluestacks_devices(timeout=3) # Always connect to all devices before you do any action
+
+a, b = bstackpatcher.get_new_imei_imsi(
+    locale="pt-BR",
+    country="BR",
+    countrycode="076",
+    ignore=(),
+    min_threads_open=95,
+    timeoutsearch=5,
+    sleeptime=1,
+    timeoutstart=35,
+)
+print(a)
+print(b)
+
+```
