@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "ververser"
+version = "0.1.26"
+description = "A lightweight wrapper around pyglet that allows hot-reloading of content."
+authors = ["Berry van Someren"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyglet = "^2.0.5"
+numpy = "^1.24.2"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+packages = [
+    { include = "ververser" }
+]
