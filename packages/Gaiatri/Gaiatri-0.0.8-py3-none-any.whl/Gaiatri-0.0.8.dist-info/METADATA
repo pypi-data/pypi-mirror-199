@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: Gaiatri
+Version: 0.0.8
+Summary: Ultra high-level Python library for processing and analysing geo-data.
+Home-page: UNKNOWN
+Author: MotherBunker (A.N.A. Martam)
+Author-email: <motherrrcorp@gmail.com>
+License: UNKNOWN
+Keywords: python,geospatial,geographical information systems,telemetry
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: End Users/Desktop
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+
+This library further abstracts Python libraries such as Pandas, Matplotlib, and Numpy so that non-developers can use Python to process and analyse GNSS data, telemetry data, and other spatial-temporal data. May it enlighten users with understanding, like the goddess Gayatri - on mother earth (Gaia) and beyond..
+
+
