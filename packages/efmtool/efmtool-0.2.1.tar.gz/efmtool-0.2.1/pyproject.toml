@@ -1,0 +1,60 @@
+[project]
+name = "efmtool"
+description = "Python wrapper for efmtool"
+readme = {file = "README.md", content-type = "text/markdown"}
+license = {text = "BSD License"}
+authors = [{name = "Mattia Gollub", email = "mattia.gollub@gmail.com"}]
+keywords = [
+    "EFM",
+    "EFMs",
+    "Elementary Flux Modes",
+    "efmtool",
+    "metabolic network",
+    "reaction network",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "License :: OSI Approved :: BSD License",
+    "Natural Language :: English",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+dynamic = ["version"]
+requires-python = ">=3.6"
+dependencies = [
+    "JPype1>=1.1.2",
+    "numpy>=1.14",
+    "scipy>=1.4",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest",
+]
+
+[project.urls]
+repository = "https://gitlab.com/csb.ethz/efmtool"
+
+[build-system]
+requires = [ "setuptools>=41", "wheel", "setuptools-git-versioning<2", ]
+build-backend = "setuptools.build_meta"
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[tool.setuptools]
+zip-safe = true
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.setuptools.package-data]
+"efmtool.lib" = ["*.jar"]
+
+[tool.setuptools-git-versioning]
+enabled = true
