@@ -1,0 +1,14 @@
+pandas<2.0.0,>=1.5.3
+polars<1.0.0,>=0.16.7
+networkx<4.0,>=3.0
+openlineage-python>=0.21.1
+setuptools-scm>=7.1.0
+pytest-cov>=4.0.0
+
+[dev]
+mypy>=1.1.1
+pytest>=7.2.2
+pre-commit>=3.2.0
+ruff>=0.0.258
+build>=0.10.0
+black>=23.1.0

@@ -1,0 +1,52 @@
+[project]
+authors = [
+    { name = "Toby Devlin", email = "toby@tobydevlin.com" },
+]
+requires-python = ">=3.9,<4.0"
+name = "framelink"
+description = ""
+readme = "README.md"
+dynamic = ["version"]
+
+dependencies = [
+    "pandas<2.0.0,>=1.5.3",
+    "polars<1.0.0,>=0.16.7",
+    "networkx<4.0,>=3.0",
+    "openlineage-python>=0.21.1",
+    "setuptools-scm>=7.1.0",
+    "pytest-cov>=4.0.0",
+]
+[project.optional-dependencies]
+dev = [
+    "mypy>=1.1.1",
+    "pytest>=7.2.2",
+    "pre-commit>=3.2.0",
+    "ruff>=0.0.258",
+    "build>=0.10.0",
+    "black>=23.1.0",
+]
+
+[project.urls]
+github = "https://github.com/GitToby/framelink"
+
+[build-system]
+requires = ["setuptools>=45", "setuptools_scm[toml]>=6.2"]
+
+[tool.setuptools_scm]
+write_to = "src/framelink/__version__.py"
+
+[tool.ruff]
+# Enable Pyflakes `E` and `F` codes by default.
+select = ["E", "F"]
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["E", "F"]
+line-length = 120
+
+[tool.ruff.mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pdm]
