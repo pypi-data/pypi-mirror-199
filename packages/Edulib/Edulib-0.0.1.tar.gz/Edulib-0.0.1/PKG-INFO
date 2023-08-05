@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: Edulib
+Version: 0.0.1
+Summary: Toolbox with helpers.
+Author: xwr4p
+Author-email: Aleksa Lukic <aleksalukic92@web.de>
+Project-URL: Homepage, https://github.com/Aleksa-Lukic/Edulib
+Project-URL: Bug Tracker, https://github.com/Aleksa-Lukic/Edulib/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
+# Getting Started
+## Setting Up a Virtual Environment
+### Create a virtual environment using the following command:
+
+```bash
+python -m venv .venv
+```
+Activate the virtual environment:
+
+On Unix/macOS:
+```bash
+source .venv/bin/activate
+```bash
+
+On Windows:
+```bash
+.venv\Scripts\activate
+```
+## Installing 
+
+
+```bash
+pip install edulib
+```
+
