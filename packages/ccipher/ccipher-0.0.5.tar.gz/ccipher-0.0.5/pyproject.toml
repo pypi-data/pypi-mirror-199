@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "ccipher"
+version = "0.0.5"
+authors = [
+  { name="Artur Marchi Pacagnan", email="marchiartur@gmail.com" },
+]
+description = "A package to encrypt and decrypt messages usign Caesar cipher"
+readme = "README.md"
+requires-python = ">=3.10.6"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/marchiartur/caesar-cipher"
+"Bug Tracker" = "https://github.com/marchiartur/caesar-cipher/issues"
