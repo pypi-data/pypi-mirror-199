@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: stricter
+Version: 0.1.3
+License: MIT
+Author-email: levch <levchenko.d.a1998@gmail.com>
+Requires-Python: >=3.11
+Requires-Dist: black[d]>=23.1.0
+Requires-Dist: mypy>=1.1.1
+Requires-Dist: ruff>=0.0.259
+Requires-Dist: typer[all]>=0.7.0
+Description-Content-Type: text/markdown
+
+# stricter
+
+
+
