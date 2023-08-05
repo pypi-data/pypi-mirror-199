@@ -1,0 +1,92 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container" id="full-container">
+  <div class="card">
+    <div class="card-header">Preview App</div>
+    <div class="card-body">
+    {% if exceptions %}
+      <h5>Validation Error</h5>
+      <br>
+      {% for error in exceptions %}
+        {% if error.error %}
+          <div class="alert alert-danger">{{ error.error }}</div>
+        {% else %}
+          <div class="alert alert-danger">{{ error }}</div>
+        {% endif %}
+      {% endfor %}
+    {% else %}
+      {% if warnings.get("missing_loadsdk") %}
+        <div class="alert alert-warning" role="alert">
+          Make sure you include a <code>{% raw %}{{ __loadsdk__ }}{% endraw %}</code> directive in your template. From February 2023 onwards, it will be required in all Apps.
+        </div>
+      {% endif %}
+      <h5>App Info</h5>
+      <p><strong>Name :</strong><br>{{ title }}</p>
+      <h5>App Options</h5>
+      <p class="form-text text-muted">The user of this app will be able to configure the following options.</p>
+      <form action="{{ file_name }}" method="POST" enctype="multipart/form-data">
+      {% set attrsection = namespace(is_open=false) %}
+      {% for field in form -%}
+        {% if field.label.field_id.startswith("_attr_") and not attrsection.is_open %}
+          {% set attrsection.is_open = True %}
+          <h5>App Attributes</h5>
+          <small class="form-text text-muted">Check the <a href="https://github.com/onsigntv/apps/tree/master/docs/ATTRS.md">App Attributes API documentation</a> for how to declare and access attributes.</small>
+          <p class="form-text text-muted">This app contains attributes that are connected to the following player attributes. The user will have to choose which player attributes to connect to.</p>
+        {% elif attrsection.is_open and not field.label.field_id.startswith("_attr_") %}
+          {% set attrsection.is_open = False %}
+          <hr>
+        {% elif field.label.field_id == "_delay_show" %}
+          <hr>
+        {% endif %}
+        {% if field.widget.input_type == "checkbox" -%}
+        <div class="form-check" style="margin-bottom: 1rem;">
+          {{ field() }}
+          <label class="form-check-label" for="{{ field.label.field_id }}">{{ field.label.text }}</label>
+          {% if field.label.field_id.startswith("_attr_") and not field.flags.required %}
+            <small class="align-top"><strong>[optional]</strong></small>
+          {% endif %}
+        {% else -%}
+        <div class="form-group">
+          <label for="{{ field.label.field_id }}">
+            {{ field.label.text }}
+            {% if field.flags.required %}<small class="align-top"><strong>[required]</strong></small>{% endif %}
+          </label>
+          {% if field.label.field_id == "_playback_info" %}
+            &nbsp;&nbsp;&nbsp;<button type="button" class="btn btn-light btn-sm" id="pbInfoBtn">edit</button>
+          {% endif %}
+          {{ field() }}
+        {% endif -%}
+          {% for error in field.errors -%}
+            <div class="invalid-feedback">{{ error }}</div>
+          {% endfor -%}
+          {% if field.description -%}
+            <small class="form-text text-muted">{{ field.description }}</small>
+          {% endif -%}
+        </div>
+      {% endfor %}
+        <hr>
+        <button type="submit" class="btn btn-primary"> Preview </button>
+      </form>
+    {% endif %}
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    var button = document.getElementById("pbInfoBtn");
+    function togglePlaybackInfo () {
+      var toggled = document.getElementById("_playback_info").toggleAttribute("hidden");
+      if (toggled) {
+        button.innerHTML = "edit";
+      } else {
+        button.innerHTML = "done";
+      }
+    }
+    button.addEventListener("click", togglePlaybackInfo, false);
+    togglePlaybackInfo();
+  }, false);
+</script>
+
+{% endblock %}
