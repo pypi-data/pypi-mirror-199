@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: async-retrying-ng
+Version: 0.1.1
+Summary: Next Gen. simple retrying for asyncio.
+License: MIT
+Author: Malene Trab
+Author-email: malene@trab.dk
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: async-timeout (==4.0.2)
+Project-URL: Documentation, https://github.com/mtrab/async_retrying_ng
+Description-Content-Type: text/markdown
+
+## async\_retrying
+
+Next Gen. simple retrying for asyncio - fork/fix from https://GitHub.com/hellysmile/async_retrying but updated for Python 3.10+ only
+
+## Installation
+
+shell
+
+`pip install async_retrying_ng`
+
+## Usage
+
+python
+
+```plaintext
+    import asyncio
+
+    from async_retrying_ng import retry
+
+    counter = 0
+
+    @retry
+    async def fn():
+        global counter
+
+        counter += 1
+
+        if counter == 1:
+            raise RuntimeError
+
+    async def main():
+        await fn()
+
+    loop = asyncio.get_event_loop()
+
+    loop.run_until_complete(main())
+
+    assert counter == 2
+
+    loop.close()
+```
+
+Python 3.10+ is required
