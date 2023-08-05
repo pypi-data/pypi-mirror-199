@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: lifty
+Version: 0.0.1
+Summary: For simulating an elevator in python
+Home-page: https://github.com/charlesshook/lifty
+Author: Charles Shook
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Lifty
+A Python package that impliments a elevator.
+
+## Instructions
+
+### Install:
+```
+pip install lifty
+```
+
+### Example use:
+```
+import lifty
+```
+
+### Features to implement:
+* [ ] Class to contain sensor
+  * [ ] Detect user in doorway
+  * [ ] No person in doorway close
+  * [ ] Person in doorway open
+* [ ] Class to contain elevator
+  * [ ] Request elevetor
+    * [ ] Up
+    * [ ] Down
+  * [ ] Selectors
+    * [ ] Select floor
+    * [ ] Open door
+    * [ ] Close door
+    * [ ] Emergency stop  
+  * [ ] Class to contain person
+    * [ ] Have weight
+    * [ ] Walk speed 
