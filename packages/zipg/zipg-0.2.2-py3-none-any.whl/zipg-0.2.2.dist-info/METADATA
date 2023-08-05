@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: zipg
+Version: 0.2.2
+Summary: CLI utility to zip groups of files with the same name inside a directory
+License: GPL-3.0-or-later
+Author: João Fauvel
+Author-email: jmmfauvel@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: rich (>=13.3.2,<14.0.0)
+Requires-Dist: typer (>=0.7.0,<0.8.0)
+Description-Content-Type: text/markdown
+
+# zipg
+CLI utility to zip groups of files with the same name inside a directory. 
