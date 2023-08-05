@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: trident-models-package
+Version: 0.0.1
+Summary: ORM Mmodels
+Home-page: https://github.com/karina-slalom/trident-models
+Author: Karina
+Author-email: karina.ge@slalom.com
+License: MIT
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+This package contains SQLAlchemy models used in the Trident bench project. They are a package so that our multiple microservices can all use them. 
