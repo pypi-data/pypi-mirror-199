@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: pycallrail
+Version: 0.5.1
+Summary: Unofficial Python wrapper for the CallRail API
+Home-page: https://github.com/kharigardner/pycallrail
+Author: Khari Gardner
+Author-email: khgardner@proton.me
+Description-Content-Type: text/markdown
+Requires-Dist: ujson
+Requires-Dist: aiohttp
+Requires-Dist: requests
+
