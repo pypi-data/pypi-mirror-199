@@ -1,0 +1,288 @@
+<center><a href="ex30.c">Actual source code: ex30.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/eps/tutorials/ex30.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:43+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/eps/tutorials/ex30.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+
+<a name="line11"> 11: </a>static char help[] = <font color="#666666">"Illustrates the use of a region for filtering; the number of wanted eigenvalues is not known a priori.\n\n"</font>
+<a name="line12"> 12: </a>  <font color="#666666">"The problem is the Brusselator wave model as in ex9.c.\n"</font>
+<a name="line13"> 13: </a>  <font color="#666666">"The command line options are:\n"</font>
+<a name="line14"> 14: </a>  <font color="#666666">"  -n &lt;n&gt;, where &lt;n&gt; = block dimension of the 2x2 block matrix.\n"</font>
+<a name="line15"> 15: </a>  <font color="#666666">"  -L &lt;L&gt;, where &lt;L&gt; = bifurcation parameter.\n"</font>
+<a name="line16"> 16: </a>  <font color="#666666">"  -alpha &lt;alpha&gt;, -beta &lt;beta&gt;, -delta1 &lt;delta1&gt;,  -delta2 &lt;delta2&gt;,\n"</font>
+<a name="line17"> 17: </a>  <font color="#666666">"       where &lt;alpha&gt; &lt;beta&gt; &lt;delta1&gt; &lt;delta2&gt; = model parameters.\n\n"</font>;
+
+<a name="line19"> 19: </a>#include <A href="../../../include/slepceps.h.html">&lt;slepceps.h&gt;</A>
+
+<a name="line21"> 21: </a><font color="#B22222">/*</font>
+<a name="line22"> 22: </a><font color="#B22222">   This example tries to compute all eigenvalues lying outside the real axis.</font>
+<a name="line23"> 23: </a><font color="#B22222">   This could be achieved by computing LARGEST_IMAGINARY eigenvalues, but</font>
+<a name="line24"> 24: </a><font color="#B22222">   here we take a different route: define a region of the complex plane where</font>
+<a name="line25"> 25: </a><font color="#B22222">   eigenvalues must be emphasized (eigenvalues outside the region are filtered</font>
+<a name="line26"> 26: </a><font color="#B22222">   out). In this case, we select the region as the complement of a thin stripe</font>
+<a name="line27"> 27: </a><font color="#B22222">   around the real axis.</font>
+<a name="line28"> 28: </a><font color="#B22222"> */</font>
+
+<a name="line30"> 30: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Brussel(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line31"> 31: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatGetDiagonal_Brussel(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line32"> 32: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MyStoppingTest(<a href="../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPSConvergedReason</a>*,void*)</font></strong>;
+
+<a name="line34"> 34: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line35"> 35: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>         T;
+<a name="line36"> 36: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>         x1,x2,y1,y2;
+<a name="line37"> 37: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> alpha,beta,tau1,tau2,sigma;
+<a name="line38"> 38: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    lastnconv;      <font color="#B22222">/* last value of nconv; used in stopping test */</font>
+<a name="line39"> 39: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    nreps;          <font color="#B22222">/* number of repetitions of nconv; used in stopping test */</font>
+<a name="line40"> 40: </a>} CTX_BRUSSEL;
+
+<a name="line42"> 42: </a><strong><font color="#4169E1"><a name="main"></a>int main(int argc,char **argv)</font></strong>
+<a name="line43"> 43: </a>{
+<a name="line44"> 44: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A;               <font color="#B22222">/* eigenvalue problem matrix */</font>
+<a name="line45"> 45: </a>  <a href="../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>            eps;             <font color="#B22222">/* eigenproblem solver context */</font>
+<a name="line46"> 46: </a>  <a href="../../../docs/manualpages/RG/RG.html#RG">RG</a>             rg;              <font color="#B22222">/* region object */</font>
+<a name="line47"> 47: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    delta1,delta2,L,h;
+<a name="line48"> 48: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       N=30,n,i,Istart,Iend,mpd;
+<a name="line49"> 49: </a>  CTX_BRUSSEL    *ctx;
+<a name="line50"> 50: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      terse;
+<a name="line51"> 51: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a>    viewer;
+
+<a name="line54"> 54: </a>  <a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>(&amp;argc,&amp;argv,(char*)0,help);
+
+<a name="line56"> 56: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetInt.html#PetscOptionsGetInt">PetscOptionsGetInt</a>(NULL,NULL,<font color="#666666">"-n"</font>,&amp;N,NULL);
+<a name="line57"> 57: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscPrintf.html#PetscPrintf">PetscPrintf</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,<font color="#666666">"\nBrusselator wave model, n=%"</font> PetscInt_FMT <font color="#666666">"\n\n"</font>,N);
+
+<a name="line59"> 59: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line60"> 60: </a><font color="#B22222">        Generate the matrix</font>
+<a name="line61"> 61: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line63"> 63: </a>  <font color="#B22222">/*</font>
+<a name="line64"> 64: </a><font color="#B22222">     Create shell matrix context and set default parameters</font>
+<a name="line65"> 65: </a><font color="#B22222">  */</font>
+<a name="line66"> 66: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctx);
+<a name="line67"> 67: </a>  ctx-&gt;alpha = 2.0;
+<a name="line68"> 68: </a>  ctx-&gt;beta  = 5.45;
+<a name="line69"> 69: </a>  delta1     = 0.008;
+<a name="line70"> 70: </a>  delta2     = 0.004;
+<a name="line71"> 71: </a>  L          = 0.51302;
+
+<a name="line73"> 73: </a>  <font color="#B22222">/*</font>
+<a name="line74"> 74: </a><font color="#B22222">     Look the command line for user-provided parameters</font>
+<a name="line75"> 75: </a><font color="#B22222">  */</font>
+<a name="line76"> 76: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetScalar.html#PetscOptionsGetScalar">PetscOptionsGetScalar</a>(NULL,NULL,<font color="#666666">"-L"</font>,&amp;L,NULL);
+<a name="line77"> 77: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetScalar.html#PetscOptionsGetScalar">PetscOptionsGetScalar</a>(NULL,NULL,<font color="#666666">"-alpha"</font>,&amp;ctx-&gt;alpha,NULL);
+<a name="line78"> 78: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetScalar.html#PetscOptionsGetScalar">PetscOptionsGetScalar</a>(NULL,NULL,<font color="#666666">"-beta"</font>,&amp;ctx-&gt;beta,NULL);
+<a name="line79"> 79: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetScalar.html#PetscOptionsGetScalar">PetscOptionsGetScalar</a>(NULL,NULL,<font color="#666666">"-delta1"</font>,&amp;delta1,NULL);
+<a name="line80"> 80: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetScalar.html#PetscOptionsGetScalar">PetscOptionsGetScalar</a>(NULL,NULL,<font color="#666666">"-delta2"</font>,&amp;delta2,NULL);
+
+<a name="line82"> 82: </a>  <font color="#B22222">/*</font>
+<a name="line83"> 83: </a><font color="#B22222">     Create matrix T</font>
+<a name="line84"> 84: </a><font color="#B22222">  */</font>
+<a name="line85"> 85: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,&amp;ctx-&gt;T);
+<a name="line86"> 86: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(ctx-&gt;T,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,N,N);
+<a name="line87"> 87: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(ctx-&gt;T);
+<a name="line88"> 88: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(ctx-&gt;T);
+
+<a name="line90"> 90: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(ctx-&gt;T,&amp;Istart,&amp;Iend);
+<a name="line91"> 91: </a>  <font color="#4169E1">for</font> (i=Istart;i&lt;Iend;i++) {
+<a name="line92"> 92: </a>    <font color="#4169E1">if</font> (i&gt;0) <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(ctx-&gt;T,i,i-1,1.0,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line93"> 93: </a>    <font color="#4169E1">if</font> (i&lt;N-1) <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(ctx-&gt;T,i,i+1,1.0,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line94"> 94: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(ctx-&gt;T,i,i,-2.0,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line95"> 95: </a>  }
+<a name="line96"> 96: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(ctx-&gt;T,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>);
+<a name="line97"> 97: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(ctx-&gt;T,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>);
+<a name="line98"> 98: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(ctx-&gt;T,&amp;n,NULL);
+
+<a name="line100">100: </a>  <font color="#B22222">/*</font>
+<a name="line101">101: </a><font color="#B22222">     Fill the remaining information in the shell matrix context</font>
+<a name="line102">102: </a><font color="#B22222">     and create auxiliary vectors</font>
+<a name="line103">103: </a><font color="#B22222">  */</font>
+<a name="line104">104: </a>  h = 1.0 / (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>)(N+1);
+<a name="line105">105: </a>  ctx-&gt;tau1 = delta1 / ((h*L)*(h*L));
+<a name="line106">106: </a>  ctx-&gt;tau2 = delta2 / ((h*L)*(h*L));
+<a name="line107">107: </a>  ctx-&gt;sigma = 0.0;
+<a name="line108">108: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPIWithArray.html#VecCreateMPIWithArray">VecCreateMPIWithArray</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,1,n,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,NULL,&amp;ctx-&gt;x1);
+<a name="line109">109: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPIWithArray.html#VecCreateMPIWithArray">VecCreateMPIWithArray</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,1,n,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,NULL,&amp;ctx-&gt;x2);
+<a name="line110">110: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPIWithArray.html#VecCreateMPIWithArray">VecCreateMPIWithArray</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,1,n,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,NULL,&amp;ctx-&gt;y1);
+<a name="line111">111: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPIWithArray.html#VecCreateMPIWithArray">VecCreateMPIWithArray</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,1,n,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,NULL,&amp;ctx-&gt;y2);
+
+<a name="line113">113: </a>  <font color="#B22222">/*</font>
+<a name="line114">114: </a><font color="#B22222">     Create the shell matrix</font>
+<a name="line115">115: </a><font color="#B22222">  */</font>
+<a name="line116">116: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,2*n,2*n,2*N,2*N,(void*)ctx,&amp;A);
+<a name="line117">117: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(A,MATOP_MULT,(void(*)(void))MatMult_Brussel);
+<a name="line118">118: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(A,MATOP_GET_DIAGONAL,(void(*)(void))MatGetDiagonal_Brussel);
+
+<a name="line120">120: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line121">121: </a><font color="#B22222">                Create the eigensolver and configure the region</font>
+<a name="line122">122: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line124">124: </a>  <a href="../../../docs/manualpages/EPS/EPSCreate.html#EPSCreate">EPSCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,&amp;eps);
+<a name="line125">125: </a>  <a href="../../../docs/manualpages/EPS/EPSSetOperators.html#EPSSetOperators">EPSSetOperators</a>(eps,A,NULL);
+<a name="line126">126: </a>  <a href="../../../docs/manualpages/EPS/EPSSetProblemType.html#EPSSetProblemType">EPSSetProblemType</a>(eps,<a href="../../../docs/manualpages/EPS/EPSProblemType.html#EPSProblemType">EPS_NHEP</a>);
+
+<a name="line128">128: </a>  <font color="#B22222">/*</font>
+<a name="line129">129: </a><font color="#B22222">     Define the region containing the eigenvalues of interest</font>
+<a name="line130">130: </a><font color="#B22222">  */</font>
+<a name="line131">131: </a>  <a href="../../../docs/manualpages/EPS/EPSGetRG.html#EPSGetRG">EPSGetRG</a>(eps,&amp;rg);
+<a name="line132">132: </a>  <a href="../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>(rg,RGINTERVAL);
+<a name="line133">133: </a>  <a href="../../../docs/manualpages/RG/RGIntervalSetEndpoints.html#RGIntervalSetEndpoints">RGIntervalSetEndpoints</a>(rg,-PETSC_INFINITY,PETSC_INFINITY,-0.01,0.01);
+<a name="line134">134: </a>  <a href="../../../docs/manualpages/RG/RGSetComplement.html#RGSetComplement">RGSetComplement</a>(rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line135">135: </a>  <font color="#B22222">/* sort eigenvalue approximations wrt a target, otherwise convergence will be erratic */</font>
+<a name="line136">136: </a>  <a href="../../../docs/manualpages/EPS/EPSSetTarget.html#EPSSetTarget">EPSSetTarget</a>(eps,0.0);
+<a name="line137">137: </a>  <a href="../../../docs/manualpages/EPS/EPSSetWhichEigenpairs.html#EPSSetWhichEigenpairs">EPSSetWhichEigenpairs</a>(eps,<a href="../../../docs/manualpages/EPS/EPSWhich.html#EPSWhich">EPS_TARGET_MAGNITUDE</a>);
+
+<a name="line139">139: </a>  <font color="#B22222">/*</font>
+<a name="line140">140: </a><font color="#B22222">     Set solver options. In particular, we must allocate sufficient</font>
+<a name="line141">141: </a><font color="#B22222">     storage for all eigenpairs that may converge (ncv). This is</font>
+<a name="line142">142: </a><font color="#B22222">     application-dependent.</font>
+<a name="line143">143: </a><font color="#B22222">  */</font>
+<a name="line144">144: </a>  mpd = 40;
+<a name="line145">145: </a>  <a href="../../../docs/manualpages/EPS/EPSSetDimensions.html#EPSSetDimensions">EPSSetDimensions</a>(eps,2*mpd,3*mpd,mpd);
+<a name="line146">146: </a>  <a href="../../../docs/manualpages/EPS/EPSSetTolerances.html#EPSSetTolerances">EPSSetTolerances</a>(eps,1e-7,2000);
+<a name="line147">147: </a>  ctx-&gt;lastnconv = 0;
+<a name="line148">148: </a>  ctx-&gt;nreps     = 0;
+<a name="line149">149: </a>  <a href="../../../docs/manualpages/EPS/EPSSetStoppingTestFunction.html#EPSSetStoppingTestFunction">EPSSetStoppingTestFunction</a>(eps,MyStoppingTest,(void*)ctx,NULL);
+<a name="line150">150: </a>  <a href="../../../docs/manualpages/EPS/EPSSetFromOptions.html#EPSSetFromOptions">EPSSetFromOptions</a>(eps);
+
+<a name="line152">152: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line153">153: </a><font color="#B22222">                Solve the eigensystem and display solution</font>
+<a name="line154">154: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line156">156: </a>  <a href="../../../docs/manualpages/EPS/EPSSolve.html#EPSSolve">EPSSolve</a>(eps);
+
+<a name="line158">158: </a>  <font color="#B22222">/* show detailed info unless -terse option is given by user */</font>
+<a name="line159">159: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIGetStdout.html#PetscViewerASCIIGetStdout">PetscViewerASCIIGetStdout</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,&amp;viewer);
+<a name="line160">160: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPushFormat.html#PetscViewerPushFormat">PetscViewerPushFormat</a>(viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>);
+<a name="line161">161: </a>  <a href="../../../docs/manualpages/EPS/EPSConvergedReasonView.html#EPSConvergedReasonView">EPSConvergedReasonView</a>(eps,viewer);
+<a name="line162">162: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHasName.html#PetscOptionsHasName">PetscOptionsHasName</a>(NULL,NULL,<font color="#666666">"-terse"</font>,&amp;terse);
+<a name="line163">163: </a>  <font color="#4169E1">if</font> (!terse) <a href="../../../docs/manualpages/EPS/EPSErrorView.html#EPSErrorView">EPSErrorView</a>(eps,<a href="../../../docs/manualpages/EPS/EPSErrorType.html#EPSErrorType">EPS_ERROR_RELATIVE</a>,viewer);
+<a name="line164">164: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPopFormat.html#PetscViewerPopFormat">PetscViewerPopFormat</a>(viewer);
+
+<a name="line166">166: </a>  <a href="../../../docs/manualpages/EPS/EPSDestroy.html#EPSDestroy">EPSDestroy</a>(&amp;eps);
+<a name="line167">167: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;A);
+<a name="line168">168: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;ctx-&gt;T);
+<a name="line169">169: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;x1);
+<a name="line170">170: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;x2);
+<a name="line171">171: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;y1);
+<a name="line172">172: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;y2);
+<a name="line173">173: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx);
+<a name="line174">174: </a>  <a href="../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>();
+<a name="line175">175: </a>  <font color="#4169E1">return</font> 0;
+<a name="line176">176: </a>}
+
+<a name="line178">178: </a><strong><font color="#4169E1"><a name="MatMult_Brussel"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Brussel(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> x,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y)</font></strong>
+<a name="line179">179: </a>{
+<a name="line180">180: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          n;
+<a name="line181">181: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *px;
+<a name="line182">182: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *py;
+<a name="line183">183: </a>  CTX_BRUSSEL       *ctx;
+
+<a name="line186">186: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line187">187: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(ctx-&gt;T,&amp;n,NULL);
+<a name="line188">188: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(x,&amp;px);
+<a name="line189">189: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(y,&amp;py);
+<a name="line190">190: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(ctx-&gt;x1,px);
+<a name="line191">191: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(ctx-&gt;x2,px+n);
+<a name="line192">192: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(ctx-&gt;y1,py);
+<a name="line193">193: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(ctx-&gt;y2,py+n);
+
+<a name="line195">195: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(ctx-&gt;T,ctx-&gt;x1,ctx-&gt;y1);
+<a name="line196">196: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(ctx-&gt;y1,ctx-&gt;tau1);
+<a name="line197">197: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(ctx-&gt;y1,ctx-&gt;beta - 1.0 + ctx-&gt;sigma,ctx-&gt;x1);
+<a name="line198">198: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(ctx-&gt;y1,ctx-&gt;alpha * ctx-&gt;alpha,ctx-&gt;x2);
+
+<a name="line200">200: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(ctx-&gt;T,ctx-&gt;x2,ctx-&gt;y2);
+<a name="line201">201: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(ctx-&gt;y2,ctx-&gt;tau2);
+<a name="line202">202: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(ctx-&gt;y2,-ctx-&gt;beta,ctx-&gt;x1);
+<a name="line203">203: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(ctx-&gt;y2,-ctx-&gt;alpha * ctx-&gt;alpha + ctx-&gt;sigma,ctx-&gt;x2);
+
+<a name="line205">205: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(x,&amp;px);
+<a name="line206">206: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(y,&amp;py);
+<a name="line207">207: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(ctx-&gt;x1);
+<a name="line208">208: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(ctx-&gt;x2);
+<a name="line209">209: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(ctx-&gt;y1);
+<a name="line210">210: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(ctx-&gt;y2);
+<a name="line211">211: </a>  <font color="#4169E1">return</font> 0;
+<a name="line212">212: </a>}
+
+<a name="line214">214: </a><strong><font color="#4169E1"><a name="MatGetDiagonal_Brussel"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatGetDiagonal_Brussel(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> diag)</font></strong>
+<a name="line215">215: </a>{
+<a name="line216">216: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            d1,d2;
+<a name="line217">217: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n;
+<a name="line218">218: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *pd;
+<a name="line219">219: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm;
+<a name="line220">220: </a>  CTX_BRUSSEL    *ctx;
+
+<a name="line223">223: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line224">224: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetComm.html#PetscObjectGetComm">PetscObjectGetComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A,&amp;comm);
+<a name="line225">225: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(ctx-&gt;T,&amp;n,NULL);
+<a name="line226">226: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(diag,&amp;pd);
+<a name="line227">227: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPIWithArray.html#VecCreateMPIWithArray">VecCreateMPIWithArray</a>(comm,1,n,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,pd,&amp;d1);
+<a name="line228">228: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPIWithArray.html#VecCreateMPIWithArray">VecCreateMPIWithArray</a>(comm,1,n,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,pd+n,&amp;d2);
+
+<a name="line230">230: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecSet.html#VecSet">VecSet</a>(d1,-2.0*ctx-&gt;tau1 + ctx-&gt;beta - 1.0 + ctx-&gt;sigma);
+<a name="line231">231: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecSet.html#VecSet">VecSet</a>(d2,-2.0*ctx-&gt;tau2 - ctx-&gt;alpha*ctx-&gt;alpha + ctx-&gt;sigma);
+
+<a name="line233">233: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;d1);
+<a name="line234">234: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;d2);
+<a name="line235">235: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(diag,&amp;pd);
+<a name="line236">236: </a>  <font color="#4169E1">return</font> 0;
+<a name="line237">237: </a>}
+
+<a name="line239">239: </a><font color="#B22222">/*</font>
+<a name="line240">240: </a><font color="#B22222">    Function for user-defined stopping test.</font>
+
+<a name="line242">242: </a><font color="#B22222">    Ignores the value of nev. It only takes into account the number of</font>
+<a name="line243">243: </a><font color="#B22222">    eigenpairs that have converged in recent outer iterations (restarts);</font>
+<a name="line244">244: </a><font color="#B22222">    if no new eigenvalues have converged in the last few restarts,</font>
+<a name="line245">245: </a><font color="#B22222">    we stop the iteration, assuming that no more eigenvalues are present</font>
+<a name="line246">246: </a><font color="#B22222">    inside the region.</font>
+<a name="line247">247: </a><font color="#B22222">*/</font>
+<a name="line248">248: </a><strong><font color="#4169E1"><a name="MyStoppingTest"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MyStoppingTest(<a href="../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> its,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> max_it,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nconv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nev,<a href="../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPSConvergedReason</a> *reason,void *ptr)</font></strong>
+<a name="line249">249: </a>{
+<a name="line250">250: </a>  CTX_BRUSSEL    *ctx = (CTX_BRUSSEL*)ptr;
+
+<a name="line253">253: </a>  <font color="#B22222">/* check usual termination conditions, but ignoring the case nconv&gt;=nev */</font>
+<a name="line254">254: </a>  <a href="../../../docs/manualpages/EPS/EPSStoppingBasic.html#EPSStoppingBasic">EPSStoppingBasic</a>(eps,its,max_it,nconv,PETSC_MAX_INT,reason,NULL);
+<a name="line255">255: </a>  <font color="#4169E1">if</font> (*reason==<a href="../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPS_CONVERGED_ITERATING</a>) {
+<a name="line256">256: </a>    <font color="#B22222">/* check if nconv is the same as before */</font>
+<a name="line257">257: </a>    <font color="#4169E1">if</font> (nconv==ctx-&gt;lastnconv) ctx-&gt;nreps++;
+<a name="line258">258: </a>    <font color="#4169E1">else</font> {
+<a name="line259">259: </a>      ctx-&gt;lastnconv = nconv;
+<a name="line260">260: </a>      ctx-&gt;nreps     = 0;
+<a name="line261">261: </a>    }
+<a name="line262">262: </a>    <font color="#B22222">/* check if no eigenvalues converged in last 10 restarts */</font>
+<a name="line263">263: </a>    <font color="#4169E1">if</font> (nconv &amp;&amp; ctx-&gt;nreps&gt;10) *reason = <a href="../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPS_CONVERGED_USER</a>;
+<a name="line264">264: </a>  }
+<a name="line265">265: </a>  <font color="#4169E1">return</font> 0;
+<a name="line266">266: </a>}
+
+<a name="line268">268: </a><font color="#B22222">/*TEST</font>
+
+<a name="line270">270: </a><font color="#B22222">   test:</font>
+<a name="line271">271: </a><font color="#B22222">      suffix: 1</font>
+<a name="line272">272: </a><font color="#B22222">      args: -n 100 -terse</font>
+<a name="line273">273: </a><font color="#B22222">      requires: !single</font>
+
+<a name="line275">275: </a><font color="#B22222">TEST*/</font>
+</pre>
+</body>
+
+</html>

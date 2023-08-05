@@ -1,0 +1,342 @@
+<center><a href="ex27f90.F90">Actual source code: ex27f90.F90</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/nep/tutorials/ex27f90.F90.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:19+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/nep/tutorials/ex27f90.F90.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a>!
+<a name="line2">  2: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line3">  3: </a>!  SLEPc - Scalable Library <font color="#4169E1">for</font> Eigenvalue Problem Computations
+<a name="line4">  4: </a>!  Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain
+<a name="line5">  5: </a>!
+<a name="line6">  6: </a>!  This file is part of SLEPc.
+<a name="line7">  7: </a>!  SLEPc is distributed under a 2-clause BSD license (see LICENSE).
+<a name="line8">  8: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line9">  9: </a>!
+<a name="line10"> 10: </a>!  Program usage: mpiexec -n &lt;np&gt; ./ex27f90 [-help] [-n &lt;n&gt;] [all SLEPc options]
+<a name="line11"> 11: </a>!
+<a name="line12"> 12: </a>!  Description: Simple NLEIGS example. Fortran90 equivalent of ex27.c
+<a name="line13"> 13: </a>!
+<a name="line14"> 14: </a>!  The command line options are:
+<a name="line15"> 15: </a>!    -n &lt;n&gt;, where &lt;n&gt; = matrix dimension
+<a name="line16"> 16: </a>!
+<a name="line17"> 17: </a>! ----------------------------------------------------------------------
+<a name="line18"> 18: </a>!   Solve T(lambda)x=0 using NLEIGS solver
+<a name="line19"> 19: </a>!      with T(lambda) = -D+sqrt(lambda)*I
+<a name="line20"> 20: </a>!      where D is the Laplacian operator in 1 dimension
+<a name="line21"> 21: </a>!      and with the interpolation interval [.01,16]
+<a name="line22"> 22: </a>! ----------------------------------------------------------------------
+<a name="line23"> 23: </a>!
+<a name="line24"> 24: </a>PROGRAM main
+<a name="line25"> 25: </a>#include <A href="../../../include/slepc/finclude/slepcnep.h.html">&lt;slepc/finclude/slepcnep.h&gt;</A>
+<a name="line26"> 26: </a>  USE slepcnep
+<a name="line27"> 27: </a>  implicit none
+
+<a name="line29"> 29: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line30"> 30: </a>!     Declarations
+<a name="line31"> 31: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line33"> 33: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>                :: nep
+<a name="line34"> 34: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>                :: A(2),F,J
+<a name="line35"> 35: </a>  <a href="../../../docs/manualpages/NEP/NEPType.html#NEPType">NEPType</a>            :: ntype
+<a name="line36"> 36: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>           :: n=100,nev,Istart,Iend,i,col,one,two,three
+<a name="line37"> 37: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a>     :: ierr
+<a name="line38"> 38: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>          :: terse,flg,split=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>
+<a name="line39"> 39: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>          :: ia,ib,ic,id
+<a name="line40"> 40: </a>  <a href="../../../docs/manualpages/RG/RG.html#RG">RG</a>                 :: rg
+<a name="line41"> 41: </a>  <a href="../../../docs/manualpages/FN/FN.html#FN">FN</a>                 :: fn(2)
+<a name="line42"> 42: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>        :: coeffs,sigma,done
+<a name="line43"> 43: </a>  CHARACTER(LEN=128) :: string
+
+<a name="line45"> 45: </a>  ! NOTE: Any user-defined Fortran routines (such as ComputeSingularities)
+<a name="line46"> 46: </a>  !       MUST be declared as external.
+<a name="line47"> 47: </a>  external ComputeSingularities, FormFunction, FormJacobian
+
+<a name="line49"> 49: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line50"> 50: </a>!     Beginning of program
+<a name="line51"> 51: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line53"> 53: </a>  PetscCallA(<a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>(PETSC_NULL_CHARACTER,ierr))
+<a name="line54"> 54: </a>  PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetInt.html#PetscOptionsGetInt">PetscOptionsGetInt</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,<font color="#666666">"-n"</font>,n,flg,ierr))
+<a name="line55"> 55: </a>  PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetBool.html#PetscOptionsGetBool">PetscOptionsGetBool</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,<font color="#666666">"-split"</font>,split,flg,ierr))
+<a name="line56"> 56: </a>  <font color="#4169E1">if</font> (split) then
+<a name="line57"> 57: </a>     write(string,*) 'Square root eigenproblem, n=',n,' (split-form)\n'
+<a name="line58"> 58: </a>  <font color="#4169E1">else</font>
+<a name="line59"> 59: </a>     write(string,*) 'Square root eigenproblem, n=',n,'\n'
+<a name="line60"> 60: </a>  end <font color="#4169E1">if</font>
+<a name="line61"> 61: </a>  PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscPrintf.html#PetscPrintf">PetscPrintf</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,trim(string),ierr))
+<a name="line62"> 62: </a>  done  = 1.0
+<a name="line63"> 63: </a>  one   = 1
+<a name="line64"> 64: </a>  two   = 2
+<a name="line65"> 65: </a>  three = 3
+
+<a name="line67"> 67: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line68"> 68: </a>!     Create nonlinear eigensolver context and set options
+<a name="line69"> 69: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line71"> 71: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPCreate.html#NEPCreate">NEPCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,nep,ierr))
+<a name="line72"> 72: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSetType.html#NEPSetType">NEPSetType</a>(nep,NEPNLEIGS,ierr))
+<a name="line73"> 73: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPNLEIGSSetSingularitiesFunction.html#NEPNLEIGSSetSingularitiesFunction">NEPNLEIGSSetSingularitiesFunction</a>(nep,ComputeSingularities,0,ierr))
+<a name="line74"> 74: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPGetRG.html#NEPGetRG">NEPGetRG</a>(nep,rg,ierr))
+<a name="line75"> 75: </a>  PetscCallA(<a href="../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>(rg,RGINTERVAL,ierr))
+<a name="line76"> 76: </a>  ia = 0.01
+<a name="line77"> 77: </a>  ib = 16.0
+<a name="line78"> 78: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line79"> 79: </a>  ic = -0.001
+<a name="line80"> 80: </a>  id = 0.001
+<a name="line81"> 81: </a><font color="#A020F0">#else</font>
+<a name="line82"> 82: </a>  ic = 0.0
+<a name="line83"> 83: </a>  id = 0.0
+<a name="line84"> 84: </a><font color="#A020F0">#endif</font>
+<a name="line85"> 85: </a>  PetscCallA(<a href="../../../docs/manualpages/RG/RGIntervalSetEndpoints.html#RGIntervalSetEndpoints">RGIntervalSetEndpoints</a>(rg,ia,ib,ic,id,ierr))
+<a name="line86"> 86: </a>  sigma = 1.1
+<a name="line87"> 87: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSetTarget.html#NEPSetTarget">NEPSetTarget</a>(nep,sigma,ierr))
+
+<a name="line89"> 89: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line90"> 90: </a>!     Define the nonlinear problem
+<a name="line91"> 91: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line93"> 93: </a>  <font color="#4169E1">if</font> (split) then
+<a name="line94"> 94: </a>     ! ** Create matrices <font color="#4169E1">for</font> the split form
+<a name="line95"> 95: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,A(1),ierr))
+<a name="line96"> 96: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(A(1),<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,ierr))
+<a name="line97"> 97: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(A(1),ierr))
+<a name="line98"> 98: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(A(1),ierr))
+<a name="line99"> 99: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(A(1),Istart,Iend,ierr))
+<a name="line100">100: </a>     coeffs = -2.0
+<a name="line101">101: </a>     <font color="#4169E1">do</font> i=Istart,Iend-1
+<a name="line102">102: </a>        <font color="#4169E1">if</font> (i.gt.0) then
+<a name="line103">103: </a>           col = i-1
+<a name="line104">104: </a>           PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A(1),i,col,done,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line105">105: </a>        end <font color="#4169E1">if</font>
+<a name="line106">106: </a>        <font color="#4169E1">if</font> (i.lt.n-1) then
+<a name="line107">107: </a>           col = i+1
+<a name="line108">108: </a>           PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A(1),i,col,done,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line109">109: </a>        end <font color="#4169E1">if</font>
+<a name="line110">110: </a>        PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A(1),i,i,coeffs,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line111">111: </a>     end <font color="#4169E1">do</font>
+<a name="line112">112: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(A(1),<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+<a name="line113">113: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(A(1),<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+
+<a name="line115">115: </a>     PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateConstantDiagonal.html#MatCreateConstantDiagonal">MatCreateConstantDiagonal</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,done,A(2),ierr))
+
+<a name="line117">117: </a>     ! ** Define functions <font color="#4169E1">for</font> the split form
+<a name="line118">118: </a>     PetscCallA(<a href="../../../docs/manualpages/FN/FNCreate.html#FNCreate">FNCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,fn(1),ierr))
+<a name="line119">119: </a>     PetscCallA(<a href="../../../docs/manualpages/FN/FNSetType.html#FNSetType">FNSetType</a>(fn(1),FNRATIONAL,ierr))
+<a name="line120">120: </a>     PetscCallA(<a href="../../../docs/manualpages/FN/FNRationalSetNumerator.html#FNRationalSetNumerator">FNRationalSetNumerator</a>(fn(1),one,done,ierr))
+<a name="line121">121: </a>     PetscCallA(<a href="../../../docs/manualpages/FN/FNCreate.html#FNCreate">FNCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,fn(2),ierr))
+<a name="line122">122: </a>     PetscCallA(<a href="../../../docs/manualpages/FN/FNSetType.html#FNSetType">FNSetType</a>(fn(2),FNSQRT,ierr))
+<a name="line123">123: </a>     PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSetSplitOperator.html#NEPSetSplitOperator">NEPSetSplitOperator</a>(nep,two,A,fn,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SUBSET_NONZERO_PATTERN</a>,ierr))
+<a name="line124">124: </a>  <font color="#4169E1">else</font>
+<a name="line125">125: </a>    ! ** Callback form: create matrix and set Function evaluation routine
+<a name="line126">126: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,F,ierr))
+<a name="line127">127: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(F,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,ierr))
+<a name="line128">128: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(F,ierr))
+<a name="line129">129: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSeqAIJSetPreallocation.html#MatSeqAIJSetPreallocation">MatSeqAIJSetPreallocation</a>(F,three,PETSC_NULL_INTEGER,ierr))
+<a name="line130">130: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatMPIAIJSetPreallocation.html#MatMPIAIJSetPreallocation">MatMPIAIJSetPreallocation</a>(F,three,PETSC_NULL_INTEGER,one,PETSC_NULL_INTEGER,ierr))
+<a name="line131">131: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(F,ierr))
+<a name="line132">132: </a>    PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSetFunction.html#NEPSetFunction">NEPSetFunction</a>(nep,F,F,FormFunction,PETSC_NULL_INTEGER,ierr))
+
+<a name="line134">134: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,J,ierr))
+<a name="line135">135: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(J,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,ierr))
+<a name="line136">136: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(J,ierr))
+<a name="line137">137: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSeqAIJSetPreallocation.html#MatSeqAIJSetPreallocation">MatSeqAIJSetPreallocation</a>(J,one,PETSC_NULL_INTEGER,ierr))
+<a name="line138">138: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatMPIAIJSetPreallocation.html#MatMPIAIJSetPreallocation">MatMPIAIJSetPreallocation</a>(J,one,PETSC_NULL_INTEGER,one,PETSC_NULL_INTEGER,ierr))
+<a name="line139">139: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(J,ierr))
+<a name="line140">140: </a>    PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSetJacobian.html#NEPSetJacobian">NEPSetJacobian</a>(nep,J,FormJacobian,PETSC_NULL_INTEGER,ierr))
+<a name="line141">141: </a>  end <font color="#4169E1">if</font>
+
+<a name="line143">143: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSetFromOptions.html#NEPSetFromOptions">NEPSetFromOptions</a>(nep,ierr))
+
+<a name="line145">145: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line146">146: </a>!     Solve the eigensystem
+<a name="line147">147: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line149">149: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPSolve.html#NEPSolve">NEPSolve</a>(nep,ierr))
+<a name="line150">150: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPGetType.html#NEPGetType">NEPGetType</a>(nep,ntype,ierr))
+<a name="line151">151: </a>  write(string,*) 'Solution method: ',ntype,'\n'
+<a name="line152">152: </a>  PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscPrintf.html#PetscPrintf">PetscPrintf</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,trim(string),ierr))
+<a name="line153">153: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPGetDimensions.html#NEPGetDimensions">NEPGetDimensions</a>(nep,nev,PETSC_NULL_INTEGER,PETSC_NULL_INTEGER,ierr))
+<a name="line154">154: </a>  write(string,*) 'Number of requested eigenvalues:',nev,'\n'
+<a name="line155">155: </a>  PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscPrintf.html#PetscPrintf">PetscPrintf</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,trim(string),ierr))
+
+<a name="line157">157: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line158">158: </a>!     Display solution and clean up
+<a name="line159">159: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line161">161: </a>  ! ** show detailed info unless -terse option is given by user
+<a name="line162">162: </a>  PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHasName.html#PetscOptionsHasName">PetscOptionsHasName</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-terse',terse,ierr))
+<a name="line163">163: </a>  <font color="#4169E1">if</font> (terse) then
+<a name="line164">164: </a>    PetscCallA(<a href="../../../docs/manualpages/NEP/NEPErrorView.html#NEPErrorView">NEPErrorView</a>(nep,<a href="../../../docs/manualpages/NEP/NEPErrorType.html#NEPErrorType">NEP_ERROR_BACKWARD</a>,PETSC_NULL_VIEWER,ierr))
+<a name="line165">165: </a>  <font color="#4169E1">else</font>
+<a name="line166">166: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPushFormat.html#PetscViewerPushFormat">PetscViewerPushFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>,ierr))
+<a name="line167">167: </a>    PetscCallA(<a href="../../../docs/manualpages/NEP/NEPConvergedReasonView.html#NEPConvergedReasonView">NEPConvergedReasonView</a>(nep,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr))
+<a name="line168">168: </a>    PetscCallA(<a href="../../../docs/manualpages/NEP/NEPErrorView.html#NEPErrorView">NEPErrorView</a>(nep,<a href="../../../docs/manualpages/NEP/NEPErrorType.html#NEPErrorType">NEP_ERROR_BACKWARD</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr))
+<a name="line169">169: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPopFormat.html#PetscViewerPopFormat">PetscViewerPopFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr))
+<a name="line170">170: </a>  end <font color="#4169E1">if</font>
+
+<a name="line172">172: </a>  <font color="#4169E1">if</font> (split) then
+<a name="line173">173: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(A(1),ierr))
+<a name="line174">174: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(A(2),ierr))
+<a name="line175">175: </a>    PetscCallA(<a href="../../../docs/manualpages/FN/FNDestroy.html#FNDestroy">FNDestroy</a>(fn(1),ierr))
+<a name="line176">176: </a>    PetscCallA(<a href="../../../docs/manualpages/FN/FNDestroy.html#FNDestroy">FNDestroy</a>(fn(2),ierr))
+<a name="line177">177: </a>  <font color="#4169E1">else</font>
+<a name="line178">178: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(F,ierr))
+<a name="line179">179: </a>    PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(J,ierr))
+<a name="line180">180: </a>  end <font color="#4169E1">if</font>
+<a name="line181">181: </a>  PetscCallA(<a href="../../../docs/manualpages/NEP/NEPDestroy.html#NEPDestroy">NEPDestroy</a>(nep,ierr))
+<a name="line182">182: </a>  PetscCallA(<a href="../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>(ierr))
+
+<a name="line184">184: </a>END PROGRAM main
+
+<a name="line186">186: </a>! --------------------------------------------------------------
+<a name="line187">187: </a>!
+<a name="line188">188: </a>!   FormFunction - Computes Function matrix  T(lambda)
+<a name="line189">189: </a>!
+<a name="line190">190: </a><strong><font color="#4169E1"><a name="FormFunction"></a>SUBROUTINE FormFunction(nep,lambda,fun,B,ctx,ierr)</font></strong>
+<a name="line191">191: </a>#include <A href="../../../include/slepc/finclude/slepcnep.h.html">&lt;slepc/finclude/slepcnep.h&gt;</A>
+<a name="line192">192: </a>  use slepcnep
+<a name="line193">193: </a>  implicit none
+
+<a name="line195">195: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>            :: nep
+<a name="line196">196: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    :: lambda,val(0:2),t
+<a name="line197">197: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            :: fun,B
+<a name="line198">198: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       :: ctx,i,n,col(0:2),Istart,Iend,Istart0,Iend0,one,two,three
+<a name="line199">199: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> :: ierr
+<a name="line200">200: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      :: FirstBlock=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>, LastBlock=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>
+
+<a name="line202">202: </a>  one   = 1
+<a name="line203">203: </a>  two   = 2
+<a name="line204">204: </a>  three = 3
+
+<a name="line206">206: </a>  ! ** Compute Function entries and insert into matrix
+<a name="line207">207: </a>  t = sqrt(lambda)
+<a name="line208">208: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(fun,n,PETSC_NULL_INTEGER,ierr))
+<a name="line209">209: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(fun,Istart,Iend,ierr))
+<a name="line210">210: </a>  <font color="#4169E1">if</font> (Istart.eq.0) FirstBlock=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line211">211: </a>  <font color="#4169E1">if</font> (Iend.eq.n) LastBlock=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line212">212: </a>  val(0)=1.0; val(1)=t-2.0; val(2)=1.0;
+
+<a name="line214">214: </a>  Istart0 = Istart
+<a name="line215">215: </a>  <font color="#4169E1">if</font> (FirstBlock) Istart0 = Istart+1
+<a name="line216">216: </a>  Iend0 = Iend
+<a name="line217">217: </a>  <font color="#4169E1">if</font> (LastBlock) Iend0 = Iend-1
+
+<a name="line219">219: </a>  <font color="#4169E1">do</font> i=Istart0,Iend0-1
+<a name="line220">220: </a>     col(0) = i-1
+<a name="line221">221: </a>     col(1) = i
+<a name="line222">222: </a>     col(2) = i+1
+<a name="line223">223: </a>     <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(fun,one,i,three,col,val,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line224">224: </a>  end <font color="#4169E1">do</font>
+
+<a name="line226">226: </a>  <font color="#4169E1">if</font> (LastBlock) then
+<a name="line227">227: </a>     i = n-1
+<a name="line228">228: </a>     col(0) = n-2
+<a name="line229">229: </a>     col(1) = n-1
+<a name="line230">230: </a>     val(0) = 1.0
+<a name="line231">231: </a>     val(1) = t-2.0
+<a name="line232">232: </a>     <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(fun,one,i,two,col,val,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line233">233: </a>  end <font color="#4169E1">if</font>
+
+<a name="line235">235: </a>  <font color="#4169E1">if</font> (FirstBlock) then
+<a name="line236">236: </a>     i = 0
+<a name="line237">237: </a>     col(0) = 0
+<a name="line238">238: </a>     col(1) = 1
+<a name="line239">239: </a>     val(0) = t-2.0
+<a name="line240">240: </a>     val(1) = 1.0
+<a name="line241">241: </a>     <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(fun,one,i,two,col,val,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line242">242: </a>  end <font color="#4169E1">if</font>
+
+<a name="line244">244: </a>  ! ** Assemble matrix
+<a name="line245">245: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(B,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+<a name="line246">246: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(B,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+<a name="line247">247: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(fun,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+<a name="line248">248: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(fun,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+
+<a name="line250">250: </a>END SUBROUTINE FormFunction
+
+<a name="line252">252: </a>! --------------------------------------------------------------
+<a name="line253">253: </a>!
+<a name="line254">254: </a>!   FormJacobian - Computes Jacobian matrix  T'(lambda)
+<a name="line255">255: </a>!
+<a name="line256">256: </a><strong><font color="#4169E1"><a name="FormJacobian"></a>SUBROUTINE FormJacobian(nep,lambda,jac,ctx,ierr)</font></strong>
+<a name="line257">257: </a>#include <A href="../../../include/slepc/finclude/slepcnep.h.html">&lt;slepc/finclude/slepcnep.h&gt;</A>
+<a name="line258">258: </a>  USE slepcnep
+<a name="line259">259: </a>  implicit none
+
+<a name="line261">261: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>            :: nep
+<a name="line262">262: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    :: lambda,t
+<a name="line263">263: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            :: jac
+<a name="line264">264: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       :: ctx
+<a name="line265">265: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> :: ierr
+<a name="line266">266: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            :: d
+
+<a name="line268">268: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateVecs.html#MatCreateVecs">MatCreateVecs</a>(jac,d,PETSC_NULL_VEC,ierr))
+<a name="line269">269: </a>  t = 0.5/sqrt(lambda)
+<a name="line270">270: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/VecSet.html#VecSet">VecSet</a>(d,t,ierr))
+<a name="line271">271: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDiagonalSet.html#MatDiagonalSet">MatDiagonalSet</a>(jac,d,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line272">272: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(d,ierr))
+
+<a name="line274">274: </a>END SUBROUTINE FormJacobian
+
+<a name="line276">276: </a>! --------------------------------------------------------------
+<a name="line277">277: </a>!
+<a name="line278">278: </a>!  ComputeSingularities - This is a user-defined routine to compute maxnp
+<a name="line279">279: </a>!  points (at most) in the complex plane where the function T(.) is not analytic.
+<a name="line280">280: </a>!
+<a name="line281">281: </a>!  In this <font color="#4169E1">case</font>, we discretize the singularity region (-inf,0)~(-10e+6,-10e-6)
+<a name="line282">282: </a>!
+<a name="line283">283: </a>!  Input Parameters:
+<a name="line284">284: </a>!    nep   - nonlinear eigensolver context
+<a name="line285">285: </a>!    maxnp - on input number of requested points in the discretization (can be set)
+<a name="line286">286: </a>!    xi    - computed values of the discretization
+<a name="line287">287: </a>!    dummy - optional user-defined monitor context (unused here)
+<a name="line288">288: </a>!
+<a name="line289">289: </a><strong><font color="#4169E1"><a name="ComputeSingularities"></a>SUBROUTINE ComputeSingularities(nep,maxnp,xi,dummy,ierr)</font></strong>
+<a name="line290">290: </a>#include <A href="../../../include/slepc/finclude/slepcnep.h.html">&lt;slepc/finclude/slepcnep.h&gt;</A>
+<a name="line291">291: </a>  use slepcnep
+<a name="line292">292: </a>  implicit none
+
+<a name="line294">294: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>            :: nep
+<a name="line295">295: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       :: maxnp, dummy
+<a name="line296">296: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    :: xi(0:maxnp-1)
+<a name="line297">297: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> :: ierr
+<a name="line298">298: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      :: h
+<a name="line299">299: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       :: i
+
+<a name="line301">301: </a>  h = 11.0/real(maxnp-1)
+<a name="line302">302: </a>  xi(0) = -1e-5
+<a name="line303">303: </a>  xi(maxnp-1) = -1e+6
+<a name="line304">304: </a>  <font color="#4169E1">do</font> i=1,maxnp-2
+<a name="line305">305: </a>     xi(i) = -10**(-5+h*i)
+<a name="line306">306: </a>  end <font color="#4169E1">do</font>
+<a name="line307">307: </a>  ierr = 0
+
+<a name="line309">309: </a>END SUBROUTINE ComputeSingularities
+
+<a name="line311">311: </a>!<font color="#B22222">/*TEST</font>
+<a name="line312">312: </a><font color="#B22222">!</font>
+<a name="line313">313: </a><font color="#B22222">!   test:</font>
+<a name="line314">314: </a><font color="#B22222">!      suffix: 1</font>
+<a name="line315">315: </a><font color="#B22222">!      args: -nep_nev 3 -nep_nleigs_interpolation_degree 90 -terse</font>
+<a name="line316">316: </a><font color="#B22222">!      requires: !single</font>
+<a name="line317">317: </a><font color="#B22222">!      filter: sed -e "s/[+-]0\.0*i//g"</font>
+<a name="line318">318: </a><font color="#B22222">!</font>
+<a name="line319">319: </a><font color="#B22222">!   test:</font>
+<a name="line320">320: </a><font color="#B22222">!      suffix: 2</font>
+<a name="line321">321: </a><font color="#B22222">!      args: -split 0 -nep_nev 3 -nep_nleigs_interpolation_degree 90 -terse</font>
+<a name="line322">322: </a><font color="#B22222">!      requires: !single</font>
+<a name="line323">323: </a><font color="#B22222">!      filter: sed -e "s/[+-]0\.0*i//g"</font>
+<a name="line324">324: </a><font color="#B22222">!</font>
+<a name="line325">325: </a><font color="#B22222">!TEST*/</font>
+</pre>
+</body>
+
+</html>

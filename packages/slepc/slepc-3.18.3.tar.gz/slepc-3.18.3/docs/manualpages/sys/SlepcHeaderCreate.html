@@ -1,0 +1,57 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML3.2 EN">
+<HTML>
+<HEAD> <link rel="canonical" href="https://slepc.upv.es/documentation/current/docs/manualpages/sys/SlepcHeaderCreate.html" />
+<META NAME="GENERATOR" CONTENT="DOCTEXT">
+<link rel="stylesheet" href="/slepc.css" type="text/css">
+<TITLE>SlepcHeaderCreate</TITLE>
+</HEAD>
+<BODY BGCOLOR="FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 docs/manualpages/sys/SlepcHeaderCreate.html "><small>Report Typos and Errors</small></a></div>
+<H1>SlepcHeaderCreate</H1>
+Creates a SLEPc object 
+<H3><FONT COLOR="#883300">Synopsis</FONT></H3>
+<PRE>
+#define <A HREF="../sys/SlepcHeaderCreate.html#SlepcHeaderCreate">SlepcHeaderCreate</A>(h,classid,class_name,descr,mansec,comm,destroy,view) \
+    ((!SlepcInitializeCalled &amp;&amp; \
+    <A HREF="https://petsc.org/release/docs/manualpages/Sys/PetscError.html#PetscError">PetscError</A>(comm,__LINE__,PETSC_FUNCTION_NAME,__FILE__,1,<A HREF="https://petsc.org/release/docs/manualpages/Sys/PetscErrorType.html#PetscErrorType">PETSC_ERROR_INITIAL</A>, \
+    "Must call <A HREF="../sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</A> instead of <A HREF="https://petsc.org/release/docs/manualpages/Sys/PetscInitialize.html#PetscInitialize">PetscInitialize</A> to use SLEPc classes")) ||  \
+    PetscHeaderCreate(h,classid,class_name,descr,mansec,comm,destroy,view))
+
+/* context for monitors of type XXXMonitorConverged */
+struct _n_SlepcConvMon
+</PRE>
+<H3><FONT COLOR="#883300">Input Parameters</FONT></H3>
+<TABLE border="0" cellpadding="0" cellspacing="0">
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>classid </B></TD><TD>&nbsp;- the classid associated with this object
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>class_name </B></TD><TD>&nbsp;- string name of class; should be static
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>descr </B></TD><TD>&nbsp;- string containing short description; should be static
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>mansec </B></TD><TD>&nbsp;- string indicating section in manual pages; should be static
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>comm </B></TD><TD>&nbsp;- the MPI Communicator
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>destroy </B></TD><TD>&nbsp;- the destroy routine for this object
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>view </B></TD><TD>&nbsp;- the view routine for this object
+</TD></TR></TABLE>
+<P>
+<H3><FONT COLOR="#883300">Output Parameter</FONT></H3>
+<TABLE border="0" cellpadding="0" cellspacing="0">
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>h </B></TD><TD>&nbsp;- the newly created object
+</TD></TR></TABLE>
+<P>
+<H3><FONT COLOR="#883300">Note</FONT></H3>
+This is equivalent to PetscHeaderCreate but makes sure that <A HREF="../sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</A>
+has been called.
+<P>
+
+<P><B></B><H3><FONT COLOR="#883300">Level</FONT></H3>developer<BR>
+<H3><FONT COLOR="#883300">Location</FONT></H3>
+</B><A HREF="../../../include/slepc/private/slepcimpl.h.html#SlepcHeaderCreate">include/slepc/private/slepcimpl.h</A>
+<BR><BR><A HREF="./index.html">Index of all sys routines</A>
+<BR><A HREF="../../../docs/manual.html">Table of Contents for all manual pages</A>
+<BR><A HREF="../singleindex.html">Index of all manual pages</A>
+</BODY></HTML>

@@ -1,0 +1,58 @@
+<center><a href="slepcvec.h">Actual source code: slepcvec.h</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/include/slepcvec.h.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:30+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 include/slepcvec.h.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   User interface for various vector operations added in SLEPc</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a><font color="#A020F0">#if !defined(SLEPCVEC_H)</font>
+<a name="line15"> 15: </a><strong><font color="#228B22">#define SLEPCVEC_H</font></strong>
+
+<a name="line17"> 17: </a>#include <A href="slepcsys.h.html">&lt;slepcsys.h&gt;</A>
+
+<a name="line19"> 19: </a><font color="#B22222">/* SUBMANSEC = sys */</font>
+
+<a name="line21"> 21: </a><font color="#B22222">/* VecComp: <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> composed of several smaller <a href="https://petsc.org/release/docs/manualpages/Vec/Vecs.html#Vecs">Vecs</a> */</font>
+<a name="line22"> 22: </a><strong><font color="#228B22">#define VECCOMP  </font><font color="#666666">"comp"</font><font color="#228B22"></font></strong>
+
+<a name="line24"> 24: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecCreateComp.html#VecCreateComp">VecCreateComp</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/VecType.html#VecType">VecType</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>*)</font></strong>;
+<a name="line25"> 25: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecCreateCompWithVecs.html#VecCreateCompWithVecs">VecCreateCompWithVecs</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>*)</font></strong>;
+<a name="line26"> 26: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecCompGetSubVecs.html#VecCompGetSubVecs">VecCompGetSubVecs</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,const <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>**)</font></strong>;
+<a name="line27"> 27: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecCompSetSubVecs.html#VecCompSetSubVecs">VecCompSetSubVecs</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>*)</font></strong>;
+
+<a name="line29"> 29: </a><font color="#B22222">/* Some auxiliary functions */</font>
+<a name="line30"> 30: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecNormalizeComplex.html#VecNormalizeComplex">VecNormalizeComplex</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*)</font></strong>;
+<a name="line31"> 31: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecCheckOrthogonality.html#VecCheckOrthogonality">VecCheckOrthogonality</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*)</font></strong>;
+<a name="line32"> 32: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecCheckOrthonormality.html#VecCheckOrthonormality">VecCheckOrthonormality</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*)</font></strong>;
+<a name="line33"> 33: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecDuplicateEmpty.html#VecDuplicateEmpty">VecDuplicateEmpty</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>*)</font></strong>;
+<a name="line34"> 34: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/VecSetRandomNormal.html#VecSetRandomNormal">VecSetRandomNormal</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscRandom.html#PetscRandom">PetscRandom</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+
+<a name="line36"> 36: </a><font color="#B22222">/* Deprecated functions */</font>
+<a name="line37"> 37: </a>PETSC_DEPRECATED_FUNCTION(<font color="#666666">"Use <a href="../docs/manualpages/sys/VecNormalizeComplex.html#VecNormalizeComplex">VecNormalizeComplex</a>()"</font>) static inline <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcVecNormalize(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> xr,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> xi,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> c,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *nrm) {<font color="#4169E1">return</font> <a href="../docs/manualpages/sys/VecNormalizeComplex.html#VecNormalizeComplex">VecNormalizeComplex</a>(xr,xi,c,nrm);}
+<a name="line38"> 38: </a>PETSC_DEPRECATED_FUNCTION(<font color="#666666">"Use <a href="../docs/manualpages/sys/VecCheckOrthogonality.html#VecCheckOrthogonality">VecCheckOrthogonality</a>()"</font>) static inline <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCheckOrthogonality(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> *V,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nv,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> *W,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nw,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> B,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *lev) {<font color="#4169E1">return</font> <a href="../docs/manualpages/sys/VecCheckOrthogonality.html#VecCheckOrthogonality">VecCheckOrthogonality</a>(V,nv,W,nw,B,viewer,lev);}
+
+<a name="line40"> 40: </a><font color="#A020F0">#endif</font>
+
+</pre>
+</body>
+
+</html>

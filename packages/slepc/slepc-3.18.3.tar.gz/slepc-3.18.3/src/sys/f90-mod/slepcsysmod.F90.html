@@ -1,0 +1,83 @@
+<center><a href="slepcsysmod.F90">Actual source code: slepcsysmod.F90</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/sys/f90-mod/slepcsysmod.F90.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:44:40+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/sys/f90-mod/slepcsysmod.F90.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a>!
+<a name="line2">  2: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line3">  3: </a>!  SLEPc - Scalable Library <font color="#4169E1">for</font> Eigenvalue Problem Computations
+<a name="line4">  4: </a>!  Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain
+<a name="line5">  5: </a>!
+<a name="line6">  6: </a>!  This file is part of SLEPc.
+<a name="line7">  7: </a>!  SLEPc is distributed under a 2-clause BSD license (see LICENSE).
+<a name="line8">  8: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line9">  9: </a>!
+<a name="line10"> 10: </a>        module slepcsysdef
+<a name="line11"> 11: </a>        use petscmatdef
+<a name="line12"> 12: </a>        use petscsys
+<a name="line13"> 13: </a>#include <A href="slepcsys.h.html">&lt;../src/sys/f90-mod/slepcsys.h&gt;</A>
+<a name="line14"> 14: </a>        end module
+
+<a name="line16"> 16: </a>        module slepcsys
+<a name="line17"> 17: </a>        use,intrinsic :: iso_c_binding
+<a name="line18"> 18: </a>        use slepcsysdef
+<a name="line19"> 19: </a>#include <A href="slepcsys.h90.html">&lt;../src/sys/f90-mod/slepcsys.h90&gt;</A>
+<a name="line20"> 20: </a>        interface
+<a name="line21"> 21: </a>#include <A href="ftn-auto-interfaces/slepcsys.h90.html">&lt;../src/sys/f90-mod/ftn-auto-interfaces/slepcsys.h90&gt;</A>
+<a name="line22"> 22: </a>        end interface
+<a name="line23"> 23: </a>        interface <a href="../..90-mod/../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>
+<a name="line24"> 24: </a>          module procedure SlepcInitializeWithHelp, SlepcInitializeNoHelp, <a href="../..90-mod/../docs/manualpages/sys/SlepcInitializeNoArguments.html#SlepcInitializeNoArguments">SlepcInitializeNoArguments</a>
+<a name="line25"> 25: </a>        end interface
+<a name="line26"> 26: </a>      contains
+<a name="line27"> 27: </a><font color="#A020F0">#if defined(_WIN32) &amp;&amp; defined(PETSC_USE_SHARED_LIBRARIES)</font>
+<a name="line28"> 28: </a>!DEC$ ATTRIBUTES DLLEXPORT::SlepcInitializeWithHelp
+<a name="line29"> 29: </a><font color="#A020F0">#endif</font>
+<a name="line30"> 30: </a>      subroutine SlepcInitializeWithHelp(filename,help,ierr)
+<a name="line31"> 31: </a>          character(len=*)           :: filename
+<a name="line32"> 32: </a>          character(len=*)           :: help
+<a name="line33"> 33: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a>             :: ierr
+
+<a name="line35"> 35: </a>          <font color="#4169E1">if</font> (filename .ne. PETSC_NULL_CHARACTER) then
+<a name="line36"> 36: </a>             filename = trim(filename)
+<a name="line37"> 37: </a>          endif
+<a name="line38"> 38: </a>          call SlepcInitializeF(filename,help,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,ierr)
+<a name="line39"> 39: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRQ.html#CHKERRQ">CHKERRQ</a>(ierr)
+<a name="line40"> 40: </a>        end subroutine SlepcInitializeWithHelp
+
+<a name="line42"> 42: </a><font color="#A020F0">#if defined(_WIN32) &amp;&amp; defined(PETSC_USE_SHARED_LIBRARIES)</font>
+<a name="line43"> 43: </a>!DEC$ ATTRIBUTES DLLEXPORT::SlepcInitializeNoHelp
+<a name="line44"> 44: </a><font color="#A020F0">#endif</font>
+<a name="line45"> 45: </a>        subroutine SlepcInitializeNoHelp(filename,ierr)
+<a name="line46"> 46: </a>          character(len=*)           :: filename
+<a name="line47"> 47: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a>             :: ierr
+
+<a name="line49"> 49: </a>          <font color="#4169E1">if</font> (filename .ne. PETSC_NULL_CHARACTER) then
+<a name="line50"> 50: </a>             filename = trim(filename)
+<a name="line51"> 51: </a>          endif
+<a name="line52"> 52: </a>          call SlepcInitializeF(filename,PETSC_NULL_CHARACTER,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,ierr)
+<a name="line53"> 53: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRQ.html#CHKERRQ">CHKERRQ</a>(ierr)
+<a name="line54"> 54: </a>        end subroutine SlepcInitializeNoHelp
+
+<a name="line56"> 56: </a><font color="#A020F0">#if defined(_WIN32) &amp;&amp; defined(PETSC_USE_SHARED_LIBRARIES)</font>
+<a name="line57"> 57: </a>!DEC$ ATTRIBUTES DLLEXPORT::<a href="../..90-mod/../docs/manualpages/sys/SlepcInitializeNoArguments.html#SlepcInitializeNoArguments">SlepcInitializeNoArguments</a>
+<a name="line58"> 58: </a><font color="#A020F0">#endif</font>
+<a name="line59"> 59: </a>        subroutine <a href="../..90-mod/../docs/manualpages/sys/SlepcInitializeNoArguments.html#SlepcInitializeNoArguments">SlepcInitializeNoArguments</a>(ierr)
+<a name="line60"> 60: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a>             :: ierr
+
+<a name="line62"> 62: </a>          call SlepcInitializeF(PETSC_NULL_CHARACTER,PETSC_NULL_CHARACTER,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,ierr)
+<a name="line63"> 63: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRQ.html#CHKERRQ">CHKERRQ</a>(ierr)
+<a name="line64"> 64: </a>        end subroutine <a href="../..90-mod/../docs/manualpages/sys/SlepcInitializeNoArguments.html#SlepcInitializeNoArguments">SlepcInitializeNoArguments</a>
+<a name="line65"> 65: </a>        end module
+
+</pre>
+</body>
+
+</html>

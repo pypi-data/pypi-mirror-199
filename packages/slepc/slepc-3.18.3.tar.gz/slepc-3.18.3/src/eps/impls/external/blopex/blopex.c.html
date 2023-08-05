@@ -1,0 +1,403 @@
+<center><a href="blopex.c">Actual source code: blopex.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/eps/impls/external/blopex/blopex.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:28+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/eps/impls/external/blopex/blopex.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   This file implements a wrapper to the BLOPEX package</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../../../include/slepc/private/epsimpl.h.html">&lt;slepc/private/epsimpl.h&gt;</A>
+<a name="line15"> 15: </a><font color="#A020F0">#include </font><font color="#666666">"blopex.h"</font><font color="#A020F0"></font>
+<a name="line16"> 16: </a><font color="#A020F0">#include &lt;lobpcg.h&gt;</font>
+<a name="line17"> 17: </a><font color="#A020F0">#include &lt;interpreter.h&gt;</font>
+<a name="line18"> 18: </a><font color="#A020F0">#include &lt;multivector.h&gt;</font>
+<a name="line19"> 19: </a><font color="#A020F0">#include &lt;temp_multivector.h&gt;</font>
+
+<a name="line21"> 21: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> slepc_blopex_useconstr = -1;
+
+<a name="line23"> 23: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line24"> 24: </a>  lobpcg_Tolerance           tol;
+<a name="line25"> 25: </a>  lobpcg_BLASLAPACKFunctions blap_fn;
+<a name="line26"> 26: </a>  mv_InterfaceInterpreter    ii;
+<a name="line27"> 27: </a>  <a href="../../../../../docs/manualpages/ST/ST.html#ST">ST</a>                         st;
+<a name="line28"> 28: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>                        w;
+<a name="line29"> 29: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>                   bs;     <font color="#B22222">/* block size */</font>
+<a name="line30"> 30: </a>} EPS_BLOPEX;
+
+<a name="line32"> 32: </a><strong><font color="#4169E1"><a name="Precond_FnSingleVector"></a>static void Precond_FnSingleVector(void *data,void *x,void *y)</font></strong>
+<a name="line33"> 33: </a>{
+<a name="line34"> 34: </a>  EPS_BLOPEX     *blopex = (EPS_BLOPEX*)data;
+<a name="line35"> 35: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)blopex-&gt;st);
+<a name="line36"> 36: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>            ksp;
+
+<a name="line38"> 38: </a>  comm,<a href="../../../../../docs/manualpages/ST/STGetKSP.html#STGetKSP">STGetKSP</a>(blopex-&gt;st,&amp;ksp);
+<a name="line39"> 39: </a>  comm,<a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolve.html#KSPSolve">KSPSolve</a>(ksp,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)x,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)y);
+<a name="line40"> 40: </a>  <font color="#4169E1">return</font>;
+<a name="line41"> 41: </a>}
+
+<a name="line43"> 43: </a><strong><font color="#4169E1"><a name="Precond_FnMultiVector"></a>static void Precond_FnMultiVector(void *data,void *x,void *y)</font></strong>
+<a name="line44"> 44: </a>{
+<a name="line45"> 45: </a>  EPS_BLOPEX *blopex = (EPS_BLOPEX*)data;
+
+<a name="line47"> 47: </a>  blopex-&gt;ii.Eval(Precond_FnSingleVector,data,x,y);
+<a name="line48"> 48: </a>  <font color="#4169E1">return</font>;
+<a name="line49"> 49: </a>}
+
+<a name="line51"> 51: </a><strong><font color="#4169E1"><a name="OperatorASingleVector"></a>static void OperatorASingleVector(void *data,void *x,void *y)</font></strong>
+<a name="line52"> 52: </a>{
+<a name="line53"> 53: </a>  EPS_BLOPEX     *blopex = (EPS_BLOPEX*)data;
+<a name="line54"> 54: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)blopex-&gt;st);
+<a name="line55"> 55: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A,B;
+<a name="line56"> 56: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    sigma;
+<a name="line57"> 57: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       nmat;
+
+<a name="line59"> 59: </a>  comm,<a href="../../../../../docs/manualpages/ST/STGetNumMatrices.html#STGetNumMatrices">STGetNumMatrices</a>(blopex-&gt;st,&amp;nmat);
+<a name="line60"> 60: </a>  comm,<a href="../../../../../docs/manualpages/ST/STGetMatrix.html#STGetMatrix">STGetMatrix</a>(blopex-&gt;st,0,&amp;A);
+<a name="line61"> 61: </a>  <font color="#4169E1">if</font> (nmat&gt;1) comm,<a href="../../../../../docs/manualpages/ST/STGetMatrix.html#STGetMatrix">STGetMatrix</a>(blopex-&gt;st,1,&amp;B);
+<a name="line62"> 62: </a>  comm,<a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(A,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)x,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)y);
+<a name="line63"> 63: </a>  comm,<a href="../../../../../docs/manualpages/ST/STGetShift.html#STGetShift">STGetShift</a>(blopex-&gt;st,&amp;sigma);
+<a name="line64"> 64: </a>  <font color="#4169E1">if</font> (sigma != 0.0) {
+<a name="line65"> 65: </a>    <font color="#4169E1">if</font> (nmat&gt;1) comm,<a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(B,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)x,blopex-&gt;w);
+<a name="line66"> 66: </a>    <font color="#4169E1">else</font> comm,<a href="https://petsc.org/release/docs/manualpages/Vec/VecCopy.html#VecCopy">VecCopy</a>((<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)x,blopex-&gt;w);
+<a name="line67"> 67: </a>    comm,<a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>((<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)y,-sigma,blopex-&gt;w);
+<a name="line68"> 68: </a>  }
+<a name="line69"> 69: </a>  <font color="#4169E1">return</font>;
+<a name="line70"> 70: </a>}
+
+<a name="line72"> 72: </a><strong><font color="#4169E1"><a name="OperatorAMultiVector"></a>static void OperatorAMultiVector(void *data,void *x,void *y)</font></strong>
+<a name="line73"> 73: </a>{
+<a name="line74"> 74: </a>  EPS_BLOPEX *blopex = (EPS_BLOPEX*)data;
+
+<a name="line76"> 76: </a>  blopex-&gt;ii.Eval(OperatorASingleVector,data,x,y);
+<a name="line77"> 77: </a>  <font color="#4169E1">return</font>;
+<a name="line78"> 78: </a>}
+
+<a name="line80"> 80: </a><strong><font color="#4169E1"><a name="OperatorBSingleVector"></a>static void OperatorBSingleVector(void *data,void *x,void *y)</font></strong>
+<a name="line81"> 81: </a>{
+<a name="line82"> 82: </a>  EPS_BLOPEX     *blopex = (EPS_BLOPEX*)data;
+<a name="line83"> 83: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)blopex-&gt;st);
+<a name="line84"> 84: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            B;
+
+<a name="line86"> 86: </a>  comm,<a href="../../../../../docs/manualpages/ST/STGetMatrix.html#STGetMatrix">STGetMatrix</a>(blopex-&gt;st,1,&amp;B);
+<a name="line87"> 87: </a>  comm,<a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(B,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)x,(<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)y);
+<a name="line88"> 88: </a>  <font color="#4169E1">return</font>;
+<a name="line89"> 89: </a>}
+
+<a name="line91"> 91: </a><strong><font color="#4169E1"><a name="OperatorBMultiVector"></a>static void OperatorBMultiVector(void *data,void *x,void *y)</font></strong>
+<a name="line92"> 92: </a>{
+<a name="line93"> 93: </a>  EPS_BLOPEX *blopex = (EPS_BLOPEX*)data;
+
+<a name="line95"> 95: </a>  blopex-&gt;ii.Eval(OperatorBSingleVector,data,x,y);
+<a name="line96"> 96: </a>  <font color="#4169E1">return</font>;
+<a name="line97"> 97: </a>}
+
+<a name="line99"> 99: </a><strong><font color="#4169E1"><a name="EPSSetDimensions_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSetDimensions_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nev,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *ncv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *mpd)</font></strong>
+<a name="line100">100: </a>{
+<a name="line101">101: </a>  EPS_BLOPEX     *ctx = (EPS_BLOPEX*)eps-&gt;data;
+<a name="line102">102: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       k;
+
+<a name="line104">104: </a>  k = ((eps-&gt;nev-1)/ctx-&gt;bs+1)*ctx-&gt;bs;
+<a name="line105">105: </a>  <font color="#4169E1">if</font> (*ncv!=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) { <font color="#B22222">/* ncv set */</font>
+<a name="line107">107: </a>  } <font color="#4169E1">else</font> *ncv = k;
+<a name="line108">108: </a>  <font color="#4169E1">if</font> (*mpd==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) *mpd = *ncv;
+<a name="line109">109: </a>  <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(eps,<font color="#666666">"Warning: given value of mpd ignored\n"</font>);
+<a name="line110">110: </a>  <font color="#4169E1">return</font> 0;
+<a name="line111">111: </a>}
+
+<a name="line113">113: </a><strong><font color="#4169E1"><a name="EPSSetUp_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSetUp_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line114">114: </a>{
+<a name="line115">115: </a>  EPS_BLOPEX     *blopex = (EPS_BLOPEX*)eps-&gt;data;
+<a name="line116">116: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg;
+<a name="line117">117: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>            ksp;
+
+<a name="line119">119: </a>  EPSCheckHermitianDefinite(eps);
+<a name="line120">120: </a>  <font color="#4169E1">if</font> (!blopex-&gt;bs) blopex-&gt;bs = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(16,eps-&gt;nev);
+<a name="line121">121: </a>  EPSSetDimensions_BLOPEX(eps,eps-&gt;nev,&amp;eps-&gt;ncv,&amp;eps-&gt;mpd);
+<a name="line122">122: </a>  <font color="#4169E1">if</font> (eps-&gt;max_it==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) eps-&gt;max_it = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(100,2*eps-&gt;n/eps-&gt;ncv);
+<a name="line123">123: </a>  <font color="#4169E1">if</font> (!eps-&gt;which) eps-&gt;which = <a href="../../../../../docs/manualpages/EPS/EPSWhich.html#EPSWhich">EPS_SMALLEST_REAL</a>;
+<a name="line125">125: </a>  EPSCheckUnsupported(eps,EPS_FEATURE_ARBITRARY | EPS_FEATURE_REGION | EPS_FEATURE_STOPPING);
+<a name="line126">126: </a>  EPSCheckIgnored(eps,EPS_FEATURE_BALANCE | EPS_FEATURE_EXTRACTION);
+
+<a name="line128">128: </a>  blopex-&gt;st = eps-&gt;st;
+
+<a name="line131">131: </a>  <font color="#4169E1">if</font> (eps-&gt;converged == EPSConvergedRelative) {
+<a name="line132">132: </a>    blopex-&gt;tol.absolute = 0.0;
+<a name="line133">133: </a>    blopex-&gt;tol.relative = SlepcDefaultTol(eps-&gt;tol);
+<a name="line134">134: </a>  } <font color="#4169E1">else</font> {  <font color="#B22222">/* EPSConvergedAbsolute */</font>
+<a name="line135">135: </a>    blopex-&gt;tol.absolute = SlepcDefaultTol(eps-&gt;tol);
+<a name="line136">136: </a>    blopex-&gt;tol.relative = 0.0;
+<a name="line137">137: </a>  }
+
+<a name="line139">139: </a>  SLEPCSetupInterpreter(&amp;blopex-&gt;ii);
+
+<a name="line141">141: </a>  <a href="../../../../../docs/manualpages/ST/STGetKSP.html#STGetKSP">STGetKSP</a>(eps-&gt;st,&amp;ksp);
+<a name="line142">142: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ksp,<a href="https://petsc.org/release/docs/manualpages/KSP/KSPPREONLY.html#KSPPREONLY">KSPPREONLY</a>,&amp;flg);
+<a name="line143">143: </a>  <font color="#4169E1">if</font> (!flg) <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(eps,<font color="#666666">"Warning: ignoring <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>, should use <a href="https://petsc.org/release/docs/manualpages/KSP/KSPPREONLY.html#KSPPREONLY">KSPPREONLY</a>\n"</font>);
+
+<a name="line145">145: </a>  <font color="#B22222">/* allocate memory */</font>
+<a name="line146">146: </a>  <font color="#4169E1">if</font> (!eps-&gt;V) <a href="../../../../../docs/manualpages/EPS/EPSGetBV.html#EPSGetBV">EPSGetBV</a>(eps,&amp;eps-&gt;V);
+<a name="line147">147: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompareAny.html#PetscObjectTypeCompareAny">PetscObjectTypeCompareAny</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps-&gt;V,&amp;flg,BVVECS,BVCONTIGUOUS,<font color="#666666">""</font>);
+<a name="line148">148: </a>  <font color="#4169E1">if</font> (!flg) {  <font color="#B22222">/* blopex only works with BVVECS or BVCONTIGUOUS */</font>
+<a name="line149">149: </a>    <a href="../../../../../docs/manualpages/BV/BVSetType.html#BVSetType">BVSetType</a>(eps-&gt;V,BVCONTIGUOUS);
+<a name="line150">150: </a>  }
+<a name="line151">151: </a>  <a href="../../../../../docs/manualpages/EPS/EPSAllocateSolution.html#EPSAllocateSolution">EPSAllocateSolution</a>(eps,0);
+<a name="line152">152: </a>  <font color="#4169E1">if</font> (!blopex-&gt;w) <a href="../../../../../docs/manualpages/BV/BVCreateVec.html#BVCreateVec">BVCreateVec</a>(eps-&gt;V,&amp;blopex-&gt;w);
+
+<a name="line154">154: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line155">155: </a>  blopex-&gt;blap_fn.zpotrf = PETSC_zpotrf_interface;
+<a name="line156">156: </a>  blopex-&gt;blap_fn.zhegv = PETSC_zsygv_interface;
+<a name="line157">157: </a><font color="#A020F0">#else</font>
+<a name="line158">158: </a>  blopex-&gt;blap_fn.dpotrf = PETSC_dpotrf_interface;
+<a name="line159">159: </a>  blopex-&gt;blap_fn.dsygv = PETSC_dsygv_interface;
+<a name="line160">160: </a><font color="#A020F0">#endif</font>
+<a name="line161">161: </a>  <font color="#4169E1">return</font> 0;
+<a name="line162">162: </a>}
+
+<a name="line164">164: </a><strong><font color="#4169E1"><a name="EPSSolve_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSolve_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line165">165: </a>{
+<a name="line166">166: </a>  EPS_BLOPEX        *blopex = (EPS_BLOPEX*)eps-&gt;data;
+<a name="line167">167: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       sigma,*eigr=NULL;
+<a name="line168">168: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         *errest=NULL;
+<a name="line169">169: </a>  int               i,j,info,its,nconv;
+<a name="line170">170: </a>  double            *residhist=NULL;
+<a name="line171">171: </a>  mv_MultiVectorPtr eigenvectors,constraints;
+<a name="line172">172: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line173">173: </a>  komplex           *lambda=NULL,*lambdahist=NULL;
+<a name="line174">174: </a><font color="#A020F0">#else</font>
+<a name="line175">175: </a>  double            *lambda=NULL,*lambdahist=NULL;
+<a name="line176">176: </a><font color="#A020F0">#endif</font>
+
+<a name="line178">178: </a>  <a href="../../../../../docs/manualpages/ST/STGetShift.html#STGetShift">STGetShift</a>(eps-&gt;st,&amp;sigma);
+<a name="line179">179: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(blopex-&gt;bs,&amp;lambda);
+<a name="line180">180: </a>  <font color="#4169E1">if</font> (eps-&gt;numbermonitors&gt;0) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc4.html#PetscMalloc4">PetscMalloc4</a>(blopex-&gt;bs*(eps-&gt;max_it+1),&amp;lambdahist,eps-&gt;ncv,&amp;eigr,blopex-&gt;bs*(eps-&gt;max_it+1),&amp;residhist,eps-&gt;ncv,&amp;errest);
+
+<a name="line182">182: </a>  <font color="#B22222">/* Complete the initial basis with random vectors */</font>
+<a name="line183">183: </a>  <font color="#4169E1">for</font> (i=0;i&lt;eps-&gt;nini;i++) {  <font color="#B22222">/* in case the initial vectors were also set with <a href="https://petsc.org/release/docs/manualpages/Vec/VecSetRandom.html#VecSetRandom">VecSetRandom</a> */</font>
+<a name="line184">184: </a>    <a href="../../../../../docs/manualpages/BV/BVSetRandomColumn.html#BVSetRandomColumn">BVSetRandomColumn</a>(eps-&gt;V,eps-&gt;nini);
+<a name="line185">185: </a>  }
+<a name="line186">186: </a>  <font color="#4169E1">for</font> (i=eps-&gt;nini;i&lt;eps-&gt;ncv;i++) <a href="../../../../../docs/manualpages/BV/BVSetRandomColumn.html#BVSetRandomColumn">BVSetRandomColumn</a>(eps-&gt;V,i);
+
+<a name="line188">188: </a>  <font color="#4169E1">while</font> (eps-&gt;reason == <a href="../../../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPS_CONVERGED_ITERATING</a>) {
+
+<a name="line190">190: </a>    <font color="#B22222">/* Create multivector of constraints from leading columns of V */</font>
+<a name="line191">191: </a>    PetscObjectComposedDataSetInt((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps-&gt;V,slepc_blopex_useconstr,1);
+<a name="line192">192: </a>    <a href="../../../../../docs/manualpages/BV/BVSetActiveColumns.html#BVSetActiveColumns">BVSetActiveColumns</a>(eps-&gt;V,0,eps-&gt;nconv);
+<a name="line193">193: </a>    constraints = mv_MultiVectorCreateFromSampleVector(&amp;blopex-&gt;ii,eps-&gt;nds+eps-&gt;nconv,eps-&gt;V);
+
+<a name="line195">195: </a>    <font color="#B22222">/* Create multivector where eigenvectors of this run will be stored */</font>
+<a name="line196">196: </a>    PetscObjectComposedDataSetInt((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps-&gt;V,slepc_blopex_useconstr,0);
+<a name="line197">197: </a>    <a href="../../../../../docs/manualpages/BV/BVSetActiveColumns.html#BVSetActiveColumns">BVSetActiveColumns</a>(eps-&gt;V,eps-&gt;nconv,eps-&gt;nconv+blopex-&gt;bs);
+<a name="line198">198: </a>    eigenvectors = mv_MultiVectorCreateFromSampleVector(&amp;blopex-&gt;ii,blopex-&gt;bs,eps-&gt;V);
+
+<a name="line200">200: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line201">201: </a>    info = lobpcg_solve_complex(eigenvectors,blopex,OperatorAMultiVector,
+<a name="line202">202: </a>          eps-&gt;isgeneralized?blopex:NULL,eps-&gt;isgeneralized?OperatorBMultiVector:NULL,
+<a name="line203">203: </a>          blopex,Precond_FnMultiVector,constraints,
+<a name="line204">204: </a>          blopex-&gt;blap_fn,blopex-&gt;tol,eps-&gt;max_it,0,&amp;its,
+<a name="line205">205: </a>          lambda,lambdahist,blopex-&gt;bs,eps-&gt;errest+eps-&gt;nconv,residhist,blopex-&gt;bs);
+<a name="line206">206: </a><font color="#A020F0">#else</font>
+<a name="line207">207: </a>    info = lobpcg_solve_double(eigenvectors,blopex,OperatorAMultiVector,
+<a name="line208">208: </a>          eps-&gt;isgeneralized?blopex:NULL,eps-&gt;isgeneralized?OperatorBMultiVector:NULL,
+<a name="line209">209: </a>          blopex,Precond_FnMultiVector,constraints,
+<a name="line210">210: </a>          blopex-&gt;blap_fn,blopex-&gt;tol,eps-&gt;max_it,0,&amp;its,
+<a name="line211">211: </a>          lambda,lambdahist,blopex-&gt;bs,eps-&gt;errest+eps-&gt;nconv,residhist,blopex-&gt;bs);
+<a name="line212">212: </a><font color="#A020F0">#endif</font>
+<a name="line214">214: </a>    mv_MultiVectorDestroy(constraints);
+<a name="line215">215: </a>    mv_MultiVectorDestroy(eigenvectors);
+
+<a name="line217">217: </a>    <font color="#4169E1">for</font> (j=0;j&lt;blopex-&gt;bs;j++) {
+<a name="line218">218: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line219">219: </a>      eps-&gt;eigr[eps-&gt;nconv+j] = PetscCMPLX(lambda[j].real,lambda[j].imag);
+<a name="line220">220: </a><font color="#A020F0">#else</font>
+<a name="line221">221: </a>      eps-&gt;eigr[eps-&gt;nconv+j] = lambda[j];
+<a name="line222">222: </a><font color="#A020F0">#endif</font>
+<a name="line223">223: </a>    }
+
+<a name="line225">225: </a>    <font color="#4169E1">if</font> (eps-&gt;numbermonitors&gt;0) {
+<a name="line226">226: </a>      <font color="#4169E1">for</font> (i=0;i&lt;its;i++) {
+<a name="line227">227: </a>        nconv = 0;
+<a name="line228">228: </a>        <font color="#4169E1">for</font> (j=0;j&lt;blopex-&gt;bs;j++) {
+<a name="line229">229: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line230">230: </a>          eigr[eps-&gt;nconv+j] = PetscCMPLX(lambdahist[j+i*blopex-&gt;bs].real,lambdahist[j+i*blopex-&gt;bs].imag);
+<a name="line231">231: </a><font color="#A020F0">#else</font>
+<a name="line232">232: </a>          eigr[eps-&gt;nconv+j] = lambdahist[j+i*blopex-&gt;bs];
+<a name="line233">233: </a><font color="#A020F0">#endif</font>
+<a name="line234">234: </a>          errest[eps-&gt;nconv+j] = residhist[j+i*blopex-&gt;bs];
+<a name="line235">235: </a>          <font color="#4169E1">if</font> (residhist[j+i*blopex-&gt;bs]&lt;=eps-&gt;tol) nconv++;
+<a name="line236">236: </a>        }
+<a name="line237">237: </a>        EPSMonitor(eps,eps-&gt;its+i,eps-&gt;nconv+nconv,eigr,eps-&gt;eigi,errest,eps-&gt;nconv+blopex-&gt;bs);
+<a name="line238">238: </a>      }
+<a name="line239">239: </a>    }
+
+<a name="line241">241: </a>    eps-&gt;its += its;
+<a name="line242">242: </a>    <font color="#4169E1">if</font> (info==-1) {
+<a name="line243">243: </a>      eps-&gt;reason = <a href="../../../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPS_DIVERGED_ITS</a>;
+<a name="line244">244: </a>      <font color="#4169E1">break</font>;
+<a name="line245">245: </a>    } <font color="#4169E1">else</font> {
+<a name="line246">246: </a>      <font color="#4169E1">for</font> (i=0;i&lt;blopex-&gt;bs;i++) {
+<a name="line247">247: </a>        <font color="#4169E1">if</font> (sigma != 0.0) eps-&gt;eigr[eps-&gt;nconv+i] += sigma;
+<a name="line248">248: </a>      }
+<a name="line249">249: </a>      eps-&gt;nconv += blopex-&gt;bs;
+<a name="line250">250: </a>      <font color="#4169E1">if</font> (eps-&gt;nconv&gt;=eps-&gt;nev) eps-&gt;reason = <a href="../../../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPS_CONVERGED_TOL</a>;
+<a name="line251">251: </a>    }
+<a name="line252">252: </a>  }
+
+<a name="line254">254: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(lambda);
+<a name="line255">255: </a>  <font color="#4169E1">if</font> (eps-&gt;numbermonitors&gt;0) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree4.html#PetscFree4">PetscFree4</a>(lambdahist,eigr,residhist,errest);
+<a name="line256">256: </a>  <font color="#4169E1">return</font> 0;
+<a name="line257">257: </a>}
+
+<a name="line259">259: </a><strong><font color="#4169E1"><a name="EPSBLOPEXSetBlockSize_BLOPEX"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSBLOPEXSetBlockSize_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> bs)</font></strong>
+<a name="line260">260: </a>{
+<a name="line261">261: </a>  EPS_BLOPEX *ctx = (EPS_BLOPEX*)eps-&gt;data;
+
+<a name="line263">263: </a>  <font color="#4169E1">if</font> (bs==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) {
+<a name="line264">264: </a>    ctx-&gt;bs    = 0;
+<a name="line265">265: </a>    eps-&gt;state = EPS_STATE_INITIAL;
+<a name="line266">266: </a>  } <font color="#4169E1">else</font> {
+<a name="line268">268: </a>    ctx-&gt;bs = bs;
+<a name="line269">269: </a>  }
+<a name="line270">270: </a>  <font color="#4169E1">return</font> 0;
+<a name="line271">271: </a>}
+
+<a name="line273">273: </a><font color="#B22222">/*@</font>
+<a name="line274">274: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXSetBlockSize.html#EPSBLOPEXSetBlockSize">EPSBLOPEXSetBlockSize</a> - Sets the block size of the BLOPEX solver.</font>
+
+<a name="line276">276: </a><font color="#B22222">   Logically Collective on eps</font>
+
+<a name="line278">278: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line279">279: </a><font color="#B22222">+  eps - the eigenproblem solver context</font>
+<a name="line280">280: </a><font color="#B22222">-  bs  - the block size</font>
+
+<a name="line282">282: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line283">283: </a><font color="#B22222">.  -eps_blopex_blocksize - Sets the block size</font>
+
+<a name="line285">285: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line287">287: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXGetBlockSize.html#EPSBLOPEXGetBlockSize">EPSBLOPEXGetBlockSize</a>()</font>
+<a name="line288">288: </a><font color="#B22222">@*/</font>
+<a name="line289">289: </a><strong><font color="#4169E1"><a name="EPSBLOPEXSetBlockSize"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXSetBlockSize.html#EPSBLOPEXSetBlockSize">EPSBLOPEXSetBlockSize</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> bs)</font></strong>
+<a name="line290">290: </a>{
+<a name="line293">293: </a>  PetscTryMethod(eps,<font color="#666666">"EPSBLOPEXSetBlockSize_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>),(eps,bs));
+<a name="line294">294: </a>  <font color="#4169E1">return</font> 0;
+<a name="line295">295: </a>}
+
+<a name="line297">297: </a><strong><font color="#4169E1"><a name="EPSBLOPEXGetBlockSize_BLOPEX"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSBLOPEXGetBlockSize_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *bs)</font></strong>
+<a name="line298">298: </a>{
+<a name="line299">299: </a>  EPS_BLOPEX *ctx = (EPS_BLOPEX*)eps-&gt;data;
+
+<a name="line301">301: </a>  *bs = ctx-&gt;bs;
+<a name="line302">302: </a>  <font color="#4169E1">return</font> 0;
+<a name="line303">303: </a>}
+
+<a name="line305">305: </a><font color="#B22222">/*@</font>
+<a name="line306">306: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXGetBlockSize.html#EPSBLOPEXGetBlockSize">EPSBLOPEXGetBlockSize</a> - Gets the block size used in the BLOPEX solver.</font>
+
+<a name="line308">308: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line310">310: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line311">311: </a><font color="#B22222">.  eps - the eigenproblem solver context</font>
+
+<a name="line313">313: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line314">314: </a><font color="#B22222">.  bs - the block size</font>
+
+<a name="line316">316: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line318">318: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXSetBlockSize.html#EPSBLOPEXSetBlockSize">EPSBLOPEXSetBlockSize</a>()</font>
+<a name="line319">319: </a><font color="#B22222">@*/</font>
+<a name="line320">320: </a><strong><font color="#4169E1"><a name="EPSBLOPEXGetBlockSize"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXGetBlockSize.html#EPSBLOPEXGetBlockSize">EPSBLOPEXGetBlockSize</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *bs)</font></strong>
+<a name="line321">321: </a>{
+<a name="line324">324: </a>  PetscUseMethod(eps,<font color="#666666">"EPSBLOPEXGetBlockSize_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*),(eps,bs));
+<a name="line325">325: </a>  <font color="#4169E1">return</font> 0;
+<a name="line326">326: </a>}
+
+<a name="line328">328: </a><strong><font color="#4169E1"><a name="EPSReset_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSReset_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line329">329: </a>{
+<a name="line330">330: </a>  EPS_BLOPEX     *blopex = (EPS_BLOPEX*)eps-&gt;data;
+
+<a name="line332">332: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;blopex-&gt;w);
+<a name="line333">333: </a>  <font color="#4169E1">return</font> 0;
+<a name="line334">334: </a>}
+
+<a name="line336">336: </a><strong><font color="#4169E1"><a name="EPSDestroy_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSDestroy_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line337">337: </a>{
+<a name="line338">338: </a>  LOBPCG_DestroyRandomContext();
+<a name="line339">339: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(eps-&gt;data);
+<a name="line340">340: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSBLOPEXSetBlockSize_C"</font>,NULL);
+<a name="line341">341: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSBLOPEXGetBlockSize_C"</font>,NULL);
+<a name="line342">342: </a>  <font color="#4169E1">return</font> 0;
+<a name="line343">343: </a>}
+
+<a name="line345">345: </a><strong><font color="#4169E1"><a name="EPSView_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSView_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer)</font></strong>
+<a name="line346">346: </a>{
+<a name="line347">347: </a>  EPS_BLOPEX     *ctx = (EPS_BLOPEX*)eps-&gt;data;
+<a name="line348">348: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isascii;
+
+<a name="line350">350: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERASCII.html#PETSCVIEWERASCII">PETSCVIEWERASCII</a>,&amp;isascii);
+<a name="line351">351: </a>  <font color="#4169E1">if</font> (isascii) <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  block size %"</font> PetscInt_FMT <font color="#666666">"\n"</font>,ctx-&gt;bs);
+<a name="line352">352: </a>  <font color="#4169E1">return</font> 0;
+<a name="line353">353: </a>}
+
+<a name="line355">355: </a><strong><font color="#4169E1"><a name="EPSSetFromOptions_BLOPEX"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSetFromOptions_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,PetscOptionItems *PetscOptionsObject)</font></strong>
+<a name="line356">356: </a>{
+<a name="line357">357: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg;
+<a name="line358">358: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       bs;
+
+<a name="line360">360: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHeadBegin.html#PetscOptionsHeadBegin">PetscOptionsHeadBegin</a>(PetscOptionsObject,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> BLOPEX Options"</font>);
+
+<a name="line362">362: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_blopex_blocksize"</font>,<font color="#666666">"Block size"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSBLOPEXSetBlockSize.html#EPSBLOPEXSetBlockSize">EPSBLOPEXSetBlockSize</a>"</font>,20,&amp;bs,&amp;flg);
+<a name="line363">363: </a>    <font color="#4169E1">if</font> (flg) <a href="../../../../../docs/manualpages/EPS/EPSBLOPEXSetBlockSize.html#EPSBLOPEXSetBlockSize">EPSBLOPEXSetBlockSize</a>(eps,bs);
+
+<a name="line365">365: </a>  PetscOptionsHeadEnd();
+
+<a name="line367">367: </a>  LOBPCG_SetFromOptionsRandomContext();
+<a name="line368">368: </a>  <font color="#4169E1">return</font> 0;
+<a name="line369">369: </a>}
+
+<a name="line371">371: </a><strong><font color="#4169E1"><a name="EPSCreate_BLOPEX"></a>SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSCreate_BLOPEX(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line372">372: </a>{
+<a name="line373">373: </a>  EPS_BLOPEX     *ctx;
+
+<a name="line375">375: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctx);
+<a name="line376">376: </a>  eps-&gt;data = (void*)ctx;
+
+<a name="line378">378: </a>  eps-&gt;categ = EPS_CATEGORY_PRECOND;
+
+<a name="line380">380: </a>  eps-&gt;ops-&gt;solve          = EPSSolve_BLOPEX;
+<a name="line381">381: </a>  eps-&gt;ops-&gt;setup          = EPSSetUp_BLOPEX;
+<a name="line382">382: </a>  eps-&gt;ops-&gt;setupsort      = EPSSetUpSort_Basic;
+<a name="line383">383: </a>  eps-&gt;ops-&gt;setfromoptions = EPSSetFromOptions_BLOPEX;
+<a name="line384">384: </a>  eps-&gt;ops-&gt;destroy        = EPSDestroy_BLOPEX;
+<a name="line385">385: </a>  eps-&gt;ops-&gt;reset          = EPSReset_BLOPEX;
+<a name="line386">386: </a>  eps-&gt;ops-&gt;view           = EPSView_BLOPEX;
+<a name="line387">387: </a>  eps-&gt;ops-&gt;backtransform  = EPSBackTransform_Default;
+<a name="line388">388: </a>  eps-&gt;ops-&gt;setdefaultst   = EPSSetDefaultST_GMRES;
+
+<a name="line390">390: </a>  LOBPCG_InitRandomContext(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),NULL);
+<a name="line391">391: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSBLOPEXSetBlockSize_C"</font>,EPSBLOPEXSetBlockSize_BLOPEX);
+<a name="line392">392: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSBLOPEXGetBlockSize_C"</font>,EPSBLOPEXGetBlockSize_BLOPEX);
+<a name="line393">393: </a>  <font color="#4169E1">if</font> (slepc_blopex_useconstr &lt; 0) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposedDataRegister.html#PetscObjectComposedDataRegister">PetscObjectComposedDataRegister</a>(&amp;slepc_blopex_useconstr);
+<a name="line394">394: </a>  <font color="#4169E1">return</font> 0;
+<a name="line395">395: </a>}
+</pre>
+</body>
+
+</html>

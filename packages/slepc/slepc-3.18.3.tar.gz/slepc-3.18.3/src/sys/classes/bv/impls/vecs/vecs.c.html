@@ -1,0 +1,561 @@
+<center><a href="vecs.c">Actual source code: vecs.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/sys/classes/bv/impls/vecs/vecs.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:03+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/sys/classes/bv/impls/vecs/vecs.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   <a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> implemented as an array of independent <a href="https://petsc.org/release/docs/manualpages/Vec/Vecs.html#Vecs">Vecs</a></font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../../../../include/slepc/private/bvimpl.h.html">&lt;slepc/private/bvimpl.h&gt;</A>
+
+<a name="line16"> 16: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line17"> 17: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>      *V;
+<a name="line18"> 18: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> vmip;   <font color="#B22222">/* Version of <a href="../../../../../../docs/manualpages/BV/BVMultInPlace.html#BVMultInPlace">BVMultInPlace</a>:</font>
+<a name="line19"> 19: </a><font color="#B22222">       0: memory-efficient version, uses <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a> (default in CPU)</font>
+<a name="line20"> 20: </a><font color="#B22222">       1: version that allocates (e-s) work vectors in every call (default in GPU) */</font>
+<a name="line21"> 21: </a>} BV_VECS;
+
+<a name="line23"> 23: </a><strong><font color="#4169E1"><a name="BVMult_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVMult_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> Y,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> alpha,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> beta,<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> X,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> Q)</font></strong>
+<a name="line24"> 24: </a>{
+<a name="line25"> 25: </a>  BV_VECS           *y = (BV_VECS*)Y-&gt;data,*x = (BV_VECS*)X-&gt;data;
+<a name="line26"> 26: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *s=NULL;
+<a name="line27"> 27: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *q;
+<a name="line28"> 28: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,j,ldq;
+<a name="line29"> 29: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         trivial=(alpha==1.0)?<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>:<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line31"> 31: </a>  <font color="#4169E1">if</font> (Q) {
+<a name="line32"> 32: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetLDA.html#MatDenseGetLDA">MatDenseGetLDA</a>(Q,&amp;ldq);
+<a name="line33"> 33: </a>    <font color="#4169E1">if</font> (!trivial) {
+<a name="line34"> 34: </a>      BVAllocateWork_Private(Y,X-&gt;k-X-&gt;l);
+<a name="line35"> 35: </a>      s = Y-&gt;work;
+<a name="line36"> 36: </a>    }
+<a name="line37"> 37: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(Q,&amp;q);
+<a name="line38"> 38: </a>    <font color="#4169E1">for</font> (j=Y-&gt;l;j&lt;Y-&gt;k;j++) {
+<a name="line39"> 39: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(y-&gt;V[Y-&gt;nc+j],beta);
+<a name="line40"> 40: </a>      <font color="#4169E1">if</font> (!trivial) {
+<a name="line41"> 41: </a>        <font color="#4169E1">for</font> (i=X-&gt;l;i&lt;X-&gt;k;i++) s[i-X-&gt;l] = alpha*q[i+j*ldq];
+<a name="line42"> 42: </a>      } <font color="#4169E1">else</font> s = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)(q+j*ldq+X-&gt;l);
+<a name="line43"> 43: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecMAXPY.html#VecMAXPY">VecMAXPY</a>(y-&gt;V[Y-&gt;nc+j],X-&gt;k-X-&gt;l,s,x-&gt;V+X-&gt;nc+X-&gt;l);
+<a name="line44"> 44: </a>    }
+<a name="line45"> 45: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(Q,&amp;q);
+<a name="line46"> 46: </a>  } <font color="#4169E1">else</font> {
+<a name="line47"> 47: </a>    <font color="#4169E1">for</font> (j=0;j&lt;Y-&gt;k-Y-&gt;l;j++) {
+<a name="line48"> 48: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(y-&gt;V[Y-&gt;nc+Y-&gt;l+j],beta);
+<a name="line49"> 49: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(y-&gt;V[Y-&gt;nc+Y-&gt;l+j],alpha,x-&gt;V[X-&gt;nc+X-&gt;l+j]);
+<a name="line50"> 50: </a>    }
+<a name="line51"> 51: </a>  }
+<a name="line52"> 52: </a>  <font color="#4169E1">return</font> 0;
+<a name="line53"> 53: </a>}
+
+<a name="line55"> 55: </a><strong><font color="#4169E1"><a name="BVMultVec_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVMultVec_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> X,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> alpha,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> beta,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *q)</font></strong>
+<a name="line56"> 56: </a>{
+<a name="line57"> 57: </a>  BV_VECS        *x = (BV_VECS*)X-&gt;data;
+<a name="line58"> 58: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *s=NULL,*qq=q;
+<a name="line59"> 59: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+<a name="line60"> 60: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      trivial=(alpha==1.0)?<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>:<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line62"> 62: </a>  <font color="#4169E1">if</font> (!trivial) {
+<a name="line63"> 63: </a>    BVAllocateWork_Private(X,X-&gt;k-X-&gt;l);
+<a name="line64"> 64: </a>    s = X-&gt;work;
+<a name="line65"> 65: </a>  }
+<a name="line66"> 66: </a>  <font color="#4169E1">if</font> (!q) <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(X-&gt;buffer,&amp;qq);
+<a name="line67"> 67: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(y,beta);
+<a name="line68"> 68: </a>  <font color="#4169E1">if</font> (!trivial) {
+<a name="line69"> 69: </a>    <font color="#4169E1">for</font> (i=0;i&lt;X-&gt;k-X-&gt;l;i++) s[i] = alpha*qq[i];
+<a name="line70"> 70: </a>  } <font color="#4169E1">else</font> s = qq;
+<a name="line71"> 71: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecMAXPY.html#VecMAXPY">VecMAXPY</a>(y,X-&gt;k-X-&gt;l,s,x-&gt;V+X-&gt;nc+X-&gt;l);
+<a name="line72"> 72: </a>  <font color="#4169E1">if</font> (!q) <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(X-&gt;buffer,&amp;qq);
+<a name="line73"> 73: </a>  <font color="#4169E1">return</font> 0;
+<a name="line74"> 74: </a>}
+
+<a name="line76"> 76: </a><font color="#B22222">/*</font>
+<a name="line77"> 77: </a><font color="#B22222">   BVMultInPlace_Vecs_ME - V(:,s:e-1) = V*Q(:,s:e-1) for regular vectors.</font>
+
+<a name="line79"> 79: </a><font color="#B22222">   Memory-efficient version, uses <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a> (default in CPU)</font>
+
+<a name="line81"> 81: </a><font color="#B22222">   Writing V = [ V1 V2 V3 ] and Q(:,s:e-1) = [ Q1 Q2 Q3 ]', where V2</font>
+<a name="line82"> 82: </a><font color="#B22222">   corresponds to the columns s:e-1, the computation is done as</font>
+<a name="line83"> 83: </a><font color="#B22222">                  V2 := V2*Q2 + V1*Q1 + V3*Q3</font>
+<a name="line84"> 84: </a><font color="#B22222">*/</font>
+<a name="line85"> 85: </a><strong><font color="#4169E1"><a name="BVMultInPlace_Vecs_ME"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVMultInPlace_Vecs_ME(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> Q,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> s,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> e)</font></strong>
+<a name="line86"> 86: </a>{
+<a name="line87"> 87: </a>  BV_VECS           *ctx = (BV_VECS*)V-&gt;data;
+<a name="line88"> 88: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *q;
+<a name="line89"> 89: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,ldq;
+
+<a name="line91"> 91: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetLDA.html#MatDenseGetLDA">MatDenseGetLDA</a>(Q,&amp;ldq);
+<a name="line92"> 92: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(Q,&amp;q);
+<a name="line93"> 93: </a>  <font color="#B22222">/* V2 := V2*Q2 */</font>
+<a name="line94"> 94: </a>  BVMultInPlace_Vecs_Private(V,V-&gt;n,e-s,ldq,ctx-&gt;V+V-&gt;nc+s,q+s*ldq+s,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line95"> 95: </a>  <font color="#B22222">/* V2 += V1*Q1 + V3*Q3 */</font>
+<a name="line96"> 96: </a>  <font color="#4169E1">for</font> (i=s;i&lt;e;i++) {
+<a name="line97"> 97: </a>    <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(s&gt;V-&gt;l)) <a href="https://petsc.org/release/docs/manualpages/Vec/VecMAXPY.html#VecMAXPY">VecMAXPY</a>(ctx-&gt;V[V-&gt;nc+i],s-V-&gt;l,q+i*ldq+V-&gt;l,ctx-&gt;V+V-&gt;nc+V-&gt;l);
+<a name="line98"> 98: </a>    <font color="#4169E1">if</font> (V-&gt;k&gt;e) <a href="https://petsc.org/release/docs/manualpages/Vec/VecMAXPY.html#VecMAXPY">VecMAXPY</a>(ctx-&gt;V[V-&gt;nc+i],V-&gt;k-e,q+i*ldq+e,ctx-&gt;V+V-&gt;nc+e);
+<a name="line99"> 99: </a>  }
+<a name="line100">100: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(Q,&amp;q);
+<a name="line101">101: </a>  <font color="#4169E1">return</font> 0;
+<a name="line102">102: </a>}
+
+<a name="line104">104: </a><font color="#B22222">/*</font>
+<a name="line105">105: </a><font color="#B22222">   BVMultInPlace_Vecs_Alloc - V(:,s:e-1) = V*Q(:,s:e-1) for regular vectors.</font>
+
+<a name="line107">107: </a><font color="#B22222">   Version that allocates (e-s) work vectors in every call (default in GPU)</font>
+<a name="line108">108: </a><font color="#B22222">*/</font>
+<a name="line109">109: </a><strong><font color="#4169E1"><a name="BVMultInPlace_Vecs_Alloc"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVMultInPlace_Vecs_Alloc(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> Q,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> s,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> e)</font></strong>
+<a name="line110">110: </a>{
+<a name="line111">111: </a>  BV_VECS           *ctx = (BV_VECS*)V-&gt;data;
+<a name="line112">112: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *q;
+<a name="line113">113: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,ldq;
+<a name="line114">114: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>               *W;
+
+<a name="line116">116: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetLDA.html#MatDenseGetLDA">MatDenseGetLDA</a>(Q,&amp;ldq);
+<a name="line117">117: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(Q,&amp;q);
+<a name="line118">118: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicateVecs.html#VecDuplicateVecs">VecDuplicateVecs</a>(V-&gt;t,e-s,&amp;W);
+<a name="line119">119: </a>  <font color="#4169E1">for</font> (i=s;i&lt;e;i++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecMAXPY.html#VecMAXPY">VecMAXPY</a>(W[i-s],V-&gt;k-V-&gt;l,q+i*ldq+V-&gt;l,ctx-&gt;V+V-&gt;nc+V-&gt;l);
+<a name="line120">120: </a>  <font color="#4169E1">for</font> (i=s;i&lt;e;i++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecCopy.html#VecCopy">VecCopy</a>(W[i-s],ctx-&gt;V[V-&gt;nc+i]);
+<a name="line121">121: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroyVecs.html#VecDestroyVecs">VecDestroyVecs</a>(e-s,&amp;W);
+<a name="line122">122: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(Q,&amp;q);
+<a name="line123">123: </a>  <font color="#4169E1">return</font> 0;
+<a name="line124">124: </a>}
+
+<a name="line126">126: </a><font color="#B22222">/*</font>
+<a name="line127">127: </a><font color="#B22222">   BVMultInPlaceHermitianTranspose_Vecs - V(:,s:e-1) = V*Q'(:,s:e-1) for regular vectors.</font>
+<a name="line128">128: </a><font color="#B22222">*/</font>
+<a name="line129">129: </a><strong><font color="#4169E1"><a name="BVMultInPlaceHermitianTranspose_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVMultInPlaceHermitianTranspose_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> Q,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> s,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> e)</font></strong>
+<a name="line130">130: </a>{
+<a name="line131">131: </a>  BV_VECS           *ctx = (BV_VECS*)V-&gt;data;
+<a name="line132">132: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *q;
+<a name="line133">133: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,j,ldq,n;
+
+<a name="line135">135: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(Q,NULL,&amp;n);
+<a name="line136">136: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetLDA.html#MatDenseGetLDA">MatDenseGetLDA</a>(Q,&amp;ldq);
+<a name="line137">137: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(Q,&amp;q);
+<a name="line138">138: </a>  <font color="#B22222">/* V2 := V2*Q2' */</font>
+<a name="line139">139: </a>  BVMultInPlace_Vecs_Private(V,V-&gt;n,e-s,ldq,ctx-&gt;V+V-&gt;nc+s,q+s*ldq+s,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line140">140: </a>  <font color="#B22222">/* V2 += V1*Q1' + V3*Q3' */</font>
+<a name="line141">141: </a>  <font color="#4169E1">for</font> (i=s;i&lt;e;i++) {
+<a name="line142">142: </a>    <font color="#4169E1">for</font> (j=V-&gt;l;j&lt;s;j++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(ctx-&gt;V[V-&gt;nc+i],q[i+j*ldq],ctx-&gt;V[V-&gt;nc+j]);
+<a name="line143">143: </a>    <font color="#4169E1">for</font> (j=e;j&lt;n;j++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(ctx-&gt;V[V-&gt;nc+i],q[i+j*ldq],ctx-&gt;V[V-&gt;nc+j]);
+<a name="line144">144: </a>  }
+<a name="line145">145: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(Q,&amp;q);
+<a name="line146">146: </a>  <font color="#4169E1">return</font> 0;
+<a name="line147">147: </a>}
+
+<a name="line149">149: </a><strong><font color="#4169E1"><a name="BVDot_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVDot_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> X,<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> Y,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> M)</font></strong>
+<a name="line150">150: </a>{
+<a name="line151">151: </a>  BV_VECS        *x = (BV_VECS*)X-&gt;data,*y = (BV_VECS*)Y-&gt;data;
+<a name="line152">152: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *m;
+<a name="line153">153: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       j,ldm;
+
+<a name="line155">155: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetLDA.html#MatDenseGetLDA">MatDenseGetLDA</a>(M,&amp;ldm);
+<a name="line156">156: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(M,&amp;m);
+<a name="line157">157: </a>  <font color="#4169E1">for</font> (j=X-&gt;l;j&lt;X-&gt;k;j++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecMDot.html#VecMDot">VecMDot</a>(x-&gt;V[X-&gt;nc+j],Y-&gt;k-Y-&gt;l,y-&gt;V+Y-&gt;nc+Y-&gt;l,m+j*ldm+Y-&gt;l);
+<a name="line158">158: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(M,&amp;m);
+<a name="line159">159: </a>  <font color="#4169E1">return</font> 0;
+<a name="line160">160: </a>}
+
+<a name="line162">162: </a><strong><font color="#4169E1"><a name="BVDotVec_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVDotVec_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> X,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *q)</font></strong>
+<a name="line163">163: </a>{
+<a name="line164">164: </a>  BV_VECS        *x = (BV_VECS*)X-&gt;data;
+<a name="line165">165: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            z = y;
+<a name="line166">166: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *qq=q;
+
+<a name="line168">168: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(X-&gt;matrix)) {
+<a name="line169">169: </a>    BV_IPMatMult(X,y);
+<a name="line170">170: </a>    z = X-&gt;Bx;
+<a name="line171">171: </a>  }
+<a name="line172">172: </a>  <font color="#4169E1">if</font> (!q) <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(X-&gt;buffer,&amp;qq);
+<a name="line173">173: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecMDot.html#VecMDot">VecMDot</a>(z,X-&gt;k-X-&gt;l,x-&gt;V+X-&gt;nc+X-&gt;l,qq);
+<a name="line174">174: </a>  <font color="#4169E1">if</font> (!q) <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(X-&gt;buffer,&amp;qq);
+<a name="line175">175: </a>  <font color="#4169E1">return</font> 0;
+<a name="line176">176: </a>}
+
+<a name="line178">178: </a><strong><font color="#4169E1"><a name="BVDotVec_Begin_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVDotVec_Begin_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> X,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *m)</font></strong>
+<a name="line179">179: </a>{
+<a name="line180">180: </a>  BV_VECS        *x = (BV_VECS*)X-&gt;data;
+<a name="line181">181: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            z = y;
+
+<a name="line183">183: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(X-&gt;matrix)) {
+<a name="line184">184: </a>    BV_IPMatMult(X,y);
+<a name="line185">185: </a>    z = X-&gt;Bx;
+<a name="line186">186: </a>  }
+<a name="line187">187: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecMDotBegin.html#VecMDotBegin">VecMDotBegin</a>(z,X-&gt;k-X-&gt;l,x-&gt;V+X-&gt;nc+X-&gt;l,m);
+<a name="line188">188: </a>  <font color="#4169E1">return</font> 0;
+<a name="line189">189: </a>}
+
+<a name="line191">191: </a><strong><font color="#4169E1"><a name="BVDotVec_End_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVDotVec_End_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> X,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *m)</font></strong>
+<a name="line192">192: </a>{
+<a name="line193">193: </a>  BV_VECS        *x = (BV_VECS*)X-&gt;data;
+
+<a name="line195">195: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecMDotEnd.html#VecMDotEnd">VecMDotEnd</a>(y,X-&gt;k-X-&gt;l,x-&gt;V+X-&gt;nc+X-&gt;l,m);
+<a name="line196">196: </a>  <font color="#4169E1">return</font> 0;
+<a name="line197">197: </a>}
+
+<a name="line199">199: </a><strong><font color="#4169E1"><a name="BVScale_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVScale_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> alpha)</font></strong>
+<a name="line200">200: </a>{
+<a name="line201">201: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+<a name="line202">202: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line204">204: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(j&lt;0)) {
+<a name="line205">205: </a>    <font color="#4169E1">for</font> (i=bv-&gt;l;i&lt;bv-&gt;k;i++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(ctx-&gt;V[bv-&gt;nc+i],alpha);
+<a name="line206">206: </a>  } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(ctx-&gt;V[bv-&gt;nc+j],alpha);
+<a name="line207">207: </a>  <font color="#4169E1">return</font> 0;
+<a name="line208">208: </a>}
+
+<a name="line210">210: </a><strong><font color="#4169E1"><a name="BVNorm_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVNorm_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Vec/NormType.html#NormType">NormType</a> type,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *val)</font></strong>
+<a name="line211">211: </a>{
+<a name="line212">212: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+<a name="line213">213: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      nrm;
+<a name="line214">214: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line216">216: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(j&lt;0)) {
+<a name="line218">218: </a>    *val = 0.0;
+<a name="line219">219: </a>    <font color="#4169E1">for</font> (i=bv-&gt;l;i&lt;bv-&gt;k;i++) {
+<a name="line220">220: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecNorm.html#VecNorm">VecNorm</a>(ctx-&gt;V[bv-&gt;nc+i],<a href="https://petsc.org/release/docs/manualpages/Vec/NORM_2.html#NORM_2">NORM_2</a>,&amp;nrm);
+<a name="line221">221: </a>      *val += nrm*nrm;
+<a name="line222">222: </a>    }
+<a name="line223">223: </a>    *val = PetscSqrtReal(*val);
+<a name="line224">224: </a>  } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Vec/VecNorm.html#VecNorm">VecNorm</a>(ctx-&gt;V[bv-&gt;nc+j],type,val);
+<a name="line225">225: </a>  <font color="#4169E1">return</font> 0;
+<a name="line226">226: </a>}
+
+<a name="line228">228: </a><strong><font color="#4169E1"><a name="BVNorm_Begin_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVNorm_Begin_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Vec/NormType.html#NormType">NormType</a> type,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *val)</font></strong>
+<a name="line229">229: </a>{
+<a name="line230">230: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line233">233: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecNormBegin.html#VecNormBegin">VecNormBegin</a>(ctx-&gt;V[bv-&gt;nc+j],type,val);
+<a name="line234">234: </a>  <font color="#4169E1">return</font> 0;
+<a name="line235">235: </a>}
+
+<a name="line237">237: </a><strong><font color="#4169E1"><a name="BVNorm_End_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVNorm_End_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Vec/NormType.html#NormType">NormType</a> type,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *val)</font></strong>
+<a name="line238">238: </a>{
+<a name="line239">239: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line242">242: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecNormEnd.html#VecNormEnd">VecNormEnd</a>(ctx-&gt;V[bv-&gt;nc+j],type,val);
+<a name="line243">243: </a>  <font color="#4169E1">return</font> 0;
+<a name="line244">244: </a>}
+
+<a name="line246">246: </a><strong><font color="#4169E1"><a name="BVNormalize_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVNormalize_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *eigi)</font></strong>
+<a name="line247">247: </a>{
+<a name="line248">248: </a>  BV_VECS  *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line249">249: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> i;
+
+<a name="line251">251: </a>  <font color="#4169E1">for</font> (i=bv-&gt;l;i&lt;bv-&gt;k;i++) {
+<a name="line252">252: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line253">253: </a>    <font color="#4169E1">if</font> (eigi &amp;&amp; eigi[i] != 0.0) {
+<a name="line254">254: </a>      <a href="../../../../../../docs/manualpages/sys/VecNormalizeComplex.html#VecNormalizeComplex">VecNormalizeComplex</a>(ctx-&gt;V[bv-&gt;nc+i],ctx-&gt;V[bv-&gt;nc+i+1],<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,NULL);
+<a name="line255">255: </a>      i++;
+<a name="line256">256: </a>    } <font color="#4169E1">else</font>
+<a name="line257">257: </a><font color="#A020F0">#endif</font>
+<a name="line258">258: </a>    {
+<a name="line259">259: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecNormalize.html#VecNormalize">VecNormalize</a>(ctx-&gt;V[bv-&gt;nc+i],NULL);
+<a name="line260">260: </a>    }
+<a name="line261">261: </a>  }
+<a name="line262">262: </a>  <font color="#4169E1">return</font> 0;
+<a name="line263">263: </a>}
+
+<a name="line265">265: </a><strong><font color="#4169E1"><a name="BVMatMult_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVMatMult_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> W)</font></strong>
+<a name="line266">266: </a>{
+<a name="line267">267: </a>  BV_VECS        *v = (BV_VECS*)V-&gt;data,*w = (BV_VECS*)W-&gt;data;
+<a name="line268">268: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       j;
+<a name="line269">269: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            Vmat,Wmat;
+
+<a name="line271">271: </a>  <font color="#4169E1">if</font> (V-&gt;vmm) {
+<a name="line272">272: </a>    <a href="../../../../../../docs/manualpages/BV/BVGetMat.html#BVGetMat">BVGetMat</a>(V,&amp;Vmat);
+<a name="line273">273: </a>    <a href="../../../../../../docs/manualpages/BV/BVGetMat.html#BVGetMat">BVGetMat</a>(W,&amp;Wmat);
+<a name="line274">274: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatProductCreateWithMat.html#MatProductCreateWithMat">MatProductCreateWithMat</a>(A,Vmat,NULL,Wmat);
+<a name="line275">275: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatProductSetType.html#MatProductSetType">MatProductSetType</a>(Wmat,<a href="https://petsc.org/release/docs/manualpages/Mat/MatProductType.html#MatProductType">MATPRODUCT_AB</a>);
+<a name="line276">276: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatProductSetFromOptions.html#MatProductSetFromOptions">MatProductSetFromOptions</a>(Wmat);
+<a name="line277">277: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatProductSymbolic.html#MatProductSymbolic">MatProductSymbolic</a>(Wmat);
+<a name="line278">278: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatProductNumeric.html#MatProductNumeric">MatProductNumeric</a>(Wmat);
+<a name="line279">279: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatProductClear.html#MatProductClear">MatProductClear</a>(Wmat);
+<a name="line280">280: </a>    <a href="../../../../../../docs/manualpages/BV/BVRestoreMat.html#BVRestoreMat">BVRestoreMat</a>(V,&amp;Vmat);
+<a name="line281">281: </a>    <a href="../../../../../../docs/manualpages/BV/BVRestoreMat.html#BVRestoreMat">BVRestoreMat</a>(W,&amp;Wmat);
+<a name="line282">282: </a>  } <font color="#4169E1">else</font> {
+<a name="line283">283: </a>    <font color="#4169E1">for</font> (j=0;j&lt;V-&gt;k-V-&gt;l;j++) <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(A,v-&gt;V[V-&gt;nc+V-&gt;l+j],w-&gt;V[W-&gt;nc+W-&gt;l+j]);
+<a name="line284">284: </a>  }
+<a name="line285">285: </a>  <font color="#4169E1">return</font> 0;
+<a name="line286">286: </a>}
+
+<a name="line288">288: </a><strong><font color="#4169E1"><a name="BVCopy_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVCopy_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> W)</font></strong>
+<a name="line289">289: </a>{
+<a name="line290">290: </a>  BV_VECS        *v = (BV_VECS*)V-&gt;data,*w = (BV_VECS*)W-&gt;data;
+<a name="line291">291: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       j;
+
+<a name="line293">293: </a>  <font color="#4169E1">for</font> (j=0;j&lt;V-&gt;k-V-&gt;l;j++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecCopy.html#VecCopy">VecCopy</a>(v-&gt;V[V-&gt;nc+V-&gt;l+j],w-&gt;V[W-&gt;nc+W-&gt;l+j]);
+<a name="line294">294: </a>  <font color="#4169E1">return</font> 0;
+<a name="line295">295: </a>}
+
+<a name="line297">297: </a><strong><font color="#4169E1"><a name="BVCopyColumn_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVCopyColumn_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> i)</font></strong>
+<a name="line298">298: </a>{
+<a name="line299">299: </a>  BV_VECS        *v = (BV_VECS*)V-&gt;data;
+
+<a name="line301">301: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecCopy.html#VecCopy">VecCopy</a>(v-&gt;V[V-&gt;nc+j],v-&gt;V[V-&gt;nc+i]);
+<a name="line302">302: </a>  <font color="#4169E1">return</font> 0;
+<a name="line303">303: </a>}
+
+<a name="line305">305: </a><strong><font color="#4169E1"><a name="BVResize_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVResize_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> m,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> copy)</font></strong>
+<a name="line306">306: </a>{
+<a name="line307">307: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line308">308: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            *newV;
+<a name="line309">309: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       j;
+<a name="line310">310: </a>  char           str[50];
+
+<a name="line312">312: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicateVecs.html#VecDuplicateVecs">VecDuplicateVecs</a>(bv-&gt;t,m,&amp;newV);
+<a name="line313">313: </a>  <font color="#4169E1">if</font> (((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv)-&gt;name) {
+<a name="line314">314: </a>    <font color="#4169E1">for</font> (j=0;j&lt;m;j++) {
+<a name="line315">315: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSNPrintf.html#PetscSNPrintf">PetscSNPrintf</a>(str,<font color="#4169E1">sizeof</font>(str),<font color="#666666">"%s_%"</font> PetscInt_FMT,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv)-&gt;name,j);
+<a name="line316">316: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetName.html#PetscObjectSetName">PetscObjectSetName</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)newV[j],str);
+<a name="line317">317: </a>    }
+<a name="line318">318: </a>  }
+<a name="line319">319: </a>  <font color="#4169E1">if</font> (copy) {
+<a name="line320">320: </a>    <font color="#4169E1">for</font> (j=0;j&lt;<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(m,bv-&gt;m);j++) <a href="https://petsc.org/release/docs/manualpages/Vec/VecCopy.html#VecCopy">VecCopy</a>(ctx-&gt;V[j],newV[j]);
+<a name="line321">321: </a>  }
+<a name="line322">322: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroyVecs.html#VecDestroyVecs">VecDestroyVecs</a>(bv-&gt;m,&amp;ctx-&gt;V);
+<a name="line323">323: </a>  ctx-&gt;V = newV;
+<a name="line324">324: </a>  <font color="#4169E1">return</font> 0;
+<a name="line325">325: </a>}
+
+<a name="line327">327: </a><strong><font color="#4169E1"><a name="BVGetColumn_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVGetColumn_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> *v)</font></strong>
+<a name="line328">328: </a>{
+<a name="line329">329: </a>  BV_VECS  *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line330">330: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> l;
+
+<a name="line332">332: </a>  l = BVAvailableVec;
+<a name="line333">333: </a>  bv-&gt;cv[l] = ctx-&gt;V[bv-&gt;nc+j];
+<a name="line334">334: </a>  <font color="#4169E1">return</font> 0;
+<a name="line335">335: </a>}
+
+<a name="line337">337: </a><strong><font color="#4169E1"><a name="BVRestoreColumn_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVRestoreColumn_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> j,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> *v)</font></strong>
+<a name="line338">338: </a>{
+<a name="line339">339: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> l;
+
+<a name="line341">341: </a>  l = (j==bv-&gt;ci[0])? 0: 1;
+<a name="line342">342: </a>  bv-&gt;cv[l] = NULL;
+<a name="line343">343: </a>  <font color="#4169E1">return</font> 0;
+<a name="line344">344: </a>}
+
+<a name="line346">346: </a><strong><font color="#4169E1"><a name="BVGetArray_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVGetArray_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> **a)</font></strong>
+<a name="line347">347: </a>{
+<a name="line348">348: </a>  BV_VECS           *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line349">349: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          j;
+<a name="line350">350: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *p;
+
+<a name="line352">352: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>((bv-&gt;nc+bv-&gt;m)*bv-&gt;n,a);
+<a name="line353">353: </a>  <font color="#4169E1">for</font> (j=0;j&lt;bv-&gt;nc+bv-&gt;m;j++) {
+<a name="line354">354: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(ctx-&gt;V[j],&amp;p);
+<a name="line355">355: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>(*a+j*bv-&gt;n,p,bv-&gt;n);
+<a name="line356">356: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(ctx-&gt;V[j],&amp;p);
+<a name="line357">357: </a>  }
+<a name="line358">358: </a>  <font color="#4169E1">return</font> 0;
+<a name="line359">359: </a>}
+
+<a name="line361">361: </a><strong><font color="#4169E1"><a name="BVRestoreArray_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVRestoreArray_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> **a)</font></strong>
+<a name="line362">362: </a>{
+<a name="line363">363: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line364">364: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       j;
+<a name="line365">365: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *p;
+
+<a name="line367">367: </a>  <font color="#4169E1">for</font> (j=0;j&lt;bv-&gt;nc+bv-&gt;m;j++) {
+<a name="line368">368: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(ctx-&gt;V[j],&amp;p);
+<a name="line369">369: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>(p,*a+j*bv-&gt;n,bv-&gt;n);
+<a name="line370">370: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(ctx-&gt;V[j],&amp;p);
+<a name="line371">371: </a>  }
+<a name="line372">372: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(*a);
+<a name="line373">373: </a>  <font color="#4169E1">return</font> 0;
+<a name="line374">374: </a>}
+
+<a name="line376">376: </a><strong><font color="#4169E1"><a name="BVGetArrayRead_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVGetArrayRead_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> **a)</font></strong>
+<a name="line377">377: </a>{
+<a name="line378">378: </a>  BV_VECS           *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line379">379: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          j;
+<a name="line380">380: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *p;
+
+<a name="line382">382: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>((bv-&gt;nc+bv-&gt;m)*bv-&gt;n,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>**)a);
+<a name="line383">383: </a>  <font color="#4169E1">for</font> (j=0;j&lt;bv-&gt;nc+bv-&gt;m;j++) {
+<a name="line384">384: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(ctx-&gt;V[j],&amp;p);
+<a name="line385">385: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)*a+j*bv-&gt;n,p,bv-&gt;n);
+<a name="line386">386: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(ctx-&gt;V[j],&amp;p);
+<a name="line387">387: </a>  }
+<a name="line388">388: </a>  <font color="#4169E1">return</font> 0;
+<a name="line389">389: </a>}
+
+<a name="line391">391: </a><strong><font color="#4169E1"><a name="BVRestoreArrayRead_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVRestoreArrayRead_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> **a)</font></strong>
+<a name="line392">392: </a>{
+<a name="line393">393: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(*a);
+<a name="line394">394: </a>  <font color="#4169E1">return</font> 0;
+<a name="line395">395: </a>}
+
+<a name="line397">397: </a><font color="#B22222">/*</font>
+<a name="line398">398: </a><font color="#B22222">   Sets the value of vmip flag and resets ops-&gt;multinplace accordingly</font>
+<a name="line399">399: </a><font color="#B22222"> */</font>
+<a name="line400">400: </a><strong><font color="#4169E1"><a name="BVVecsSetVmip"></a>static inline <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVVecsSetVmip(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> vmip)</font></strong>
+<a name="line401">401: </a>{
+<a name="line402">402: </a>  <font color="#4169E1">typedef</font> <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*fmultinplace)(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>);
+<a name="line403">403: </a>  fmultinplace multinplace[2] = {BVMultInPlace_Vecs_ME, BVMultInPlace_Vecs_Alloc};
+<a name="line404">404: </a>  BV_VECS      *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line406">406: </a>  ctx-&gt;vmip            = vmip;
+<a name="line407">407: </a>  bv-&gt;ops-&gt;multinplace = multinplace[vmip];
+<a name="line408">408: </a>  <font color="#4169E1">return</font> 0;
+<a name="line409">409: </a>}
+
+<a name="line411">411: </a><strong><font color="#4169E1"><a name="BVSetFromOptions_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVSetFromOptions_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,PetscOptionItems *PetscOptionsObject)</font></strong>
+<a name="line412">412: </a>{
+<a name="line413">413: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line415">415: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHeadBegin.html#PetscOptionsHeadBegin">PetscOptionsHeadBegin</a>(PetscOptionsObject,<font color="#666666">"<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> <a href="https://petsc.org/release/docs/manualpages/Vec/Vecs.html#Vecs">Vecs</a> Options"</font>);
+
+<a name="line417">417: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsRangeInt.html#PetscOptionsRangeInt">PetscOptionsRangeInt</a>(<font color="#666666">"-bv_vecs_vmip"</font>,<font color="#666666">"Version of <a href="../../../../../../docs/manualpages/BV/BVMultInPlace.html#BVMultInPlace">BVMultInPlace</a> operation"</font>,<font color="#666666">""</font>,ctx-&gt;vmip,&amp;ctx-&gt;vmip,NULL,0,1);
+<a name="line418">418: </a>    BVVecsSetVmip(bv,ctx-&gt;vmip);
+
+<a name="line420">420: </a>  PetscOptionsHeadEnd();
+<a name="line421">421: </a>  <font color="#4169E1">return</font> 0;
+<a name="line422">422: </a>}
+
+<a name="line424">424: </a><strong><font color="#4169E1"><a name="BVView_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVView_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer)</font></strong>
+<a name="line425">425: </a>{
+<a name="line426">426: </a>  BV_VECS           *ctx = (BV_VECS*)bv-&gt;data;
+<a name="line427">427: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          j;
+<a name="line428">428: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PetscViewerFormat</a> format;
+<a name="line429">429: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         isascii,ismatlab=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line430">430: </a>  const char        *bvname,*name;
+
+<a name="line432">432: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERASCII.html#PETSCVIEWERASCII">PETSCVIEWERASCII</a>,&amp;isascii);
+<a name="line433">433: </a>  <font color="#4169E1">if</font> (isascii) {
+<a name="line434">434: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerGetFormat.html#PetscViewerGetFormat">PetscViewerGetFormat</a>(viewer,&amp;format);
+<a name="line435">435: </a>    <font color="#4169E1">if</font> (format == <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO</a> || format == <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>) <font color="#4169E1">return</font> 0;
+<a name="line436">436: </a>    <font color="#4169E1">if</font> (format == <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_MATLAB</a>) ismatlab = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line437">437: </a>  }
+<a name="line438">438: </a>  <font color="#4169E1">if</font> (ismatlab) {
+<a name="line439">439: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetName.html#PetscObjectGetName">PetscObjectGetName</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv,&amp;bvname);
+<a name="line440">440: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"%s=[];\n"</font>,bvname);
+<a name="line441">441: </a>  }
+<a name="line442">442: </a>  <font color="#4169E1">for</font> (j=bv-&gt;nc;j&lt;bv-&gt;nc+bv-&gt;m;j++) {
+<a name="line443">443: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecView.html#VecView">VecView</a>(ctx-&gt;V[j],viewer);
+<a name="line444">444: </a>    <font color="#4169E1">if</font> (ismatlab) {
+<a name="line445">445: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetName.html#PetscObjectGetName">PetscObjectGetName</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ctx-&gt;V[j],&amp;name);
+<a name="line446">446: </a>      <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"%s=[%s,%s];clear %s\n"</font>,bvname,bvname,name,name);
+<a name="line447">447: </a>    }
+<a name="line448">448: </a>  }
+<a name="line449">449: </a>  <font color="#4169E1">return</font> 0;
+<a name="line450">450: </a>}
+
+<a name="line452">452: </a><strong><font color="#4169E1"><a name="BVDestroy_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVDestroy_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv)</font></strong>
+<a name="line453">453: </a>{
+<a name="line454">454: </a>  BV_VECS        *ctx = (BV_VECS*)bv-&gt;data;
+
+<a name="line456">456: </a>  <font color="#4169E1">if</font> (!bv-&gt;issplit) <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroyVecs.html#VecDestroyVecs">VecDestroyVecs</a>(bv-&gt;nc+bv-&gt;m,&amp;ctx-&gt;V);
+<a name="line457">457: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(bv-&gt;data);
+<a name="line458">458: </a>  <font color="#4169E1">return</font> 0;
+<a name="line459">459: </a>}
+
+<a name="line461">461: </a><strong><font color="#4169E1"><a name="BVDuplicate_Vecs"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVDuplicate_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> V,<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> W)</font></strong>
+<a name="line462">462: </a>{
+<a name="line463">463: </a>  BV_VECS        *ctx = (BV_VECS*)V-&gt;data;
+
+<a name="line465">465: </a>  BVVecsSetVmip(W,ctx-&gt;vmip);
+<a name="line466">466: </a>  <font color="#4169E1">return</font> 0;
+<a name="line467">467: </a>}
+
+<a name="line469">469: </a><strong><font color="#4169E1"><a name="BVCreate_Vecs"></a>SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> BVCreate_Vecs(<a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> bv)</font></strong>
+<a name="line470">470: </a>{
+<a name="line471">471: </a>  BV_VECS        *ctx;
+<a name="line472">472: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       j,lsplit;
+<a name="line473">473: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isgpu;
+<a name="line474">474: </a>  char           str[50];
+<a name="line475">475: </a>  <a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a>             parent;
+<a name="line476">476: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            *Vpar;
+
+<a name="line478">478: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctx);
+<a name="line479">479: </a>  bv-&gt;data = (void*)ctx;
+
+<a name="line481">481: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(bv-&gt;issplit)) {
+<a name="line482">482: </a>    <font color="#B22222">/* split <a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a>: share the <a href="https://petsc.org/release/docs/manualpages/Vec/Vecs.html#Vecs">Vecs</a> of the parent <a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> */</font>
+<a name="line483">483: </a>    parent = bv-&gt;splitparent;
+<a name="line484">484: </a>    lsplit = parent-&gt;lsplit;
+<a name="line485">485: </a>    Vpar   = ((BV_VECS*)parent-&gt;data)-&gt;V;
+<a name="line486">486: </a>    ctx-&gt;V = (bv-&gt;issplit==1)? Vpar: Vpar+lsplit;
+<a name="line487">487: </a>  } <font color="#4169E1">else</font> {
+<a name="line488">488: </a>    <font color="#B22222">/* regular <a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a>: create array of <a href="https://petsc.org/release/docs/manualpages/Vec/Vecs.html#Vecs">Vecs</a> to store the <a href="../../../../../../docs/manualpages/BV/BV.html#BV">BV</a> columns */</font>
+<a name="line489">489: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicateVecs.html#VecDuplicateVecs">VecDuplicateVecs</a>(bv-&gt;t,bv-&gt;m,&amp;ctx-&gt;V);
+<a name="line490">490: </a>    <font color="#4169E1">if</font> (((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv)-&gt;name) {
+<a name="line491">491: </a>      <font color="#4169E1">for</font> (j=0;j&lt;bv-&gt;m;j++) {
+<a name="line492">492: </a>        <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSNPrintf.html#PetscSNPrintf">PetscSNPrintf</a>(str,<font color="#4169E1">sizeof</font>(str),<font color="#666666">"%s_%"</font> PetscInt_FMT,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv)-&gt;name,j);
+<a name="line493">493: </a>        <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetName.html#PetscObjectSetName">PetscObjectSetName</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ctx-&gt;V[j],str);
+<a name="line494">494: </a>      }
+<a name="line495">495: </a>    }
+<a name="line496">496: </a>  }
+
+<a name="line498">498: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(bv-&gt;Acreate)) {
+<a name="line499">499: </a>    <font color="#4169E1">for</font> (j=0;j&lt;bv-&gt;m;j++) <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetColumnVector.html#MatGetColumnVector">MatGetColumnVector</a>(bv-&gt;Acreate,ctx-&gt;V[j],j);
+<a name="line500">500: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;bv-&gt;Acreate);
+<a name="line501">501: </a>  }
+
+<a name="line503">503: </a>  <font color="#B22222">/* Default version of <a href="../../../../../../docs/manualpages/BV/BVMultInPlace.html#BVMultInPlace">BVMultInPlace</a> */</font>
+<a name="line504">504: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompareAny.html#PetscObjectTypeCompareAny">PetscObjectTypeCompareAny</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv-&gt;t,&amp;isgpu,VECSEQCUDA,VECMPICUDA,<font color="#666666">""</font>);
+<a name="line505">505: </a>  ctx-&gt;vmip = isgpu? 1: 0;
+
+<a name="line507">507: </a>  <font color="#B22222">/* Default <a href="../../../../../../docs/manualpages/BV/BVMatMult.html#BVMatMult">BVMatMult</a> method */</font>
+<a name="line508">508: </a>  bv-&gt;vmm = <a href="../../../../../../docs/manualpages/BV/BVMatMultType.html#BVMatMultType">BV_MATMULT_VECS</a>;
+
+<a name="line510">510: </a>  <font color="#B22222">/* Deferred call to setfromoptions */</font>
+<a name="line511">511: </a>  <font color="#4169E1">if</font> (bv-&gt;defersfo) {
+<a name="line512">512: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectOptionsBegin.html#PetscObjectOptionsBegin">PetscObjectOptionsBegin</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv);
+<a name="line513">513: </a>    BVSetFromOptions_Vecs(bv,PetscOptionsObject);
+<a name="line514">514: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsEnd.html#PetscOptionsEnd">PetscOptionsEnd</a>();
+<a name="line515">515: </a>  }
+<a name="line516">516: </a>  BVVecsSetVmip(bv,ctx-&gt;vmip);
+
+<a name="line518">518: </a>  bv-&gt;ops-&gt;mult             = BVMult_Vecs;
+<a name="line519">519: </a>  bv-&gt;ops-&gt;multvec          = BVMultVec_Vecs;
+<a name="line520">520: </a>  bv-&gt;ops-&gt;multinplacetrans = BVMultInPlaceHermitianTranspose_Vecs;
+<a name="line521">521: </a>  bv-&gt;ops-&gt;dot              = BVDot_Vecs;
+<a name="line522">522: </a>  bv-&gt;ops-&gt;dotvec           = BVDotVec_Vecs;
+<a name="line523">523: </a>  bv-&gt;ops-&gt;dotvec_begin     = BVDotVec_Begin_Vecs;
+<a name="line524">524: </a>  bv-&gt;ops-&gt;dotvec_end       = BVDotVec_End_Vecs;
+<a name="line525">525: </a>  bv-&gt;ops-&gt;scale            = BVScale_Vecs;
+<a name="line526">526: </a>  bv-&gt;ops-&gt;norm             = BVNorm_Vecs;
+<a name="line527">527: </a>  bv-&gt;ops-&gt;norm_begin       = BVNorm_Begin_Vecs;
+<a name="line528">528: </a>  bv-&gt;ops-&gt;norm_end         = BVNorm_End_Vecs;
+<a name="line529">529: </a>  bv-&gt;ops-&gt;normalize        = BVNormalize_Vecs;
+<a name="line530">530: </a>  bv-&gt;ops-&gt;matmult          = BVMatMult_Vecs;
+<a name="line531">531: </a>  bv-&gt;ops-&gt;copy             = BVCopy_Vecs;
+<a name="line532">532: </a>  bv-&gt;ops-&gt;copycolumn       = BVCopyColumn_Vecs;
+<a name="line533">533: </a>  bv-&gt;ops-&gt;resize           = BVResize_Vecs;
+<a name="line534">534: </a>  bv-&gt;ops-&gt;getcolumn        = BVGetColumn_Vecs;
+<a name="line535">535: </a>  bv-&gt;ops-&gt;restorecolumn    = BVRestoreColumn_Vecs;
+<a name="line536">536: </a>  bv-&gt;ops-&gt;getarray         = BVGetArray_Vecs;
+<a name="line537">537: </a>  bv-&gt;ops-&gt;restorearray     = BVRestoreArray_Vecs;
+<a name="line538">538: </a>  bv-&gt;ops-&gt;getarrayread     = BVGetArrayRead_Vecs;
+<a name="line539">539: </a>  bv-&gt;ops-&gt;restorearrayread = BVRestoreArrayRead_Vecs;
+<a name="line540">540: </a>  bv-&gt;ops-&gt;getmat           = BVGetMat_Default;
+<a name="line541">541: </a>  bv-&gt;ops-&gt;restoremat       = BVRestoreMat_Default;
+<a name="line542">542: </a>  bv-&gt;ops-&gt;destroy          = BVDestroy_Vecs;
+<a name="line543">543: </a>  bv-&gt;ops-&gt;duplicate        = BVDuplicate_Vecs;
+<a name="line544">544: </a>  bv-&gt;ops-&gt;setfromoptions   = BVSetFromOptions_Vecs;
+<a name="line545">545: </a>  bv-&gt;ops-&gt;view             = BVView_Vecs;
+<a name="line546">546: </a>  <font color="#4169E1">return</font> 0;
+<a name="line547">547: </a>}
+</pre>
+</body>
+
+</html>

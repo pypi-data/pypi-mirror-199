@@ -1,0 +1,101 @@
+<center><a href="slepcsc.h">Actual source code: slepcsc.h</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/include/slepcsc.h.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:30+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 include/slepcsc.h.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   Sorting criterion for various solvers</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a><font color="#A020F0">#if !defined(SLEPCSC_H)</font>
+<a name="line15"> 15: </a><strong><font color="#228B22">#define SLEPCSC_H</font></strong>
+
+<a name="line17"> 17: </a>#include <A href="slepcsys.h.html">&lt;slepcsys.h&gt;</A>
+<a name="line18"> 18: </a>#include <A href="slepcrgtypes.h.html">&lt;slepcrgtypes.h&gt;</A>
+
+<a name="line20"> 20: </a><font color="#B22222">/* SUBMANSEC = sys */</font>
+
+<a name="line22"> 22: </a><font color="#B22222">/*S</font>
+<a name="line23"> 23: </a><font color="#B22222">    <a href="../docs/manualpages/sys/SlepcSC.html#SlepcSC">SlepcSC</a> - Data structure (C struct) for storing information about</font>
+<a name="line24"> 24: </a><font color="#B22222">        the sorting criterion used by different eigensolver objects.</font>
+
+<a name="line26"> 26: </a><font color="#B22222">   Notes:</font>
+<a name="line27"> 27: </a><font color="#B22222">   The <a href="../docs/manualpages/sys/SlepcSC.html#SlepcSC">SlepcSC</a> structure contains a mapping function and a comparison</font>
+<a name="line28"> 28: </a><font color="#B22222">   function (with associated contexts).</font>
+<a name="line29"> 29: </a><font color="#B22222">   The mapping function usually calls <a href="../docs/manualpages/ST/ST.html#ST">ST</a>'s backtransform.</font>
+<a name="line30"> 30: </a><font color="#B22222">   An optional region can also be used to give higher priority to values inside it.</font>
+
+<a name="line32"> 32: </a><font color="#B22222">   The comparison function must have the following calling sequence</font>
+
+<a name="line34"> 34: </a><font color="#B22222">$  comparison(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> ar,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> ai,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> br,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> bi,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *res,void *ctx)</font>
+
+<a name="line36"> 36: </a><font color="#B22222">+  ar  - real part of the 1st eigenvalue</font>
+<a name="line37"> 37: </a><font color="#B22222">.  ai  - imaginary part of the 1st eigenvalue</font>
+<a name="line38"> 38: </a><font color="#B22222">.  br  - real part of the 2nd eigenvalue</font>
+<a name="line39"> 39: </a><font color="#B22222">.  bi  - imaginary part of the 2nd eigenvalue</font>
+<a name="line40"> 40: </a><font color="#B22222">.  res - result of comparison</font>
+<a name="line41"> 41: </a><font color="#B22222">-  ctx - optional context, stored in comparisonctx</font>
+
+<a name="line43"> 43: </a><font color="#B22222">   The returning parameter 'res' can be</font>
+<a name="line44"> 44: </a><font color="#B22222">+  negative - if the 1st value is preferred to the 2st one</font>
+<a name="line45"> 45: </a><font color="#B22222">.  zero     - if both values are equally preferred</font>
+<a name="line46"> 46: </a><font color="#B22222">-  positive - if the 2st value is preferred to the 1st one</font>
+
+<a name="line48"> 48: </a><font color="#B22222">   Fortran usage is not supported.</font>
+
+<a name="line50"> 50: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line52"> 52: </a><font color="#B22222">.seealso: <a href="../docs/manualpages/sys/SlepcSCCompare.html#SlepcSCCompare">SlepcSCCompare</a>()</font>
+<a name="line53"> 53: </a><font color="#B22222">S*/</font>
+<a name="line54"> 54: </a><font color="#4169E1"><a name="_n_SlepcSC"></a>struct _n_SlepcSC </font>{
+<a name="line55"> 55: </a>  <font color="#B22222">/* map values before sorting, typically a call to <a href="../docs/manualpages/ST/STBackTransform.html#STBackTransform">STBackTransform</a> (mapctx=<a href="../docs/manualpages/ST/ST.html#ST">ST</a>) */</font>
+<a name="line56"> 56: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*map)(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*);
+<a name="line57"> 57: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>    mapobj;
+<a name="line58"> 58: </a>  <font color="#B22222">/* comparison function such as SlepcCompareLargestMagnitude */</font>
+<a name="line59"> 59: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*comparison)(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*);
+<a name="line60"> 60: </a>  void           *comparisonctx;
+<a name="line61"> 61: </a>  <font color="#B22222">/* optional region for filtering */</font>
+<a name="line62"> 62: </a>  <a href="../docs/manualpages/RG/RG.html#RG">RG</a>             rg;
+<a name="line63"> 63: </a>};
+<a name="line64"> 64: </a><font color="#4169E1">typedef struct _n_SlepcSC* <a href="../docs/manualpages/sys/SlepcSC.html#SlepcSC">SlepcSC</a>;</font>
+
+<a name="line66"> 66: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/SlepcSCCompare.html#SlepcSCCompare">SlepcSCCompare</a>(<a href="../docs/manualpages/sys/SlepcSC.html#SlepcSC">SlepcSC</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*)</font></strong>;
+<a name="line67"> 67: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../docs/manualpages/sys/SlepcSortEigenvalues.html#SlepcSortEigenvalues">SlepcSortEigenvalues</a>(<a href="../docs/manualpages/sys/SlepcSC.html#SlepcSC">SlepcSC</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *eigr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *eigi,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *perm)</font></strong>;
+
+<a name="line69"> 69: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcMap_ST(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)</font></strong>;
+
+<a name="line71"> 71: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareLargestMagnitude(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line72"> 72: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareSmallestMagnitude(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line73"> 73: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareLargestReal(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line74"> 74: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareSmallestReal(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line75"> 75: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareLargestImaginary(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line76"> 76: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareSmallestImaginary(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line77"> 77: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareTargetMagnitude(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line78"> 78: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareTargetReal(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line79"> 79: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line80"> 80: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareTargetImaginary(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+<a name="line81"> 81: </a><font color="#A020F0">#endif</font>
+<a name="line82"> 82: </a><strong><font color="#4169E1">SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcCompareSmallestPosReal(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,void*)</font></strong>;
+
+<a name="line84"> 84: </a><font color="#A020F0">#endif</font>
+</pre>
+</body>
+
+</html>

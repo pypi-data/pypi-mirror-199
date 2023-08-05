@@ -1,0 +1,50 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML3.2 EN">
+<HTML>
+<HEAD> <link rel="canonical" href="https://slepc.upv.es/documentation/current/docs/manualpages/sys/VecSetRandomNormal.html" />
+<META NAME="GENERATOR" CONTENT="DOCTEXT">
+<link rel="stylesheet" href="/slepc.css" type="text/css">
+<TITLE>VecSetRandomNormal</TITLE>
+</HEAD>
+<BODY BGCOLOR="FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 docs/manualpages/sys/VecSetRandomNormal.html "><small>Report Typos and Errors</small></a></div>
+<H1>VecSetRandomNormal</H1>
+Sets all components of a vector to normally distributed random values. 
+<H3><FONT COLOR="#883300">Synopsis</FONT></H3>
+<PRE>
+#include "slepcvec.h" 
+<A HREF="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</A> <A HREF="../sys/VecSetRandomNormal.html#VecSetRandomNormal">VecSetRandomNormal</A>(<A HREF="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</A> v,<A HREF="https://petsc.org/release/docs/manualpages/Sys/PetscRandom.html#PetscRandom">PetscRandom</A> rctx,<A HREF="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</A> w1,<A HREF="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</A> w2)
+</PRE>
+Logically Collective on v
+<P>
+<H3><FONT COLOR="#883300">Input Parameters</FONT></H3>
+<TABLE border="0" cellpadding="0" cellspacing="0">
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>v    </B></TD><TD>&nbsp;- the vector to be filled with random values
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>rctx </B></TD><TD>&nbsp;- the random number context (can be NULL)
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>w1   </B></TD><TD>&nbsp;- first work vector (can be NULL)
+</TD></TR>
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>w2   </B></TD><TD>&nbsp;- second work vector (can be NULL)
+</TD></TR></TABLE>
+<P>
+<H3><FONT COLOR="#883300">Output Parameter</FONT></H3>
+<TABLE border="0" cellpadding="0" cellspacing="0">
+<TR><TD WIDTH=40></TD><TD ALIGN=LEFT VALIGN=TOP><B>v    </B></TD><TD>&nbsp;- the vector
+</TD></TR></TABLE>
+<P>
+<H3><FONT COLOR="#883300">Notes</FONT></H3>
+Fills the two work vectors with uniformly distributed random values (<A HREF="https://petsc.org/release/docs/manualpages/Vec/VecSetRandom.html#VecSetRandom">VecSetRandom</A>)
+and then applies the Box-Muller transform to get normally distributed values on v.
+<P>
+
+<P>
+<H3><FONT COLOR="#883300">See Also</FONT></H3>
+ <A HREF="https://petsc.org/release/docs/manualpages/Vec/VecSetRandom.html#VecSetRandom">VecSetRandom</A>()
+<BR><P><B></B><H3><FONT COLOR="#883300">Level</FONT></H3>developer<BR>
+<H3><FONT COLOR="#883300">Location</FONT></H3>
+</B><A HREF="../../../src/sys/vec/vecutil.c.html#VecSetRandomNormal">src/sys/vec/vecutil.c</A>
+<BR><BR><A HREF="./index.html">Index of all sys routines</A>
+<BR><A HREF="../../../docs/manual.html">Table of Contents for all manual pages</A>
+<BR><A HREF="../singleindex.html">Index of all manual pages</A>
+</BODY></HTML>

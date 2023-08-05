@@ -1,0 +1,418 @@
+<center><a href="dvdupdatev.c">Actual source code: dvdupdatev.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/eps/impls/davidson/dvdupdatev.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:25+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/eps/impls/davidson/dvdupdatev.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   SLEPc eigensolver: "davidson"</font>
+
+<a name="line13"> 13: </a><font color="#B22222">   Step: test for restarting, updateV, restartV</font>
+<a name="line14"> 14: </a><font color="#B22222">*/</font>
+
+<a name="line16"> 16: </a><font color="#A020F0">#include </font><font color="#666666">"davidson.h"</font><font color="#A020F0"></font>
+
+<a name="line18"> 18: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line19"> 19: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          min_size_V;        <font color="#B22222">/* restart with this number of eigenvectors */</font>
+<a name="line20"> 20: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          plusk;             <font color="#B22222">/* at restart, save plusk vectors from last iteration */</font>
+<a name="line21"> 21: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          mpd;               <font color="#B22222">/* max size of the searching subspace */</font>
+<a name="line22"> 22: </a>  void              *old_updateV_data; <font color="#B22222">/* old updateV data */</font>
+<a name="line23"> 23: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a>    (*old_isRestarting)(dvdDashboard*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>*);  <font color="#B22222">/* old isRestarting */</font>
+<a name="line24"> 24: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               oldU;              <font color="#B22222">/* previous projected right igenvectors */</font>
+<a name="line25"> 25: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               oldV;              <font color="#B22222">/* previous projected left eigenvectors */</font>
+<a name="line26"> 26: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          size_oldU;         <font color="#B22222">/* size of oldU */</font>
+<a name="line27"> 27: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         allResiduals;      <font color="#B22222">/* if computing all the residuals */</font>
+<a name="line28"> 28: </a>} dvdManagV_basic;
+
+<a name="line30"> 30: </a><strong><font color="#4169E1"><a name="dvd_updateV_start"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_updateV_start(dvdDashboard *d)</font></strong>
+<a name="line31"> 31: </a>{
+<a name="line32"> 32: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+<a name="line33"> 33: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        i;
+
+<a name="line35"> 35: </a>  <font color="#4169E1">for</font> (i=0;i&lt;d-&gt;eps-&gt;ncv;i++) d-&gt;eigi[i] = 0.0;
+<a name="line36"> 36: </a>  d-&gt;nR = d-&gt;real_nR;
+<a name="line37"> 37: </a>  <font color="#4169E1">for</font> (i=0;i&lt;d-&gt;eps-&gt;ncv;i++) d-&gt;nR[i] = 1.0;
+<a name="line38"> 38: </a>  d-&gt;nX = d-&gt;real_nX;
+<a name="line39"> 39: </a>  <font color="#4169E1">for</font> (i=0;i&lt;d-&gt;eps-&gt;ncv;i++) d-&gt;errest[i] = 1.0;
+<a name="line40"> 40: </a>  data-&gt;size_oldU = 0;
+<a name="line41"> 41: </a>  d-&gt;nconv = 0;
+<a name="line42"> 42: </a>  d-&gt;npreconv = 0;
+<a name="line43"> 43: </a>  d-&gt;V_tra_s = d-&gt;V_tra_e = d-&gt;V_new_s = d-&gt;V_new_e = 0;
+<a name="line44"> 44: </a>  d-&gt;size_D = 0;
+<a name="line45"> 45: </a>  <font color="#4169E1">return</font> 0;
+<a name="line46"> 46: </a>}
+
+<a name="line48"> 48: </a><strong><font color="#4169E1"><a name="dvd_isrestarting_fullV"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_isrestarting_fullV(dvdDashboard *d,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> *r)</font></strong>
+<a name="line49"> 49: </a>{
+<a name="line50"> 50: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        l,k;
+<a name="line51"> 51: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>       restart;
+<a name="line52"> 52: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+
+<a name="line54"> 54: </a>  <a href="../../../../docs/manualpages/BV/BVGetActiveColumns.html#BVGetActiveColumns">BVGetActiveColumns</a>(d-&gt;eps-&gt;V,&amp;l,&amp;k);
+<a name="line55"> 55: </a>  restart = (k+2 &gt; d-&gt;eps-&gt;ncv)? <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>: <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line57"> 57: </a>  <font color="#B22222">/* Check old isRestarting function */</font>
+<a name="line58"> 58: </a>  <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(!restart &amp;&amp; data-&gt;old_isRestarting)) data-&gt;old_isRestarting(d,&amp;restart);
+<a name="line59"> 59: </a>  *r = restart;
+<a name="line60"> 60: </a>  <font color="#4169E1">return</font> 0;
+<a name="line61"> 61: </a>}
+
+<a name="line63"> 63: </a><strong><font color="#4169E1"><a name="dvd_managementV_basic_d"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_managementV_basic_d(dvdDashboard *d)</font></strong>
+<a name="line64"> 64: </a>{
+<a name="line65"> 65: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+
+<a name="line67"> 67: </a>  <font color="#B22222">/* Restore changes in dvdDashboard */</font>
+<a name="line68"> 68: </a>  d-&gt;updateV_data = data-&gt;old_updateV_data;
+
+<a name="line70"> 70: </a>  <font color="#B22222">/* Free local data */</font>
+<a name="line71"> 71: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;data-&gt;oldU);
+<a name="line72"> 72: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;data-&gt;oldV);
+<a name="line73"> 73: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(d-&gt;real_nR);
+<a name="line74"> 74: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(d-&gt;real_nX);
+<a name="line75"> 75: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(data);
+<a name="line76"> 76: </a>  <font color="#4169E1">return</font> 0;
+<a name="line77"> 77: </a>}
+
+<a name="line79"> 79: </a><strong><font color="#4169E1"><a name="dvd_updateV_conv_gen"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_updateV_conv_gen(dvdDashboard *d)</font></strong>
+<a name="line80"> 80: </a>{
+<a name="line81"> 81: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+<a name="line82"> 82: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        npreconv,cMT,cMTX,lV,kV,nV;
+<a name="line83"> 83: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>             Z,Z0,Q,Q0;
+<a name="line84"> 84: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>       t;
+<a name="line85"> 85: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line86"> 86: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        i;
+<a name="line87"> 87: </a><font color="#A020F0">#endif</font>
+
+<a name="line89"> 89: </a>  npreconv = d-&gt;npreconv;
+<a name="line90"> 90: </a>  <font color="#B22222">/* Constrains the converged pairs to nev */</font>
+<a name="line91"> 91: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line92"> 92: </a>  <font color="#B22222">/* Tries to maintain together conjugate eigenpairs */</font>
+<a name="line93"> 93: </a>  <font color="#4169E1">for</font> (i=0; (i + (d-&gt;eigi[i]!=0.0?1:0) &lt; npreconv) &amp;&amp; (d-&gt;nconv + i &lt; d-&gt;nev); i+= (d-&gt;eigi[i]!=0.0?2:1));
+<a name="line94"> 94: </a>  npreconv = i;
+<a name="line95"> 95: </a><font color="#A020F0">#else</font>
+<a name="line96"> 96: </a>  npreconv = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(d-&gt;nev-d-&gt;nconv,npreconv),0);
+<a name="line97"> 97: </a><font color="#A020F0">#endif</font>
+<a name="line98"> 98: </a>  <font color="#B22222">/* For GHEP without B-ortho, converge all of the requested pairs at once */</font>
+<a name="line99"> 99: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSGHEP.html#DSGHEP">DSGHEP</a>,&amp;t);
+<a name="line100">100: </a>  <font color="#4169E1">if</font> (t &amp;&amp; d-&gt;nconv+npreconv&lt;d-&gt;nev) npreconv = 0;
+<a name="line101">101: </a>  <font color="#B22222">/* Quick exit */</font>
+<a name="line102">102: </a>  <font color="#4169E1">if</font> (npreconv == 0) <font color="#4169E1">return</font> 0;
+
+<a name="line104">104: </a>  <a href="../../../../docs/manualpages/BV/BVGetActiveColumns.html#BVGetActiveColumns">BVGetActiveColumns</a>(d-&gt;eps-&gt;V,&amp;lV,&amp;kV);
+<a name="line105">105: </a>  nV  = kV - lV;
+<a name="line106">106: </a>  cMT = nV - npreconv;
+<a name="line107">107: </a>  <font color="#B22222">/* Harmonics restarts with right eigenvectors, and other with the left ones.</font>
+<a name="line108">108: </a><font color="#B22222">     If the problem is standard or hermitian, left and right vectors are the same */</font>
+<a name="line109">109: </a>  <font color="#4169E1">if</font> (!(d-&gt;W||DVD_IS(d-&gt;sEP,DVD_EP_STD)||DVD_IS(d-&gt;sEP,DVD_EP_HERMITIAN))) {
+<a name="line110">110: </a>    <font color="#B22222">/* ps.Q &lt;- [ps.Q(0:npreconv-1) ps.Z(npreconv:size_H-1)] */</font>
+<a name="line111">111: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line112">112: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line113">113: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Q,0,npreconv,nV,npreconv+cMT,&amp;Q0);
+<a name="line114">114: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Z,0,npreconv,nV,npreconv+cMT,&amp;Z0);
+<a name="line115">115: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(Z0,Q0,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line116">116: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Q,&amp;Q0);
+<a name="line117">117: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Z,&amp;Z0);
+<a name="line118">118: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line119">119: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line120">120: </a>  }
+<a name="line121">121: </a>  <font color="#4169E1">if</font> (DVD_IS(d-&gt;sEP,DVD_EP_INDEFINITE)) <a href="../../../../docs/manualpages/DS/DSPseudoOrthogonalize.html#DSPseudoOrthogonalize">DSPseudoOrthogonalize</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,nV,d-&gt;nBds,&amp;cMTX,d-&gt;nBds);
+<a name="line122">122: </a>  <font color="#4169E1">else</font> <a href="../../../../docs/manualpages/DS/DSOrthogonalize.html#DSOrthogonalize">DSOrthogonalize</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,nV,&amp;cMTX);
+<a name="line123">123: </a>  cMT = cMTX - npreconv;
+
+<a name="line125">125: </a>  <font color="#4169E1">if</font> (d-&gt;W) {
+<a name="line126">126: </a>    <a href="../../../../docs/manualpages/DS/DSOrthogonalize.html#DSOrthogonalize">DSOrthogonalize</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,nV,&amp;cMTX);
+<a name="line127">127: </a>    cMT = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(cMT,cMTX - npreconv);
+<a name="line128">128: </a>  }
+
+<a name="line130">130: </a>  <font color="#B22222">/* Lock the converged pairs */</font>
+<a name="line131">131: </a>  d-&gt;eigr+= npreconv;
+<a name="line132">132: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line133">133: </a>  <font color="#4169E1">if</font> (d-&gt;eigi) d-&gt;eigi+= npreconv;
+<a name="line134">134: </a><font color="#A020F0">#endif</font>
+<a name="line135">135: </a>  d-&gt;nconv+= npreconv;
+<a name="line136">136: </a>  d-&gt;errest+= npreconv;
+<a name="line137">137: </a>  <font color="#B22222">/* Notify the changes in V and update the other subspaces */</font>
+<a name="line138">138: </a>  d-&gt;V_tra_s = npreconv;          d-&gt;V_tra_e = nV;
+<a name="line139">139: </a>  d-&gt;V_new_s = cMT;               d-&gt;V_new_e = d-&gt;V_new_s;
+<a name="line140">140: </a>  <font color="#B22222">/* Remove oldU */</font>
+<a name="line141">141: </a>  data-&gt;size_oldU = 0;
+
+<a name="line143">143: </a>  d-&gt;npreconv-= npreconv;
+<a name="line144">144: </a>  <font color="#4169E1">return</font> 0;
+<a name="line145">145: </a>}
+
+<a name="line147">147: </a><strong><font color="#4169E1"><a name="dvd_updateV_restart_gen"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_updateV_restart_gen(dvdDashboard *d)</font></strong>
+<a name="line148">148: </a>{
+<a name="line149">149: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+<a name="line150">150: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        lV,kV,nV,size_plusk,size_X,cMTX,cMTY,max_restart_size;
+<a name="line151">151: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>             Q,Q0,Z,Z0,U,V;
+
+<a name="line153">153: </a>  <font color="#B22222">/* Select size_X desired pairs from V */</font>
+<a name="line154">154: </a>  <font color="#B22222">/* The restarted basis should:</font>
+<a name="line155">155: </a><font color="#B22222">     - have at least one spot to add a new direction;</font>
+<a name="line156">156: </a><font color="#B22222">     - keep converged vectors, npreconv;</font>
+<a name="line157">157: </a><font color="#B22222">     - keep at least 1 oldU direction if possible.</font>
+<a name="line158">158: </a><font color="#B22222">  */</font>
+<a name="line159">159: </a>  <a href="../../../../docs/manualpages/BV/BVGetActiveColumns.html#BVGetActiveColumns">BVGetActiveColumns</a>(d-&gt;eps-&gt;V,&amp;lV,&amp;kV);
+<a name="line160">160: </a>  nV = kV - lV;
+<a name="line161">161: </a>  max_restart_size = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(d-&gt;eps-&gt;mpd - 1,d-&gt;eps-&gt;ncv - lV - 2));
+<a name="line162">162: </a>  size_X = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(data-&gt;min_size_V+d-&gt;npreconv,max_restart_size - (max_restart_size - d-&gt;npreconv &gt; 1 &amp;&amp; data-&gt;plusk &gt; 0 &amp;&amp; data-&gt;size_oldU &gt; 0 ? 1 : 0)), nV);
+
+<a name="line164">164: </a>  <font color="#B22222">/* Add plusk eigenvectors from the previous iteration */</font>
+<a name="line165">165: </a>  size_plusk = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(data-&gt;plusk,data-&gt;size_oldU),max_restart_size - size_X),nV - size_X));
+
+<a name="line167">167: </a>  d-&gt;size_MT = nV;
+<a name="line168">168: </a>  <font color="#B22222">/* ps.Q &lt;- orth([pX(0:size_X-1) [oldU(0:size_plusk-1); 0] ]) */</font>
+<a name="line169">169: </a>  <font color="#B22222">/* Harmonics restarts with right eigenvectors, and other with the left ones.</font>
+<a name="line170">170: </a><font color="#B22222">     If the problem is standard or hermitian, left and right vectors are the same */</font>
+<a name="line171">171: </a>  <font color="#4169E1">if</font> (!(d-&gt;W||DVD_IS(d-&gt;sEP,DVD_EP_STD)||DVD_IS(d-&gt;sEP,DVD_EP_HERMITIAN))) {
+<a name="line172">172: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line173">173: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line174">174: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Q,0,nV,0,size_X,&amp;Q0);
+<a name="line175">175: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Z,0,nV,0,size_X,&amp;Z0);
+<a name="line176">176: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(Z0,Q0,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line177">177: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Q,&amp;Q0);
+<a name="line178">178: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Z,&amp;Z0);
+<a name="line179">179: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line180">180: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line181">181: </a>  }
+<a name="line183">183: </a>  <font color="#4169E1">if</font> (size_plusk &gt; 0) {
+<a name="line184">184: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line185">185: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Q,0,nV,size_X,size_X+size_plusk,&amp;Q0);
+<a name="line186">186: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(data-&gt;oldU,0,nV,0,size_plusk,&amp;U);
+<a name="line187">187: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(U,Q0,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line188">188: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Q,&amp;Q0);
+<a name="line189">189: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(data-&gt;oldU,&amp;U);
+<a name="line190">190: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line191">191: </a>  }
+<a name="line192">192: </a>  <font color="#4169E1">if</font> (DVD_IS(d-&gt;sEP,DVD_EP_INDEFINITE)) <a href="../../../../docs/manualpages/DS/DSPseudoOrthogonalize.html#DSPseudoOrthogonalize">DSPseudoOrthogonalize</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,size_X,d-&gt;nBds,&amp;cMTX,d-&gt;nBds);
+<a name="line193">193: </a>  <font color="#4169E1">else</font> <a href="../../../../docs/manualpages/DS/DSOrthogonalize.html#DSOrthogonalize">DSOrthogonalize</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,size_X+size_plusk,&amp;cMTX);
+
+<a name="line195">195: </a>  <font color="#4169E1">if</font> (d-&gt;W &amp;&amp; size_plusk &gt; 0) {
+<a name="line196">196: </a>    <font color="#B22222">/* ps.Z &lt;- orth([ps.Z(0:size_X-1) [oldV(0:size_plusk-1); 0] ]) */</font>
+<a name="line197">197: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line198">198: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Z,0,nV,size_X,size_X+size_plusk,&amp;Z0);
+<a name="line199">199: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(data-&gt;oldV,0,nV,0,size_plusk,&amp;V);
+<a name="line200">200: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(V,Z0,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line201">201: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Z,&amp;Z0);
+<a name="line202">202: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(data-&gt;oldV,&amp;V);
+<a name="line203">203: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line204">204: </a>    <a href="../../../../docs/manualpages/DS/DSOrthogonalize.html#DSOrthogonalize">DSOrthogonalize</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,size_X+size_plusk,&amp;cMTY);
+<a name="line205">205: </a>    cMTX = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(cMTX, cMTY);
+<a name="line206">206: </a>  }
+<a name="line207">207: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscAssert.html#PetscAssert">PetscAssert</a>(cMTX&lt;=size_X+size_plusk,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,PETSC_ERR_SUP,<font color="#666666">"Invalid number of columns to restart"</font>);
+
+<a name="line209">209: </a>  <font color="#B22222">/* Notify the changes in V and update the other subspaces */</font>
+<a name="line210">210: </a>  d-&gt;V_tra_s = 0;                     d-&gt;V_tra_e = cMTX;
+<a name="line211">211: </a>  d-&gt;V_new_s = d-&gt;V_tra_e;            d-&gt;V_new_e = d-&gt;V_new_s;
+
+<a name="line213">213: </a>  <font color="#B22222">/* Remove oldU */</font>
+<a name="line214">214: </a>  data-&gt;size_oldU = 0;
+
+<a name="line216">216: </a>  <font color="#B22222">/* Remove npreconv */</font>
+<a name="line217">217: </a>  d-&gt;npreconv = 0;
+<a name="line218">218: </a>  <font color="#4169E1">return</font> 0;
+<a name="line219">219: </a>}
+
+<a name="line221">221: </a><strong><font color="#4169E1"><a name="dvd_updateV_testConv"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_updateV_testConv(dvdDashboard *d,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> s,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> pre,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> e,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *nConv)</font></strong>
+<a name="line222">222: </a>{
+<a name="line223">223: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        i,j,b;
+<a name="line224">224: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>       norm;
+<a name="line225">225: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>       conv, c;
+<a name="line226">226: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+
+<a name="line228">228: </a>  <font color="#4169E1">if</font> (nConv) *nConv = s;
+<a name="line229">229: </a>  <font color="#4169E1">for</font> (i=s,conv=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;(conv || data-&gt;allResiduals) &amp;&amp; (i &lt; e);i+=b) {
+<a name="line230">230: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line231">231: </a>    b = d-&gt;eigi[i]!=0.0?2:1;
+<a name="line232">232: </a><font color="#A020F0">#else</font>
+<a name="line233">233: </a>    b = 1;
+<a name="line234">234: </a><font color="#A020F0">#endif</font>
+<a name="line235">235: </a>    <font color="#4169E1">if</font> (i+b-1 &gt;= pre) d-&gt;calcpairs_residual(d,i,i+b);
+<a name="line236">236: </a>    <font color="#B22222">/* Test the Schur vector */</font>
+<a name="line237">237: </a>    <font color="#4169E1">for</font> (j=0,c=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;j&lt;b &amp;&amp; c;j++) {
+<a name="line238">238: </a>      norm = d-&gt;nR[i+j]/d-&gt;nX[i+j];
+<a name="line239">239: </a>      c = d-&gt;testConv(d,d-&gt;eigr[i+j],d-&gt;eigi[i+j],norm,&amp;d-&gt;errest[i+j]);
+<a name="line240">240: </a>    }
+<a name="line241">241: </a>    <font color="#4169E1">if</font> (conv &amp;&amp; c) { <font color="#4169E1">if</font> (nConv) *nConv = i+b; }
+<a name="line242">242: </a>    <font color="#4169E1">else</font> conv = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line243">243: </a>  }
+<a name="line244">244: </a>  pre = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(pre,i);
+
+<a name="line246">246: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line247">247: </a>  <font color="#B22222">/* Enforce converged conjugate complex eigenpairs */</font>
+<a name="line248">248: </a>  <font color="#4169E1">if</font> (nConv) {
+<a name="line249">249: </a>    <font color="#4169E1">for</font> (j=0;j&lt;*nConv;j++) <font color="#4169E1">if</font> (d-&gt;eigi[j] != 0.0) j++;
+<a name="line250">250: </a>    <font color="#4169E1">if</font> (j&gt;*nConv) (*nConv)--;
+<a name="line251">251: </a>  }
+<a name="line252">252: </a><font color="#A020F0">#endif</font>
+<a name="line253">253: </a>  <font color="#4169E1">for</font> (i=pre;i&lt;e;i++) d-&gt;errest[i] = d-&gt;nR[i] = 1.0;
+<a name="line254">254: </a>  <font color="#4169E1">return</font> 0;
+<a name="line255">255: </a>}
+
+<a name="line257">257: </a><strong><font color="#4169E1"><a name="dvd_updateV_update_gen"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_updateV_update_gen(dvdDashboard *d)</font></strong>
+<a name="line258">258: </a>{
+<a name="line259">259: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+<a name="line260">260: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        size_D,s,lV,kV,nV;
+<a name="line261">261: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>             Q,Q0,Z,Z0,U,V;
+
+<a name="line263">263: </a>  <font color="#B22222">/* Select the desired pairs */</font>
+<a name="line264">264: </a>  <a href="../../../../docs/manualpages/BV/BVGetActiveColumns.html#BVGetActiveColumns">BVGetActiveColumns</a>(d-&gt;eps-&gt;V,&amp;lV,&amp;kV);
+<a name="line265">265: </a>  nV = kV - lV;
+<a name="line266">266: </a>  size_D = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(d-&gt;bs,nV),d-&gt;eps-&gt;ncv-nV),nV);
+<a name="line267">267: </a>  <font color="#4169E1">if</font> (size_D == 0) <font color="#4169E1">return</font> 0;
+
+<a name="line269">269: </a>  <font color="#B22222">/* Fill V with D */</font>
+<a name="line270">270: </a>  d-&gt;improveX(d,d-&gt;npreconv,d-&gt;npreconv+size_D,&amp;size_D);
+
+<a name="line272">272: </a>  <font color="#B22222">/* If D is empty, exit */</font>
+<a name="line273">273: </a>  d-&gt;size_D = size_D;
+<a name="line274">274: </a>  <font color="#4169E1">if</font> (size_D == 0) <font color="#4169E1">return</font> 0;
+
+<a name="line276">276: </a>  <font color="#B22222">/* Get the residual of all pairs */</font>
+<a name="line277">277: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line278">278: </a>  s = (d-&gt;eigi[0]!=0.0)? 2: 1;
+<a name="line279">279: </a><font color="#A020F0">#else</font>
+<a name="line280">280: </a>  s = 1;
+<a name="line281">281: </a><font color="#A020F0">#endif</font>
+<a name="line282">282: </a>  <a href="../../../../docs/manualpages/BV/BVGetActiveColumns.html#BVGetActiveColumns">BVGetActiveColumns</a>(d-&gt;eps-&gt;V,&amp;lV,&amp;kV);
+<a name="line283">283: </a>  nV = kV - lV;
+<a name="line284">284: </a>  dvd_updateV_testConv(d,s,s,data-&gt;allResiduals?nV:size_D,NULL);
+
+<a name="line286">286: </a>  <font color="#B22222">/* Notify the changes in V */</font>
+<a name="line287">287: </a>  d-&gt;V_tra_s = 0;                 d-&gt;V_tra_e = 0;
+<a name="line288">288: </a>  d-&gt;V_new_s = nV;                d-&gt;V_new_e = nV+size_D;
+
+<a name="line290">290: </a>  <font color="#B22222">/* Save the projected eigenvectors */</font>
+<a name="line291">291: </a>  <font color="#4169E1">if</font> (data-&gt;plusk &gt; 0) {
+<a name="line292">292: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatZeroEntries.html#MatZeroEntries">MatZeroEntries</a>(data-&gt;oldU);
+<a name="line293">293: </a>    data-&gt;size_oldU = nV;
+<a name="line294">294: </a>    <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line295">295: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Q,0,nV,0,nV,&amp;Q0);
+<a name="line296">296: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(data-&gt;oldU,0,nV,0,nV,&amp;U);
+<a name="line297">297: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(Q0,U,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line298">298: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Q,&amp;Q0);
+<a name="line299">299: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(data-&gt;oldU,&amp;U);
+<a name="line300">300: </a>    <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,&amp;Q);
+<a name="line301">301: </a>    <font color="#4169E1">if</font> (d-&gt;W) {
+<a name="line302">302: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatZeroEntries.html#MatZeroEntries">MatZeroEntries</a>(data-&gt;oldV);
+<a name="line303">303: </a>      <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line304">304: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(Z,0,nV,0,nV,&amp;Z0);
+<a name="line305">305: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetSubMatrix.html#MatDenseGetSubMatrix">MatDenseGetSubMatrix</a>(data-&gt;oldV,0,nV,0,nV,&amp;V);
+<a name="line306">306: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(Z0,V,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line307">307: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(Z,&amp;Z0);
+<a name="line308">308: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreSubMatrix.html#MatDenseRestoreSubMatrix">MatDenseRestoreSubMatrix</a>(data-&gt;oldV,&amp;V);
+<a name="line309">309: </a>      <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Z</a>,&amp;Z);
+<a name="line310">310: </a>    }
+<a name="line311">311: </a>  }
+<a name="line312">312: </a>  <font color="#4169E1">return</font> 0;
+<a name="line313">313: </a>}
+
+<a name="line315">315: </a><strong><font color="#4169E1"><a name="dvd_updateV_extrapol"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_updateV_extrapol(dvdDashboard *d)</font></strong>
+<a name="line316">316: </a>{
+<a name="line317">317: </a>  dvdManagV_basic *data = (dvdManagV_basic*)d-&gt;updateV_data;
+<a name="line318">318: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>        i;
+<a name="line319">319: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>       restart,t;
+
+<a name="line321">321: </a>  <font color="#B22222">/* TODO: restrict select pairs to each case */</font>
+<a name="line322">322: </a>  d-&gt;calcpairs_selectPairs(d, data-&gt;min_size_V+d-&gt;npreconv);
+
+<a name="line324">324: </a>  <font color="#B22222">/* If the subspaces doesn't need restart, add new vector */</font>
+<a name="line325">325: </a>  d-&gt;isRestarting(d,&amp;restart);
+<a name="line326">326: </a>  <font color="#4169E1">if</font> (!restart) {
+<a name="line327">327: </a>    d-&gt;size_D = 0;
+<a name="line328">328: </a>    dvd_updateV_update_gen(d);
+
+<a name="line330">330: </a>    <font color="#B22222">/* If no vector were converged, exit */</font>
+<a name="line331">331: </a>    <font color="#B22222">/* For GHEP without B-ortho, converge all of the requested pairs at once */</font>
+<a name="line332">332: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)d-&gt;eps-&gt;ds,<a href="../../../../docs/manualpages/DS/DSGHEP.html#DSGHEP">DSGHEP</a>,&amp;t);
+<a name="line333">333: </a>    <font color="#4169E1">if</font> (d-&gt;nconv+d-&gt;npreconv &lt; d-&gt;nev &amp;&amp; (t || d-&gt;npreconv == 0)) <font color="#4169E1">return</font> 0;
+<a name="line334">334: </a>  }
+
+<a name="line336">336: </a>  <font color="#B22222">/* If some eigenpairs were converged, lock them  */</font>
+<a name="line337">337: </a>  <font color="#4169E1">if</font> (d-&gt;npreconv &gt; 0) {
+<a name="line338">338: </a>    i = d-&gt;npreconv;
+<a name="line339">339: </a>    dvd_updateV_conv_gen(d);
+
+<a name="line341">341: </a>    <font color="#B22222">/* If some eigenpair was locked, exit */</font>
+<a name="line342">342: </a>    <font color="#4169E1">if</font> (i &gt; d-&gt;npreconv) <font color="#4169E1">return</font> 0;
+<a name="line343">343: </a>  }
+
+<a name="line345">345: </a>  <font color="#B22222">/* Else, a restarting is performed */</font>
+<a name="line346">346: </a>  dvd_updateV_restart_gen(d);
+<a name="line347">347: </a>  <font color="#4169E1">return</font> 0;
+<a name="line348">348: </a>}
+
+<a name="line350">350: </a><strong><font color="#4169E1"><a name="dvd_managementV_basic"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> dvd_managementV_basic(dvdDashboard *d,dvdBlackboard *b,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> bs,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> mpd,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> min_size_V,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> plusk,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> harm,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> allResiduals)</font></strong>
+<a name="line351">351: </a>{
+<a name="line352">352: </a>  dvdManagV_basic *data;
+<a name="line353">353: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line354">354: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>       her_probl,std_probl;
+<a name="line355">355: </a><font color="#A020F0">#endif</font>
+
+<a name="line357">357: </a>  <font color="#B22222">/* Setting configuration constrains */</font>
+<a name="line358">358: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line359">359: </a>  <font color="#B22222">/* if the last converged eigenvalue is complex its conjugate pair is also</font>
+<a name="line360">360: </a><font color="#B22222">     converged */</font>
+<a name="line361">361: </a>  her_probl = DVD_IS(d-&gt;sEP,DVD_EP_HERMITIAN)? <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>: <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line362">362: </a>  std_probl = DVD_IS(d-&gt;sEP,DVD_EP_STD)? <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>: <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line363">363: </a>  b-&gt;max_size_X = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(b-&gt;max_size_X,bs+((her_probl &amp;&amp; std_probl)?0:1));
+<a name="line364">364: </a><font color="#A020F0">#else</font>
+<a name="line365">365: </a>  b-&gt;max_size_X = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(b-&gt;max_size_X,bs);
+<a name="line366">366: </a><font color="#A020F0">#endif</font>
+
+<a name="line368">368: </a>  b-&gt;max_size_V = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(b-&gt;max_size_V,mpd);
+<a name="line369">369: </a>  min_size_V = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(min_size_V,mpd-bs);
+<a name="line370">370: </a>  b-&gt;size_V = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(b-&gt;size_V,b-&gt;max_size_V+b-&gt;max_size_P+b-&gt;max_nev);
+<a name="line371">371: </a>  b-&gt;max_size_oldX = plusk;
+
+<a name="line373">373: </a>  <font color="#B22222">/* Setup the step */</font>
+<a name="line374">374: </a>  <font color="#4169E1">if</font> (b-&gt;state &gt;= DVD_STATE_CONF) {
+<a name="line375">375: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;data);
+<a name="line376">376: </a>    data-&gt;mpd = b-&gt;max_size_V;
+<a name="line377">377: </a>    data-&gt;min_size_V = min_size_V;
+<a name="line378">378: </a>    d-&gt;bs = bs;
+<a name="line379">379: </a>    data-&gt;plusk = plusk;
+<a name="line380">380: </a>    data-&gt;allResiduals = allResiduals;
+
+<a name="line382">382: </a>    d-&gt;eigr = d-&gt;eps-&gt;eigr;
+<a name="line383">383: </a>    d-&gt;eigi = d-&gt;eps-&gt;eigi;
+<a name="line384">384: </a>    d-&gt;errest = d-&gt;eps-&gt;errest;
+<a name="line385">385: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(d-&gt;eps-&gt;ncv,&amp;d-&gt;real_nR);
+<a name="line386">386: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(d-&gt;eps-&gt;ncv,&amp;d-&gt;real_nX);
+<a name="line387">387: </a>    <font color="#4169E1">if</font> (plusk &gt; 0) <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateSeqDense.html#MatCreateSeqDense">MatCreateSeqDense</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,d-&gt;eps-&gt;ncv,d-&gt;eps-&gt;ncv,NULL,&amp;data-&gt;oldU);
+<a name="line388">388: </a>    <font color="#4169E1">else</font> data-&gt;oldU = NULL;
+<a name="line389">389: </a>    <font color="#4169E1">if</font> (harm &amp;&amp; plusk&gt;0) <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateSeqDense.html#MatCreateSeqDense">MatCreateSeqDense</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,d-&gt;eps-&gt;ncv,d-&gt;eps-&gt;ncv,NULL,&amp;data-&gt;oldV);
+<a name="line390">390: </a>    <font color="#4169E1">else</font> data-&gt;oldV = NULL;
+
+<a name="line392">392: </a>    data-&gt;old_updateV_data = d-&gt;updateV_data;
+<a name="line393">393: </a>    d-&gt;updateV_data = data;
+<a name="line394">394: </a>    data-&gt;old_isRestarting = d-&gt;isRestarting;
+<a name="line395">395: </a>    d-&gt;isRestarting = dvd_isrestarting_fullV;
+<a name="line396">396: </a>    d-&gt;updateV = dvd_updateV_extrapol;
+<a name="line397">397: </a>    d-&gt;preTestConv = dvd_updateV_testConv;
+<a name="line398">398: </a>    EPSDavidsonFLAdd(&amp;d-&gt;startList,dvd_updateV_start);
+<a name="line399">399: </a>    EPSDavidsonFLAdd(&amp;d-&gt;destroyList,dvd_managementV_basic_d);
+<a name="line400">400: </a>  }
+<a name="line401">401: </a>  <font color="#4169E1">return</font> 0;
+<a name="line402">402: </a>}
+</pre>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+<center><a href="ex23f90.F90">Actual source code: ex23f90.F90</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/mfn/tutorials/ex23f90.F90.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:24+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/mfn/tutorials/ex23f90.F90.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a>!
+<a name="line2">  2: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line3">  3: </a>!  SLEPc - Scalable Library <font color="#4169E1">for</font> Eigenvalue Problem Computations
+<a name="line4">  4: </a>!  Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain
+<a name="line5">  5: </a>!
+<a name="line6">  6: </a>!  This file is part of SLEPc.
+<a name="line7">  7: </a>!  SLEPc is distributed under a 2-clause BSD license (see LICENSE).
+<a name="line8">  8: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line9">  9: </a>!
+<a name="line10"> 10: </a>!  Program usage: mpiexec -n &lt;np&gt; ./ex23f90 [-help] [-t &lt;t&gt;] [-m &lt;m&gt;] [SLEPc opts]
+<a name="line11"> 11: </a>!
+<a name="line12"> 12: </a>!  Description: Computes exp(t*A)*v <font color="#4169E1">for</font> a matrix from a Markov model.
+<a name="line13"> 13: </a>!  This is the Fortran90 equivalent to ex23.c
+<a name="line14"> 14: </a>!
+<a name="line15"> 15: </a>!  The command line options are:
+<a name="line16"> 16: </a>!    -t &lt;t&gt;, where &lt;t&gt; = time parameter (multiplies the matrix)
+<a name="line17"> 17: </a>!    -m &lt;m&gt;, where &lt;m&gt; = number of grid subdivisions in each dimension
+<a name="line18"> 18: </a>!
+<a name="line19"> 19: </a>! ----------------------------------------------------------------------
+<a name="line20"> 20: </a>!
+<a name="line21"> 21: </a>      program main
+<a name="line22"> 22: </a>#include <A href="../../../include/slepc/finclude/slepcmfn.h.html">&lt;slepc/finclude/slepcmfn.h&gt;</A>
+<a name="line23"> 23: </a>      use slepcmfn
+<a name="line24"> 24: </a>      implicit none
+
+<a name="line26"> 26: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line27"> 27: </a>!     Declarations
+<a name="line28"> 28: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line29"> 29: </a>!
+<a name="line30"> 30: </a>!  Variables:
+<a name="line31"> 31: </a>!     A      problem matrix
+<a name="line32"> 32: </a>!     mfn    matrix function solver context
+
+<a name="line34"> 34: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A
+<a name="line35"> 35: </a>      <a href="../../../docs/manualpages/MFN/MFN.html#MFN">MFN</a>            mfn
+<a name="line36"> 36: </a>      <a href="../../../docs/manualpages/FN/FN.html#FN">FN</a>             f
+<a name="line37"> 37: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      tol, norm, cst, pd, pu
+<a name="line38"> 38: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    t, z
+<a name="line39"> 39: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            v, y
+<a name="line40"> 40: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       N, m, ncv, maxit, its, ii, jj
+<a name="line41"> 41: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i, j, jmax, ix, Istart, Iend
+<a name="line42"> 42: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    rank
+<a name="line43"> 43: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+<a name="line44"> 44: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg
+<a name="line45"> 45: </a>      <a href="../../../docs/manualpages/MFN/MFNConvergedReason.html#MFNConvergedReason">MFNConvergedReason</a> reason
+
+<a name="line47"> 47: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line48"> 48: </a>!     Beginning of program
+<a name="line49"> 49: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line51"> 51: </a>      PetscCallA(<a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>(PETSC_NULL_CHARACTER,ierr))
+<a name="line52"> 52: </a>      PetscCallMPIA(<a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,rank,ierr))
+<a name="line53"> 53: </a>      m = 15
+<a name="line54"> 54: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetInt.html#PetscOptionsGetInt">PetscOptionsGetInt</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-m',m,flg,ierr))
+<a name="line55"> 55: </a>      t = 2.0
+<a name="line56"> 56: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetScalar.html#PetscOptionsGetScalar">PetscOptionsGetScalar</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-t',t,flg,ierr))
+<a name="line57"> 57: </a>      N = m*(m+1)/2
+<a name="line58"> 58: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line59"> 59: </a>        write(*,100) N, m
+<a name="line60"> 60: </a>      endif
+<a name="line61"> 61: </a> 100  format (/'Markov y=exp(t*A)*e_1, N=',I6,' (m=',I4,')')
+
+<a name="line63"> 63: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line64"> 64: </a>!     Compute the transition probability matrix, A
+<a name="line65"> 65: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line67"> 67: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,A,ierr))
+<a name="line68"> 68: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(A,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,N,N,ierr))
+<a name="line69"> 69: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(A,ierr))
+<a name="line70"> 70: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(A,ierr))
+<a name="line71"> 71: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(A,Istart,Iend,ierr))
+<a name="line72"> 72: </a>      ix = 0
+<a name="line73"> 73: </a>      cst = 0.5/real(m-1)
+<a name="line74"> 74: </a>      <font color="#4169E1">do</font> i=1,m
+<a name="line75"> 75: </a>        jmax = m-i+1
+<a name="line76"> 76: </a>        <font color="#4169E1">do</font> j=1,jmax
+<a name="line77"> 77: </a>          ix = ix + 1
+<a name="line78"> 78: </a>          ii = ix - 1
+<a name="line79"> 79: </a>          <font color="#4169E1">if</font> (ix-1.ge.Istart .and. ix.le.Iend) then
+<a name="line80"> 80: </a>            <font color="#4169E1">if</font> (j.ne.jmax) then
+<a name="line81"> 81: </a>              pd = cst*(i+j-1)
+<a name="line82"> 82: </a>              !** north
+<a name="line83"> 83: </a>              <font color="#4169E1">if</font> (i.eq.1) then
+<a name="line84"> 84: </a>                z = 2.0*pd
+<a name="line85"> 85: </a>              <font color="#4169E1">else</font>
+<a name="line86"> 86: </a>                z = pd
+<a name="line87"> 87: </a>              end <font color="#4169E1">if</font>
+<a name="line88"> 88: </a>              PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A,ii,ix,z,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line89"> 89: </a>              !** east
+<a name="line90"> 90: </a>              <font color="#4169E1">if</font> (j.eq.1) then
+<a name="line91"> 91: </a>                z = 2.0*pd
+<a name="line92"> 92: </a>              <font color="#4169E1">else</font>
+<a name="line93"> 93: </a>                z = pd
+<a name="line94"> 94: </a>              end <font color="#4169E1">if</font>
+<a name="line95"> 95: </a>              jj = ix+jmax-1
+<a name="line96"> 96: </a>              PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A,ii,jj,z,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line97"> 97: </a>            end <font color="#4169E1">if</font>
+
+<a name="line99"> 99: </a>            !** south
+<a name="line100">100: </a>            pu = 0.5 - cst*(i+j-3)
+<a name="line101">101: </a>            z = pu
+<a name="line102">102: </a>            <font color="#4169E1">if</font> (j.gt.1) then
+<a name="line103">103: </a>              jj = ix-2
+<a name="line104">104: </a>              PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A,ii,jj,z,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line105">105: </a>            end <font color="#4169E1">if</font>
+<a name="line106">106: </a>            !** west
+<a name="line107">107: </a>            <font color="#4169E1">if</font> (i.gt.1) then
+<a name="line108">108: </a>              jj = ix-jmax-2
+<a name="line109">109: </a>              PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValue.html#MatSetValue">MatSetValue</a>(A,ii,jj,z,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line110">110: </a>            end <font color="#4169E1">if</font>
+<a name="line111">111: </a>          end <font color="#4169E1">if</font>
+<a name="line112">112: </a>        end <font color="#4169E1">do</font>
+<a name="line113">113: </a>      end <font color="#4169E1">do</font>
+<a name="line114">114: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(A,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+<a name="line115">115: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(A,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr))
+
+<a name="line117">117: </a>!     ** Set v = e_1
+<a name="line118">118: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateVecs.html#MatCreateVecs">MatCreateVecs</a>(A,y,v,ierr))
+<a name="line119">119: </a>      ii = 0
+<a name="line120">120: </a>      z = 1.0
+<a name="line121">121: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Vec/VecSetValue.html#VecSetValue">VecSetValue</a>(v,ii,z,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr))
+<a name="line122">122: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Vec/VecAssemblyBegin.html#VecAssemblyBegin">VecAssemblyBegin</a>(v,ierr))
+<a name="line123">123: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Vec/VecAssemblyEnd.html#VecAssemblyEnd">VecAssemblyEnd</a>(v,ierr))
+
+<a name="line125">125: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line126">126: </a>!     Create the solver and set various options
+<a name="line127">127: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line129">129: </a>!     ** Create matrix function solver context
+<a name="line130">130: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNCreate.html#MFNCreate">MFNCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,mfn,ierr))
+
+<a name="line132">132: </a>!     ** Set operator matrix, the function to compute, and other options
+<a name="line133">133: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNSetOperator.html#MFNSetOperator">MFNSetOperator</a>(mfn,A,ierr))
+<a name="line134">134: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNGetFN.html#MFNGetFN">MFNGetFN</a>(mfn,f,ierr))
+<a name="line135">135: </a>      PetscCallA(<a href="../../../docs/manualpages/FN/FNSetType.html#FNSetType">FNSetType</a>(f,FNEXP,ierr))
+<a name="line136">136: </a>      z = 1.0
+<a name="line137">137: </a>      PetscCallA(<a href="../../../docs/manualpages/FN/FNSetScale.html#FNSetScale">FNSetScale</a>(f,t,z,ierr))
+<a name="line138">138: </a>      tol = 0.0000001
+<a name="line139">139: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNSetTolerances.html#MFNSetTolerances">MFNSetTolerances</a>(mfn,tol,PETSC_DEFAULT_INTEGER,ierr))
+
+<a name="line141">141: </a>!     ** Set solver parameters at runtime
+<a name="line142">142: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNSetFromOptions.html#MFNSetFromOptions">MFNSetFromOptions</a>(mfn,ierr))
+
+<a name="line144">144: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line145">145: </a>!     Solve the problem, y=exp(t*A)*v
+<a name="line146">146: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line148">148: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNSolve.html#MFNSolve">MFNSolve</a>(mfn,v,y,ierr))
+<a name="line149">149: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNGetConvergedReason.html#MFNGetConvergedReason">MFNGetConvergedReason</a>(mfn,reason,ierr))
+<a name="line150">150: </a>      <font color="#4169E1">if</font> (reason.lt.0) then; <a href="https://petsc.org/release/docs/manualpages/Sys/SETERRA.html#SETERRA">SETERRA</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,1,'Solver did not converge'); endif
+<a name="line151">151: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Vec/VecNorm.html#VecNorm">VecNorm</a>(y,<a href="https://petsc.org/release/docs/manualpages/Vec/NORM_2.html#NORM_2">NORM_2</a>,norm,ierr))
+
+<a name="line153">153: </a>!     ** Optional: Get some information from the solver and display it
+<a name="line154">154: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNGetIterationNumber.html#MFNGetIterationNumber">MFNGetIterationNumber</a>(mfn,its,ierr))
+<a name="line155">155: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line156">156: </a>        write(*,120) its
+<a name="line157">157: </a>      endif
+<a name="line158">158: </a> 120  format (' Number of iterations of the method: ',I4)
+<a name="line159">159: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNGetDimensions.html#MFNGetDimensions">MFNGetDimensions</a>(mfn,ncv,ierr))
+<a name="line160">160: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line161">161: </a>        write(*,130) ncv
+<a name="line162">162: </a>      endif
+<a name="line163">163: </a> 130  format (' Subspace dimension:',I4)
+<a name="line164">164: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNGetTolerances.html#MFNGetTolerances">MFNGetTolerances</a>(mfn,tol,maxit,ierr))
+<a name="line165">165: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line166">166: </a>        write(*,140) tol,maxit
+<a name="line167">167: </a>      endif
+<a name="line168">168: </a> 140  format (' Stopping condition: tol=',f10.7,' maxit=',I4)
+
+<a name="line170">170: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line171">171: </a>!     Display solution and clean up
+<a name="line172">172: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line174">174: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line175">175: </a>        write(*,150) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRealPart.html#PetscRealPart">PetscRealPart</a>(t),norm
+<a name="line176">176: </a>      endif
+<a name="line177">177: </a> 150  format (' Computed vector at time t=',f4.1,' has norm ',f8.5)
+
+<a name="line179">179: </a>      PetscCallA(<a href="../../../docs/manualpages/MFN/MFNDestroy.html#MFNDestroy">MFNDestroy</a>(mfn,ierr))
+<a name="line180">180: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(A,ierr))
+<a name="line181">181: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(v,ierr))
+<a name="line182">182: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(y,ierr))
+<a name="line183">183: </a>      PetscCallA(<a href="../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>(ierr))
+<a name="line184">184: </a>      end
+
+<a name="line186">186: </a>!<font color="#B22222">/*TEST</font>
+<a name="line187">187: </a><font color="#B22222">!</font>
+<a name="line188">188: </a><font color="#B22222">!   test:</font>
+<a name="line189">189: </a><font color="#B22222">!      suffix: 1</font>
+<a name="line190">190: </a><font color="#B22222">!      args: -mfn_ncv 6</font>
+<a name="line191">191: </a><font color="#B22222">!</font>
+<a name="line192">192: </a><font color="#B22222">!TEST*/</font>
+</pre>
+</body>
+
+</html>

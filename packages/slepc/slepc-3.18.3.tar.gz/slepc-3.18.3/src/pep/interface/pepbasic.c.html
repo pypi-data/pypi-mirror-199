@@ -1,0 +1,723 @@
+<center><a href="pepbasic.c">Actual source code: pepbasic.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/pep/interface/pepbasic.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:58+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/pep/interface/pepbasic.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   Basic <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> routines</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../include/slepc/private/pepimpl.h.html">&lt;slepc/private/pepimpl.h&gt;</A>
+
+<a name="line16"> 16: </a><font color="#B22222">/* Logging support */</font>
+<a name="line17"> 17: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscClassId.html#PetscClassId">PetscClassId</a>      PEP_CLASSID = 0;
+<a name="line18"> 18: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscLogEvent.html#PetscLogEvent">PetscLogEvent</a>     PEP_SetUp = 0,PEP_Solve = 0,PEP_Refine = 0,PEP_CISS_SVD = 0;
+
+<a name="line20"> 20: </a><font color="#B22222">/* List of registered <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> routines */</font>
+<a name="line21"> 21: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionList.html#PetscFunctionList">PetscFunctionList</a> PEPList = NULL;
+<a name="line22"> 22: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         PEPRegisterAllCalled = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line24"> 24: </a><font color="#B22222">/* List of registered <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> monitors */</font>
+<a name="line25"> 25: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionList.html#PetscFunctionList">PetscFunctionList</a> PEPMonitorList              = NULL;
+<a name="line26"> 26: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionList.html#PetscFunctionList">PetscFunctionList</a> PEPMonitorCreateList        = NULL;
+<a name="line27"> 27: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionList.html#PetscFunctionList">PetscFunctionList</a> PEPMonitorDestroyList       = NULL;
+<a name="line28"> 28: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         PEPMonitorRegisterAllCalled = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line30"> 30: </a><font color="#B22222">/*@</font>
+<a name="line31"> 31: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a> - Creates the default <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> context.</font>
+
+<a name="line33"> 33: </a><font color="#B22222">   Collective</font>
+
+<a name="line35"> 35: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line36"> 36: </a><font color="#B22222">.  comm - MPI communicator</font>
+
+<a name="line38"> 38: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line39"> 39: </a><font color="#B22222">.  outpep - location to put the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> context</font>
+
+<a name="line41"> 41: </a><font color="#B22222">   Note:</font>
+<a name="line42"> 42: </a><font color="#B22222">   The default <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> type is PEPTOAR</font>
+
+<a name="line44"> 44: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line46"> 46: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a>(), <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>(), <a href="../../../docs/manualpages/PEP/PEPDestroy.html#PEPDestroy">PEPDestroy</a>(), <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a></font>
+<a name="line47"> 47: </a><font color="#B22222">@*/</font>
+<a name="line48"> 48: </a><strong><font color="#4169E1"><a name="PEPCreate"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a> comm,<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> *outpep)</font></strong>
+<a name="line49"> 49: </a>{
+<a name="line50"> 50: </a>  <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>            pep;
+
+<a name="line53"> 53: </a>  *outpep = NULL;
+<a name="line54"> 54: </a>  <a href="../../../docs/manualpages/PEP/PEPInitializePackage.html#PEPInitializePackage">PEPInitializePackage</a>();
+<a name="line55"> 55: </a>  <a href="../../../docs/manualpages/sys/SlepcHeaderCreate.html#SlepcHeaderCreate">SlepcHeaderCreate</a>(pep,PEP_CLASSID,<font color="#666666">"<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>"</font>,<font color="#666666">"Polynomial Eigenvalue Problem"</font>,<font color="#666666">"<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>"</font>,comm,<a href="../../../docs/manualpages/PEP/PEPDestroy.html#PEPDestroy">PEPDestroy</a>,<a href="../../../docs/manualpages/PEP/PEPView.html#PEPView">PEPView</a>);
+
+<a name="line57"> 57: </a>  pep-&gt;max_it          = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>;
+<a name="line58"> 58: </a>  pep-&gt;nev             = 1;
+<a name="line59"> 59: </a>  pep-&gt;ncv             = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>;
+<a name="line60"> 60: </a>  pep-&gt;mpd             = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>;
+<a name="line61"> 61: </a>  pep-&gt;nini            = 0;
+<a name="line62"> 62: </a>  pep-&gt;target          = 0.0;
+<a name="line63"> 63: </a>  pep-&gt;tol             = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>;
+<a name="line64"> 64: </a>  pep-&gt;conv            = <a href="../../../docs/manualpages/PEP/PEPConv.html#PEPConv">PEP_CONV_REL</a>;
+<a name="line65"> 65: </a>  pep-&gt;stop            = <a href="../../../docs/manualpages/PEP/PEPStop.html#PEPStop">PEP_STOP_BASIC</a>;
+<a name="line66"> 66: </a>  pep-&gt;which           = (<a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEPWhich</a>)0;
+<a name="line67"> 67: </a>  pep-&gt;basis           = <a href="../../../docs/manualpages/PEP/PEPBasis.html#PEPBasis">PEP_BASIS_MONOMIAL</a>;
+<a name="line68"> 68: </a>  pep-&gt;problem_type    = (<a href="../../../docs/manualpages/PEP/PEPProblemType.html#PEPProblemType">PEPProblemType</a>)0;
+<a name="line69"> 69: </a>  pep-&gt;scale           = <a href="../../../docs/manualpages/PEP/PEPScale.html#PEPScale">PEP_SCALE_NONE</a>;
+<a name="line70"> 70: </a>  pep-&gt;sfactor         = 1.0;
+<a name="line71"> 71: </a>  pep-&gt;dsfactor        = 1.0;
+<a name="line72"> 72: </a>  pep-&gt;sits            = 5;
+<a name="line73"> 73: </a>  pep-&gt;slambda         = 1.0;
+<a name="line74"> 74: </a>  pep-&gt;refine          = <a href="../../../docs/manualpages/PEP/PEPRefine.html#PEPRefine">PEP_REFINE_NONE</a>;
+<a name="line75"> 75: </a>  pep-&gt;npart           = 1;
+<a name="line76"> 76: </a>  pep-&gt;rtol            = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>;
+<a name="line77"> 77: </a>  pep-&gt;rits            = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>;
+<a name="line78"> 78: </a>  pep-&gt;scheme          = (<a href="../../../docs/manualpages/PEP/PEPRefineScheme.html#PEPRefineScheme">PEPRefineScheme</a>)0;
+<a name="line79"> 79: </a>  pep-&gt;extract         = (<a href="../../../docs/manualpages/PEP/PEPExtract.html#PEPExtract">PEPExtract</a>)0;
+<a name="line80"> 80: </a>  pep-&gt;trackall        = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line82"> 82: </a>  pep-&gt;converged       = PEPConvergedRelative;
+<a name="line83"> 83: </a>  pep-&gt;convergeduser   = NULL;
+<a name="line84"> 84: </a>  pep-&gt;convergeddestroy= NULL;
+<a name="line85"> 85: </a>  pep-&gt;stopping        = <a href="../../../docs/manualpages/PEP/PEPStoppingBasic.html#PEPStoppingBasic">PEPStoppingBasic</a>;
+<a name="line86"> 86: </a>  pep-&gt;stoppinguser    = NULL;
+<a name="line87"> 87: </a>  pep-&gt;stoppingdestroy = NULL;
+<a name="line88"> 88: </a>  pep-&gt;convergedctx    = NULL;
+<a name="line89"> 89: </a>  pep-&gt;stoppingctx     = NULL;
+<a name="line90"> 90: </a>  pep-&gt;numbermonitors  = 0;
+
+<a name="line92"> 92: </a>  pep-&gt;st              = NULL;
+<a name="line93"> 93: </a>  pep-&gt;ds              = NULL;
+<a name="line94"> 94: </a>  pep-&gt;V               = NULL;
+<a name="line95"> 95: </a>  pep-&gt;rg              = NULL;
+<a name="line96"> 96: </a>  pep-&gt;A               = NULL;
+<a name="line97"> 97: </a>  pep-&gt;nmat            = 0;
+<a name="line98"> 98: </a>  pep-&gt;Dl              = NULL;
+<a name="line99"> 99: </a>  pep-&gt;Dr              = NULL;
+<a name="line100">100: </a>  pep-&gt;<a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>              = NULL;
+<a name="line101">101: </a>  pep-&gt;eigr            = NULL;
+<a name="line102">102: </a>  pep-&gt;eigi            = NULL;
+<a name="line103">103: </a>  pep-&gt;errest          = NULL;
+<a name="line104">104: </a>  pep-&gt;perm            = NULL;
+<a name="line105">105: </a>  pep-&gt;pbc             = NULL;
+<a name="line106">106: </a>  pep-&gt;solvematcoeffs  = NULL;
+<a name="line107">107: </a>  pep-&gt;nwork           = 0;
+<a name="line108">108: </a>  pep-&gt;work            = NULL;
+<a name="line109">109: </a>  pep-&gt;refineksp       = NULL;
+<a name="line110">110: </a>  pep-&gt;refinesubc      = NULL;
+<a name="line111">111: </a>  pep-&gt;data            = NULL;
+
+<a name="line113">113: </a>  pep-&gt;state           = PEP_STATE_INITIAL;
+<a name="line114">114: </a>  pep-&gt;nconv           = 0;
+<a name="line115">115: </a>  pep-&gt;its             = 0;
+<a name="line116">116: </a>  pep-&gt;n               = 0;
+<a name="line117">117: </a>  pep-&gt;nloc            = 0;
+<a name="line118">118: </a>  pep-&gt;nrma            = NULL;
+<a name="line119">119: </a>  pep-&gt;sfactor_set     = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line120">120: </a>  pep-&gt;lineariz        = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line121">121: </a>  pep-&gt;reason          = <a href="../../../docs/manualpages/PEP/PEPConvergedReason.html#PEPConvergedReason">PEP_CONVERGED_ITERATING</a>;
+
+<a name="line123">123: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;pep-&gt;sc);
+<a name="line124">124: </a>  *outpep = pep;
+<a name="line125">125: </a>  <font color="#4169E1">return</font> 0;
+<a name="line126">126: </a>}
+
+<a name="line128">128: </a><font color="#B22222">/*@C</font>
+<a name="line129">129: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetType.html#PEPSetType">PEPSetType</a> - Selects the particular solver to be used in the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> object.</font>
+
+<a name="line131">131: </a><font color="#B22222">   Logically Collective on pep</font>
+
+<a name="line133">133: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line134">134: </a><font color="#B22222">+  pep      - the polynomial eigensolver context</font>
+<a name="line135">135: </a><font color="#B22222">-  type     - a known method</font>
+
+<a name="line137">137: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line138">138: </a><font color="#B22222">.  -pep_type &lt;method&gt; - Sets the method; use -help for a list</font>
+<a name="line139">139: </a><font color="#B22222">    of available methods</font>
+
+<a name="line141">141: </a><font color="#B22222">   Notes:</font>
+<a name="line142">142: </a><font color="#B22222">   See "slepc/include/slepcpep.h" for available methods. The default</font>
+<a name="line143">143: </a><font color="#B22222">   is PEPTOAR.</font>
+
+<a name="line145">145: </a><font color="#B22222">   Normally, it is best to use the <a href="../../../docs/manualpages/PEP/PEPSetFromOptions.html#PEPSetFromOptions">PEPSetFromOptions</a>() command and</font>
+<a name="line146">146: </a><font color="#B22222">   then set the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> type from the options database rather than by using</font>
+<a name="line147">147: </a><font color="#B22222">   this routine.  Using the options database provides the user with</font>
+<a name="line148">148: </a><font color="#B22222">   maximum flexibility in evaluating the different available methods.</font>
+<a name="line149">149: </a><font color="#B22222">   The <a href="../../../docs/manualpages/PEP/PEPSetType.html#PEPSetType">PEPSetType</a>() routine is provided for those situations where it</font>
+<a name="line150">150: </a><font color="#B22222">   is necessary to set the iterative solver independently of the command</font>
+<a name="line151">151: </a><font color="#B22222">   line or options database.</font>
+
+<a name="line153">153: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line155">155: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPType.html#PEPType">PEPType</a></font>
+<a name="line156">156: </a><font color="#B22222">@*/</font>
+<a name="line157">157: </a><strong><font color="#4169E1"><a name="PEPSetType"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetType.html#PEPSetType">PEPSetType</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/PEP/PEPType.html#PEPType">PEPType</a> type)</font></strong>
+<a name="line158">158: </a>{
+<a name="line159">159: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*r)(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>);
+<a name="line160">160: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      match;
+
+
+<a name="line165">165: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,type,&amp;match);
+<a name="line166">166: </a>  <font color="#4169E1">if</font> (match) <font color="#4169E1">return</font> 0;
+
+<a name="line168">168: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListFind.html#PetscFunctionListFind">PetscFunctionListFind</a>(PEPList,type,&amp;r);
+
+<a name="line171">171: </a>  PetscTryTypeMethod(pep,destroy);
+<a name="line172">172: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMemzero.html#PetscMemzero">PetscMemzero</a>(pep-&gt;ops,<font color="#4169E1">sizeof</font>(<font color="#4169E1">struct _PEPOps</font>));
+
+<a name="line174">174: </a>  pep-&gt;state = PEP_STATE_INITIAL;
+<a name="line175">175: </a>  PetscObjectChangeTypeName((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,type);
+<a name="line176">176: </a>  (*r)(pep);
+<a name="line177">177: </a>  <font color="#4169E1">return</font> 0;
+<a name="line178">178: </a>}
+
+<a name="line180">180: </a><font color="#B22222">/*@C</font>
+<a name="line181">181: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetType.html#PEPGetType">PEPGetType</a> - Gets the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> type as a string from the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> object.</font>
+
+<a name="line183">183: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line185">185: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line186">186: </a><font color="#B22222">.  pep - the eigensolver context</font>
+
+<a name="line188">188: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line189">189: </a><font color="#B22222">.  type - name of <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> method</font>
+
+<a name="line191">191: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line193">193: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetType.html#PEPSetType">PEPSetType</a>()</font>
+<a name="line194">194: </a><font color="#B22222">@*/</font>
+<a name="line195">195: </a><strong><font color="#4169E1"><a name="PEPGetType"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetType.html#PEPGetType">PEPGetType</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/PEP/PEPType.html#PEPType">PEPType</a> *type)</font></strong>
+<a name="line196">196: </a>{
+<a name="line199">199: </a>  *type = ((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;type_name;
+<a name="line200">200: </a>  <font color="#4169E1">return</font> 0;
+<a name="line201">201: </a>}
+
+<a name="line203">203: </a><font color="#B22222">/*@C</font>
+<a name="line204">204: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPRegister.html#PEPRegister">PEPRegister</a> - Adds a method to the polynomial eigenproblem solver package.</font>
+
+<a name="line206">206: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line208">208: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line209">209: </a><font color="#B22222">+  name - name of a new user-defined solver</font>
+<a name="line210">210: </a><font color="#B22222">-  function - routine to create the solver context</font>
+
+<a name="line212">212: </a><font color="#B22222">   Notes:</font>
+<a name="line213">213: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPRegister.html#PEPRegister">PEPRegister</a>() may be called multiple times to add several user-defined solvers.</font>
+
+<a name="line215">215: </a><font color="#B22222">   Sample usage:</font>
+<a name="line216">216: </a><font color="#B22222">.vb</font>
+<a name="line217">217: </a><font color="#B22222">    <a href="../../../docs/manualpages/PEP/PEPRegister.html#PEPRegister">PEPRegister</a>("my_solver",MySolverCreate);</font>
+<a name="line218">218: </a><font color="#B22222">.ve</font>
+
+<a name="line220">220: </a><font color="#B22222">   Then, your solver can be chosen with the procedural interface via</font>
+<a name="line221">221: </a><font color="#B22222">$     <a href="../../../docs/manualpages/PEP/PEPSetType.html#PEPSetType">PEPSetType</a>(pep,"my_solver")</font>
+<a name="line222">222: </a><font color="#B22222">   or at runtime via the option</font>
+<a name="line223">223: </a><font color="#B22222">$     -pep_type my_solver</font>
+
+<a name="line225">225: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line227">227: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPRegisterAll.html#PEPRegisterAll">PEPRegisterAll</a>()</font>
+<a name="line228">228: </a><font color="#B22222">@*/</font>
+<a name="line229">229: </a><strong><font color="#4169E1"><a name="PEPRegister"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPRegister.html#PEPRegister">PEPRegister</a>(const char *name,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*function)(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>))</font></strong>
+<a name="line230">230: </a>{
+<a name="line231">231: </a>  <a href="../../../docs/manualpages/PEP/PEPInitializePackage.html#PEPInitializePackage">PEPInitializePackage</a>();
+<a name="line232">232: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListAdd.html#PetscFunctionListAdd">PetscFunctionListAdd</a>(&amp;PEPList,name,function);
+<a name="line233">233: </a>  <font color="#4169E1">return</font> 0;
+<a name="line234">234: </a>}
+
+<a name="line236">236: </a><font color="#B22222">/*@C</font>
+<a name="line237">237: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPMonitorRegister.html#PEPMonitorRegister">PEPMonitorRegister</a> - Adds <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> monitor routine.</font>
+
+<a name="line239">239: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line241">241: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line242">242: </a><font color="#B22222">+  name    - name of a new monitor routine</font>
+<a name="line243">243: </a><font color="#B22222">.  vtype   - a <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerType.html#PetscViewerType">PetscViewerType</a> for the output</font>
+<a name="line244">244: </a><font color="#B22222">.  format  - a <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PetscViewerFormat</a> for the output</font>
+<a name="line245">245: </a><font color="#B22222">.  monitor - monitor routine</font>
+<a name="line246">246: </a><font color="#B22222">.  create  - creation routine, or NULL</font>
+<a name="line247">247: </a><font color="#B22222">-  destroy - destruction routine, or NULL</font>
+
+<a name="line249">249: </a><font color="#B22222">   Notes:</font>
+<a name="line250">250: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPMonitorRegister.html#PEPMonitorRegister">PEPMonitorRegister</a>() may be called multiple times to add several user-defined monitors.</font>
+
+<a name="line252">252: </a><font color="#B22222">   Sample usage:</font>
+<a name="line253">253: </a><font color="#B22222">.vb</font>
+<a name="line254">254: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPMonitorRegister.html#PEPMonitorRegister">PEPMonitorRegister</a>("my_monitor",<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERASCII.html#PETSCVIEWERASCII">PETSCVIEWERASCII</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>,MyMonitor,NULL,NULL);</font>
+<a name="line255">255: </a><font color="#B22222">.ve</font>
+
+<a name="line257">257: </a><font color="#B22222">   Then, your monitor can be chosen with the procedural interface via</font>
+<a name="line258">258: </a><font color="#B22222">$      <a href="../../../docs/manualpages/PEP/PEPMonitorSetFromOptions.html#PEPMonitorSetFromOptions">PEPMonitorSetFromOptions</a>(pep,"-pep_monitor_my_monitor","my_monitor",NULL)</font>
+<a name="line259">259: </a><font color="#B22222">   or at runtime via the option</font>
+<a name="line260">260: </a><font color="#B22222">$      -pep_monitor_my_monitor</font>
+
+<a name="line262">262: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line264">264: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPMonitorRegisterAll.html#PEPMonitorRegisterAll">PEPMonitorRegisterAll</a>()</font>
+<a name="line265">265: </a><font color="#B22222">@*/</font>
+<a name="line266">266: </a><strong><font color="#4169E1"><a name="PEPMonitorRegister"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPMonitorRegister.html#PEPMonitorRegister">PEPMonitorRegister</a>(const char name[],<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerType.html#PetscViewerType">PetscViewerType</a> vtype,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PetscViewerFormat</a> format,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*monitor)(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,PetscViewerAndFormat*),<a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*create)(<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PetscViewerFormat</a>,void*,PetscViewerAndFormat**),<a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*destroy)(PetscViewerAndFormat**))</font></strong>
+<a name="line267">267: </a>{
+<a name="line268">268: </a>  char           key[PETSC_MAX_PATH_LEN];
+
+<a name="line270">270: </a>  <a href="../../../docs/manualpages/PEP/PEPInitializePackage.html#PEPInitializePackage">PEPInitializePackage</a>();
+<a name="line271">271: </a>  SlepcMonitorMakeKey_Internal(name,vtype,format,key);
+<a name="line272">272: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListAdd.html#PetscFunctionListAdd">PetscFunctionListAdd</a>(&amp;PEPMonitorList,key,monitor);
+<a name="line273">273: </a>  <font color="#4169E1">if</font> (create)  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListAdd.html#PetscFunctionListAdd">PetscFunctionListAdd</a>(&amp;PEPMonitorCreateList,key,create);
+<a name="line274">274: </a>  <font color="#4169E1">if</font> (destroy) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListAdd.html#PetscFunctionListAdd">PetscFunctionListAdd</a>(&amp;PEPMonitorDestroyList,key,destroy);
+<a name="line275">275: </a>  <font color="#4169E1">return</font> 0;
+<a name="line276">276: </a>}
+
+<a name="line278">278: </a><font color="#B22222">/*@</font>
+<a name="line279">279: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPReset.html#PEPReset">PEPReset</a> - Resets the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> context to the initial state (prior to setup)</font>
+<a name="line280">280: </a><font color="#B22222">   and destroys any allocated <a href="https://petsc.org/release/docs/manualpages/Vec/Vecs.html#Vecs">Vecs</a> and Mats.</font>
+
+<a name="line282">282: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line284">284: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line285">285: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line287">287: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line289">289: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPDestroy.html#PEPDestroy">PEPDestroy</a>()</font>
+<a name="line290">290: </a><font color="#B22222">@*/</font>
+<a name="line291">291: </a><strong><font color="#4169E1"><a name="PEPReset"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPReset.html#PEPReset">PEPReset</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep)</font></strong>
+<a name="line292">292: </a>{
+<a name="line294">294: </a>  <font color="#4169E1">if</font> (!pep) <font color="#4169E1">return</font> 0;
+<a name="line295">295: </a>  PetscTryTypeMethod(pep,reset);
+<a name="line296">296: </a>  <font color="#4169E1">if</font> (pep-&gt;st) <a href="../../../docs/manualpages/ST/STReset.html#STReset">STReset</a>(pep-&gt;st);
+<a name="line297">297: </a>  <font color="#4169E1">if</font> (pep-&gt;refineksp) <a href="https://petsc.org/release/docs/manualpages/KSP/KSPReset.html#KSPReset">KSPReset</a>(pep-&gt;refineksp);
+<a name="line298">298: </a>  <font color="#4169E1">if</font> (pep-&gt;nmat) {
+<a name="line299">299: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroyMatrices.html#MatDestroyMatrices">MatDestroyMatrices</a>(pep-&gt;nmat,&amp;pep-&gt;A);
+<a name="line300">300: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree2.html#PetscFree2">PetscFree2</a>(pep-&gt;pbc,pep-&gt;nrma);
+<a name="line301">301: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(pep-&gt;solvematcoeffs);
+<a name="line302">302: </a>    pep-&gt;nmat = 0;
+<a name="line303">303: </a>  }
+<a name="line304">304: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;pep-&gt;Dl);
+<a name="line305">305: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;pep-&gt;Dr);
+<a name="line306">306: </a>  <a href="../../../docs/manualpages/BV/BVDestroy.html#BVDestroy">BVDestroy</a>(&amp;pep-&gt;V);
+<a name="line307">307: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroyVecs.html#VecDestroyVecs">VecDestroyVecs</a>(pep-&gt;nwork,&amp;pep-&gt;work);
+<a name="line308">308: </a>  pep-&gt;nwork = 0;
+<a name="line309">309: </a>  pep-&gt;state = PEP_STATE_INITIAL;
+<a name="line310">310: </a>  <font color="#4169E1">return</font> 0;
+<a name="line311">311: </a>}
+
+<a name="line313">313: </a><font color="#B22222">/*@C</font>
+<a name="line314">314: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPDestroy.html#PEPDestroy">PEPDestroy</a> - Destroys the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> context.</font>
+
+<a name="line316">316: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line318">318: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line319">319: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line321">321: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line323">323: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>(), <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a>(), <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>()</font>
+<a name="line324">324: </a><font color="#B22222">@*/</font>
+<a name="line325">325: </a><strong><font color="#4169E1"><a name="PEPDestroy"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPDestroy.html#PEPDestroy">PEPDestroy</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> *pep)</font></strong>
+<a name="line326">326: </a>{
+<a name="line327">327: </a>  <font color="#4169E1">if</font> (!*pep) <font color="#4169E1">return</font> 0;
+<a name="line329">329: </a>  <font color="#4169E1">if</font> (--((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)(*pep))-&gt;refct &gt; 0) { *pep = NULL; <font color="#4169E1">return</font> 0; }
+<a name="line330">330: </a>  <a href="../../../docs/manualpages/PEP/PEPReset.html#PEPReset">PEPReset</a>(*pep);
+<a name="line331">331: </a>  PetscTryTypeMethod(*pep,destroy);
+<a name="line332">332: </a>  <font color="#4169E1">if</font> ((*pep)-&gt;eigr) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree4.html#PetscFree4">PetscFree4</a>((*pep)-&gt;eigr,(*pep)-&gt;eigi,(*pep)-&gt;errest,(*pep)-&gt;perm);
+<a name="line333">333: </a>  <a href="../../../docs/manualpages/ST/STDestroy.html#STDestroy">STDestroy</a>(&amp;(*pep)-&gt;st);
+<a name="line334">334: </a>  <a href="../../../docs/manualpages/RG/RGDestroy.html#RGDestroy">RGDestroy</a>(&amp;(*pep)-&gt;rg);
+<a name="line335">335: </a>  <a href="../../../docs/manualpages/DS/DSDestroy.html#DSDestroy">DSDestroy</a>(&amp;(*pep)-&gt;ds);
+<a name="line336">336: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSPDestroy.html#KSPDestroy">KSPDestroy</a>(&amp;(*pep)-&gt;refineksp);
+<a name="line337">337: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommDestroy.html#PetscSubcommDestroy">PetscSubcommDestroy</a>(&amp;(*pep)-&gt;refinesubc);
+<a name="line338">338: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>((*pep)-&gt;sc);
+<a name="line339">339: </a>  <font color="#B22222">/* just in case the initial vectors have not been used */</font>
+<a name="line340">340: </a>  SlepcBasisDestroy_Private(&amp;(*pep)-&gt;nini,&amp;(*pep)-&gt;<a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>);
+<a name="line341">341: </a>  <font color="#4169E1">if</font> ((*pep)-&gt;convergeddestroy) (*(*pep)-&gt;convergeddestroy)((*pep)-&gt;convergedctx);
+<a name="line342">342: </a>  <a href="../../../docs/manualpages/PEP/PEPMonitorCancel.html#PEPMonitorCancel">PEPMonitorCancel</a>(*pep);
+<a name="line343">343: </a>  PetscHeaderDestroy(pep);
+<a name="line344">344: </a>  <font color="#4169E1">return</font> 0;
+<a name="line345">345: </a>}
+
+<a name="line347">347: </a><font color="#B22222">/*@</font>
+<a name="line348">348: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetBV.html#PEPSetBV">PEPSetBV</a> - Associates a basis vectors object to the polynomial eigensolver.</font>
+
+<a name="line350">350: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line352">352: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line353">353: </a><font color="#B22222">+  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+<a name="line354">354: </a><font color="#B22222">-  bv  - the basis vectors object</font>
+
+<a name="line356">356: </a><font color="#B22222">   Note:</font>
+<a name="line357">357: </a><font color="#B22222">   Use <a href="../../../docs/manualpages/PEP/PEPGetBV.html#PEPGetBV">PEPGetBV</a>() to retrieve the basis vectors context (for example,</font>
+<a name="line358">358: </a><font color="#B22222">   to free it at the end of the computations).</font>
+
+<a name="line360">360: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line362">362: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPGetBV.html#PEPGetBV">PEPGetBV</a>()</font>
+<a name="line363">363: </a><font color="#B22222">@*/</font>
+<a name="line364">364: </a><strong><font color="#4169E1"><a name="PEPSetBV"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetBV.html#PEPSetBV">PEPSetBV</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/BV/BV.html#BV">BV</a> bv)</font></strong>
+<a name="line365">365: </a>{
+<a name="line369">369: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)bv);
+<a name="line370">370: </a>  <a href="../../../docs/manualpages/BV/BVDestroy.html#BVDestroy">BVDestroy</a>(&amp;pep-&gt;V);
+<a name="line371">371: </a>  pep-&gt;V = bv;
+<a name="line372">372: </a>  <font color="#4169E1">return</font> 0;
+<a name="line373">373: </a>}
+
+<a name="line375">375: </a><font color="#B22222">/*@</font>
+<a name="line376">376: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetBV.html#PEPGetBV">PEPGetBV</a> - Obtain the basis vectors object associated to the polynomial</font>
+<a name="line377">377: </a><font color="#B22222">   eigensolver object.</font>
+
+<a name="line379">379: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line381">381: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line382">382: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line384">384: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line385">385: </a><font color="#B22222">.  bv - basis vectors context</font>
+
+<a name="line387">387: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line389">389: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetBV.html#PEPSetBV">PEPSetBV</a>()</font>
+<a name="line390">390: </a><font color="#B22222">@*/</font>
+<a name="line391">391: </a><strong><font color="#4169E1"><a name="PEPGetBV"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetBV.html#PEPGetBV">PEPGetBV</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/BV/BV.html#BV">BV</a> *bv)</font></strong>
+<a name="line392">392: </a>{
+<a name="line395">395: </a>  <font color="#4169E1">if</font> (!pep-&gt;V) {
+<a name="line396">396: </a>    <a href="../../../docs/manualpages/BV/BVCreate.html#BVCreate">BVCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep),&amp;pep-&gt;V);
+<a name="line397">397: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectIncrementTabLevel.html#PetscObjectIncrementTabLevel">PetscObjectIncrementTabLevel</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;V,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,0);
+<a name="line398">398: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetOptions.html#PetscObjectSetOptions">PetscObjectSetOptions</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;V,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;options);
+<a name="line399">399: </a>  }
+<a name="line400">400: </a>  *bv = pep-&gt;V;
+<a name="line401">401: </a>  <font color="#4169E1">return</font> 0;
+<a name="line402">402: </a>}
+
+<a name="line404">404: </a><font color="#B22222">/*@</font>
+<a name="line405">405: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetRG.html#PEPSetRG">PEPSetRG</a> - Associates a region object to the polynomial eigensolver.</font>
+
+<a name="line407">407: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line409">409: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line410">410: </a><font color="#B22222">+  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+<a name="line411">411: </a><font color="#B22222">-  rg  - the region object</font>
+
+<a name="line413">413: </a><font color="#B22222">   Note:</font>
+<a name="line414">414: </a><font color="#B22222">   Use <a href="../../../docs/manualpages/PEP/PEPGetRG.html#PEPGetRG">PEPGetRG</a>() to retrieve the region context (for example,</font>
+<a name="line415">415: </a><font color="#B22222">   to free it at the end of the computations).</font>
+
+<a name="line417">417: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line419">419: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPGetRG.html#PEPGetRG">PEPGetRG</a>()</font>
+<a name="line420">420: </a><font color="#B22222">@*/</font>
+<a name="line421">421: </a><strong><font color="#4169E1"><a name="PEPSetRG"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetRG.html#PEPSetRG">PEPSetRG</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/RG/RG.html#RG">RG</a> rg)</font></strong>
+<a name="line422">422: </a>{
+<a name="line424">424: </a>  <font color="#4169E1">if</font> (rg) {
+<a name="line427">427: </a>  }
+<a name="line428">428: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg);
+<a name="line429">429: </a>  <a href="../../../docs/manualpages/RG/RGDestroy.html#RGDestroy">RGDestroy</a>(&amp;pep-&gt;rg);
+<a name="line430">430: </a>  pep-&gt;rg = rg;
+<a name="line431">431: </a>  <font color="#4169E1">return</font> 0;
+<a name="line432">432: </a>}
+
+<a name="line434">434: </a><font color="#B22222">/*@</font>
+<a name="line435">435: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetRG.html#PEPGetRG">PEPGetRG</a> - Obtain the region object associated to the</font>
+<a name="line436">436: </a><font color="#B22222">   polynomial eigensolver object.</font>
+
+<a name="line438">438: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line440">440: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line441">441: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line443">443: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line444">444: </a><font color="#B22222">.  rg - region context</font>
+
+<a name="line446">446: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line448">448: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetRG.html#PEPSetRG">PEPSetRG</a>()</font>
+<a name="line449">449: </a><font color="#B22222">@*/</font>
+<a name="line450">450: </a><strong><font color="#4169E1"><a name="PEPGetRG"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetRG.html#PEPGetRG">PEPGetRG</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/RG/RG.html#RG">RG</a> *rg)</font></strong>
+<a name="line451">451: </a>{
+<a name="line454">454: </a>  <font color="#4169E1">if</font> (!pep-&gt;rg) {
+<a name="line455">455: </a>    <a href="../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep),&amp;pep-&gt;rg);
+<a name="line456">456: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectIncrementTabLevel.html#PetscObjectIncrementTabLevel">PetscObjectIncrementTabLevel</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;rg,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,0);
+<a name="line457">457: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetOptions.html#PetscObjectSetOptions">PetscObjectSetOptions</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;rg,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;options);
+<a name="line458">458: </a>  }
+<a name="line459">459: </a>  *rg = pep-&gt;rg;
+<a name="line460">460: </a>  <font color="#4169E1">return</font> 0;
+<a name="line461">461: </a>}
+
+<a name="line463">463: </a><font color="#B22222">/*@</font>
+<a name="line464">464: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetDS.html#PEPSetDS">PEPSetDS</a> - Associates a direct solver object to the polynomial eigensolver.</font>
+
+<a name="line466">466: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line468">468: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line469">469: </a><font color="#B22222">+  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+<a name="line470">470: </a><font color="#B22222">-  ds  - the direct solver object</font>
+
+<a name="line472">472: </a><font color="#B22222">   Note:</font>
+<a name="line473">473: </a><font color="#B22222">   Use <a href="../../../docs/manualpages/PEP/PEPGetDS.html#PEPGetDS">PEPGetDS</a>() to retrieve the direct solver context (for example,</font>
+<a name="line474">474: </a><font color="#B22222">   to free it at the end of the computations).</font>
+
+<a name="line476">476: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line478">478: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPGetDS.html#PEPGetDS">PEPGetDS</a>()</font>
+<a name="line479">479: </a><font color="#B22222">@*/</font>
+<a name="line480">480: </a><strong><font color="#4169E1"><a name="PEPSetDS"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetDS.html#PEPSetDS">PEPSetDS</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/DS/DS.html#DS">DS</a> ds)</font></strong>
+<a name="line481">481: </a>{
+<a name="line485">485: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds);
+<a name="line486">486: </a>  <a href="../../../docs/manualpages/DS/DSDestroy.html#DSDestroy">DSDestroy</a>(&amp;pep-&gt;ds);
+<a name="line487">487: </a>  pep-&gt;ds = ds;
+<a name="line488">488: </a>  <font color="#4169E1">return</font> 0;
+<a name="line489">489: </a>}
+
+<a name="line491">491: </a><font color="#B22222">/*@</font>
+<a name="line492">492: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetDS.html#PEPGetDS">PEPGetDS</a> - Obtain the direct solver object associated to the</font>
+<a name="line493">493: </a><font color="#B22222">   polynomial eigensolver object.</font>
+
+<a name="line495">495: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line497">497: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line498">498: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line500">500: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line501">501: </a><font color="#B22222">.  ds - direct solver context</font>
+
+<a name="line503">503: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line505">505: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetDS.html#PEPSetDS">PEPSetDS</a>()</font>
+<a name="line506">506: </a><font color="#B22222">@*/</font>
+<a name="line507">507: </a><strong><font color="#4169E1"><a name="PEPGetDS"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetDS.html#PEPGetDS">PEPGetDS</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/DS/DS.html#DS">DS</a> *ds)</font></strong>
+<a name="line508">508: </a>{
+<a name="line511">511: </a>  <font color="#4169E1">if</font> (!pep-&gt;ds) {
+<a name="line512">512: </a>    <a href="../../../docs/manualpages/DS/DSCreate.html#DSCreate">DSCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep),&amp;pep-&gt;ds);
+<a name="line513">513: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectIncrementTabLevel.html#PetscObjectIncrementTabLevel">PetscObjectIncrementTabLevel</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;ds,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,0);
+<a name="line514">514: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetOptions.html#PetscObjectSetOptions">PetscObjectSetOptions</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;ds,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;options);
+<a name="line515">515: </a>  }
+<a name="line516">516: </a>  *ds = pep-&gt;ds;
+<a name="line517">517: </a>  <font color="#4169E1">return</font> 0;
+<a name="line518">518: </a>}
+
+<a name="line520">520: </a><font color="#B22222">/*@</font>
+<a name="line521">521: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetST.html#PEPSetST">PEPSetST</a> - Associates a spectral transformation object to the eigensolver.</font>
+
+<a name="line523">523: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line525">525: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line526">526: </a><font color="#B22222">+  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+<a name="line527">527: </a><font color="#B22222">-  st   - the spectral transformation object</font>
+
+<a name="line529">529: </a><font color="#B22222">   Note:</font>
+<a name="line530">530: </a><font color="#B22222">   Use <a href="../../../docs/manualpages/PEP/PEPGetST.html#PEPGetST">PEPGetST</a>() to retrieve the spectral transformation context (for example,</font>
+<a name="line531">531: </a><font color="#B22222">   to free it at the end of the computations).</font>
+
+<a name="line533">533: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line535">535: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPGetST.html#PEPGetST">PEPGetST</a>()</font>
+<a name="line536">536: </a><font color="#B22222">@*/</font>
+<a name="line537">537: </a><strong><font color="#4169E1"><a name="PEPSetST"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetST.html#PEPSetST">PEPSetST</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/ST/ST.html#ST">ST</a> st)</font></strong>
+<a name="line538">538: </a>{
+<a name="line542">542: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st);
+<a name="line543">543: </a>  <a href="../../../docs/manualpages/ST/STDestroy.html#STDestroy">STDestroy</a>(&amp;pep-&gt;st);
+<a name="line544">544: </a>  pep-&gt;st = st;
+<a name="line545">545: </a>  <font color="#4169E1">return</font> 0;
+<a name="line546">546: </a>}
+
+<a name="line548">548: </a><font color="#B22222">/*@</font>
+<a name="line549">549: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetST.html#PEPGetST">PEPGetST</a> - Obtain the spectral transformation (<a href="../../../docs/manualpages/ST/ST.html#ST">ST</a>) object associated</font>
+<a name="line550">550: </a><font color="#B22222">   to the eigensolver object.</font>
+
+<a name="line552">552: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line554">554: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line555">555: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line557">557: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line558">558: </a><font color="#B22222">.  st - spectral transformation context</font>
+
+<a name="line560">560: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line562">562: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetST.html#PEPSetST">PEPSetST</a>()</font>
+<a name="line563">563: </a><font color="#B22222">@*/</font>
+<a name="line564">564: </a><strong><font color="#4169E1"><a name="PEPGetST"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetST.html#PEPGetST">PEPGetST</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="../../../docs/manualpages/ST/ST.html#ST">ST</a> *st)</font></strong>
+<a name="line565">565: </a>{
+<a name="line568">568: </a>  <font color="#4169E1">if</font> (!pep-&gt;st) {
+<a name="line569">569: </a>    <a href="../../../docs/manualpages/ST/STCreate.html#STCreate">STCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep),&amp;pep-&gt;st);
+<a name="line570">570: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectIncrementTabLevel.html#PetscObjectIncrementTabLevel">PetscObjectIncrementTabLevel</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;st,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,0);
+<a name="line571">571: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetOptions.html#PetscObjectSetOptions">PetscObjectSetOptions</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;st,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;options);
+<a name="line572">572: </a>  }
+<a name="line573">573: </a>  *st = pep-&gt;st;
+<a name="line574">574: </a>  <font color="#4169E1">return</font> 0;
+<a name="line575">575: </a>}
+
+<a name="line577">577: </a><font color="#B22222">/*@</font>
+<a name="line578">578: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPRefineGetKSP.html#PEPRefineGetKSP">PEPRefineGetKSP</a> - Obtain the ksp object used by the eigensolver</font>
+<a name="line579">579: </a><font color="#B22222">   object in the refinement phase.</font>
+
+<a name="line581">581: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line583">583: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line584">584: </a><font color="#B22222">.  pep - eigensolver context obtained from <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>()</font>
+
+<a name="line586">586: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line587">587: </a><font color="#B22222">.  ksp - ksp context</font>
+
+<a name="line589">589: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line591">591: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetRefine.html#PEPSetRefine">PEPSetRefine</a>()</font>
+<a name="line592">592: </a><font color="#B22222">@*/</font>
+<a name="line593">593: </a><strong><font color="#4169E1"><a name="PEPRefineGetKSP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPRefineGetKSP.html#PEPRefineGetKSP">PEPRefineGetKSP</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a> *ksp)</font></strong>
+<a name="line594">594: </a>{
+<a name="line595">595: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm;
+
+<a name="line599">599: </a>  <font color="#4169E1">if</font> (!pep-&gt;refineksp) {
+<a name="line600">600: </a>    <font color="#4169E1">if</font> (pep-&gt;npart&gt;1) {
+<a name="line601">601: </a>      <font color="#B22222">/* Split in subcomunicators */</font>
+<a name="line602">602: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommCreate.html#PetscSubcommCreate">PetscSubcommCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep),&amp;pep-&gt;refinesubc);
+<a name="line603">603: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommSetNumber.html#PetscSubcommSetNumber">PetscSubcommSetNumber</a>(pep-&gt;refinesubc,pep-&gt;npart);
+<a name="line604">604: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommSetType.html#PetscSubcommSetType">PetscSubcommSetType</a>(pep-&gt;refinesubc,PETSC_SUBCOMM_CONTIGUOUS);
+<a name="line605">605: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommGetChild.html#PetscSubcommGetChild">PetscSubcommGetChild</a>(pep-&gt;refinesubc,&amp;comm);
+<a name="line606">606: </a>    } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetComm.html#PetscObjectGetComm">PetscObjectGetComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,&amp;comm);
+<a name="line607">607: </a>    <a href="https://petsc.org/release/docs/manualpages/KSP/KSPCreate.html#KSPCreate">KSPCreate</a>(comm,&amp;pep-&gt;refineksp);
+<a name="line608">608: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectIncrementTabLevel.html#PetscObjectIncrementTabLevel">PetscObjectIncrementTabLevel</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;refineksp,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,0);
+<a name="line609">609: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetOptions.html#PetscObjectSetOptions">PetscObjectSetOptions</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;refineksp,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;options);
+<a name="line610">610: </a>    <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetOptionsPrefix.html#KSPSetOptionsPrefix">KSPSetOptionsPrefix</a>(*ksp,((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;prefix);
+<a name="line611">611: </a>    <a href="https://petsc.org/release/docs/manualpages/KSP/KSPAppendOptionsPrefix.html#KSPAppendOptionsPrefix">KSPAppendOptionsPrefix</a>(*ksp,<font color="#666666">"pep_refine_"</font>);
+<a name="line612">612: </a>    <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetTolerances.html#KSPSetTolerances">KSPSetTolerances</a>(pep-&gt;refineksp,SlepcDefaultTol(pep-&gt;rtol),<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>);
+<a name="line613">613: </a>  }
+<a name="line614">614: </a>  *ksp = pep-&gt;refineksp;
+<a name="line615">615: </a>  <font color="#4169E1">return</font> 0;
+<a name="line616">616: </a>}
+
+<a name="line618">618: </a><font color="#B22222">/*@</font>
+<a name="line619">619: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetTarget.html#PEPSetTarget">PEPSetTarget</a> - Sets the value of the target.</font>
+
+<a name="line621">621: </a><font color="#B22222">   Logically Collective on pep</font>
+
+<a name="line623">623: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line624">624: </a><font color="#B22222">+  pep    - eigensolver context</font>
+<a name="line625">625: </a><font color="#B22222">-  target - the value of the target</font>
+
+<a name="line627">627: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line628">628: </a><font color="#B22222">.  -pep_target &lt;scalar&gt; - the value of the target</font>
+
+<a name="line630">630: </a><font color="#B22222">   Notes:</font>
+<a name="line631">631: </a><font color="#B22222">   The target is a scalar value used to determine the portion of the spectrum</font>
+<a name="line632">632: </a><font color="#B22222">   of interest. It is used in combination with <a href="../../../docs/manualpages/PEP/PEPSetWhichEigenpairs.html#PEPSetWhichEigenpairs">PEPSetWhichEigenpairs</a>().</font>
+
+<a name="line634">634: </a><font color="#B22222">   In the case of complex scalars, a complex value can be provided in the</font>
+<a name="line635">635: </a><font color="#B22222">   command line with [+/-][realnumber][+/-]realnumberi with no spaces, e.g.</font>
+<a name="line636">636: </a><font color="#B22222">   -pep_target 1.0+2.0i</font>
+
+<a name="line638">638: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line640">640: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPGetTarget.html#PEPGetTarget">PEPGetTarget</a>(), <a href="../../../docs/manualpages/PEP/PEPSetWhichEigenpairs.html#PEPSetWhichEigenpairs">PEPSetWhichEigenpairs</a>()</font>
+<a name="line641">641: </a><font color="#B22222">@*/</font>
+<a name="line642">642: </a><strong><font color="#4169E1"><a name="PEPSetTarget"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetTarget.html#PEPSetTarget">PEPSetTarget</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> target)</font></strong>
+<a name="line643">643: </a>{
+<a name="line646">646: </a>  pep-&gt;target = target;
+<a name="line647">647: </a>  <font color="#4169E1">if</font> (!pep-&gt;st) <a href="../../../docs/manualpages/PEP/PEPGetST.html#PEPGetST">PEPGetST</a>(pep,&amp;pep-&gt;st);
+<a name="line648">648: </a>  <a href="../../../docs/manualpages/ST/STSetDefaultShift.html#STSetDefaultShift">STSetDefaultShift</a>(pep-&gt;st,target);
+<a name="line649">649: </a>  <font color="#4169E1">return</font> 0;
+<a name="line650">650: </a>}
+
+<a name="line652">652: </a><font color="#B22222">/*@</font>
+<a name="line653">653: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetTarget.html#PEPGetTarget">PEPGetTarget</a> - Gets the value of the target.</font>
+
+<a name="line655">655: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line657">657: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line658">658: </a><font color="#B22222">.  pep - eigensolver context</font>
+
+<a name="line660">660: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line661">661: </a><font color="#B22222">.  target - the value of the target</font>
+
+<a name="line663">663: </a><font color="#B22222">   Note:</font>
+<a name="line664">664: </a><font color="#B22222">   If the target was not set by the user, then zero is returned.</font>
+
+<a name="line666">666: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line668">668: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetTarget.html#PEPSetTarget">PEPSetTarget</a>()</font>
+<a name="line669">669: </a><font color="#B22222">@*/</font>
+<a name="line670">670: </a><strong><font color="#4169E1"><a name="PEPGetTarget"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetTarget.html#PEPGetTarget">PEPGetTarget</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>* target)</font></strong>
+<a name="line671">671: </a>{
+<a name="line674">674: </a>  *target = pep-&gt;target;
+<a name="line675">675: </a>  <font color="#4169E1">return</font> 0;
+<a name="line676">676: </a>}
+
+<a name="line678">678: </a><font color="#B22222">/*@</font>
+<a name="line679">679: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetInterval.html#PEPSetInterval">PEPSetInterval</a> - Defines the computational interval for spectrum slicing.</font>
+
+<a name="line681">681: </a><font color="#B22222">   Logically Collective on pep</font>
+
+<a name="line683">683: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line684">684: </a><font color="#B22222">+  pep  - eigensolver context</font>
+<a name="line685">685: </a><font color="#B22222">.  inta - left end of the interval</font>
+<a name="line686">686: </a><font color="#B22222">-  intb - right end of the interval</font>
+
+<a name="line688">688: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line689">689: </a><font color="#B22222">.  -pep_interval &lt;a,b&gt; - set [a,b] as the interval of interest</font>
+
+<a name="line691">691: </a><font color="#B22222">   Notes:</font>
+<a name="line692">692: </a><font color="#B22222">   Spectrum slicing is a technique employed for computing all eigenvalues of</font>
+<a name="line693">693: </a><font color="#B22222">   symmetric eigenproblems in a given interval. This function provides the</font>
+<a name="line694">694: </a><font color="#B22222">   interval to be considered. It must be used in combination with <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_ALL</a>, see</font>
+<a name="line695">695: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetWhichEigenpairs.html#PEPSetWhichEigenpairs">PEPSetWhichEigenpairs</a>().</font>
+
+<a name="line697">697: </a><font color="#B22222">   In the command-line option, two values must be provided. For an open interval,</font>
+<a name="line698">698: </a><font color="#B22222">   one can give an infinite, e.g., -pep_interval 1.0,inf or -pep_interval -inf,1.0.</font>
+<a name="line699">699: </a><font color="#B22222">   An open interval in the programmatic interface can be specified with</font>
+<a name="line700">700: </a><font color="#B22222">   PETSC_MAX_REAL and -PETSC_MAX_REAL.</font>
+
+<a name="line702">702: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line704">704: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPGetInterval.html#PEPGetInterval">PEPGetInterval</a>(), <a href="../../../docs/manualpages/PEP/PEPSetWhichEigenpairs.html#PEPSetWhichEigenpairs">PEPSetWhichEigenpairs</a>()</font>
+<a name="line705">705: </a><font color="#B22222">@*/</font>
+<a name="line706">706: </a><strong><font color="#4169E1"><a name="PEPSetInterval"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetInterval.html#PEPSetInterval">PEPSetInterval</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> inta,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> intb)</font></strong>
+<a name="line707">707: </a>{
+<a name="line712">712: </a>  <font color="#4169E1">if</font> (pep-&gt;inta != inta || pep-&gt;intb != intb) {
+<a name="line713">713: </a>    pep-&gt;inta = inta;
+<a name="line714">714: </a>    pep-&gt;intb = intb;
+<a name="line715">715: </a>    pep-&gt;state = PEP_STATE_INITIAL;
+<a name="line716">716: </a>  }
+<a name="line717">717: </a>  <font color="#4169E1">return</font> 0;
+<a name="line718">718: </a>}
+
+<a name="line720">720: </a><font color="#B22222">/*@</font>
+<a name="line721">721: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetInterval.html#PEPGetInterval">PEPGetInterval</a> - Gets the computational interval for spectrum slicing.</font>
+
+<a name="line723">723: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line725">725: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line726">726: </a><font color="#B22222">.  pep - eigensolver context</font>
+
+<a name="line728">728: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line729">729: </a><font color="#B22222">+  inta - left end of the interval</font>
+<a name="line730">730: </a><font color="#B22222">-  intb - right end of the interval</font>
+
+<a name="line732">732: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line734">734: </a><font color="#B22222">   Note:</font>
+<a name="line735">735: </a><font color="#B22222">   If the interval was not set by the user, then zeros are returned.</font>
+
+<a name="line737">737: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetInterval.html#PEPSetInterval">PEPSetInterval</a>()</font>
+<a name="line738">738: </a><font color="#B22222">@*/</font>
+<a name="line739">739: </a><strong><font color="#4169E1"><a name="PEPGetInterval"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetInterval.html#PEPGetInterval">PEPGetInterval</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>* inta,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>* intb)</font></strong>
+<a name="line740">740: </a>{
+<a name="line742">742: </a>  <font color="#4169E1">if</font> (inta) *inta = pep-&gt;inta;
+<a name="line743">743: </a>  <font color="#4169E1">if</font> (intb) *intb = pep-&gt;intb;
+<a name="line744">744: </a>  <font color="#4169E1">return</font> 0;
+<a name="line745">745: </a>}
+</pre>
+</body>
+
+</html>

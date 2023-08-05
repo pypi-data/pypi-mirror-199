@@ -1,0 +1,799 @@
+<center><a href="evsl.c">Actual source code: evsl.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/eps/impls/external/evsl/evsl.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:30+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/eps/impls/external/evsl/evsl.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   This file implements a wrapper to eigensolvers in EVSL.</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../../../include/slepc/private/epsimpl.h.html">&lt;slepc/private/epsimpl.h&gt;</A>
+<a name="line15"> 15: </a><font color="#A020F0">#include &lt;evsl.h&gt;</font>
+
+<a name="line17"> 17: </a><strong><font color="#228B22">#define PetscCallEVSL(func, ...) do {                                                   \</font></strong>
+<a name="line18"> 18: </a><strong><font color="#228B22">    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscStackPushExternal.html#PetscStackPushExternal">PetscStackPushExternal</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscStringize.html#PetscStringize">PetscStringize</a>(func));                                                      \</font></strong>
+<a name="line19"> 19: </a><strong><font color="#228B22">    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> evsl_ierr_ = func(__VA_ARGS__);                                              \</font></strong>
+<a name="line20"> 20: </a><strong><font color="#228B22">    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscStackPop.html#PetscStackPop">PetscStackPop</a>;                                                                             \</font></strong>
+<a name="line22"> 22: </a><strong><font color="#228B22">  } while (0)</font></strong>
+
+<a name="line24"> 24: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line25"> 25: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         initialized;
+<a name="line26"> 26: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               A;           <font color="#B22222">/* problem matrix */</font>
+<a name="line27"> 27: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>               x,y;         <font color="#B22222">/* auxiliary vectors */</font>
+<a name="line28"> 28: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         *sli;        <font color="#B22222">/* slice bounds */</font>
+<a name="line29"> 29: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          nev;         <font color="#B22222">/* approximate number of wanted eigenvalues in each slice */</font>
+<a name="line30"> 30: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/PetscLayout.html#PetscLayout">PetscLayout</a>       map;         <font color="#B22222">/* used to distribute slices among MPI processes */</font>
+<a name="line31"> 31: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         estimrange;  <font color="#B22222">/* the filter range was not set by the user */</font>
+<a name="line32"> 32: </a>  <font color="#B22222">/* user parameters */</font>
+<a name="line33"> 33: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          nslices;     <font color="#B22222">/* number of slices */</font>
+<a name="line34"> 34: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         lmin,lmax;   <font color="#B22222">/* numerical range (min and max eigenvalue) */</font>
+<a name="line35"> 35: </a>  <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a>  dos;         <font color="#B22222">/* DOS method, either KPM or Lanczos */</font>
+<a name="line36"> 36: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          nvec;        <font color="#B22222">/* number of sample vectors used for DOS */</font>
+<a name="line37"> 37: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          deg;         <font color="#B22222">/* polynomial degree used for DOS (KPM only) */</font>
+<a name="line38"> 38: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          steps;       <font color="#B22222">/* number of Lanczos steps used for DOS (Lanczos only) */</font>
+<a name="line39"> 39: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          npoints;     <font color="#B22222">/* number of sample points used for DOS (Lanczos only) */</font>
+<a name="line40"> 40: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          max_deg;     <font color="#B22222">/* maximum degree allowed for the polynomial */</font>
+<a name="line41"> 41: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         thresh;      <font color="#B22222">/* threshold for accepting polynomial */</font>
+<a name="line42"> 42: </a>  <a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a>    damping;     <font color="#B22222">/* type of damping (for polynomial and for DOS-KPM) */</font>
+<a name="line43"> 43: </a>} EPS_EVSL;
+
+<a name="line45"> 45: </a><strong><font color="#4169E1"><a name="AMatvec_EVSL"></a>static void AMatvec_EVSL(double *xa,double *ya,void *data)</font></strong>
+<a name="line46"> 46: </a>{
+<a name="line47"> 47: </a>  EPS_EVSL       *ctx = (EPS_EVSL*)data;
+<a name="line48"> 48: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            x = ctx-&gt;x,y = ctx-&gt;y;
+<a name="line49"> 49: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A = ctx-&gt;A;
+
+<a name="line51"> 51: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A),<a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(x,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)xa);
+<a name="line52"> 52: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A),<a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(y,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)ya);
+<a name="line53"> 53: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A),<a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(A,x,y);
+<a name="line54"> 54: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A),<a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(x);
+<a name="line55"> 55: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A),<a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(y);
+<a name="line56"> 56: </a>  <font color="#4169E1">return</font>;
+<a name="line57"> 57: </a>}
+
+<a name="line59"> 59: </a><strong><font color="#4169E1"><a name="EPSSetUp_EVSL"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSetUp_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line60"> 60: </a>{
+<a name="line61"> 61: </a>  EPS_EVSL       *ctx = (EPS_EVSL*)eps-&gt;data;
+<a name="line62"> 62: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    size,rank;
+<a name="line63"> 63: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isshift;
+<a name="line64"> 64: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *vinit;
+<a name="line65"> 65: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      *mu,ecount,xintv[4],*xdos,*ydos;
+<a name="line66"> 66: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            v0;
+<a name="line67"> 67: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A;
+<a name="line68"> 68: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRandom.html#PetscRandom">PetscRandom</a>    rnd;
+
+<a name="line70"> 70: </a>  EPSCheckStandard(eps);
+<a name="line71"> 71: </a>  EPSCheckHermitian(eps);
+<a name="line72"> 72: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps-&gt;st,STSHIFT,&amp;isshift);
+
+<a name="line75"> 75: </a>  <font color="#4169E1">if</font> (ctx-&gt;initialized) EVSLFinish();
+<a name="line76"> 76: </a>  EVSLStart();
+<a name="line77"> 77: </a>  ctx-&gt;initialized=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+
+<a name="line79"> 79: </a>  <font color="#B22222">/* get number of slices per process */</font>
+<a name="line80"> 80: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),&amp;size);
+<a name="line81"> 81: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),&amp;rank);
+<a name="line82"> 82: </a>  <font color="#4169E1">if</font> (!ctx-&gt;nslices) ctx-&gt;nslices = size;
+<a name="line83"> 83: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/PetscLayoutDestroy.html#PetscLayoutDestroy">PetscLayoutDestroy</a>(&amp;ctx-&gt;map);
+<a name="line84"> 84: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/PetscLayoutCreateFromSizes.html#PetscLayoutCreateFromSizes">PetscLayoutCreateFromSizes</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,ctx-&gt;nslices,1,&amp;ctx-&gt;map);
+
+<a name="line86"> 86: </a>  <font color="#B22222">/* get matrix and prepare auxiliary vectors */</font>
+<a name="line87"> 87: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;ctx-&gt;A);
+<a name="line88"> 88: </a>  <a href="../../../../../docs/manualpages/ST/STGetMatrix.html#STGetMatrix">STGetMatrix</a>(eps-&gt;st,0,&amp;A);
+<a name="line89"> 89: </a>  <font color="#4169E1">if</font> (size==1) {
+<a name="line90"> 90: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A);
+<a name="line91"> 91: </a>    ctx-&gt;A = A;
+<a name="line92"> 92: </a>  } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateRedundantMatrix.html#MatCreateRedundantMatrix">MatCreateRedundantMatrix</a>(A,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;ctx-&gt;A);
+<a name="line93"> 93: </a>  SetAMatvec(eps-&gt;n,&amp;AMatvec_EVSL,(void*)ctx);
+<a name="line94"> 94: </a>  <font color="#4169E1">if</font> (!ctx-&gt;x) <a href="../../../../../docs/manualpages/sys/MatCreateVecsEmpty.html#MatCreateVecsEmpty">MatCreateVecsEmpty</a>(ctx-&gt;A,&amp;ctx-&gt;x,&amp;ctx-&gt;y);
+<a name="line95"> 95: </a>  EPSCheckUnsupported(eps,EPS_FEATURE_ARBITRARY | EPS_FEATURE_REGION | EPS_FEATURE_STOPPING);
+<a name="line96"> 96: </a>  EPSCheckIgnored(eps,EPS_FEATURE_EXTRACTION | EPS_FEATURE_CONVERGENCE);
+
+<a name="line98"> 98: </a>  <font color="#4169E1">if</font> (!eps-&gt;which) eps-&gt;which=<a href="../../../../../docs/manualpages/EPS/EPSWhich.html#EPSWhich">EPS_ALL</a>;
+
+<a name="line101">101: </a>  <font color="#B22222">/* estimate numerical range */</font>
+<a name="line102">102: </a>  <font color="#4169E1">if</font> (ctx-&gt;estimrange || ctx-&gt;lmin == PETSC_MIN_REAL || ctx-&gt;lmax == PETSC_MAX_REAL) {
+<a name="line103">103: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateVecs.html#MatCreateVecs">MatCreateVecs</a>(ctx-&gt;A,&amp;v0,NULL);
+<a name="line104">104: </a>    <font color="#4169E1">if</font> (!eps-&gt;V) <a href="../../../../../docs/manualpages/EPS/EPSGetBV.html#EPSGetBV">EPSGetBV</a>(eps,&amp;eps-&gt;V);
+<a name="line105">105: </a>    <a href="../../../../../docs/manualpages/BV/BVGetRandomContext.html#BVGetRandomContext">BVGetRandomContext</a>(eps-&gt;V,&amp;rnd);
+<a name="line106">106: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecSetRandom.html#VecSetRandom">VecSetRandom</a>(v0,rnd);
+<a name="line107">107: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(v0,&amp;vinit);
+<a name="line108">108: </a>    PetscCallEVSL(LanTrbounds,50,200,eps-&gt;tol,vinit,1,&amp;ctx-&gt;lmin,&amp;ctx-&gt;lmax,NULL);
+<a name="line109">109: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(v0,&amp;vinit);
+<a name="line110">110: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;v0);
+<a name="line111">111: </a>    ctx-&gt;estimrange = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;   <font color="#B22222">/* estimate if called again with another matrix */</font>
+<a name="line112">112: </a>  }
+<a name="line114">114: </a>  xintv[0] = eps-&gt;inta;
+<a name="line115">115: </a>  xintv[1] = eps-&gt;intb;
+<a name="line116">116: </a>  xintv[2] = ctx-&gt;lmin;
+<a name="line117">117: </a>  xintv[3] = ctx-&gt;lmax;
+
+<a name="line119">119: </a>  <font color="#B22222">/* estimate number of eigenvalues in the interval */</font>
+<a name="line120">120: </a>  <font color="#4169E1">switch</font> (ctx-&gt;dos) {
+<a name="line121">121: </a>    <font color="#4169E1">case</font> <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_KPM</a>:
+<a name="line122">122: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(ctx-&gt;deg+1,&amp;mu);
+<a name="line123">123: </a>      <font color="#4169E1">if</font> (!rank) PetscCallEVSL(kpmdos,ctx-&gt;deg,(int)ctx-&gt;damping,ctx-&gt;nvec,xintv,mu,&amp;ecount);
+<a name="line124">124: </a>      <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(mu,ctx-&gt;deg+1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_REAL.html#MPIU_REAL">MPIU_REAL</a>,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+<a name="line125">125: </a>      <font color="#4169E1">break</font>;
+<a name="line126">126: </a>    <font color="#4169E1">case</font> <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_LANCZOS</a>:
+<a name="line127">127: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc2.html#PetscMalloc2">PetscMalloc2</a>(ctx-&gt;npoints,&amp;xdos,ctx-&gt;npoints,&amp;ydos);
+<a name="line128">128: </a>      <font color="#4169E1">if</font> (!rank) PetscCallEVSL(LanDos,ctx-&gt;nvec,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(ctx-&gt;steps,eps-&gt;n/2),ctx-&gt;npoints,xdos,ydos,&amp;ecount,xintv);
+<a name="line129">129: </a>      <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(xdos,ctx-&gt;npoints,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_REAL.html#MPIU_REAL">MPIU_REAL</a>,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+<a name="line130">130: </a>      <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(ydos,ctx-&gt;npoints,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_REAL.html#MPIU_REAL">MPIU_REAL</a>,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+<a name="line131">131: </a>      <font color="#4169E1">break</font>;
+<a name="line132">132: </a><strong><font color="#FF0000">    default:</font></strong>
+<a name="line133">133: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/SETERRQ.html#SETERRQ">SETERRQ</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),PETSC_ERR_ARG_OUTOFRANGE,<font color="#666666">"Invalid DOS method"</font>);
+<a name="line134">134: </a>  }
+<a name="line135">135: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(&amp;ecount,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_REAL.html#MPIU_REAL">MPIU_REAL</a>,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+
+<a name="line137">137: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(eps,<font color="#666666">"Estimated eigenvalue count in the interval: %g\n"</font>,ecount);
+<a name="line138">138: </a>  eps-&gt;ncv = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>)PetscCeilReal(1.5*ecount);
+
+<a name="line140">140: </a>  <font color="#B22222">/* slice the spectrum */</font>
+<a name="line141">141: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx-&gt;sli);
+<a name="line142">142: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(ctx-&gt;nslices+1,&amp;ctx-&gt;sli);
+<a name="line143">143: </a>  <font color="#4169E1">if</font> (ctx-&gt;dos == <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_KPM</a>) {
+<a name="line144">144: </a>    PetscCallEVSL(spslicer,ctx-&gt;sli,mu,ctx-&gt;deg,xintv,ctx-&gt;nslices,10*(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>)ecount);
+<a name="line145">145: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(mu);
+<a name="line146">146: </a>  } <font color="#4169E1">else</font> <font color="#4169E1">if</font> (ctx-&gt;dos == <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_LANCZOS</a>) {
+<a name="line147">147: </a>    spslicer2(xdos,ydos,ctx-&gt;nslices,ctx-&gt;npoints,ctx-&gt;sli);
+<a name="line148">148: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree2.html#PetscFree2">PetscFree2</a>(xdos,ydos);
+<a name="line149">149: </a>  }
+
+<a name="line151">151: </a>  <font color="#B22222">/* approximate number of eigenvalues wanted in each slice */</font>
+<a name="line152">152: </a>  ctx-&gt;nev = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>)(1.0 + ecount/(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>)ctx-&gt;nslices) + 2;
+
+<a name="line154">154: </a>  <font color="#4169E1">if</font> (eps-&gt;mpd!=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(eps,<font color="#666666">"Warning: parameter mpd ignored\n"</font>);
+<a name="line155">155: </a>  <font color="#4169E1">if</font> (eps-&gt;max_it==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) eps-&gt;max_it = 1;
+<a name="line156">156: </a>  <a href="../../../../../docs/manualpages/EPS/EPSAllocateSolution.html#EPSAllocateSolution">EPSAllocateSolution</a>(eps,0);
+<a name="line157">157: </a>  <font color="#4169E1">return</font> 0;
+<a name="line158">158: </a>}
+
+<a name="line160">160: </a><strong><font color="#4169E1"><a name="EPSSolve_EVSL"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSolve_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line161">161: </a>{
+<a name="line162">162: </a>  EPS_EVSL       *ctx = (EPS_EVSL*)eps-&gt;data;
+<a name="line163">163: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i,j,k=0,sl,mlan,nevout,*ind,nevmax,rstart,rend,*nevloc,*disp,N;
+<a name="line164">164: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      *res,xintv[4],*errest;
+<a name="line165">165: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *lam,*X,*Y,*vinit,*eigr;
+<a name="line166">166: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    size,rank;
+<a name="line167">167: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRandom.html#PetscRandom">PetscRandom</a>    rnd;
+<a name="line168">168: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            v,w,v0,x;
+<a name="line169">169: </a>  <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatter.html#VecScatter">VecScatter</a>     vs;
+<a name="line170">170: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>             is;
+<a name="line171">171: </a>  polparams      pol;
+
+<a name="line173">173: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),&amp;size);
+<a name="line174">174: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps),&amp;rank);
+<a name="line175">175: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/PetscLayoutGetRange.html#PetscLayoutGetRange">PetscLayoutGetRange</a>(ctx-&gt;map,&amp;rstart,&amp;rend);
+<a name="line176">176: </a>  nevmax = (rend-rstart)*ctx-&gt;nev;
+<a name="line177">177: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateVecs.html#MatCreateVecs">MatCreateVecs</a>(ctx-&gt;A,&amp;v0,NULL);
+<a name="line178">178: </a>  <a href="../../../../../docs/manualpages/BV/BVGetRandomContext.html#BVGetRandomContext">BVGetRandomContext</a>(eps-&gt;V,&amp;rnd);
+<a name="line179">179: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecSetRandom.html#VecSetRandom">VecSetRandom</a>(v0,rnd);
+<a name="line180">180: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(v0,&amp;vinit);
+<a name="line181">181: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc5.html#PetscMalloc5">PetscMalloc5</a>(size,&amp;nevloc,size+1,&amp;disp,nevmax,&amp;eigr,nevmax,&amp;errest,nevmax*eps-&gt;n,&amp;X);
+<a name="line182">182: </a>  mlan = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(5*ctx-&gt;nev,300),eps-&gt;n);
+<a name="line183">183: </a>  <font color="#4169E1">for</font> (sl=rstart; sl&lt;rend; sl++) {
+<a name="line184">184: </a>    xintv[0] = ctx-&gt;sli[sl];
+<a name="line185">185: </a>    xintv[1] = ctx-&gt;sli[sl+1];
+<a name="line186">186: </a>    xintv[2] = ctx-&gt;lmin;
+<a name="line187">187: </a>    xintv[3] = ctx-&gt;lmax;
+<a name="line188">188: </a>    <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(ctx-&gt;A,<font color="#666666">"Subinterval %"</font> PetscInt_FMT <font color="#666666">": [%.4e, %.4e]\n"</font>,sl+1,xintv[0],xintv[1]);
+<a name="line189">189: </a>    set_pol_def(&amp;pol);
+<a name="line190">190: </a>    pol.max_deg    = ctx-&gt;max_deg;
+<a name="line191">191: </a>    pol.damping    = (int)ctx-&gt;damping;
+<a name="line192">192: </a>    pol.thresh_int = ctx-&gt;thresh;
+<a name="line193">193: </a>    find_pol(xintv,&amp;pol);
+<a name="line194">194: </a>    <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(ctx-&gt;A,<font color="#666666">"Polynomial [type = %"</font> PetscInt_FMT <font color="#666666">"], deg %"</font> PetscInt_FMT <font color="#666666">", bar %e gam %e\n"</font>,pol.type,pol.deg,pol.bar,pol.gam);
+<a name="line195">195: </a>    PetscCallEVSL(ChebLanNr,xintv,mlan,eps-&gt;tol,vinit,&amp;pol,&amp;nevout,&amp;lam,&amp;Y,&amp;res,NULL);
+<a name="line197">197: </a>    free_pol(&amp;pol);
+<a name="line198">198: </a>    <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(ctx-&gt;A,<font color="#666666">"Computed %"</font> PetscInt_FMT <font color="#666666">" eigenvalues\n"</font>,nevout);
+<a name="line199">199: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(nevout,&amp;ind);
+<a name="line200">200: </a>    sort_double(nevout,lam,ind);
+<a name="line201">201: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nevout;i++) {
+<a name="line202">202: </a>      eigr[i+k]   = lam[i];
+<a name="line203">203: </a>      errest[i+k] = res[ind[i]];
+<a name="line204">204: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>(X+(i+k)*eps-&gt;n,Y+ind[i]*eps-&gt;n,eps-&gt;n);
+<a name="line205">205: </a>    }
+<a name="line206">206: </a>    k += nevout;
+<a name="line207">207: </a>    <font color="#4169E1">if</font> (lam) evsl_Free(lam);
+<a name="line208">208: </a>    <font color="#4169E1">if</font> (Y)   evsl_Free_device(Y);
+<a name="line209">209: </a>    <font color="#4169E1">if</font> (res) evsl_Free(res);
+<a name="line210">210: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ind);
+<a name="line211">211: </a>  }
+<a name="line212">212: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(v0,&amp;vinit);
+<a name="line213">213: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;v0);
+
+<a name="line215">215: </a>  <font color="#B22222">/* gather eigenvalues computed by each MPI process */</font>
+<a name="line216">216: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Allgather.html#MPI_Allgather">MPI_Allgather</a>(&amp;k,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_INT.html#MPIU_INT">MPIU_INT</a>,nevloc,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_INT.html#MPIU_INT">MPIU_INT</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+<a name="line217">217: </a>  eps-&gt;nev = nevloc[0];
+<a name="line218">218: </a>  disp[0]  = 0;
+<a name="line219">219: </a>  <font color="#4169E1">for</font> (i=1;i&lt;size;i++) {
+<a name="line220">220: </a>    eps-&gt;nev += nevloc[i];
+<a name="line221">221: </a>    disp[i]   = disp[i-1]+nevloc[i-1];
+<a name="line222">222: </a>  }
+<a name="line223">223: </a>  disp[size] = disp[size-1]+nevloc[size-1];
+<a name="line225">225: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Allgatherv.html#MPI_Allgatherv">MPI_Allgatherv</a>(eigr,k,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,eps-&gt;eigr,nevloc,disp,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+<a name="line226">226: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Allgatherv.html#MPI_Allgatherv">MPI_Allgatherv</a>(errest,k,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_REAL.html#MPIU_REAL">MPIU_REAL</a>,eps-&gt;errest,nevloc,disp,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_REAL.html#MPIU_REAL">MPIU_REAL</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps));
+<a name="line227">227: </a>  eps-&gt;nconv  = eps-&gt;nev;
+<a name="line228">228: </a>  eps-&gt;its    = 1;
+<a name="line229">229: </a>  eps-&gt;reason = <a href="../../../../../docs/manualpages/EPS/EPSConvergedReason.html#EPSConvergedReason">EPS_CONVERGED_TOL</a>;
+
+<a name="line231">231: </a>  <font color="#B22222">/* scatter computed eigenvectors and store them in eps-&gt;V */</font>
+<a name="line232">232: </a>  <a href="../../../../../docs/manualpages/BV/BVCreateVec.html#BVCreateVec">BVCreateVec</a>(eps-&gt;V,&amp;w);
+<a name="line233">233: </a>  <font color="#4169E1">for</font> (i=0;i&lt;size;i++) {
+<a name="line234">234: </a>    N = (rank==i)? eps-&gt;n: 0;
+<a name="line235">235: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateSeq.html#VecCreateSeq">VecCreateSeq</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,N,&amp;x);
+<a name="line236">236: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecSetFromOptions.html#VecSetFromOptions">VecSetFromOptions</a>(x);
+<a name="line237">237: </a>    <a href="https://petsc.org/release/docs/manualpages/IS/ISCreateStride.html#ISCreateStride">ISCreateStride</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,N,0,1,&amp;is);
+<a name="line238">238: </a>    <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterCreate.html#VecScatterCreate">VecScatterCreate</a>(x,is,w,is,&amp;vs);
+<a name="line239">239: </a>    <a href="https://petsc.org/release/docs/manualpages/IS/ISDestroy.html#ISDestroy">ISDestroy</a>(&amp;is);
+<a name="line240">240: </a>    <font color="#4169E1">for</font> (j=disp[i];j&lt;disp[i+1];j++) {
+<a name="line241">241: </a>      <a href="../../../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(eps-&gt;V,j,&amp;v);
+<a name="line242">242: </a>      <font color="#4169E1">if</font> (rank==i) <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(x,X+(j-disp[i])*eps-&gt;n);
+<a name="line243">243: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterBegin.html#VecScatterBegin">VecScatterBegin</a>(vs,x,v,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_FORWARD.html#SCATTER_FORWARD">SCATTER_FORWARD</a>);
+<a name="line244">244: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterEnd.html#VecScatterEnd">VecScatterEnd</a>(vs,x,v,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_FORWARD.html#SCATTER_FORWARD">SCATTER_FORWARD</a>);
+<a name="line245">245: </a>      <font color="#4169E1">if</font> (rank==i) <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(x);
+<a name="line246">246: </a>      <a href="../../../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(eps-&gt;V,j,&amp;v);
+<a name="line247">247: </a>    }
+<a name="line248">248: </a>    <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterDestroy.html#VecScatterDestroy">VecScatterDestroy</a>(&amp;vs);
+<a name="line249">249: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;x);
+<a name="line250">250: </a>  }
+<a name="line251">251: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;w);
+<a name="line252">252: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree5.html#PetscFree5">PetscFree5</a>(nevloc,disp,eigr,errest,X);
+<a name="line253">253: </a>  <font color="#4169E1">return</font> 0;
+<a name="line254">254: </a>}
+
+<a name="line256">256: </a><strong><font color="#4169E1"><a name="EPSEVSLSetSlices_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLSetSlices_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nslices)</font></strong>
+<a name="line257">257: </a>{
+<a name="line258">258: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line260">260: </a>  <font color="#4169E1">if</font> (nslices == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || nslices == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) nslices = 0;
+<a name="line262">262: </a>  <font color="#4169E1">if</font> (ctx-&gt;nslices != nslices) {
+<a name="line263">263: </a>    ctx-&gt;nslices = nslices;
+<a name="line264">264: </a>    eps-&gt;state   = EPS_STATE_INITIAL;
+<a name="line265">265: </a>  }
+<a name="line266">266: </a>  <font color="#4169E1">return</font> 0;
+<a name="line267">267: </a>}
+
+<a name="line269">269: </a><font color="#B22222">/*@</font>
+<a name="line270">270: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetSlices.html#EPSEVSLSetSlices">EPSEVSLSetSlices</a> - Set the number of slices in which the interval must be</font>
+<a name="line271">271: </a><font color="#B22222">   subdivided.</font>
+
+<a name="line273">273: </a><font color="#B22222">   Logically Collective on eps</font>
+
+<a name="line275">275: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line276">276: </a><font color="#B22222">+  eps     - the eigensolver context</font>
+<a name="line277">277: </a><font color="#B22222">-  nslices - the number of slices</font>
+
+<a name="line279">279: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line280">280: </a><font color="#B22222">.  -eps_evsl_slices &lt;n&gt; - set the number of slices to n</font>
+
+<a name="line282">282: </a><font color="#B22222">   Notes:</font>
+<a name="line283">283: </a><font color="#B22222">   By default, one slice per MPI process is used. Depending on the number of</font>
+<a name="line284">284: </a><font color="#B22222">   eigenvalues, using more slices may be beneficial, but very narrow subintervals</font>
+<a name="line285">285: </a><font color="#B22222">   imply higher polynomial degree.</font>
+
+<a name="line287">287: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line289">289: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetSlices.html#EPSEVSLGetSlices">EPSEVSLGetSlices</a>()</font>
+<a name="line290">290: </a><font color="#B22222">@*/</font>
+<a name="line291">291: </a><strong><font color="#4169E1"><a name="EPSEVSLSetSlices"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetSlices.html#EPSEVSLSetSlices">EPSEVSLSetSlices</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nslices)</font></strong>
+<a name="line292">292: </a>{
+<a name="line295">295: </a>  PetscTryMethod(eps,<font color="#666666">"EPSEVSLSetSlices_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>),(eps,nslices));
+<a name="line296">296: </a>  <font color="#4169E1">return</font> 0;
+<a name="line297">297: </a>}
+
+<a name="line299">299: </a><strong><font color="#4169E1"><a name="EPSEVSLGetSlices_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLGetSlices_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *nslices)</font></strong>
+<a name="line300">300: </a>{
+<a name="line301">301: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line303">303: </a>  *nslices = ctx-&gt;nslices;
+<a name="line304">304: </a>  <font color="#4169E1">return</font> 0;
+<a name="line305">305: </a>}
+
+<a name="line307">307: </a><font color="#B22222">/*@</font>
+<a name="line308">308: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetSlices.html#EPSEVSLGetSlices">EPSEVSLGetSlices</a> - Gets the number of slices in which the interval must be</font>
+<a name="line309">309: </a><font color="#B22222">   subdivided.</font>
+
+<a name="line311">311: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line313">313: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line314">314: </a><font color="#B22222">.  eps - the eigensolver context</font>
+
+<a name="line316">316: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line317">317: </a><font color="#B22222">.  nslices - the number of slices</font>
+
+<a name="line319">319: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line321">321: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetSlices.html#EPSEVSLSetSlices">EPSEVSLSetSlices</a>()</font>
+<a name="line322">322: </a><font color="#B22222">@*/</font>
+<a name="line323">323: </a><strong><font color="#4169E1"><a name="EPSEVSLGetSlices"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetSlices.html#EPSEVSLGetSlices">EPSEVSLGetSlices</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *nslices)</font></strong>
+<a name="line324">324: </a>{
+<a name="line327">327: </a>  PetscUseMethod(eps,<font color="#666666">"EPSEVSLGetSlices_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*),(eps,nslices));
+<a name="line328">328: </a>  <font color="#4169E1">return</font> 0;
+<a name="line329">329: </a>}
+
+<a name="line331">331: </a><strong><font color="#4169E1"><a name="EPSEVSLSetRange_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLSetRange_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> lmin,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> lmax)</font></strong>
+<a name="line332">332: </a>{
+<a name="line333">333: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line336">336: </a>  <font color="#4169E1">if</font> (ctx-&gt;lmin != lmin || ctx-&gt;lmax != lmax) {
+<a name="line337">337: </a>    ctx-&gt;lmin  = lmin;
+<a name="line338">338: </a>    ctx-&gt;lmax  = lmax;
+<a name="line339">339: </a>    eps-&gt;state = EPS_STATE_INITIAL;
+<a name="line340">340: </a>  }
+<a name="line341">341: </a>  <font color="#4169E1">return</font> 0;
+<a name="line342">342: </a>}
+
+<a name="line344">344: </a><font color="#B22222">/*@</font>
+<a name="line345">345: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetRange.html#EPSEVSLSetRange">EPSEVSLSetRange</a> - Defines the numerical range (or field of values) of the problem,</font>
+<a name="line346">346: </a><font color="#B22222">   that is, the interval containing all eigenvalues.</font>
+
+<a name="line348">348: </a><font color="#B22222">   Logically Collective on eps</font>
+
+<a name="line350">350: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line351">351: </a><font color="#B22222">+  eps  - the eigensolver context</font>
+<a name="line352">352: </a><font color="#B22222">.  lmin - left end of the interval</font>
+<a name="line353">353: </a><font color="#B22222">-  lmax - right end of the interval</font>
+
+<a name="line355">355: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line356">356: </a><font color="#B22222">.  -eps_evsl_range &lt;a,b&gt; - set [a,b] as the numerical range</font>
+
+<a name="line358">358: </a><font color="#B22222">   Notes:</font>
+<a name="line359">359: </a><font color="#B22222">   The filter will be most effective if the numerical range is tight, that is, lmin</font>
+<a name="line360">360: </a><font color="#B22222">   and lmax are good approximations to the leftmost and rightmost eigenvalues,</font>
+<a name="line361">361: </a><font color="#B22222">   respectively. If not set by the user, an approximation is computed internally.</font>
+
+<a name="line363">363: </a><font color="#B22222">   The wanted computational interval specified via <a href="../../../../../docs/manualpages/EPS/EPSSetInterval.html#EPSSetInterval">EPSSetInterval</a>() must be</font>
+<a name="line364">364: </a><font color="#B22222">   contained in the numerical range.</font>
+
+<a name="line366">366: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line368">368: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetRange.html#EPSEVSLGetRange">EPSEVSLGetRange</a>(), <a href="../../../../../docs/manualpages/EPS/EPSSetInterval.html#EPSSetInterval">EPSSetInterval</a>()</font>
+<a name="line369">369: </a><font color="#B22222">@*/</font>
+<a name="line370">370: </a><strong><font color="#4169E1"><a name="EPSEVSLSetRange"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetRange.html#EPSEVSLSetRange">EPSEVSLSetRange</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> lmin,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> lmax)</font></strong>
+<a name="line371">371: </a>{
+<a name="line375">375: </a>  PetscTryMethod(eps,<font color="#666666">"EPSEVSLSetRange_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>),(eps,lmin,lmax));
+<a name="line376">376: </a>  <font color="#4169E1">return</font> 0;
+<a name="line377">377: </a>}
+
+<a name="line379">379: </a><strong><font color="#4169E1"><a name="EPSEVSLGetRange_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLGetRange_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *lmin,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *lmax)</font></strong>
+<a name="line380">380: </a>{
+<a name="line381">381: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line383">383: </a>  <font color="#4169E1">if</font> (lmin) *lmin = ctx-&gt;lmin;
+<a name="line384">384: </a>  <font color="#4169E1">if</font> (lmax) *lmax = ctx-&gt;lmax;
+<a name="line385">385: </a>  <font color="#4169E1">return</font> 0;
+<a name="line386">386: </a>}
+
+<a name="line388">388: </a><font color="#B22222">/*@</font>
+<a name="line389">389: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetRange.html#EPSEVSLGetRange">EPSEVSLGetRange</a> - Gets the interval containing all eigenvalues.</font>
+
+<a name="line391">391: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line393">393: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line394">394: </a><font color="#B22222">.  eps - the eigensolver context</font>
+
+<a name="line396">396: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line397">397: </a><font color="#B22222">+  lmin - left end of the interval</font>
+<a name="line398">398: </a><font color="#B22222">-  lmax - right end of the interval</font>
+
+<a name="line400">400: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line402">402: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetRange.html#EPSEVSLSetRange">EPSEVSLSetRange</a>()</font>
+<a name="line403">403: </a><font color="#B22222">@*/</font>
+<a name="line404">404: </a><strong><font color="#4169E1"><a name="EPSEVSLGetRange"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetRange.html#EPSEVSLGetRange">EPSEVSLGetRange</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *lmin,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *lmax)</font></strong>
+<a name="line405">405: </a>{
+<a name="line407">407: </a>  PetscUseMethod(eps,<font color="#666666">"EPSEVSLGetRange_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*),(eps,lmin,lmax));
+<a name="line408">408: </a>  <font color="#4169E1">return</font> 0;
+<a name="line409">409: </a>}
+
+<a name="line411">411: </a><strong><font color="#4169E1"><a name="EPSEVSLSetDOSParameters_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLSetDOSParameters_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a> dos,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nvec,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> steps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> npoints)</font></strong>
+<a name="line412">412: </a>{
+<a name="line413">413: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line415">415: </a>  ctx-&gt;dos = dos;
+<a name="line416">416: </a>  <font color="#4169E1">if</font> (nvec == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || nvec == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) ctx-&gt;nvec = 80;
+<a name="line417">417: </a>  <font color="#4169E1">else</font> {
+<a name="line419">419: </a>    ctx-&gt;nvec = nvec;
+<a name="line420">420: </a>  }
+<a name="line421">421: </a>  <font color="#4169E1">switch</font> (dos) {
+<a name="line422">422: </a>    <font color="#4169E1">case</font> <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_KPM</a>:
+<a name="line423">423: </a>      <font color="#4169E1">if</font> (deg == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || deg == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) ctx-&gt;deg = 300;
+<a name="line424">424: </a>      <font color="#4169E1">else</font> {
+<a name="line426">426: </a>        ctx-&gt;deg = deg;
+<a name="line427">427: </a>      }
+<a name="line428">428: </a>      <font color="#4169E1">break</font>;
+<a name="line429">429: </a>    <font color="#4169E1">case</font> <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_LANCZOS</a>:
+<a name="line430">430: </a>      <font color="#4169E1">if</font> (steps == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || steps == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) ctx-&gt;steps = 40;
+<a name="line431">431: </a>      <font color="#4169E1">else</font> {
+<a name="line433">433: </a>        ctx-&gt;steps = steps;
+<a name="line434">434: </a>      }
+<a name="line435">435: </a>      <font color="#4169E1">if</font> (npoints == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || npoints == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) ctx-&gt;npoints = 200;
+<a name="line436">436: </a>      <font color="#4169E1">else</font> {
+<a name="line438">438: </a>        ctx-&gt;npoints = npoints;
+<a name="line439">439: </a>      }
+<a name="line440">440: </a>      <font color="#4169E1">break</font>;
+<a name="line441">441: </a>  }
+<a name="line442">442: </a>  eps-&gt;state = EPS_STATE_INITIAL;
+<a name="line443">443: </a>  <font color="#4169E1">return</font> 0;
+<a name="line444">444: </a>}
+
+<a name="line446">446: </a><font color="#B22222">/*@</font>
+<a name="line447">447: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a> - Defines the parameters used for computing the</font>
+<a name="line448">448: </a><font color="#B22222">   density of states (DOS) in the EVSL solver.</font>
+
+<a name="line450">450: </a><font color="#B22222">   Logically Collective on eps</font>
+
+<a name="line452">452: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line453">453: </a><font color="#B22222">+  eps     - the eigensolver context</font>
+<a name="line454">454: </a><font color="#B22222">.  dos     - DOS method, either KPM or Lanczos</font>
+<a name="line455">455: </a><font color="#B22222">.  nvec    - number of sample vectors</font>
+<a name="line456">456: </a><font color="#B22222">.  deg     - polynomial degree (KPM only)</font>
+<a name="line457">457: </a><font color="#B22222">.  steps   - number of Lanczos steps (Lanczos only)</font>
+<a name="line458">458: </a><font color="#B22222">-  npoints - number of sample points (Lanczos only)</font>
+
+<a name="line460">460: </a><font color="#B22222">   Options Database Keys:</font>
+<a name="line461">461: </a><font color="#B22222">+  -eps_evsl_dos_method &lt;dos&gt; - set the DOS method, either kpm or lanczos</font>
+<a name="line462">462: </a><font color="#B22222">.  -eps_evsl_dos_nvec &lt;n&gt; - set the number of sample vectors</font>
+<a name="line463">463: </a><font color="#B22222">.  -eps_evsl_dos_degree &lt;n&gt; - set the polynomial degree</font>
+<a name="line464">464: </a><font color="#B22222">.  -eps_evsl_dos_steps &lt;n&gt; - set the number of Lanczos steps</font>
+<a name="line465">465: </a><font color="#B22222">-  -eps_evsl_dos_npoints &lt;n&gt; - set the number of sample points</font>
+
+<a name="line467">467: </a><font color="#B22222">   Notes:</font>
+<a name="line468">468: </a><font color="#B22222">   The density of states (or spectral density) can be approximated with two</font>
+<a name="line469">469: </a><font color="#B22222">   methods, kernel polynomial method (KPM) or Lanczos. Some parameters for</font>
+<a name="line470">470: </a><font color="#B22222">   these methods can be set by the user with this function, with some of</font>
+<a name="line471">471: </a><font color="#B22222">   them being relevant for one of the methods only.</font>
+
+<a name="line473">473: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line475">475: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDOSParameters.html#EPSEVSLGetDOSParameters">EPSEVSLGetDOSParameters</a>()</font>
+<a name="line476">476: </a><font color="#B22222">@*/</font>
+<a name="line477">477: </a><strong><font color="#4169E1"><a name="EPSEVSLSetDOSParameters"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a> dos,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nvec,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> steps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> npoints)</font></strong>
+<a name="line478">478: </a>{
+<a name="line485">485: </a>  PetscTryMethod(eps,<font color="#666666">"EPSEVSLSetDOSParameters_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>),(eps,dos,nvec,deg,steps,npoints));
+<a name="line486">486: </a>  <font color="#4169E1">return</font> 0;
+<a name="line487">487: </a>}
+
+<a name="line489">489: </a><strong><font color="#4169E1"><a name="EPSEVSLGetDOSParameters_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLGetDOSParameters_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a> *dos,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *nvec,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *steps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *npoints)</font></strong>
+<a name="line490">490: </a>{
+<a name="line491">491: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line493">493: </a>  <font color="#4169E1">if</font> (dos)     *dos     = ctx-&gt;dos;
+<a name="line494">494: </a>  <font color="#4169E1">if</font> (nvec)    *nvec    = ctx-&gt;nvec;
+<a name="line495">495: </a>  <font color="#4169E1">if</font> (deg)     *deg     = ctx-&gt;deg;
+<a name="line496">496: </a>  <font color="#4169E1">if</font> (steps)   *steps   = ctx-&gt;steps;
+<a name="line497">497: </a>  <font color="#4169E1">if</font> (npoints) *npoints = ctx-&gt;npoints;
+<a name="line498">498: </a>  <font color="#4169E1">return</font> 0;
+<a name="line499">499: </a>}
+
+<a name="line501">501: </a><font color="#B22222">/*@</font>
+<a name="line502">502: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDOSParameters.html#EPSEVSLGetDOSParameters">EPSEVSLGetDOSParameters</a> - Gets the parameters used for computing the</font>
+<a name="line503">503: </a><font color="#B22222">   density of states (DOS) in the EVSL solver.</font>
+
+<a name="line505">505: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line507">507: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line508">508: </a><font color="#B22222">.  eps - the eigensolver context</font>
+
+<a name="line510">510: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line511">511: </a><font color="#B22222">+  dos     - DOS method, either KPM or Lanczos</font>
+<a name="line512">512: </a><font color="#B22222">.  nvec    - number of sample vectors</font>
+<a name="line513">513: </a><font color="#B22222">.  deg     - polynomial degree (KPM only)</font>
+<a name="line514">514: </a><font color="#B22222">.  steps   - number of Lanczos steps (Lanczos only)</font>
+<a name="line515">515: </a><font color="#B22222">-  npoints - number of sample points (Lanczos only)</font>
+
+<a name="line517">517: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line519">519: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>()</font>
+<a name="line520">520: </a><font color="#B22222">@*/</font>
+<a name="line521">521: </a><strong><font color="#4169E1"><a name="EPSEVSLGetDOSParameters"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDOSParameters.html#EPSEVSLGetDOSParameters">EPSEVSLGetDOSParameters</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a> *dos,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *nvec,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *steps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *npoints)</font></strong>
+<a name="line522">522: </a>{
+<a name="line524">524: </a>  PetscUseMethod(eps,<font color="#666666">"EPSEVSLGetDOSParameters_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*),(eps,dos,nvec,deg,steps,npoints));
+<a name="line525">525: </a>  <font color="#4169E1">return</font> 0;
+<a name="line526">526: </a>}
+
+<a name="line528">528: </a><strong><font color="#4169E1"><a name="EPSEVSLSetPolParameters_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLSetPolParameters_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> max_deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> thresh)</font></strong>
+<a name="line529">529: </a>{
+<a name="line530">530: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line532">532: </a>  <font color="#4169E1">if</font> (max_deg == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || max_deg == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) ctx-&gt;max_deg = 10000;
+<a name="line533">533: </a>  <font color="#4169E1">else</font> {
+<a name="line535">535: </a>    ctx-&gt;max_deg = max_deg;
+<a name="line536">536: </a>  }
+<a name="line537">537: </a>  <font color="#4169E1">if</font> (thresh == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a> || thresh == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) ctx-&gt;thresh = 0.8;
+<a name="line538">538: </a>  <font color="#4169E1">else</font> {
+<a name="line540">540: </a>    ctx-&gt;thresh = thresh;
+<a name="line541">541: </a>  }
+<a name="line542">542: </a>  eps-&gt;state = EPS_STATE_INITIAL;
+<a name="line543">543: </a>  <font color="#4169E1">return</font> 0;
+<a name="line544">544: </a>}
+
+<a name="line546">546: </a><font color="#B22222">/*@</font>
+<a name="line547">547: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetPolParameters.html#EPSEVSLSetPolParameters">EPSEVSLSetPolParameters</a> - Defines the parameters used for building the</font>
+<a name="line548">548: </a><font color="#B22222">   building the polynomial in the EVSL solver.</font>
+
+<a name="line550">550: </a><font color="#B22222">   Logically Collective on eps</font>
+
+<a name="line552">552: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line553">553: </a><font color="#B22222">+  eps     - the eigensolver context</font>
+<a name="line554">554: </a><font color="#B22222">.  max_deg - maximum degree allowed for the polynomial</font>
+<a name="line555">555: </a><font color="#B22222">-  thresh  - threshold for accepting polynomial</font>
+
+<a name="line557">557: </a><font color="#B22222">   Options Database Keys:</font>
+<a name="line558">558: </a><font color="#B22222">+  -eps_evsl_pol_max_deg &lt;d&gt; - set maximum polynomial degree</font>
+<a name="line559">559: </a><font color="#B22222">-  -eps_evsl_pol_thresh &lt;t&gt; - set the threshold</font>
+
+<a name="line561">561: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line563">563: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetPolParameters.html#EPSEVSLGetPolParameters">EPSEVSLGetPolParameters</a>()</font>
+<a name="line564">564: </a><font color="#B22222">@*/</font>
+<a name="line565">565: </a><strong><font color="#4169E1"><a name="EPSEVSLSetPolParameters"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetPolParameters.html#EPSEVSLSetPolParameters">EPSEVSLSetPolParameters</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> max_deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> thresh)</font></strong>
+<a name="line566">566: </a>{
+<a name="line570">570: </a>  PetscTryMethod(eps,<font color="#666666">"EPSEVSLSetPolParameters_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>),(eps,max_deg,thresh));
+<a name="line571">571: </a>  <font color="#4169E1">return</font> 0;
+<a name="line572">572: </a>}
+
+<a name="line574">574: </a><strong><font color="#4169E1"><a name="EPSEVSLGetPolParameters_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLGetPolParameters_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *max_deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *thresh)</font></strong>
+<a name="line575">575: </a>{
+<a name="line576">576: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line578">578: </a>  <font color="#4169E1">if</font> (max_deg) *max_deg = ctx-&gt;max_deg;
+<a name="line579">579: </a>  <font color="#4169E1">if</font> (thresh)  *thresh  = ctx-&gt;thresh;
+<a name="line580">580: </a>  <font color="#4169E1">return</font> 0;
+<a name="line581">581: </a>}
+
+<a name="line583">583: </a><font color="#B22222">/*@</font>
+<a name="line584">584: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetPolParameters.html#EPSEVSLGetPolParameters">EPSEVSLGetPolParameters</a> - Gets the parameters used for building the</font>
+<a name="line585">585: </a><font color="#B22222">   polynomial in the EVSL solver.</font>
+
+<a name="line587">587: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line589">589: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line590">590: </a><font color="#B22222">.  eps - the eigensolver context</font>
+
+<a name="line592">592: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line593">593: </a><font color="#B22222">+  max_deg - the maximum degree of the polynomial</font>
+<a name="line594">594: </a><font color="#B22222">-  thresh  - the threshold</font>
+
+<a name="line596">596: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line598">598: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetPolParameters.html#EPSEVSLSetPolParameters">EPSEVSLSetPolParameters</a>()</font>
+<a name="line599">599: </a><font color="#B22222">@*/</font>
+<a name="line600">600: </a><strong><font color="#4169E1"><a name="EPSEVSLGetPolParameters"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetPolParameters.html#EPSEVSLGetPolParameters">EPSEVSLGetPolParameters</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *max_deg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *thresh)</font></strong>
+<a name="line601">601: </a>{
+<a name="line603">603: </a>  PetscUseMethod(eps,<font color="#666666">"EPSEVSLGetPolParameters_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>*,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>*),(eps,max_deg,thresh));
+<a name="line604">604: </a>  <font color="#4169E1">return</font> 0;
+<a name="line605">605: </a>}
+
+<a name="line607">607: </a><strong><font color="#4169E1"><a name="EPSEVSLSetDamping_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLSetDamping_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a> damping)</font></strong>
+<a name="line608">608: </a>{
+<a name="line609">609: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line611">611: </a>  <font color="#4169E1">if</font> (ctx-&gt;damping != damping) {
+<a name="line612">612: </a>    ctx-&gt;damping = damping;
+<a name="line613">613: </a>    eps-&gt;state   = EPS_STATE_INITIAL;
+<a name="line614">614: </a>  }
+<a name="line615">615: </a>  <font color="#4169E1">return</font> 0;
+<a name="line616">616: </a>}
+
+<a name="line618">618: </a><font color="#B22222">/*@</font>
+<a name="line619">619: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDamping.html#EPSEVSLSetDamping">EPSEVSLSetDamping</a> - Set the type of damping to be used in EVSL.</font>
+
+<a name="line621">621: </a><font color="#B22222">   Logically Collective on eps</font>
+
+<a name="line623">623: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line624">624: </a><font color="#B22222">+  eps     - the eigensolver context</font>
+<a name="line625">625: </a><font color="#B22222">-  damping - the type of damping</font>
+
+<a name="line627">627: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line628">628: </a><font color="#B22222">.  -eps_evsl_damping &lt;n&gt; - set the type of damping</font>
+
+<a name="line630">630: </a><font color="#B22222">   Notes:</font>
+<a name="line631">631: </a><font color="#B22222">   Damping is applied when building the polynomial to be used when solving the</font>
+<a name="line632">632: </a><font color="#B22222">   eigenproblem, and also during estimation of DOS with the KPM method.</font>
+
+<a name="line634">634: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line636">636: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDamping.html#EPSEVSLGetDamping">EPSEVSLGetDamping</a>(), <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>()</font>
+<a name="line637">637: </a><font color="#B22222">@*/</font>
+<a name="line638">638: </a><strong><font color="#4169E1"><a name="EPSEVSLSetDamping"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDamping.html#EPSEVSLSetDamping">EPSEVSLSetDamping</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a> damping)</font></strong>
+<a name="line639">639: </a>{
+<a name="line642">642: </a>  PetscTryMethod(eps,<font color="#666666">"EPSEVSLSetDamping_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a>),(eps,damping));
+<a name="line643">643: </a>  <font color="#4169E1">return</font> 0;
+<a name="line644">644: </a>}
+
+<a name="line646">646: </a><strong><font color="#4169E1"><a name="EPSEVSLGetDamping_EVSL"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSEVSLGetDamping_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a> *damping)</font></strong>
+<a name="line647">647: </a>{
+<a name="line648">648: </a>  EPS_EVSL *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line650">650: </a>  *damping = ctx-&gt;damping;
+<a name="line651">651: </a>  <font color="#4169E1">return</font> 0;
+<a name="line652">652: </a>}
+
+<a name="line654">654: </a><font color="#B22222">/*@</font>
+<a name="line655">655: </a><font color="#B22222">   <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDamping.html#EPSEVSLGetDamping">EPSEVSLGetDamping</a> - Gets the type of damping.</font>
+
+<a name="line657">657: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line659">659: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line660">660: </a><font color="#B22222">.  eps - the eigensolver context</font>
+
+<a name="line662">662: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line663">663: </a><font color="#B22222">.  damping - the type of damping</font>
+
+<a name="line665">665: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line667">667: </a><font color="#B22222">.seealso: <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDamping.html#EPSEVSLSetDamping">EPSEVSLSetDamping</a>()</font>
+<a name="line668">668: </a><font color="#B22222">@*/</font>
+<a name="line669">669: </a><strong><font color="#4169E1"><a name="EPSEVSLGetDamping"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDamping.html#EPSEVSLGetDamping">EPSEVSLGetDamping</a>(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a> *damping)</font></strong>
+<a name="line670">670: </a>{
+<a name="line673">673: </a>  PetscUseMethod(eps,<font color="#666666">"EPSEVSLGetDamping_C"</font>,(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>,<a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a>*),(eps,damping));
+<a name="line674">674: </a>  <font color="#4169E1">return</font> 0;
+<a name="line675">675: </a>}
+
+<a name="line677">677: </a><strong><font color="#4169E1"><a name="EPSView_EVSL"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSView_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer)</font></strong>
+<a name="line678">678: </a>{
+<a name="line679">679: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isascii;
+<a name="line680">680: </a>  EPS_EVSL       *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line682">682: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERASCII.html#PETSCVIEWERASCII">PETSCVIEWERASCII</a>,&amp;isascii);
+<a name="line683">683: </a>  <font color="#4169E1">if</font> (isascii) {
+<a name="line684">684: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  numerical range = [%g,%g]\n"</font>,(double)ctx-&gt;lmin,(double)ctx-&gt;lmax);
+<a name="line685">685: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  number of slices = %"</font> PetscInt_FMT <font color="#666666">"\n"</font>,ctx-&gt;nslices);
+<a name="line686">686: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  type of damping = %s\n"</font>,EPSEVSLDampings[ctx-&gt;damping]);
+<a name="line687">687: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  computing DOS with %s: nvec=%"</font> PetscInt_FMT <font color="#666666">", "</font>,EPSEVSLDOSMethods[ctx-&gt;dos],ctx-&gt;nvec);
+<a name="line688">688: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIUseTabs.html#PetscViewerASCIIUseTabs">PetscViewerASCIIUseTabs</a>(viewer,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line689">689: </a>    <font color="#4169E1">switch</font> (ctx-&gt;dos) {
+<a name="line690">690: </a>      <font color="#4169E1">case</font> <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_KPM</a>:
+<a name="line691">691: </a>        <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"degree=%"</font> PetscInt_FMT <font color="#666666">"\n"</font>,ctx-&gt;deg);
+<a name="line692">692: </a>        <font color="#4169E1">break</font>;
+<a name="line693">693: </a>      <font color="#4169E1">case</font> <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_LANCZOS</a>:
+<a name="line694">694: </a>        <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"steps=%"</font> PetscInt_FMT <font color="#666666">", npoints=%"</font> PetscInt_FMT <font color="#666666">"\n"</font>,ctx-&gt;steps,ctx-&gt;npoints);
+<a name="line695">695: </a>        <font color="#4169E1">break</font>;
+<a name="line696">696: </a>    }
+<a name="line697">697: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIUseTabs.html#PetscViewerASCIIUseTabs">PetscViewerASCIIUseTabs</a>(viewer,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line698">698: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  polynomial parameters: max degree = %"</font> PetscInt_FMT <font color="#666666">", threshold = %g\n"</font>,ctx-&gt;max_deg,(double)ctx-&gt;thresh);
+<a name="line699">699: </a>  }
+<a name="line700">700: </a>  <font color="#4169E1">return</font> 0;
+<a name="line701">701: </a>}
+
+<a name="line703">703: </a><strong><font color="#4169E1"><a name="EPSSetFromOptions_EVSL"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSSetFromOptions_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps,PetscOptionItems *PetscOptionsObject)</font></strong>
+<a name="line704">704: </a>{
+<a name="line705">705: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>        array[2]={0,0},th;
+<a name="line706">706: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>         k,i1,i2,i3,i4;
+<a name="line707">707: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>        flg,flg1;
+<a name="line708">708: </a>  <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPSEVSLDOSMethod</a> dos;
+<a name="line709">709: </a>  <a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPSEVSLDamping</a>   damping;
+<a name="line710">710: </a>  EPS_EVSL         *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line712">712: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHeadBegin.html#PetscOptionsHeadBegin">PetscOptionsHeadBegin</a>(PetscOptionsObject,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> EVSL Options"</font>);
+
+<a name="line714">714: </a>    k = 2;
+<a name="line715">715: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsRealArray.html#PetscOptionsRealArray">PetscOptionsRealArray</a>(<font color="#666666">"-eps_evsl_range"</font>,<font color="#666666">"Interval containing all eigenvalues (two real values separated with a comma without spaces)"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetRange.html#EPSEVSLSetRange">EPSEVSLSetRange</a>"</font>,array,&amp;k,&amp;flg);
+<a name="line716">716: </a>    <font color="#4169E1">if</font> (flg) {
+<a name="line718">718: </a>      <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetRange.html#EPSEVSLSetRange">EPSEVSLSetRange</a>(eps,array[0],array[1]);
+<a name="line719">719: </a>    }
+
+<a name="line721">721: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_evsl_slices"</font>,<font color="#666666">"Number of slices"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetSlices.html#EPSEVSLSetSlices">EPSEVSLSetSlices</a>"</font>,ctx-&gt;nslices,&amp;i1,&amp;flg);
+<a name="line722">722: </a>    <font color="#4169E1">if</font> (flg) <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetSlices.html#EPSEVSLSetSlices">EPSEVSLSetSlices</a>(eps,i1);
+
+<a name="line724">724: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsEnum.html#PetscOptionsEnum">PetscOptionsEnum</a>(<font color="#666666">"-eps_evsl_damping"</font>,<font color="#666666">"Type of damping"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDamping.html#EPSEVSLSetDamping">EPSEVSLSetDamping</a>"</font>,EPSEVSLDampings,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscEnum.html#PetscEnum">PetscEnum</a>)ctx-&gt;damping,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscEnum.html#PetscEnum">PetscEnum</a>*)&amp;damping,&amp;flg);
+<a name="line725">725: </a>    <font color="#4169E1">if</font> (flg) <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDamping.html#EPSEVSLSetDamping">EPSEVSLSetDamping</a>(eps,damping);
+
+<a name="line727">727: </a>    <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetDOSParameters.html#EPSEVSLGetDOSParameters">EPSEVSLGetDOSParameters</a>(eps,&amp;dos,&amp;i1,&amp;i2,&amp;i3,&amp;i4);
+<a name="line728">728: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsEnum.html#PetscOptionsEnum">PetscOptionsEnum</a>(<font color="#666666">"-eps_evsl_dos_method"</font>,<font color="#666666">"Method to compute the DOS"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>"</font>,EPSEVSLDOSMethods,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscEnum.html#PetscEnum">PetscEnum</a>)ctx-&gt;dos,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscEnum.html#PetscEnum">PetscEnum</a>*)&amp;dos,&amp;flg);
+<a name="line729">729: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_evsl_dos_nvec"</font>,<font color="#666666">"Number of sample vectors for DOS"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>"</font>,i1,&amp;i1,&amp;flg1);
+<a name="line730">730: </a>    <font color="#4169E1">if</font> (flg1) flg = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line731">731: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_evsl_dos_degree"</font>,<font color="#666666">"Polynomial degree used for DOS"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>"</font>,i2,&amp;i2,&amp;flg1);
+<a name="line732">732: </a>    <font color="#4169E1">if</font> (flg1) flg = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line733">733: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_evsl_dos_steps"</font>,<font color="#666666">"Number of Lanczos steps in DOS"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>"</font>,i3,&amp;i3,&amp;flg1);
+<a name="line734">734: </a>    <font color="#4169E1">if</font> (flg1) flg = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line735">735: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_evsl_dos_npoints"</font>,<font color="#666666">"Number of sample points used for DOS"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>"</font>,i4,&amp;i4,&amp;flg1);
+<a name="line736">736: </a>    <font color="#4169E1">if</font> (flg || flg1) <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetDOSParameters.html#EPSEVSLSetDOSParameters">EPSEVSLSetDOSParameters</a>(eps,dos,i1,i2,i3,i4);
+
+<a name="line738">738: </a>    <a href="../../../../../docs/manualpages/EPS/EPSEVSLGetPolParameters.html#EPSEVSLGetPolParameters">EPSEVSLGetPolParameters</a>(eps,&amp;i1,&amp;th);
+<a name="line739">739: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsInt.html#PetscOptionsInt">PetscOptionsInt</a>(<font color="#666666">"-eps_evsl_pol_max_deg"</font>,<font color="#666666">"Maximum degree allowed for the polynomial"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetPolParameters.html#EPSEVSLSetPolParameters">EPSEVSLSetPolParameters</a>"</font>,i1,&amp;i1,&amp;flg);
+<a name="line740">740: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsReal.html#PetscOptionsReal">PetscOptionsReal</a>(<font color="#666666">"-eps_evsl_pol_threshold"</font>,<font color="#666666">"Threshold for accepting polynomial"</font>,<font color="#666666">"<a href="../../../../../docs/manualpages/EPS/EPSEVSLSetPolParameters.html#EPSEVSLSetPolParameters">EPSEVSLSetPolParameters</a>"</font>,th,&amp;th,&amp;flg1);
+<a name="line741">741: </a>    <font color="#4169E1">if</font> (flg || flg1) <a href="../../../../../docs/manualpages/EPS/EPSEVSLSetPolParameters.html#EPSEVSLSetPolParameters">EPSEVSLSetPolParameters</a>(eps,i1,th);
+
+<a name="line743">743: </a>  PetscOptionsHeadEnd();
+<a name="line744">744: </a>  <font color="#4169E1">return</font> 0;
+<a name="line745">745: </a>}
+
+<a name="line747">747: </a><strong><font color="#4169E1"><a name="EPSDestroy_EVSL"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSDestroy_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line748">748: </a>{
+<a name="line749">749: </a>  EPS_EVSL       *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line751">751: </a>  <font color="#4169E1">if</font> (ctx-&gt;initialized) EVSLFinish();
+<a name="line752">752: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/PetscLayoutDestroy.html#PetscLayoutDestroy">PetscLayoutDestroy</a>(&amp;ctx-&gt;map);
+<a name="line753">753: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx-&gt;sli);
+<a name="line754">754: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(eps-&gt;data);
+<a name="line755">755: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetRange_C"</font>,NULL);
+<a name="line756">756: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetRange_C"</font>,NULL);
+<a name="line757">757: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetSlices_C"</font>,NULL);
+<a name="line758">758: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetSlices_C"</font>,NULL);
+<a name="line759">759: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetDOSParameters_C"</font>,NULL);
+<a name="line760">760: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetDOSParameters_C"</font>,NULL);
+<a name="line761">761: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetPolParameters_C"</font>,NULL);
+<a name="line762">762: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetPolParameters_C"</font>,NULL);
+<a name="line763">763: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetDamping_C"</font>,NULL);
+<a name="line764">764: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetDamping_C"</font>,NULL);
+<a name="line765">765: </a>  <font color="#4169E1">return</font> 0;
+<a name="line766">766: </a>}
+
+<a name="line768">768: </a><strong><font color="#4169E1"><a name="EPSReset_EVSL"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSReset_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line769">769: </a>{
+<a name="line770">770: </a>  EPS_EVSL       *ctx = (EPS_EVSL*)eps-&gt;data;
+
+<a name="line772">772: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;ctx-&gt;A);
+<a name="line773">773: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;x);
+<a name="line774">774: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;y);
+<a name="line775">775: </a>  <font color="#4169E1">return</font> 0;
+<a name="line776">776: </a>}
+
+<a name="line778">778: </a><strong><font color="#4169E1"><a name="EPSCreate_EVSL"></a>SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> EPSCreate_EVSL(<a href="../../../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a> eps)</font></strong>
+<a name="line779">779: </a>{
+<a name="line780">780: </a>  EPS_EVSL       *ctx;
+
+<a name="line782">782: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctx);
+<a name="line783">783: </a>  eps-&gt;data = (void*)ctx;
+
+<a name="line785">785: </a>  ctx-&gt;nslices = 0;
+<a name="line786">786: </a>  ctx-&gt;lmin    = PETSC_MIN_REAL;
+<a name="line787">787: </a>  ctx-&gt;lmax    = PETSC_MAX_REAL;
+<a name="line788">788: </a>  ctx-&gt;dos     = <a href="../../../../../docs/manualpages/EPS/EPSEVSLDOSMethod.html#EPSEVSLDOSMethod">EPS_EVSL_DOS_KPM</a>;
+<a name="line789">789: </a>  ctx-&gt;nvec    = 80;
+<a name="line790">790: </a>  ctx-&gt;deg     = 300;
+<a name="line791">791: </a>  ctx-&gt;steps   = 40;
+<a name="line792">792: </a>  ctx-&gt;npoints = 200;
+<a name="line793">793: </a>  ctx-&gt;max_deg = 10000;
+<a name="line794">794: </a>  ctx-&gt;thresh  = 0.8;
+<a name="line795">795: </a>  ctx-&gt;damping = <a href="../../../../../docs/manualpages/EPS/EPSEVSLDamping.html#EPSEVSLDamping">EPS_EVSL_DAMPING_SIGMA</a>;
+
+<a name="line797">797: </a>  eps-&gt;categ = EPS_CATEGORY_OTHER;
+
+<a name="line799">799: </a>  eps-&gt;ops-&gt;solve          = EPSSolve_EVSL;
+<a name="line800">800: </a>  eps-&gt;ops-&gt;setup          = EPSSetUp_EVSL;
+<a name="line801">801: </a>  eps-&gt;ops-&gt;setupsort      = EPSSetUpSort_Basic;
+<a name="line802">802: </a>  eps-&gt;ops-&gt;setfromoptions = EPSSetFromOptions_EVSL;
+<a name="line803">803: </a>  eps-&gt;ops-&gt;destroy        = EPSDestroy_EVSL;
+<a name="line804">804: </a>  eps-&gt;ops-&gt;reset          = EPSReset_EVSL;
+<a name="line805">805: </a>  eps-&gt;ops-&gt;view           = EPSView_EVSL;
+<a name="line806">806: </a>  eps-&gt;ops-&gt;backtransform  = EPSBackTransform_Default;
+<a name="line807">807: </a>  eps-&gt;ops-&gt;setdefaultst   = EPSSetDefaultST_NoFactor;
+
+<a name="line809">809: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetRange_C"</font>,EPSEVSLSetRange_EVSL);
+<a name="line810">810: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetRange_C"</font>,EPSEVSLGetRange_EVSL);
+<a name="line811">811: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetSlices_C"</font>,EPSEVSLSetSlices_EVSL);
+<a name="line812">812: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetSlices_C"</font>,EPSEVSLGetSlices_EVSL);
+<a name="line813">813: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetDOSParameters_C"</font>,EPSEVSLSetDOSParameters_EVSL);
+<a name="line814">814: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetDOSParameters_C"</font>,EPSEVSLGetDOSParameters_EVSL);
+<a name="line815">815: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetPolParameters_C"</font>,EPSEVSLSetPolParameters_EVSL);
+<a name="line816">816: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetPolParameters_C"</font>,EPSEVSLGetPolParameters_EVSL);
+<a name="line817">817: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLSetDamping_C"</font>,EPSEVSLSetDamping_EVSL);
+<a name="line818">818: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)eps,<font color="#666666">"EPSEVSLGetDamping_C"</font>,EPSEVSLGetDamping_EVSL);
+<a name="line819">819: </a>  <font color="#4169E1">return</font> 0;
+<a name="line820">820: </a>}
+</pre>
+</body>
+
+</html>

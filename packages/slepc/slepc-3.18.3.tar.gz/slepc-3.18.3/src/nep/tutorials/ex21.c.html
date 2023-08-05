@@ -1,0 +1,398 @@
+<center><a href="ex21.c">Actual source code: ex21.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/nep/tutorials/ex21.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:18+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/nep/tutorials/ex21.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+
+<a name="line11"> 11: </a>static char help[] = <font color="#666666">"Simple 1-D nonlinear eigenproblem (matrix-free version).\n\n"</font>
+<a name="line12"> 12: </a>  <font color="#666666">"The command line options are:\n"</font>
+<a name="line13"> 13: </a>  <font color="#666666">"  -n &lt;n&gt;, where &lt;n&gt; = number of grid subdivisions\n\n"</font>;
+
+<a name="line15"> 15: </a><font color="#B22222">/*</font>
+<a name="line16"> 16: </a><font color="#B22222">   Solve 1-D PDE</font>
+<a name="line17"> 17: </a><font color="#B22222">            -u'' = lambda*u</font>
+<a name="line18"> 18: </a><font color="#B22222">   on [0,1] subject to</font>
+<a name="line19"> 19: </a><font color="#B22222">            u(0)=0, u'(1)=u(1)*lambda*kappa/(kappa-lambda)</font>
+<a name="line20"> 20: </a><font color="#B22222">*/</font>
+
+<a name="line22"> 22: </a>#include <A href="../../../include/slepcnep.h.html">&lt;slepcnep.h&gt;</A>
+
+<a name="line24"> 24: </a><font color="#B22222">/*</font>
+<a name="line25"> 25: </a><font color="#B22222">   User-defined routines</font>
+<a name="line26"> 26: </a><font color="#B22222">*/</font>
+<a name="line27"> 27: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> FormFunction(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,void*)</font></strong>;
+<a name="line28"> 28: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> FormJacobian(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,void*)</font></strong>;
+
+<a name="line30"> 30: </a><font color="#B22222">/*</font>
+<a name="line31"> 31: </a><font color="#B22222">   Matrix operations and context</font>
+<a name="line32"> 32: </a><font color="#B22222">*/</font>
+<a name="line33"> 33: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line34"> 34: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatGetDiagonal_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line35"> 35: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatDestroy_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>)</font></strong>;
+<a name="line36"> 36: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatDuplicate_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatDuplicateOption.html#MatDuplicateOption">MatDuplicateOption</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>*)</font></strong>;
+<a name="line37"> 37: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Jac(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line38"> 38: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatGetDiagonal_Jac(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line39"> 39: </a><strong><font color="#4169E1"><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatDestroy_Jac(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>)</font></strong>;
+
+<a name="line41"> 41: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line42"> 42: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> lambda,kappa;
+<a name="line43"> 43: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>   h;
+<a name="line44"> 44: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a> next,prev;
+<a name="line45"> 45: </a>} MatCtx;
+
+<a name="line47"> 47: </a><font color="#B22222">/*</font>
+<a name="line48"> 48: </a><font color="#B22222">   User-defined application context</font>
+<a name="line49"> 49: </a><font color="#B22222">*/</font>
+<a name="line50"> 50: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line51"> 51: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> kappa;   <font color="#B22222">/* ratio between stiffness of spring and attached mass */</font>
+<a name="line52"> 52: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>   h;       <font color="#B22222">/* mesh spacing */</font>
+<a name="line53"> 53: </a>} ApplicationCtx;
+
+<a name="line55"> 55: </a><strong><font color="#4169E1"><a name="main"></a>int main(int argc,char **argv)</font></strong>
+<a name="line56"> 56: </a>{
+<a name="line57"> 57: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>            nep;             <font color="#B22222">/* nonlinear eigensolver context */</font>
+<a name="line58"> 58: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            F,J;             <font color="#B22222">/* Function and Jacobian matrices */</font>
+<a name="line59"> 59: </a>  ApplicationCtx ctx;             <font color="#B22222">/* user-defined context */</font>
+<a name="line60"> 60: </a>  MatCtx         *ctxF,*ctxJ;     <font color="#B22222">/* contexts for shell matrices */</font>
+<a name="line61"> 61: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n=128,nev;
+<a name="line62"> 62: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>            ksp;
+<a name="line63"> 63: </a>  <a href="https://petsc.org/release/docs/manualpages/PC/PC.html#PC">PC</a>             pc;
+<a name="line64"> 64: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    rank,size;
+<a name="line65"> 65: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      terse;
+
+<a name="line68"> 68: </a>  <a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>(&amp;argc,&amp;argv,(char*)0,help);
+<a name="line69"> 69: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,&amp;size);
+<a name="line70"> 70: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,&amp;rank);
+<a name="line71"> 71: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetInt.html#PetscOptionsGetInt">PetscOptionsGetInt</a>(NULL,NULL,<font color="#666666">"-n"</font>,&amp;n,NULL);
+<a name="line72"> 72: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscPrintf.html#PetscPrintf">PetscPrintf</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,<font color="#666666">"\n1-D Nonlinear Eigenproblem, n=%"</font> PetscInt_FMT <font color="#666666">"\n\n"</font>,n);
+<a name="line73"> 73: </a>  ctx.h = 1.0/(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>)n;
+<a name="line74"> 74: </a>  ctx.kappa = 1.0;
+
+<a name="line76"> 76: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line77"> 77: </a><font color="#B22222">     Create nonlinear eigensolver context</font>
+<a name="line78"> 78: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line80"> 80: </a>  <a href="../../../docs/manualpages/NEP/NEPCreate.html#NEPCreate">NEPCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,&amp;nep);
+
+<a name="line82"> 82: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line83"> 83: </a><font color="#B22222">     Create matrix data structure; set Function evaluation routine</font>
+<a name="line84"> 84: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line86"> 86: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctxF);
+<a name="line87"> 87: </a>  ctxF-&gt;h = ctx.h;
+<a name="line88"> 88: </a>  ctxF-&gt;kappa = ctx.kappa;
+<a name="line89"> 89: </a>  ctxF-&gt;next = rank==size-1? MPI_PROC_NULL: rank+1;
+<a name="line90"> 90: </a>  ctxF-&gt;prev = rank==0? MPI_PROC_NULL: rank-1;
+
+<a name="line92"> 92: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,(void*)ctxF,&amp;F);
+<a name="line93"> 93: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(F,MATOP_MULT,(void(*)(void))MatMult_Fun);
+<a name="line94"> 94: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(F,MATOP_GET_DIAGONAL,(void(*)(void))MatGetDiagonal_Fun);
+<a name="line95"> 95: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(F,MATOP_DESTROY,(void(*)(void))MatDestroy_Fun);
+<a name="line96"> 96: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(F,MATOP_DUPLICATE,(void(*)(void))MatDuplicate_Fun);
+
+<a name="line98"> 98: </a>  <font color="#B22222">/*</font>
+<a name="line99"> 99: </a><font color="#B22222">     Set Function matrix data structure and default Function evaluation</font>
+<a name="line100">100: </a><font color="#B22222">     routine</font>
+<a name="line101">101: </a><font color="#B22222">  */</font>
+<a name="line102">102: </a>  <a href="../../../docs/manualpages/NEP/NEPSetFunction.html#NEPSetFunction">NEPSetFunction</a>(nep,F,F,FormFunction,NULL);
+
+<a name="line104">104: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line105">105: </a><font color="#B22222">     Create matrix data structure; set Jacobian evaluation routine</font>
+<a name="line106">106: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line108">108: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctxJ);
+<a name="line109">109: </a>  ctxJ-&gt;h = ctx.h;
+<a name="line110">110: </a>  ctxJ-&gt;kappa = ctx.kappa;
+<a name="line111">111: </a>  ctxJ-&gt;next = rank==size-1? MPI_PROC_NULL: rank+1;
+<a name="line112">112: </a>  ctxJ-&gt;prev = rank==0? MPI_PROC_NULL: rank-1;
+
+<a name="line114">114: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,(void*)ctxJ,&amp;J);
+<a name="line115">115: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(J,MATOP_MULT,(void(*)(void))MatMult_Jac);
+<a name="line116">116: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(J,MATOP_GET_DIAGONAL,(void(*)(void))MatGetDiagonal_Jac);
+<a name="line117">117: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(J,MATOP_DESTROY,(void(*)(void))MatDestroy_Jac);
+
+<a name="line119">119: </a>  <font color="#B22222">/*</font>
+<a name="line120">120: </a><font color="#B22222">     Set Jacobian matrix data structure and default Jacobian evaluation</font>
+<a name="line121">121: </a><font color="#B22222">     routine</font>
+<a name="line122">122: </a><font color="#B22222">  */</font>
+<a name="line123">123: </a>  <a href="../../../docs/manualpages/NEP/NEPSetJacobian.html#NEPSetJacobian">NEPSetJacobian</a>(nep,J,FormJacobian,NULL);
+
+<a name="line125">125: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line126">126: </a><font color="#B22222">     Customize nonlinear solver; set runtime options</font>
+<a name="line127">127: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line129">129: </a>  <a href="../../../docs/manualpages/NEP/NEPSetType.html#NEPSetType">NEPSetType</a>(nep,NEPRII);
+<a name="line130">130: </a>  <a href="../../../docs/manualpages/NEP/NEPRIISetLagPreconditioner.html#NEPRIISetLagPreconditioner">NEPRIISetLagPreconditioner</a>(nep,0);
+<a name="line131">131: </a>  <a href="../../../docs/manualpages/NEP/NEPRIIGetKSP.html#NEPRIIGetKSP">NEPRIIGetKSP</a>(nep,&amp;ksp);
+<a name="line132">132: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetType.html#KSPSetType">KSPSetType</a>(ksp,<a href="https://petsc.org/release/docs/manualpages/KSP/KSPBCGS.html#KSPBCGS">KSPBCGS</a>);
+<a name="line133">133: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetPC.html#KSPGetPC">KSPGetPC</a>(ksp,&amp;pc);
+<a name="line134">134: </a>  <a href="https://petsc.org/release/docs/manualpages/PC/PCSetType.html#PCSetType">PCSetType</a>(pc,<a href="https://petsc.org/release/docs/manualpages/PC/PCJACOBI.html#PCJACOBI">PCJACOBI</a>);
+
+<a name="line136">136: </a>  <font color="#B22222">/*</font>
+<a name="line137">137: </a><font color="#B22222">     Set solver parameters at runtime</font>
+<a name="line138">138: </a><font color="#B22222">  */</font>
+<a name="line139">139: </a>  <a href="../../../docs/manualpages/NEP/NEPSetFromOptions.html#NEPSetFromOptions">NEPSetFromOptions</a>(nep);
+
+<a name="line141">141: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line142">142: </a><font color="#B22222">                      Solve the eigensystem</font>
+<a name="line143">143: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line145">145: </a>  <a href="../../../docs/manualpages/NEP/NEPSolve.html#NEPSolve">NEPSolve</a>(nep);
+<a name="line146">146: </a>  <a href="../../../docs/manualpages/NEP/NEPGetDimensions.html#NEPGetDimensions">NEPGetDimensions</a>(nep,&amp;nev,NULL,NULL);
+<a name="line147">147: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscPrintf.html#PetscPrintf">PetscPrintf</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,<font color="#666666">" Number of requested eigenvalues: %"</font> PetscInt_FMT <font color="#666666">"\n"</font>,nev);
+
+<a name="line149">149: </a>  <font color="#B22222">/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line150">150: </a><font color="#B22222">                    Display solution and clean up</font>
+<a name="line151">151: </a><font color="#B22222">     - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */</font>
+
+<a name="line153">153: </a>  <font color="#B22222">/* show detailed info unless -terse option is given by user */</font>
+<a name="line154">154: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHasName.html#PetscOptionsHasName">PetscOptionsHasName</a>(NULL,NULL,<font color="#666666">"-terse"</font>,&amp;terse);
+<a name="line155">155: </a>  <font color="#4169E1">if</font> (terse) <a href="../../../docs/manualpages/NEP/NEPErrorView.html#NEPErrorView">NEPErrorView</a>(nep,<a href="../../../docs/manualpages/NEP/NEPErrorType.html#NEPErrorType">NEP_ERROR_RELATIVE</a>,NULL);
+<a name="line156">156: </a>  <font color="#4169E1">else</font> {
+<a name="line157">157: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPushFormat.html#PetscViewerPushFormat">PetscViewerPushFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>);
+<a name="line158">158: </a>    <a href="../../../docs/manualpages/NEP/NEPConvergedReasonView.html#NEPConvergedReasonView">NEPConvergedReasonView</a>(nep,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>);
+<a name="line159">159: </a>    <a href="../../../docs/manualpages/NEP/NEPErrorView.html#NEPErrorView">NEPErrorView</a>(nep,<a href="../../../docs/manualpages/NEP/NEPErrorType.html#NEPErrorType">NEP_ERROR_RELATIVE</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>);
+<a name="line160">160: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPopFormat.html#PetscViewerPopFormat">PetscViewerPopFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>);
+<a name="line161">161: </a>  }
+<a name="line162">162: </a>  <a href="../../../docs/manualpages/NEP/NEPDestroy.html#NEPDestroy">NEPDestroy</a>(&amp;nep);
+<a name="line163">163: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;F);
+<a name="line164">164: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;J);
+<a name="line165">165: </a>  <a href="../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>();
+<a name="line166">166: </a>  <font color="#4169E1">return</font> 0;
+<a name="line167">167: </a>}
+
+<a name="line169">169: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line170">170: </a><font color="#B22222">/*</font>
+<a name="line171">171: </a><font color="#B22222">   FormFunction - Computes Function matrix  T(lambda)</font>
+
+<a name="line173">173: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line174">174: </a><font color="#B22222">.  nep    - the <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> context</font>
+<a name="line175">175: </a><font color="#B22222">.  lambda - real part of the scalar argument</font>
+<a name="line176">176: </a><font color="#B22222">.  ctx    - optional user-defined context, as set by <a href="../../../docs/manualpages/NEP/NEPSetFunction.html#NEPSetFunction">NEPSetFunction</a>()</font>
+
+<a name="line178">178: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line179">179: </a><font color="#B22222">.  fun - Function matrix</font>
+<a name="line180">180: </a><font color="#B22222">.  B   - optionally different preconditioning matrix</font>
+<a name="line181">181: </a><font color="#B22222">*/</font>
+<a name="line182">182: </a><strong><font color="#4169E1"><a name="FormFunction"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> FormFunction(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> lambda,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> fun,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> B,void *ctx)</font></strong>
+<a name="line183">183: </a>{
+<a name="line184">184: </a>  MatCtx         *ctxF;
+
+<a name="line187">187: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(fun,&amp;ctxF);
+<a name="line188">188: </a>  ctxF-&gt;lambda = lambda;
+<a name="line189">189: </a>  <font color="#4169E1">return</font> 0;
+<a name="line190">190: </a>}
+
+<a name="line192">192: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line193">193: </a><font color="#B22222">/*</font>
+<a name="line194">194: </a><font color="#B22222">   FormJacobian - Computes Jacobian matrix  T'(lambda)</font>
+
+<a name="line196">196: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line197">197: </a><font color="#B22222">.  nep    - the <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> context</font>
+<a name="line198">198: </a><font color="#B22222">.  lambda - real part of the scalar argument</font>
+<a name="line199">199: </a><font color="#B22222">.  ctx    - optional user-defined context, as set by <a href="../../../docs/manualpages/NEP/NEPSetJacobian.html#NEPSetJacobian">NEPSetJacobian</a>()</font>
+
+<a name="line201">201: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line202">202: </a><font color="#B22222">.  jac - Jacobian matrix</font>
+<a name="line203">203: </a><font color="#B22222">*/</font>
+<a name="line204">204: </a><strong><font color="#4169E1"><a name="FormJacobian"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> FormJacobian(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> lambda,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> jac,void *ctx)</font></strong>
+<a name="line205">205: </a>{
+<a name="line206">206: </a>  MatCtx         *ctxJ;
+
+<a name="line209">209: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(jac,&amp;ctxJ);
+<a name="line210">210: </a>  ctxJ-&gt;lambda = lambda;
+<a name="line211">211: </a>  <font color="#4169E1">return</font> 0;
+<a name="line212">212: </a>}
+
+<a name="line214">214: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line215">215: </a><strong><font color="#4169E1"><a name="MatMult_Fun"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> x,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y)</font></strong>
+<a name="line216">216: </a>{
+<a name="line217">217: </a>  MatCtx            *ctx;
+<a name="line218">218: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,n,N;
+<a name="line219">219: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *px;
+<a name="line220">220: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *py,c,d,de,oe,upper=0.0,lower=0.0;
+<a name="line221">221: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         h;
+<a name="line222">222: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>          comm;
+
+<a name="line225">225: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line226">226: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(x,&amp;px);
+<a name="line227">227: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(y,&amp;py);
+<a name="line228">228: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetSize.html#VecGetSize">VecGetSize</a>(x,&amp;N);
+<a name="line229">229: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetLocalSize.html#VecGetLocalSize">VecGetLocalSize</a>(x,&amp;n);
+
+<a name="line231">231: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetComm.html#PetscObjectGetComm">PetscObjectGetComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A,&amp;comm);
+<a name="line232">232: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Sendrecv.html#MPI_Sendrecv">MPI_Sendrecv</a>(px,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;prev,0,&amp;lower,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;next,0,comm,MPI_STATUS_IGNORE);
+<a name="line233">233: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Sendrecv.html#MPI_Sendrecv">MPI_Sendrecv</a>(px+n-1,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;next,0,&amp;upper,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;prev,0,comm,MPI_STATUS_IGNORE);
+
+<a name="line235">235: </a>  h = ctx-&gt;h;
+<a name="line236">236: </a>  c = ctx-&gt;kappa/(ctx-&gt;lambda-ctx-&gt;kappa);
+<a name="line237">237: </a>  d = N;
+<a name="line238">238: </a>  de = 2.0*(d-ctx-&gt;lambda*h/3.0);   <font color="#B22222">/* diagonal entry */</font>
+<a name="line239">239: </a>  oe = -d-ctx-&gt;lambda*h/6.0;        <font color="#B22222">/* offdiagonal entry */</font>
+<a name="line240">240: </a>  py[0] = oe*upper + de*px[0] + oe*px[1];
+<a name="line241">241: </a>  <font color="#4169E1">for</font> (i=1;i&lt;n-1;i++) py[i] = oe*px[i-1] +de*px[i] + oe*px[i+1];
+<a name="line242">242: </a>  <font color="#4169E1">if</font> (ctx-&gt;next==MPI_PROC_NULL) de = d-ctx-&gt;lambda*h/3.0+ctx-&gt;lambda*c;   <font color="#B22222">/* diagonal entry of last row */</font>
+<a name="line243">243: </a>  py[n-1] = oe*px[n-2] + de*px[n-1] + oe*lower;
+
+<a name="line245">245: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(x,&amp;px);
+<a name="line246">246: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(y,&amp;py);
+<a name="line247">247: </a>  <font color="#4169E1">return</font> 0;
+<a name="line248">248: </a>}
+
+<a name="line250">250: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line251">251: </a><strong><font color="#4169E1"><a name="MatGetDiagonal_Fun"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatGetDiagonal_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> diag)</font></strong>
+<a name="line252">252: </a>{
+<a name="line253">253: </a>  MatCtx         *ctx;
+<a name="line254">254: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n,N;
+<a name="line255">255: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *pd,c,d;
+<a name="line256">256: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      h;
+
+<a name="line259">259: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line260">260: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetSize.html#VecGetSize">VecGetSize</a>(diag,&amp;N);
+<a name="line261">261: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetLocalSize.html#VecGetLocalSize">VecGetLocalSize</a>(diag,&amp;n);
+<a name="line262">262: </a>  h = ctx-&gt;h;
+<a name="line263">263: </a>  c = ctx-&gt;kappa/(ctx-&gt;lambda-ctx-&gt;kappa);
+<a name="line264">264: </a>  d = N;
+<a name="line265">265: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecSet.html#VecSet">VecSet</a>(diag,2.0*(d-ctx-&gt;lambda*h/3.0));
+<a name="line266">266: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(diag,&amp;pd);
+<a name="line267">267: </a>  pd[n-1] = d-ctx-&gt;lambda*h/3.0+ctx-&gt;lambda*c;
+<a name="line268">268: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(diag,&amp;pd);
+<a name="line269">269: </a>  <font color="#4169E1">return</font> 0;
+<a name="line270">270: </a>}
+
+<a name="line272">272: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line273">273: </a><strong><font color="#4169E1"><a name="MatDestroy_Fun"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatDestroy_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A)</font></strong>
+<a name="line274">274: </a>{
+<a name="line275">275: </a>  MatCtx         *ctx;
+
+<a name="line277">277: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line278">278: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx);
+<a name="line279">279: </a>  <font color="#4169E1">return</font> 0;
+<a name="line280">280: </a>}
+
+<a name="line282">282: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line283">283: </a><strong><font color="#4169E1"><a name="MatDuplicate_Fun"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatDuplicate_Fun(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Mat/MatDuplicateOption.html#MatDuplicateOption">MatDuplicateOption</a> op,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *B)</font></strong>
+<a name="line284">284: </a>{
+<a name="line285">285: </a>  MatCtx         *actx,*bctx;
+<a name="line286">286: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       m,n,M,N;
+<a name="line287">287: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm;
+
+<a name="line289">289: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;actx);
+<a name="line290">290: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(A,&amp;M,&amp;N);
+<a name="line291">291: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(A,&amp;m,&amp;n);
+
+<a name="line293">293: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;bctx);
+<a name="line294">294: </a>  bctx-&gt;h      = actx-&gt;h;
+<a name="line295">295: </a>  bctx-&gt;kappa  = actx-&gt;kappa;
+<a name="line296">296: </a>  bctx-&gt;lambda = actx-&gt;lambda;
+<a name="line297">297: </a>  bctx-&gt;next   = actx-&gt;next;
+<a name="line298">298: </a>  bctx-&gt;prev   = actx-&gt;prev;
+
+<a name="line300">300: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetComm.html#PetscObjectGetComm">PetscObjectGetComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A,&amp;comm);
+<a name="line301">301: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(comm,m,n,M,N,(void*)bctx,B);
+<a name="line302">302: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(*B,MATOP_MULT,(void(*)(void))MatMult_Fun);
+<a name="line303">303: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(*B,MATOP_GET_DIAGONAL,(void(*)(void))MatGetDiagonal_Fun);
+<a name="line304">304: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(*B,MATOP_DESTROY,(void(*)(void))MatDestroy_Fun);
+<a name="line305">305: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(*B,MATOP_DUPLICATE,(void(*)(void))MatDuplicate_Fun);
+<a name="line306">306: </a>  <font color="#4169E1">return</font> 0;
+<a name="line307">307: </a>}
+
+<a name="line309">309: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line310">310: </a><strong><font color="#4169E1"><a name="MatMult_Jac"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Jac(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> x,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y)</font></strong>
+<a name="line311">311: </a>{
+<a name="line312">312: </a>  MatCtx            *ctx;
+<a name="line313">313: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,n;
+<a name="line314">314: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *px;
+<a name="line315">315: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *py,c,de,oe,upper=0.0,lower=0.0;
+<a name="line316">316: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         h;
+<a name="line317">317: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>          comm;
+
+<a name="line320">320: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line321">321: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(x,&amp;px);
+<a name="line322">322: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(y,&amp;py);
+<a name="line323">323: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetLocalSize.html#VecGetLocalSize">VecGetLocalSize</a>(x,&amp;n);
+
+<a name="line325">325: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetComm.html#PetscObjectGetComm">PetscObjectGetComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A,&amp;comm);
+<a name="line326">326: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Sendrecv.html#MPI_Sendrecv">MPI_Sendrecv</a>(px,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;prev,0,&amp;lower,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;next,0,comm,MPI_STATUS_IGNORE);
+<a name="line327">327: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Sendrecv.html#MPI_Sendrecv">MPI_Sendrecv</a>(px+n-1,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;next,0,&amp;upper,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ctx-&gt;prev,0,comm,MPI_STATUS_IGNORE);
+
+<a name="line329">329: </a>  h = ctx-&gt;h;
+<a name="line330">330: </a>  c = ctx-&gt;kappa/(ctx-&gt;lambda-ctx-&gt;kappa);
+<a name="line331">331: </a>  de = -2.0*h/3.0;    <font color="#B22222">/* diagonal entry */</font>
+<a name="line332">332: </a>  oe = -h/6.0;        <font color="#B22222">/* offdiagonal entry */</font>
+<a name="line333">333: </a>  py[0] = oe*upper + de*px[0] + oe*px[1];
+<a name="line334">334: </a>  <font color="#4169E1">for</font> (i=1;i&lt;n-1;i++) py[i] = oe*px[i-1] +de*px[i] + oe*px[i+1];
+<a name="line335">335: </a>  <font color="#4169E1">if</font> (ctx-&gt;next==MPI_PROC_NULL) de = -h/3.0-c*c;    <font color="#B22222">/* diagonal entry of last row */</font>
+<a name="line336">336: </a>  py[n-1] = oe*px[n-2] + de*px[n-1] + oe*lower;
+
+<a name="line338">338: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(x,&amp;px);
+<a name="line339">339: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(y,&amp;py);
+<a name="line340">340: </a>  <font color="#4169E1">return</font> 0;
+<a name="line341">341: </a>}
+
+<a name="line343">343: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line344">344: </a><strong><font color="#4169E1"><a name="MatGetDiagonal_Jac"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatGetDiagonal_Jac(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> diag)</font></strong>
+<a name="line345">345: </a>{
+<a name="line346">346: </a>  MatCtx         *ctx;
+<a name="line347">347: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n;
+<a name="line348">348: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *pd,c;
+<a name="line349">349: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      h;
+
+<a name="line352">352: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line353">353: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetLocalSize.html#VecGetLocalSize">VecGetLocalSize</a>(diag,&amp;n);
+<a name="line354">354: </a>  h = ctx-&gt;h;
+<a name="line355">355: </a>  c = ctx-&gt;kappa/(ctx-&gt;lambda-ctx-&gt;kappa);
+<a name="line356">356: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecSet.html#VecSet">VecSet</a>(diag,-2.0*h/3.0);
+<a name="line357">357: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(diag,&amp;pd);
+<a name="line358">358: </a>  pd[n-1] = -h/3.0-c*c;
+<a name="line359">359: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(diag,&amp;pd);
+<a name="line360">360: </a>  <font color="#4169E1">return</font> 0;
+<a name="line361">361: </a>}
+
+<a name="line363">363: </a><font color="#B22222">/* ------------------------------------------------------------------- */</font>
+<a name="line364">364: </a><strong><font color="#4169E1"><a name="MatDestroy_Jac"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatDestroy_Jac(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A)</font></strong>
+<a name="line365">365: </a>{
+<a name="line366">366: </a>  MatCtx         *ctx;
+
+<a name="line368">368: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(A,&amp;ctx);
+<a name="line369">369: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx);
+<a name="line370">370: </a>  <font color="#4169E1">return</font> 0;
+<a name="line371">371: </a>}
+
+<a name="line373">373: </a><font color="#B22222">/*TEST</font>
+
+<a name="line375">375: </a><font color="#B22222">   testset:</font>
+<a name="line376">376: </a><font color="#B22222">      nsize: {{1 2}}</font>
+<a name="line377">377: </a><font color="#B22222">      args: -terse</font>
+<a name="line378">378: </a><font color="#B22222">      requires: !single</font>
+<a name="line379">379: </a><font color="#B22222">      output_file: output/ex21_1.out</font>
+<a name="line380">380: </a><font color="#B22222">      filter: sed -e "s/[+-]0\.0*i//g" -e "s/+0i//g"</font>
+<a name="line381">381: </a><font color="#B22222">      test:</font>
+<a name="line382">382: </a><font color="#B22222">         suffix: 1_rii</font>
+<a name="line383">383: </a><font color="#B22222">         args: -nep_type rii -nep_target 4</font>
+<a name="line384">384: </a><font color="#B22222">      test:</font>
+<a name="line385">385: </a><font color="#B22222">         suffix: 1_slp</font>
+<a name="line386">386: </a><font color="#B22222">         args: -nep_type slp -nep_slp_pc_type jacobi -nep_slp_ksp_type bcgs -nep_target 10</font>
+
+<a name="line388">388: </a><font color="#B22222">TEST*/</font>
+</pre>
+</body>
+
+</html>

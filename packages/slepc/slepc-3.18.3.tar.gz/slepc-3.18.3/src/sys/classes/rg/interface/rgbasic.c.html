@@ -1,0 +1,791 @@
+<center><a href="rgbasic.c">Actual source code: rgbasic.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/sys/classes/rg/interface/rgbasic.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:14+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/sys/classes/rg/interface/rgbasic.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   Basic <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> routines</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../../../include/slepc/private/rgimpl.h.html">&lt;slepc/private/rgimpl.h&gt;</A>
+
+<a name="line16"> 16: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionList.html#PetscFunctionList">PetscFunctionList</a> RGList = NULL;
+<a name="line17"> 17: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         RGRegisterAllCalled = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line18"> 18: </a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscClassId.html#PetscClassId">PetscClassId</a>      RG_CLASSID = 0;
+<a name="line19"> 19: </a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>  RGPackageInitialized = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line21"> 21: </a><font color="#B22222">/*@C</font>
+<a name="line22"> 22: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGFinalizePackage.html#RGFinalizePackage">RGFinalizePackage</a> - This function destroys everything in the Slepc interface</font>
+<a name="line23"> 23: </a><font color="#B22222">   to the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> package. It is called from <a href="../../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>().</font>
+
+<a name="line25"> 25: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line27"> 27: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>()</font>
+<a name="line28"> 28: </a><font color="#B22222">@*/</font>
+<a name="line29"> 29: </a><strong><font color="#4169E1"><a name="RGFinalizePackage"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGFinalizePackage.html#RGFinalizePackage">RGFinalizePackage</a>(void)</font></strong>
+<a name="line30"> 30: </a>{
+<a name="line31"> 31: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListDestroy.html#PetscFunctionListDestroy">PetscFunctionListDestroy</a>(&amp;RGList);
+<a name="line32"> 32: </a>  RGPackageInitialized = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line33"> 33: </a>  RGRegisterAllCalled  = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line34"> 34: </a>  <font color="#4169E1">return</font> 0;
+<a name="line35"> 35: </a>}
+
+<a name="line37"> 37: </a><font color="#B22222">/*@C</font>
+<a name="line38"> 38: </a><font color="#B22222">  <a href="../../../../docs/manualpages/RG/RGInitializePackage.html#RGInitializePackage">RGInitializePackage</a> - This function initializes everything in the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> package.</font>
+<a name="line39"> 39: </a><font color="#B22222">  It is called from PetscDLLibraryRegister() when using dynamic libraries, and</font>
+<a name="line40"> 40: </a><font color="#B22222">  on the first call to <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>() when using static libraries.</font>
+
+<a name="line42"> 42: </a><font color="#B22222">  Level: developer</font>
+
+<a name="line44"> 44: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>()</font>
+<a name="line45"> 45: </a><font color="#B22222">@*/</font>
+<a name="line46"> 46: </a><strong><font color="#4169E1"><a name="RGInitializePackage"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGInitializePackage.html#RGInitializePackage">RGInitializePackage</a>(void)</font></strong>
+<a name="line47"> 47: </a>{
+<a name="line48"> 48: </a>  char           logList[256];
+<a name="line49"> 49: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      opt,pkg;
+<a name="line50"> 50: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscClassId.html#PetscClassId">PetscClassId</a>   classids[1];
+
+<a name="line52"> 52: </a>  <font color="#4169E1">if</font> (RGPackageInitialized) <font color="#4169E1">return</font> 0;
+<a name="line53"> 53: </a>  RGPackageInitialized = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line54"> 54: </a>  <font color="#B22222">/* Register Classes */</font>
+<a name="line55"> 55: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscClassIdRegister.html#PetscClassIdRegister">PetscClassIdRegister</a>(<font color="#666666">"Region"</font>,&amp;RG_CLASSID);
+<a name="line56"> 56: </a>  <font color="#B22222">/* Register Constructors */</font>
+<a name="line57"> 57: </a>  <a href="../../../../docs/manualpages/RG/RGRegisterAll.html#RGRegisterAll">RGRegisterAll</a>();
+<a name="line58"> 58: </a>  <font color="#B22222">/* Process Info */</font>
+<a name="line59"> 59: </a>  classids[0] = RG_CLASSID;
+<a name="line60"> 60: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfoProcessClass.html#PetscInfoProcessClass">PetscInfoProcessClass</a>(<font color="#666666">"rg"</font>,1,&amp;classids[0]);
+<a name="line61"> 61: </a>  <font color="#B22222">/* Process summary exclusions */</font>
+<a name="line62"> 62: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetString.html#PetscOptionsGetString">PetscOptionsGetString</a>(NULL,NULL,<font color="#666666">"-log_exclude"</font>,logList,<font color="#4169E1">sizeof</font>(logList),&amp;opt);
+<a name="line63"> 63: </a>  <font color="#4169E1">if</font> (opt) {
+<a name="line64"> 64: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscStrInList.html#PetscStrInList">PetscStrInList</a>(<font color="#666666">"rg"</font>,logList,',',&amp;pkg);
+<a name="line65"> 65: </a>    <font color="#4169E1">if</font> (pkg) <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogEventDeactivateClass.html#PetscLogEventDeactivateClass">PetscLogEventDeactivateClass</a>(RG_CLASSID);
+<a name="line66"> 66: </a>  }
+<a name="line67"> 67: </a>  <font color="#B22222">/* Register package finalizer */</font>
+<a name="line68"> 68: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRegisterFinalize.html#PetscRegisterFinalize">PetscRegisterFinalize</a>(<a href="../../../../docs/manualpages/RG/RGFinalizePackage.html#RGFinalizePackage">RGFinalizePackage</a>);
+<a name="line69"> 69: </a>  <font color="#4169E1">return</font> 0;
+<a name="line70"> 70: </a>}
+
+<a name="line72"> 72: </a><font color="#B22222">/*@</font>
+<a name="line73"> 73: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a> - Creates an <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> context.</font>
+
+<a name="line75"> 75: </a><font color="#B22222">   Collective</font>
+
+<a name="line77"> 77: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line78"> 78: </a><font color="#B22222">.  comm - MPI communicator</font>
+
+<a name="line80"> 80: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line81"> 81: </a><font color="#B22222">.  newrg - location to put the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> context</font>
+
+<a name="line83"> 83: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line85"> 85: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGDestroy.html#RGDestroy">RGDestroy</a>(), <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a></font>
+<a name="line86"> 86: </a><font color="#B22222">@*/</font>
+<a name="line87"> 87: </a><strong><font color="#4169E1"><a name="RGCreate"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a> comm,<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> *newrg)</font></strong>
+<a name="line88"> 88: </a>{
+<a name="line89"> 89: </a>  <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a>             rg;
+
+<a name="line92"> 92: </a>  *newrg = NULL;
+<a name="line93"> 93: </a>  <a href="../../../../docs/manualpages/RG/RGInitializePackage.html#RGInitializePackage">RGInitializePackage</a>();
+<a name="line94"> 94: </a>  <a href="../../../../docs/manualpages/sys/SlepcHeaderCreate.html#SlepcHeaderCreate">SlepcHeaderCreate</a>(rg,RG_CLASSID,<font color="#666666">"<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a>"</font>,<font color="#666666">"Region"</font>,<font color="#666666">"<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a>"</font>,comm,<a href="../../../../docs/manualpages/RG/RGDestroy.html#RGDestroy">RGDestroy</a>,<a href="../../../../docs/manualpages/RG/RGView.html#RGView">RGView</a>);
+<a name="line95"> 95: </a>  rg-&gt;complement = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line96"> 96: </a>  rg-&gt;sfactor    = 1.0;
+<a name="line97"> 97: </a>  rg-&gt;osfactor   = 0.0;
+<a name="line98"> 98: </a>  rg-&gt;data       = NULL;
+
+<a name="line100">100: </a>  *newrg = rg;
+<a name="line101">101: </a>  <font color="#4169E1">return</font> 0;
+<a name="line102">102: </a>}
+
+<a name="line104">104: </a><font color="#B22222">/*@C</font>
+<a name="line105">105: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGSetOptionsPrefix.html#RGSetOptionsPrefix">RGSetOptionsPrefix</a> - Sets the prefix used for searching for all</font>
+<a name="line106">106: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> options in the database.</font>
+
+<a name="line108">108: </a><font color="#B22222">   Logically Collective on rg</font>
+
+<a name="line110">110: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line111">111: </a><font color="#B22222">+  rg     - the region context</font>
+<a name="line112">112: </a><font color="#B22222">-  prefix - the prefix string to prepend to all <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> option requests</font>
+
+<a name="line114">114: </a><font color="#B22222">   Notes:</font>
+<a name="line115">115: </a><font color="#B22222">   A hyphen (-) must NOT be given at the beginning of the prefix name.</font>
+<a name="line116">116: </a><font color="#B22222">   The first character of all runtime options is AUTOMATICALLY the</font>
+<a name="line117">117: </a><font color="#B22222">   hyphen.</font>
+
+<a name="line119">119: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line121">121: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGAppendOptionsPrefix.html#RGAppendOptionsPrefix">RGAppendOptionsPrefix</a>()</font>
+<a name="line122">122: </a><font color="#B22222">@*/</font>
+<a name="line123">123: </a><strong><font color="#4169E1"><a name="RGSetOptionsPrefix"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGSetOptionsPrefix.html#RGSetOptionsPrefix">RGSetOptionsPrefix</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,const char *prefix)</font></strong>
+<a name="line124">124: </a>{
+<a name="line126">126: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetOptionsPrefix.html#PetscObjectSetOptionsPrefix">PetscObjectSetOptionsPrefix</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,prefix);
+<a name="line127">127: </a>  <font color="#4169E1">return</font> 0;
+<a name="line128">128: </a>}
+
+<a name="line130">130: </a><font color="#B22222">/*@C</font>
+<a name="line131">131: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGAppendOptionsPrefix.html#RGAppendOptionsPrefix">RGAppendOptionsPrefix</a> - Appends to the prefix used for searching for all</font>
+<a name="line132">132: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> options in the database.</font>
+
+<a name="line134">134: </a><font color="#B22222">   Logically Collective on rg</font>
+
+<a name="line136">136: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line137">137: </a><font color="#B22222">+  rg     - the region context</font>
+<a name="line138">138: </a><font color="#B22222">-  prefix - the prefix string to prepend to all <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> option requests</font>
+
+<a name="line140">140: </a><font color="#B22222">   Notes:</font>
+<a name="line141">141: </a><font color="#B22222">   A hyphen (-) must NOT be given at the beginning of the prefix name.</font>
+<a name="line142">142: </a><font color="#B22222">   The first character of all runtime options is AUTOMATICALLY the hyphen.</font>
+
+<a name="line144">144: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line146">146: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetOptionsPrefix.html#RGSetOptionsPrefix">RGSetOptionsPrefix</a>()</font>
+<a name="line147">147: </a><font color="#B22222">@*/</font>
+<a name="line148">148: </a><strong><font color="#4169E1"><a name="RGAppendOptionsPrefix"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGAppendOptionsPrefix.html#RGAppendOptionsPrefix">RGAppendOptionsPrefix</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,const char *prefix)</font></strong>
+<a name="line149">149: </a>{
+<a name="line151">151: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectAppendOptionsPrefix.html#PetscObjectAppendOptionsPrefix">PetscObjectAppendOptionsPrefix</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,prefix);
+<a name="line152">152: </a>  <font color="#4169E1">return</font> 0;
+<a name="line153">153: </a>}
+
+<a name="line155">155: </a><font color="#B22222">/*@C</font>
+<a name="line156">156: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGGetOptionsPrefix.html#RGGetOptionsPrefix">RGGetOptionsPrefix</a> - Gets the prefix used for searching for all</font>
+<a name="line157">157: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> options in the database.</font>
+
+<a name="line159">159: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line161">161: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line162">162: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line164">164: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line165">165: </a><font color="#B22222">.  prefix - pointer to the prefix string used is returned</font>
+
+<a name="line167">167: </a><font color="#B22222">   Note:</font>
+<a name="line168">168: </a><font color="#B22222">   On the Fortran side, the user should pass in a string 'prefix' of</font>
+<a name="line169">169: </a><font color="#B22222">   sufficient length to hold the prefix.</font>
+
+<a name="line171">171: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line173">173: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetOptionsPrefix.html#RGSetOptionsPrefix">RGSetOptionsPrefix</a>(), <a href="../../../../docs/manualpages/RG/RGAppendOptionsPrefix.html#RGAppendOptionsPrefix">RGAppendOptionsPrefix</a>()</font>
+<a name="line174">174: </a><font color="#B22222">@*/</font>
+<a name="line175">175: </a><strong><font color="#4169E1"><a name="RGGetOptionsPrefix"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGGetOptionsPrefix.html#RGGetOptionsPrefix">RGGetOptionsPrefix</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,const char *prefix[])</font></strong>
+<a name="line176">176: </a>{
+<a name="line179">179: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetOptionsPrefix.html#PetscObjectGetOptionsPrefix">PetscObjectGetOptionsPrefix</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,prefix);
+<a name="line180">180: </a>  <font color="#4169E1">return</font> 0;
+<a name="line181">181: </a>}
+
+<a name="line183">183: </a><font color="#B22222">/*@C</font>
+<a name="line184">184: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a> - Selects the type for the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> object.</font>
+
+<a name="line186">186: </a><font color="#B22222">   Logically Collective on rg</font>
+
+<a name="line188">188: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line189">189: </a><font color="#B22222">+  rg   - the region context</font>
+<a name="line190">190: </a><font color="#B22222">-  type - a known type</font>
+
+<a name="line192">192: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line194">194: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGGetType.html#RGGetType">RGGetType</a>()</font>
+<a name="line195">195: </a><font color="#B22222">@*/</font>
+<a name="line196">196: </a><strong><font color="#4169E1"><a name="RGSetType"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="../../../../docs/manualpages/RG/RGType.html#RGType">RGType</a> type)</font></strong>
+<a name="line197">197: </a>{
+<a name="line198">198: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*r)(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a>);
+<a name="line199">199: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      match;
+
+
+<a name="line204">204: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,type,&amp;match);
+<a name="line205">205: </a>  <font color="#4169E1">if</font> (match) <font color="#4169E1">return</font> 0;
+
+<a name="line207">207: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListFind.html#PetscFunctionListFind">PetscFunctionListFind</a>(RGList,type,&amp;r);
+
+<a name="line210">210: </a>  PetscTryTypeMethod(rg,destroy);
+<a name="line211">211: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMemzero.html#PetscMemzero">PetscMemzero</a>(rg-&gt;ops,<font color="#4169E1">sizeof</font>(<font color="#4169E1">struct _RGOps</font>));
+
+<a name="line213">213: </a>  PetscObjectChangeTypeName((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,type);
+<a name="line214">214: </a>  (*r)(rg);
+<a name="line215">215: </a>  <font color="#4169E1">return</font> 0;
+<a name="line216">216: </a>}
+
+<a name="line218">218: </a><font color="#B22222">/*@C</font>
+<a name="line219">219: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGGetType.html#RGGetType">RGGetType</a> - Gets the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> type name (as a string) from the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> context.</font>
+
+<a name="line221">221: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line223">223: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line224">224: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line226">226: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line227">227: </a><font color="#B22222">.  type - name of the region</font>
+
+<a name="line229">229: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line231">231: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>()</font>
+<a name="line232">232: </a><font color="#B22222">@*/</font>
+<a name="line233">233: </a><strong><font color="#4169E1"><a name="RGGetType"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGGetType.html#RGGetType">RGGetType</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="../../../../docs/manualpages/RG/RGType.html#RGType">RGType</a> *type)</font></strong>
+<a name="line234">234: </a>{
+<a name="line237">237: </a>  *type = ((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg)-&gt;type_name;
+<a name="line238">238: </a>  <font color="#4169E1">return</font> 0;
+<a name="line239">239: </a>}
+
+<a name="line241">241: </a><font color="#B22222">/*@</font>
+<a name="line242">242: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGSetFromOptions.html#RGSetFromOptions">RGSetFromOptions</a> - Sets <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> options from the options database.</font>
+
+<a name="line244">244: </a><font color="#B22222">   Collective on rg</font>
+
+<a name="line246">246: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line247">247: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line249">249: </a><font color="#B22222">   Notes:</font>
+<a name="line250">250: </a><font color="#B22222">   To see all options, run your program with the -help option.</font>
+
+<a name="line252">252: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line254">254: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetOptionsPrefix.html#RGSetOptionsPrefix">RGSetOptionsPrefix</a>()</font>
+<a name="line255">255: </a><font color="#B22222">@*/</font>
+<a name="line256">256: </a><strong><font color="#4169E1"><a name="RGSetFromOptions"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGSetFromOptions.html#RGSetFromOptions">RGSetFromOptions</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg)</font></strong>
+<a name="line257">257: </a>{
+<a name="line258">258: </a>  char           type[256];
+<a name="line259">259: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg;
+<a name="line260">260: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      sfactor;
+
+<a name="line263">263: </a>  <a href="../../../../docs/manualpages/RG/RGRegisterAll.html#RGRegisterAll">RGRegisterAll</a>();
+<a name="line264">264: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectOptionsBegin.html#PetscObjectOptionsBegin">PetscObjectOptionsBegin</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg);
+<a name="line265">265: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsFList.html#PetscOptionsFList">PetscOptionsFList</a>(<font color="#666666">"-rg_type"</font>,<font color="#666666">"Region type"</font>,<font color="#666666">"<a href="../../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>"</font>,RGList,(char*)(((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg)-&gt;type_name?((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg)-&gt;type_name:RGINTERVAL),type,<font color="#4169E1">sizeof</font>(type),&amp;flg);
+<a name="line266">266: </a>    <font color="#4169E1">if</font> (flg) <a href="../../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>(rg,type);
+<a name="line267">267: </a>    <font color="#4169E1">else</font> <font color="#4169E1">if</font> (!((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg)-&gt;type_name) <a href="../../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>(rg,RGINTERVAL);
+
+<a name="line269">269: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsBool.html#PetscOptionsBool">PetscOptionsBool</a>(<font color="#666666">"-rg_complement"</font>,<font color="#666666">"Whether region is complemented or not"</font>,<font color="#666666">"<a href="../../../../docs/manualpages/RG/RGSetComplement.html#RGSetComplement">RGSetComplement</a>"</font>,rg-&gt;complement,&amp;rg-&gt;complement,NULL);
+
+<a name="line271">271: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsReal.html#PetscOptionsReal">PetscOptionsReal</a>(<font color="#666666">"-rg_scale"</font>,<font color="#666666">"Scaling factor"</font>,<font color="#666666">"<a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a>"</font>,1.0,&amp;sfactor,&amp;flg);
+<a name="line272">272: </a>    <font color="#4169E1">if</font> (flg) <a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a>(rg,sfactor);
+
+<a name="line274">274: </a>    PetscTryTypeMethod(rg,setfromoptions,PetscOptionsObject);
+<a name="line275">275: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectProcessOptionsHandlers.html#PetscObjectProcessOptionsHandlers">PetscObjectProcessOptionsHandlers</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,PetscOptionsObject);
+<a name="line276">276: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsEnd.html#PetscOptionsEnd">PetscOptionsEnd</a>();
+<a name="line277">277: </a>  <font color="#4169E1">return</font> 0;
+<a name="line278">278: </a>}
+
+<a name="line280">280: </a><font color="#B22222">/*@C</font>
+<a name="line281">281: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGView.html#RGView">RGView</a> - Prints the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> data structure.</font>
+
+<a name="line283">283: </a><font color="#B22222">   Collective on rg</font>
+
+<a name="line285">285: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line286">286: </a><font color="#B22222">+  rg - the region context</font>
+<a name="line287">287: </a><font color="#B22222">-  viewer - optional visualization context</font>
+
+<a name="line289">289: </a><font color="#B22222">   Note:</font>
+<a name="line290">290: </a><font color="#B22222">   The available visualization contexts include</font>
+<a name="line291">291: </a><font color="#B22222">+     <a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_SELF.html#PETSC_VIEWER_STDOUT_SELF">PETSC_VIEWER_STDOUT_SELF</a> - standard output (default)</font>
+<a name="line292">292: </a><font color="#B22222">-     <a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a> - synchronized standard</font>
+<a name="line293">293: </a><font color="#B22222">         output where only the first processor opens</font>
+<a name="line294">294: </a><font color="#B22222">         the file.  All other processors send their</font>
+<a name="line295">295: </a><font color="#B22222">         data to the first processor to print.</font>
+
+<a name="line297">297: </a><font color="#B22222">   The user can open an alternative visualization context with</font>
+<a name="line298">298: </a><font color="#B22222">   <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIOpen.html#PetscViewerASCIIOpen">PetscViewerASCIIOpen</a>() - output to a specified file.</font>
+
+<a name="line300">300: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line302">302: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>()</font>
+<a name="line303">303: </a><font color="#B22222">@*/</font>
+<a name="line304">304: </a><strong><font color="#4169E1"><a name="RGView"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGView.html#RGView">RGView</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer)</font></strong>
+<a name="line305">305: </a>{
+<a name="line306">306: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isdraw,isascii;
+
+<a name="line309">309: </a>  <font color="#4169E1">if</font> (!viewer) <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIGetStdout.html#PetscViewerASCIIGetStdout">PetscViewerASCIIGetStdout</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg),&amp;viewer);
+<a name="line312">312: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERDRAW.html#PETSCVIEWERDRAW">PETSCVIEWERDRAW</a>,&amp;isdraw);
+<a name="line313">313: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERASCII.html#PETSCVIEWERASCII">PETSCVIEWERASCII</a>,&amp;isascii);
+<a name="line314">314: </a>  <font color="#4169E1">if</font> (isascii) {
+<a name="line315">315: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectPrintClassNamePrefixType.html#PetscObjectPrintClassNamePrefixType">PetscObjectPrintClassNamePrefixType</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,viewer);
+<a name="line316">316: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPushTab.html#PetscViewerASCIIPushTab">PetscViewerASCIIPushTab</a>(viewer);
+<a name="line317">317: </a>    PetscTryTypeMethod(rg,view,viewer);
+<a name="line318">318: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPopTab.html#PetscViewerASCIIPopTab">PetscViewerASCIIPopTab</a>(viewer);
+<a name="line319">319: </a>    <font color="#4169E1">if</font> (rg-&gt;complement) <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  selected region is the complement of the specified one\n"</font>);
+<a name="line320">320: </a>    <font color="#4169E1">if</font> (rg-&gt;sfactor!=1.0) <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  scaling factor = %g\n"</font>,(double)rg-&gt;sfactor);
+<a name="line321">321: </a>  } <font color="#4169E1">else</font> <font color="#4169E1">if</font> (isdraw) PetscTryTypeMethod(rg,view,viewer);
+<a name="line322">322: </a>  <font color="#4169E1">return</font> 0;
+<a name="line323">323: </a>}
+
+<a name="line325">325: </a><font color="#B22222">/*@C</font>
+<a name="line326">326: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGViewFromOptions.html#RGViewFromOptions">RGViewFromOptions</a> - View from options</font>
+
+<a name="line328">328: </a><font color="#B22222">   Collective on <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a></font>
+
+<a name="line330">330: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line331">331: </a><font color="#B22222">+  rg   - the region context</font>
+<a name="line332">332: </a><font color="#B22222">.  obj  - optional object</font>
+<a name="line333">333: </a><font color="#B22222">-  name - command line option</font>
+
+<a name="line335">335: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line337">337: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGView.html#RGView">RGView</a>(), <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>()</font>
+<a name="line338">338: </a><font color="#B22222">@*/</font>
+<a name="line339">339: </a><strong><font color="#4169E1"><a name="RGViewFromOptions"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGViewFromOptions.html#RGViewFromOptions">RGViewFromOptions</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a> obj,const char name[])</font></strong>
+<a name="line340">340: </a>{
+<a name="line342">342: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectViewFromOptions.html#PetscObjectViewFromOptions">PetscObjectViewFromOptions</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)rg,obj,name);
+<a name="line343">343: </a>  <font color="#4169E1">return</font> 0;
+<a name="line344">344: </a>}
+
+<a name="line346">346: </a><font color="#B22222">/*@</font>
+<a name="line347">347: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGIsTrivial.html#RGIsTrivial">RGIsTrivial</a> - Whether it is the trivial region (whole complex plane).</font>
+
+<a name="line349">349: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line351">351: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line352">352: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line354">354: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line355">355: </a><font color="#B22222">.  trivial - true if the region is equal to the whole complex plane, e.g.,</font>
+<a name="line356">356: </a><font color="#B22222">             an interval region with all four endpoints unbounded or an</font>
+<a name="line357">357: </a><font color="#B22222">             ellipse with infinite radius.</font>
+
+<a name="line359">359: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line361">361: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGCheckInside.html#RGCheckInside">RGCheckInside</a>()</font>
+<a name="line362">362: </a><font color="#B22222">@*/</font>
+<a name="line363">363: </a><strong><font color="#4169E1"><a name="RGIsTrivial"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGIsTrivial.html#RGIsTrivial">RGIsTrivial</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> *trivial)</font></strong>
+<a name="line364">364: </a>{
+<a name="line368">368: </a>  *trivial = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line369">369: </a>  PetscTryTypeMethod(rg,istrivial,trivial);
+<a name="line370">370: </a>  <font color="#4169E1">return</font> 0;
+<a name="line371">371: </a>}
+
+<a name="line373">373: </a><font color="#B22222">/*@</font>
+<a name="line374">374: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGCheckInside.html#RGCheckInside">RGCheckInside</a> - Determines if a set of given points are inside the region or not.</font>
+
+<a name="line376">376: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line378">378: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line379">379: </a><font color="#B22222">+  rg - the region context</font>
+<a name="line380">380: </a><font color="#B22222">.  n  - number of points to check</font>
+<a name="line381">381: </a><font color="#B22222">.  ar - array of real parts</font>
+<a name="line382">382: </a><font color="#B22222">-  ai - array of imaginary parts</font>
+
+<a name="line384">384: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line385">385: </a><font color="#B22222">.  inside - array of results (1=inside, 0=on the contour, -1=outside)</font>
+
+<a name="line387">387: </a><font color="#B22222">   Note:</font>
+<a name="line388">388: </a><font color="#B22222">   The point a is expressed as a couple of <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> variables ar,ai.</font>
+<a name="line389">389: </a><font color="#B22222">   If built with complex scalars, the point is supposed to be stored in ar,</font>
+<a name="line390">390: </a><font color="#B22222">   otherwise ar,ai contain the real and imaginary parts, respectively.</font>
+
+<a name="line392">392: </a><font color="#B22222">   If a scaling factor was set, the points are scaled before checking.</font>
+
+<a name="line394">394: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line396">396: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a>(), <a href="../../../../docs/manualpages/RG/RGSetComplement.html#RGSetComplement">RGSetComplement</a>()</font>
+<a name="line397">397: </a><font color="#B22222">@*/</font>
+<a name="line398">398: </a><strong><font color="#4169E1"><a name="RGCheckInside"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGCheckInside.html#RGCheckInside">RGCheckInside</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *ar,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *ai,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *inside)</font></strong>
+<a name="line399">399: </a>{
+<a name="line400">400: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      px,py;
+<a name="line401">401: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+
+<a name="line406">406: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line408">408: </a><font color="#A020F0">#endif</font>
+
+<a name="line411">411: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) {
+<a name="line412">412: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line413">413: </a>    px = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRealPart.html#PetscRealPart">PetscRealPart</a>(ar[i]);
+<a name="line414">414: </a>    py = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscImaginaryPart.html#PetscImaginaryPart">PetscImaginaryPart</a>(ar[i]);
+<a name="line415">415: </a><font color="#A020F0">#else</font>
+<a name="line416">416: </a>    px = ar[i];
+<a name="line417">417: </a>    py = ai[i];
+<a name="line418">418: </a><font color="#A020F0">#endif</font>
+<a name="line419">419: </a>    <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(rg-&gt;sfactor != 1.0)) {
+<a name="line420">420: </a>      px /= rg-&gt;sfactor;
+<a name="line421">421: </a>      py /= rg-&gt;sfactor;
+<a name="line422">422: </a>    }
+<a name="line423">423: </a>    PetscUseTypeMethod(rg,checkinside,px,py,inside+i);
+<a name="line424">424: </a>    <font color="#4169E1">if</font> (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscUnlikely.html#PetscUnlikely">PetscUnlikely</a>(rg-&gt;complement)) inside[i] = -inside[i];
+<a name="line425">425: </a>  }
+<a name="line426">426: </a>  <font color="#4169E1">return</font> 0;
+<a name="line427">427: </a>}
+
+<a name="line429">429: </a><font color="#B22222">/*@</font>
+<a name="line430">430: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGIsAxisymmetric.html#RGIsAxisymmetric">RGIsAxisymmetric</a> - Determines if the region is symmetric with respect</font>
+<a name="line431">431: </a><font color="#B22222">   to the real or imaginary axis.</font>
+
+<a name="line433">433: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line435">435: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line436">436: </a><font color="#B22222">+  rg       - the region context</font>
+<a name="line437">437: </a><font color="#B22222">-  vertical - true if symmetry must be checked against the vertical axis</font>
+
+<a name="line439">439: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line440">440: </a><font color="#B22222">.  symm - true if the region is axisymmetric</font>
+
+<a name="line442">442: </a><font color="#B22222">   Note:</font>
+<a name="line443">443: </a><font color="#B22222">   If the vertical argument is true, symmetry is checked with respect to</font>
+<a name="line444">444: </a><font color="#B22222">   the vertical axis, otherwise with respect to the horizontal axis.</font>
+
+<a name="line446">446: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line448">448: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGCanUseConjugates.html#RGCanUseConjugates">RGCanUseConjugates</a>()</font>
+<a name="line449">449: </a><font color="#B22222">@*/</font>
+<a name="line450">450: </a><strong><font color="#4169E1"><a name="RGIsAxisymmetric"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGIsAxisymmetric.html#RGIsAxisymmetric">RGIsAxisymmetric</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> vertical,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> *symm)</font></strong>
+<a name="line451">451: </a>{
+<a name="line455">455: </a>  *symm = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line456">456: </a>  PetscTryTypeMethod(rg,isaxisymmetric,vertical,symm);
+<a name="line457">457: </a>  <font color="#4169E1">return</font> 0;
+<a name="line458">458: </a>}
+
+<a name="line460">460: </a><font color="#B22222">/*@</font>
+<a name="line461">461: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGCanUseConjugates.html#RGCanUseConjugates">RGCanUseConjugates</a> - Used in contour integral methods to determine whether</font>
+<a name="line462">462: </a><font color="#B22222">   half of integration points can be avoided (use their conjugates).</font>
+
+<a name="line464">464: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line466">466: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line467">467: </a><font color="#B22222">+  rg       - the region context</font>
+<a name="line468">468: </a><font color="#B22222">-  realmats - true if the problem matrices are real</font>
+
+<a name="line470">470: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line471">471: </a><font color="#B22222">.  useconj  - whether it is possible to use conjugates</font>
+
+<a name="line473">473: </a><font color="#B22222">   Notes:</font>
+<a name="line474">474: </a><font color="#B22222">   If some integration points are the conjugates of other points, then the</font>
+<a name="line475">475: </a><font color="#B22222">   associated computational cost can be saved. This depends on the problem</font>
+<a name="line476">476: </a><font color="#B22222">   matrices being real and also the region being symmetric with respect to</font>
+<a name="line477">477: </a><font color="#B22222">   the horizontal axis. The result is false if using real arithmetic or</font>
+<a name="line478">478: </a><font color="#B22222">   in the case of a flat region (height equal to zero).</font>
+
+<a name="line480">480: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line482">482: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGIsAxisymmetric.html#RGIsAxisymmetric">RGIsAxisymmetric</a>()</font>
+<a name="line483">483: </a><font color="#B22222">@*/</font>
+<a name="line484">484: </a><strong><font color="#4169E1"><a name="RGCanUseConjugates"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGCanUseConjugates.html#RGCanUseConjugates">RGCanUseConjugates</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> realmats,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> *useconj)</font></strong>
+<a name="line485">485: </a>{
+<a name="line486">486: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line487">487: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      c,d;
+<a name="line488">488: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isaxisymm;
+<a name="line489">489: </a><font color="#A020F0">#endif</font>
+
+<a name="line494">494: </a>  *useconj = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line495">495: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line496">496: </a>  <font color="#4169E1">if</font> (realmats) {
+<a name="line497">497: </a>    <a href="../../../../docs/manualpages/RG/RGIsAxisymmetric.html#RGIsAxisymmetric">RGIsAxisymmetric</a>(rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,&amp;isaxisymm);
+<a name="line498">498: </a>    <font color="#4169E1">if</font> (isaxisymm) {
+<a name="line499">499: </a>      <a href="../../../../docs/manualpages/RG/RGComputeBoundingBox.html#RGComputeBoundingBox">RGComputeBoundingBox</a>(rg,NULL,NULL,&amp;c,&amp;d);
+<a name="line500">500: </a>      <font color="#4169E1">if</font> (c!=d) *useconj = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line501">501: </a>    }
+<a name="line502">502: </a>  }
+<a name="line503">503: </a><font color="#A020F0">#endif</font>
+<a name="line504">504: </a>  <font color="#4169E1">return</font> 0;
+<a name="line505">505: </a>}
+
+<a name="line507">507: </a><font color="#B22222">/*@</font>
+<a name="line508">508: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGComputeContour.html#RGComputeContour">RGComputeContour</a> - Computes the coordinates of several points lying on the</font>
+<a name="line509">509: </a><font color="#B22222">   contour of the region.</font>
+
+<a name="line511">511: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line513">513: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line514">514: </a><font color="#B22222">+  rg - the region context</font>
+<a name="line515">515: </a><font color="#B22222">-  n  - number of points to compute</font>
+
+<a name="line517">517: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line518">518: </a><font color="#B22222">+  cr - location to store real parts</font>
+<a name="line519">519: </a><font color="#B22222">-  ci - location to store imaginary parts</font>
+
+<a name="line521">521: </a><font color="#B22222">   Notes:</font>
+<a name="line522">522: </a><font color="#B22222">   In real scalars, either cr or ci can be NULL (but not both). In complex</font>
+<a name="line523">523: </a><font color="#B22222">   scalars, the coordinates are stored in cr, which cannot be NULL (ci is</font>
+<a name="line524">524: </a><font color="#B22222">   not referenced).</font>
+
+<a name="line526">526: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line528">528: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGComputeBoundingBox.html#RGComputeBoundingBox">RGComputeBoundingBox</a>()</font>
+<a name="line529">529: </a><font color="#B22222">@*/</font>
+<a name="line530">530: </a><strong><font color="#4169E1"><a name="RGComputeContour"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGComputeContour.html#RGComputeContour">RGComputeContour</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> cr[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> ci[])</font></strong>
+<a name="line531">531: </a>{
+<a name="line532">532: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+
+<a name="line536">536: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line538">538: </a><font color="#A020F0">#else</font>
+<a name="line540">540: </a><font color="#A020F0">#endif</font>
+<a name="line542">542: </a>  PetscUseTypeMethod(rg,computecontour,n,cr,ci);
+<a name="line543">543: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) {
+<a name="line544">544: </a>    <font color="#4169E1">if</font> (cr) cr[i] *= rg-&gt;sfactor;
+<a name="line545">545: </a>    <font color="#4169E1">if</font> (ci) ci[i] *= rg-&gt;sfactor;
+<a name="line546">546: </a>  }
+<a name="line547">547: </a>  <font color="#4169E1">return</font> 0;
+<a name="line548">548: </a>}
+
+<a name="line550">550: </a><font color="#B22222">/*@</font>
+<a name="line551">551: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGComputeBoundingBox.html#RGComputeBoundingBox">RGComputeBoundingBox</a> - Determines the endpoints of a rectangle in the complex plane that</font>
+<a name="line552">552: </a><font color="#B22222">   contains the region.</font>
+
+<a name="line554">554: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line556">556: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line557">557: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line559">559: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line560">560: </a><font color="#B22222">+  a - left endpoint of the bounding box in the real axis</font>
+<a name="line561">561: </a><font color="#B22222">.  b - right endpoint of the bounding box in the real axis</font>
+<a name="line562">562: </a><font color="#B22222">.  c - bottom endpoint of the bounding box in the imaginary axis</font>
+<a name="line563">563: </a><font color="#B22222">-  d - top endpoint of the bounding box in the imaginary axis</font>
+
+<a name="line565">565: </a><font color="#B22222">   Notes:</font>
+<a name="line566">566: </a><font color="#B22222">   The bounding box is defined as [a,b]x[c,d]. In regions that are not bounded (e.g. an</font>
+<a name="line567">567: </a><font color="#B22222">   open interval) or with the complement flag set, it makes no sense to compute a bounding</font>
+<a name="line568">568: </a><font color="#B22222">   box, so the return values are infinite.</font>
+
+<a name="line570">570: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line572">572: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGComputeContour.html#RGComputeContour">RGComputeContour</a>()</font>
+<a name="line573">573: </a><font color="#B22222">@*/</font>
+<a name="line574">574: </a><strong><font color="#4169E1"><a name="RGComputeBoundingBox"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGComputeBoundingBox.html#RGComputeBoundingBox">RGComputeBoundingBox</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *a,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *b,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *c,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *d)</font></strong>
+<a name="line575">575: </a>{
+
+<a name="line579">579: </a>  <font color="#4169E1">if</font> (rg-&gt;complement) {  <font color="#B22222">/* cannot compute bounding box */</font>
+<a name="line580">580: </a>    <font color="#4169E1">if</font> (a) *a = -PETSC_MAX_REAL;
+<a name="line581">581: </a>    <font color="#4169E1">if</font> (b) *b =  PETSC_MAX_REAL;
+<a name="line582">582: </a>    <font color="#4169E1">if</font> (c) *c = -PETSC_MAX_REAL;
+<a name="line583">583: </a>    <font color="#4169E1">if</font> (d) *d =  PETSC_MAX_REAL;
+<a name="line584">584: </a>  } <font color="#4169E1">else</font> {
+<a name="line585">585: </a>    PetscUseTypeMethod(rg,computebbox,a,b,c,d);
+<a name="line586">586: </a>    <font color="#4169E1">if</font> (a &amp;&amp; *a!=-PETSC_MAX_REAL) *a *= rg-&gt;sfactor;
+<a name="line587">587: </a>    <font color="#4169E1">if</font> (b &amp;&amp; *b!= PETSC_MAX_REAL) *b *= rg-&gt;sfactor;
+<a name="line588">588: </a>    <font color="#4169E1">if</font> (c &amp;&amp; *c!=-PETSC_MAX_REAL) *c *= rg-&gt;sfactor;
+<a name="line589">589: </a>    <font color="#4169E1">if</font> (d &amp;&amp; *d!= PETSC_MAX_REAL) *d *= rg-&gt;sfactor;
+<a name="line590">590: </a>  }
+<a name="line591">591: </a>  <font color="#4169E1">return</font> 0;
+<a name="line592">592: </a>}
+
+<a name="line594">594: </a><font color="#B22222">/*@</font>
+<a name="line595">595: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGComputeQuadrature.html#RGComputeQuadrature">RGComputeQuadrature</a> - Computes the values of the parameters used in a</font>
+<a name="line596">596: </a><font color="#B22222">   quadrature rule for a contour integral around the boundary of the region.</font>
+
+<a name="line598">598: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line600">600: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line601">601: </a><font color="#B22222">+  rg   - the region context</font>
+<a name="line602">602: </a><font color="#B22222">.  quad - the type of quadrature</font>
+<a name="line603">603: </a><font color="#B22222">-  n    - number of quadrature points to compute</font>
+
+<a name="line605">605: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line606">606: </a><font color="#B22222">+  z  - quadrature points</font>
+<a name="line607">607: </a><font color="#B22222">.  zn - normalized quadrature points</font>
+<a name="line608">608: </a><font color="#B22222">-  w  - quadrature weights</font>
+
+<a name="line610">610: </a><font color="#B22222">   Notes:</font>
+<a name="line611">611: </a><font color="#B22222">   In complex scalars, the values returned in z are often the same as those</font>
+<a name="line612">612: </a><font color="#B22222">   computed by <a href="../../../../docs/manualpages/RG/RGComputeContour.html#RGComputeContour">RGComputeContour</a>(), but this is not the case in real scalars</font>
+<a name="line613">613: </a><font color="#B22222">   where all output arguments are real.</font>
+
+<a name="line615">615: </a><font color="#B22222">   The computed values change for different quadrature rules (trapezoidal</font>
+<a name="line616">616: </a><font color="#B22222">   or Chebyshev).</font>
+
+<a name="line618">618: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line620">620: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGComputeContour.html#RGComputeContour">RGComputeContour</a>()</font>
+<a name="line621">621: </a><font color="#B22222">@*/</font>
+<a name="line622">622: </a><strong><font color="#4169E1"><a name="RGComputeQuadrature"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGComputeQuadrature.html#RGComputeQuadrature">RGComputeQuadrature</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="../../../../docs/manualpages/RG/RGQuadRule.html#RGQuadRule">RGQuadRule</a> quad,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> z[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> zn[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> w[])</font></strong>
+<a name="line623">623: </a>{
+
+<a name="line630">630: </a>  <a href="../../../../docs/manualpages/RG/RGComputeContour.html#RGComputeContour">RGComputeContour</a>(rg,n,z,NULL);
+<a name="line631">631: </a>  PetscUseTypeMethod(rg,computequadrature,quad,n,z,zn,w);
+<a name="line632">632: </a>  <font color="#4169E1">return</font> 0;
+<a name="line633">633: </a>}
+
+<a name="line635">635: </a><font color="#B22222">/*@</font>
+<a name="line636">636: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGSetComplement.html#RGSetComplement">RGSetComplement</a> - Sets a flag to indicate that the region is the complement</font>
+<a name="line637">637: </a><font color="#B22222">   of the specified one.</font>
+
+<a name="line639">639: </a><font color="#B22222">   Logically Collective on rg</font>
+
+<a name="line641">641: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line642">642: </a><font color="#B22222">+  rg  - the region context</font>
+<a name="line643">643: </a><font color="#B22222">-  flg - the boolean flag</font>
+
+<a name="line645">645: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line646">646: </a><font color="#B22222">.  -rg_complement &lt;bool&gt; - Activate/deactivate the complementation of the region</font>
+
+<a name="line648">648: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line650">650: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGGetComplement.html#RGGetComplement">RGGetComplement</a>()</font>
+<a name="line651">651: </a><font color="#B22222">@*/</font>
+<a name="line652">652: </a><strong><font color="#4169E1"><a name="RGSetComplement"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGSetComplement.html#RGSetComplement">RGSetComplement</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> flg)</font></strong>
+<a name="line653">653: </a>{
+<a name="line656">656: </a>  rg-&gt;complement = flg;
+<a name="line657">657: </a>  <font color="#4169E1">return</font> 0;
+<a name="line658">658: </a>}
+
+<a name="line660">660: </a><font color="#B22222">/*@</font>
+<a name="line661">661: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGGetComplement.html#RGGetComplement">RGGetComplement</a> - Gets a flag that that indicates whether the region</font>
+<a name="line662">662: </a><font color="#B22222">   is complemented or not.</font>
+
+<a name="line664">664: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line666">666: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line667">667: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line669">669: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line670">670: </a><font color="#B22222">.  flg - the flag</font>
+
+<a name="line672">672: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line674">674: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetComplement.html#RGSetComplement">RGSetComplement</a>()</font>
+<a name="line675">675: </a><font color="#B22222">@*/</font>
+<a name="line676">676: </a><strong><font color="#4169E1"><a name="RGGetComplement"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGGetComplement.html#RGGetComplement">RGGetComplement</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> *flg)</font></strong>
+<a name="line677">677: </a>{
+<a name="line680">680: </a>  *flg = rg-&gt;complement;
+<a name="line681">681: </a>  <font color="#4169E1">return</font> 0;
+<a name="line682">682: </a>}
+
+<a name="line684">684: </a><font color="#B22222">/*@</font>
+<a name="line685">685: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a> - Sets the scaling factor to be used when checking that a</font>
+<a name="line686">686: </a><font color="#B22222">   point is inside the region and when computing the contour.</font>
+
+<a name="line688">688: </a><font color="#B22222">   Logically Collective on rg</font>
+
+<a name="line690">690: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line691">691: </a><font color="#B22222">+  rg      - the region context</font>
+<a name="line692">692: </a><font color="#B22222">-  sfactor - the scaling factor</font>
+
+<a name="line694">694: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line695">695: </a><font color="#B22222">.  -rg_scale &lt;real&gt; - Sets the scaling factor</font>
+
+<a name="line697">697: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line699">699: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGGetScale.html#RGGetScale">RGGetScale</a>(), <a href="../../../../docs/manualpages/RG/RGCheckInside.html#RGCheckInside">RGCheckInside</a>()</font>
+<a name="line700">700: </a><font color="#B22222">@*/</font>
+<a name="line701">701: </a><strong><font color="#4169E1"><a name="RGSetScale"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> sfactor)</font></strong>
+<a name="line702">702: </a>{
+<a name="line705">705: </a>  <font color="#4169E1">if</font> (sfactor == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a> || sfactor == <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>) rg-&gt;sfactor = 1.0;
+<a name="line706">706: </a>  <font color="#4169E1">else</font> {
+<a name="line708">708: </a>    rg-&gt;sfactor = sfactor;
+<a name="line709">709: </a>  }
+<a name="line710">710: </a>  <font color="#4169E1">return</font> 0;
+<a name="line711">711: </a>}
+
+<a name="line713">713: </a><font color="#B22222">/*@</font>
+<a name="line714">714: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGGetScale.html#RGGetScale">RGGetScale</a> - Gets the scaling factor.</font>
+
+<a name="line716">716: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line718">718: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line719">719: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line721">721: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line722">722: </a><font color="#B22222">.  sfactor - the scaling factor</font>
+
+<a name="line724">724: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line726">726: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a>()</font>
+<a name="line727">727: </a><font color="#B22222">@*/</font>
+<a name="line728">728: </a><strong><font color="#4169E1"><a name="RGGetScale"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGGetScale.html#RGGetScale">RGGetScale</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *sfactor)</font></strong>
+<a name="line729">729: </a>{
+<a name="line732">732: </a>  *sfactor = rg-&gt;sfactor;
+<a name="line733">733: </a>  <font color="#4169E1">return</font> 0;
+<a name="line734">734: </a>}
+
+<a name="line736">736: </a><font color="#B22222">/*@</font>
+<a name="line737">737: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGPushScale.html#RGPushScale">RGPushScale</a> - Sets an additional scaling factor, that will multiply the</font>
+<a name="line738">738: </a><font color="#B22222">   user-defined scaling factor.</font>
+
+<a name="line740">740: </a><font color="#B22222">   Logically Collective on rg</font>
+
+<a name="line742">742: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line743">743: </a><font color="#B22222">+  rg      - the region context</font>
+<a name="line744">744: </a><font color="#B22222">-  sfactor - the scaling factor</font>
+
+<a name="line746">746: </a><font color="#B22222">   Notes:</font>
+<a name="line747">747: </a><font color="#B22222">   The current implementation does not allow pushing several scaling factors.</font>
+
+<a name="line749">749: </a><font color="#B22222">   This is intended for internal use, for instance in polynomial eigensolvers</font>
+<a name="line750">750: </a><font color="#B22222">   that use parameter scaling.</font>
+
+<a name="line752">752: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line754">754: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGPopScale.html#RGPopScale">RGPopScale</a>(), <a href="../../../../docs/manualpages/RG/RGSetScale.html#RGSetScale">RGSetScale</a>()</font>
+<a name="line755">755: </a><font color="#B22222">@*/</font>
+<a name="line756">756: </a><strong><font color="#4169E1"><a name="RGPushScale"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGPushScale.html#RGPushScale">RGPushScale</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> sfactor)</font></strong>
+<a name="line757">757: </a>{
+<a name="line762">762: </a>  rg-&gt;osfactor = rg-&gt;sfactor;
+<a name="line763">763: </a>  rg-&gt;sfactor *= sfactor;
+<a name="line764">764: </a>  <font color="#4169E1">return</font> 0;
+<a name="line765">765: </a>}
+
+<a name="line767">767: </a><font color="#B22222">/*@</font>
+<a name="line768">768: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGPopScale.html#RGPopScale">RGPopScale</a> - Pops the scaling factor set with <a href="../../../../docs/manualpages/RG/RGPushScale.html#RGPushScale">RGPushScale</a>().</font>
+
+<a name="line770">770: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line772">772: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line773">773: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line775">775: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line777">777: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGPushScale.html#RGPushScale">RGPushScale</a>()</font>
+<a name="line778">778: </a><font color="#B22222">@*/</font>
+<a name="line779">779: </a><strong><font color="#4169E1"><a name="RGPopScale"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGPopScale.html#RGPopScale">RGPopScale</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> rg)</font></strong>
+<a name="line780">780: </a>{
+<a name="line783">783: </a>  rg-&gt;sfactor  = rg-&gt;osfactor;
+<a name="line784">784: </a>  rg-&gt;osfactor = 0.0;
+<a name="line785">785: </a>  <font color="#4169E1">return</font> 0;
+<a name="line786">786: </a>}
+
+<a name="line788">788: </a><font color="#B22222">/*@C</font>
+<a name="line789">789: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGDestroy.html#RGDestroy">RGDestroy</a> - Destroys <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> context that was created with <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>().</font>
+
+<a name="line791">791: </a><font color="#B22222">   Collective on rg</font>
+
+<a name="line793">793: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line794">794: </a><font color="#B22222">.  rg - the region context</font>
+
+<a name="line796">796: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line798">798: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGCreate.html#RGCreate">RGCreate</a>()</font>
+<a name="line799">799: </a><font color="#B22222">@*/</font>
+<a name="line800">800: </a><strong><font color="#4169E1"><a name="RGDestroy"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGDestroy.html#RGDestroy">RGDestroy</a>(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> *rg)</font></strong>
+<a name="line801">801: </a>{
+<a name="line802">802: </a>  <font color="#4169E1">if</font> (!*rg) <font color="#4169E1">return</font> 0;
+<a name="line804">804: </a>  <font color="#4169E1">if</font> (--((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)(*rg))-&gt;refct &gt; 0) { *rg = NULL; <font color="#4169E1">return</font> 0; }
+<a name="line805">805: </a>  PetscTryTypeMethod(*rg,destroy);
+<a name="line806">806: </a>  PetscHeaderDestroy(rg);
+<a name="line807">807: </a>  <font color="#4169E1">return</font> 0;
+<a name="line808">808: </a>}
+
+<a name="line810">810: </a><font color="#B22222">/*@C</font>
+<a name="line811">811: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGRegister.html#RGRegister">RGRegister</a> - Adds a region to the <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a> package.</font>
+
+<a name="line813">813: </a><font color="#B22222">   Not collective</font>
+
+<a name="line815">815: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line816">816: </a><font color="#B22222">+  name - name of a new user-defined <a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a></font>
+<a name="line817">817: </a><font color="#B22222">-  function - routine to create context</font>
+
+<a name="line819">819: </a><font color="#B22222">   Notes:</font>
+<a name="line820">820: </a><font color="#B22222">   <a href="../../../../docs/manualpages/RG/RGRegister.html#RGRegister">RGRegister</a>() may be called multiple times to add several user-defined regions.</font>
+
+<a name="line822">822: </a><font color="#B22222">   Level: advanced</font>
+
+<a name="line824">824: </a><font color="#B22222">.seealso: <a href="../../../../docs/manualpages/RG/RGRegisterAll.html#RGRegisterAll">RGRegisterAll</a>()</font>
+<a name="line825">825: </a><font color="#B22222">@*/</font>
+<a name="line826">826: </a><strong><font color="#4169E1"><a name="RGRegister"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../docs/manualpages/RG/RGRegister.html#RGRegister">RGRegister</a>(const char *name,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> (*function)(<a href="../../../../docs/manualpages/RG/RG.html#RG">RG</a>))</font></strong>
+<a name="line827">827: </a>{
+<a name="line828">828: </a>  <a href="../../../../docs/manualpages/RG/RGInitializePackage.html#RGInitializePackage">RGInitializePackage</a>();
+<a name="line829">829: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFunctionListAdd.html#PetscFunctionListAdd">PetscFunctionListAdd</a>(&amp;RGList,name,function);
+<a name="line830">830: </a>  <font color="#4169E1">return</font> 0;
+<a name="line831">831: </a>}
+</pre>
+</body>
+
+</html>

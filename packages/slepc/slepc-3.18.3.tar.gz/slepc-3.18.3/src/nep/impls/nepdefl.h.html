@@ -1,0 +1,134 @@
+<center><a href="nepdefl.h">Actual source code: nepdefl.h</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/nep/impls/nepdefl.h.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:11+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/nep/impls/nepdefl.h.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   Private header for Deflation in <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a></font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+<a name="line13"> 13: </a><font color="#A020F0">#if !defined(SLEPC_NEPDEFL_H)</font>
+<a name="line14"> 14: </a><strong><font color="#228B22">#define SLEPC_NEPDEFL_H</font></strong>
+
+<a name="line16"> 16: </a><font color="#A020F0"># define MAX_MINIDX 1</font>
+
+<a name="line18"> 18: </a><font color="#4169E1">typedef struct _n_nep_ext_op *NEP_EXT_OP;</font>
+<a name="line19"> 19: </a><font color="#4169E1">typedef struct _n_nep_def_fun_solve *NEP_DEF_FUN_SOLVE;</font>
+<a name="line20"> 20: </a><font color="#4169E1">typedef struct _n_nep_def_project *NEP_DEF_PROJECT;</font>
+
+<a name="line22"> 22: </a><font color="#B22222">/* Structure characterizing a deflation context */</font>
+<a name="line23"> 23: </a><font color="#4169E1"><a name="_n_nep_ext_op"></a>struct _n_nep_ext_op </font>{
+<a name="line24"> 24: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>               nep;
+<a name="line25"> 25: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *H;     <font color="#B22222">/* invariant pair (X,H) */</font>
+<a name="line26"> 26: </a>  <a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>                X;      <font color="#B22222">/* locked eigenvectors */</font>
+<a name="line27"> 27: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *bc;    <font color="#B22222">/* polinomial basis roots */</font>
+<a name="line28"> 28: </a>  <a href="../../../docs/manualpages/RG/RG.html#RG">RG</a>                rg;
+<a name="line29"> 29: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          midx;   <font color="#B22222">/* minimality index */</font>
+<a name="line30"> 30: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          max_midx;
+<a name="line31"> 31: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          szd;    <font color="#B22222">/* maximum size for deflation */</font>
+<a name="line32"> 32: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          n;      <font color="#B22222">/* invariant pair size */</font>
+<a name="line33"> 33: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         ref;    <font color="#B22222">/* refine with original size */</font>
+<a name="line34"> 34: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               MF;     <font color="#B22222">/* function shell matrix */</font>
+<a name="line35"> 35: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               MJ;     <font color="#B22222">/* Jacobian shell matrix */</font>
+<a name="line36"> 36: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         simpU;  <font color="#B22222">/* the way U is computed */</font>
+<a name="line37"> 37: </a>  NEP_DEF_FUN_SOLVE solve;  <font color="#B22222">/* <a href="https://petsc.org/release/docs/manualpages/Mat/MatSolve.html#MatSolve">MatSolve</a> context for the operator */</font>
+<a name="line38"> 38: </a>  NEP_DEF_PROJECT   proj;   <font color="#B22222">/* context for the projected eigenproblem */</font>
+<a name="line39"> 39: </a>  <font color="#B22222">/* auxiliary computations */</font>
+<a name="line40"> 40: </a>  <a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>                W;
+<a name="line41"> 41: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *Hj;    <font color="#B22222">/* matrix containing the powers of the invariant pair matrix */</font>
+<a name="line42"> 42: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *XpX;   <font color="#B22222">/* X^*X */</font>
+<a name="line43"> 43: </a>  <a href="../../../docs/manualpages/DS/DS.html#DS">DS</a>                ds;
+<a name="line44"> 44: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>               w;
+<a name="line45"> 45: </a>};
+
+<a name="line47"> 47: </a><font color="#4169E1"><a name="_n_nep_def_fun_solve"></a>struct _n_nep_def_fun_solve </font>{
+<a name="line48"> 48: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>          ksp;   <font color="#B22222">/* */</font>
+<a name="line49"> 49: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>    sincf;
+<a name="line50"> 50: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>          T;
+<a name="line51"> 51: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  theta;
+<a name="line52"> 52: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>     n;
+<a name="line53"> 53: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *M;
+<a name="line54"> 54: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *work;
+<a name="line55"> 55: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>          w[2];
+<a name="line56"> 56: </a>  <a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>           T_1U;
+<a name="line57"> 57: </a>  NEP_EXT_OP   extop;
+<a name="line58"> 58: </a>};
+
+<a name="line60"> 60: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line61"> 61: </a>  <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>          nep;
+<a name="line62"> 62: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>          T;
+<a name="line63"> 63: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>          P;
+<a name="line64"> 64: </a>  <a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>           U;
+<a name="line65"> 65: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *A;
+<a name="line66"> 66: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *B;
+<a name="line67"> 67: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  theta;
+<a name="line68"> 68: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>     n;
+<a name="line69"> 69: </a>  NEP_EXT_OP   extop;
+<a name="line70"> 70: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>    jacob;
+<a name="line71"> 71: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>          w[2];
+<a name="line72"> 72: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *work;
+<a name="line73"> 73: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *hfj;
+<a name="line74"> 74: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *hfjp;
+<a name="line75"> 75: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>    hfjset;
+<a name="line76"> 76: </a>} NEP_DEF_MATSHELL;
+
+<a name="line78"> 78: </a><font color="#4169E1"><a name="_n_nep_def_project"></a>struct _n_nep_def_project </font>{
+<a name="line79"> 79: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>          *V1pApX;
+<a name="line80"> 80: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>          XpV1;
+<a name="line81"> 81: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *V2;
+<a name="line82"> 82: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>          w;
+<a name="line83"> 83: </a>  <a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>           V1;
+<a name="line84"> 84: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>     dim;
+<a name="line85"> 85: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  *work;
+<a name="line86"> 86: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>     lwork;
+<a name="line87"> 87: </a>  NEP_EXT_OP   extop;
+<a name="line88"> 88: </a>};
+
+<a name="line90"> 90: </a><font color="#A020F0">#if 0</font>
+<a name="line91"> 91: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line92"> 92: </a>  <a href="https://petsc.org/release/docs/manualpages/PC/PC.html#PC">PC</a>          pc;      <font color="#B22222">/* basic preconditioner */</font>
+<a name="line93"> 93: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *M;
+<a name="line94"> 94: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *ps;
+<a name="line95"> 95: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    ld;
+<a name="line96"> 96: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>         *work;
+<a name="line97"> 97: </a>  <a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>          X;
+<a name="line98"> 98: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    n;
+<a name="line99"> 99: </a>} NEP_DEF_PCSHELL;
+<a name="line100">100: </a><font color="#A020F0">#endif</font>
+<a name="line101">101: </a><font color="#A020F0">#endif</font>
+
+<a name="line103">103: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationCopyToExtendedVec(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>)</font></strong>;
+<a name="line104">104: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationReset(NEP_EXT_OP)</font></strong>;
+<a name="line105">105: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationInitialize(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>,<a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>,<a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,NEP_EXT_OP*)</font></strong>;
+<a name="line106">106: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationCreateVec(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>*)</font></strong>;
+<a name="line107">107: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationComputeFunction(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>*)</font></strong>;
+<a name="line108">108: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationComputeJacobian(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>*)</font></strong>;
+<a name="line109">109: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationSolveSetUp(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>)</font></strong>;
+<a name="line110">110: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationFunctionSolve(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line111">111: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationGetInvariantPair(NEP_EXT_OP,<a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>*,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>*)</font></strong>;
+<a name="line112">112: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationLocking(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>)</font></strong>;
+<a name="line113">113: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationSetRandomVec(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>)</font></strong>;
+<a name="line114">114: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationProjectOperator(NEP_EXT_OP,<a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>,<a href="../../../docs/manualpages/DS/DS.html#DS">DS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>)</font></strong>;
+<a name="line115">115: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationCreateBV(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="../../../docs/manualpages/BV/BV.html#BV">BV</a>*)</font></strong>;
+<a name="line116">116: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationSetRefine(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>)</font></strong>;
+<a name="line117">117: </a><strong><font color="#4169E1">SLEPC_INTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPDeflationExtractEigenpair(NEP_EXT_OP,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>,<a href="../../../docs/manualpages/DS/DS.html#DS">DS</a>)</font></strong>;
+</pre>
+</body>
+
+</html>

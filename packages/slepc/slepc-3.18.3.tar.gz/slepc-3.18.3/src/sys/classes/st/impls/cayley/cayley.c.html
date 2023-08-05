@@ -1,0 +1,338 @@
+<center><a href="cayley.c">Actual source code: cayley.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/sys/classes/st/impls/cayley/cayley.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:11+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/sys/classes/st/impls/cayley/cayley.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   Implements the Cayley spectral transform</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../../../../include/slepc/private/stimpl.h.html">&lt;slepc/private/stimpl.h&gt;</A>
+
+<a name="line16"> 16: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line17"> 17: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> nu;
+<a name="line18"> 18: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>   nu_set;
+<a name="line19"> 19: </a>} ST_CAYLEY;
+
+<a name="line21"> 21: </a><strong><font color="#4169E1"><a name="MatMult_Cayley"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_Cayley(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> B,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> x,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y)</font></strong>
+<a name="line22"> 22: </a>{
+<a name="line23"> 23: </a>  <a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a>             st;
+<a name="line24"> 24: </a>  ST_CAYLEY      *ctx;
+<a name="line25"> 25: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    nu;
+
+<a name="line27"> 27: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(B,&amp;st);
+<a name="line28"> 28: </a>  ctx = (ST_CAYLEY*)st-&gt;data;
+<a name="line29"> 29: </a>  nu = ctx-&gt;nu;
+
+<a name="line31"> 31: </a>  <font color="#4169E1">if</font> (st-&gt;matmode == <a href="../../../../../../docs/manualpages/ST/STMatMode.html#STMatMode">ST_MATMODE_INPLACE</a>) { nu = nu + st-&gt;sigma; };
+
+<a name="line33"> 33: </a>  <font color="#4169E1">if</font> (st-&gt;nmat&gt;1) {
+<a name="line34"> 34: </a>    <font color="#B22222">/* generalized eigenproblem: y = (A + tB)x */</font>
+<a name="line35"> 35: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(st-&gt;A[0],x,y);
+<a name="line36"> 36: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(st-&gt;A[1],x,st-&gt;work[1]);
+<a name="line37"> 37: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(y,nu,st-&gt;work[1]);
+<a name="line38"> 38: </a>  } <font color="#4169E1">else</font> {
+<a name="line39"> 39: </a>    <font color="#B22222">/* standard eigenproblem: y = (A + tI)x */</font>
+<a name="line40"> 40: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(st-&gt;A[0],x,y);
+<a name="line41"> 41: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(y,nu,x);
+<a name="line42"> 42: </a>  }
+<a name="line43"> 43: </a>  <font color="#4169E1">return</font> 0;
+<a name="line44"> 44: </a>}
+
+<a name="line46"> 46: </a><strong><font color="#4169E1"><a name="MatMultTranspose_Cayley"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMultTranspose_Cayley(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> B,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> x,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y)</font></strong>
+<a name="line47"> 47: </a>{
+<a name="line48"> 48: </a>  <a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a>             st;
+<a name="line49"> 49: </a>  ST_CAYLEY      *ctx;
+<a name="line50"> 50: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    nu;
+
+<a name="line52"> 52: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(B,&amp;st);
+<a name="line53"> 53: </a>  ctx = (ST_CAYLEY*)st-&gt;data;
+<a name="line54"> 54: </a>  nu = ctx-&gt;nu;
+
+<a name="line56"> 56: </a>  <font color="#4169E1">if</font> (st-&gt;matmode == <a href="../../../../../../docs/manualpages/ST/STMatMode.html#STMatMode">ST_MATMODE_INPLACE</a>) { nu = nu + st-&gt;sigma; };
+<a name="line57"> 57: </a>  nu = PetscConj(nu);
+
+<a name="line59"> 59: </a>  <font color="#4169E1">if</font> (st-&gt;nmat&gt;1) {
+<a name="line60"> 60: </a>    <font color="#B22222">/* generalized eigenproblem: y = (A + tB)x */</font>
+<a name="line61"> 61: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMultTranspose.html#MatMultTranspose">MatMultTranspose</a>(st-&gt;A[0],x,y);
+<a name="line62"> 62: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMultTranspose.html#MatMultTranspose">MatMultTranspose</a>(st-&gt;A[1],x,st-&gt;work[1]);
+<a name="line63"> 63: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(y,nu,st-&gt;work[1]);
+<a name="line64"> 64: </a>  } <font color="#4169E1">else</font> {
+<a name="line65"> 65: </a>    <font color="#B22222">/* standard eigenproblem: y = (A + tI)x */</font>
+<a name="line66"> 66: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMultTranspose.html#MatMultTranspose">MatMultTranspose</a>(st-&gt;A[0],x,y);
+<a name="line67"> 67: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(y,nu,x);
+<a name="line68"> 68: </a>  }
+<a name="line69"> 69: </a>  <font color="#4169E1">return</font> 0;
+<a name="line70"> 70: </a>}
+
+<a name="line72"> 72: </a><strong><font color="#4169E1"><a name="STGetBilinearForm_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STGetBilinearForm_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *B)</font></strong>
+<a name="line73"> 73: </a>{
+<a name="line74"> 74: </a>  <a href="../../../../../../docs/manualpages/ST/STSetUp.html#STSetUp">STSetUp</a>(st);
+<a name="line75"> 75: </a>  *B = st-&gt;T[0];
+<a name="line76"> 76: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)*B);
+<a name="line77"> 77: </a>  <font color="#4169E1">return</font> 0;
+<a name="line78"> 78: </a>}
+
+<a name="line80"> 80: </a><strong><font color="#4169E1"><a name="STBackTransform_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STBackTransform_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *eigr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *eigi)</font></strong>
+<a name="line81"> 81: </a>{
+<a name="line82"> 82: </a>  ST_CAYLEY   *ctx = (ST_CAYLEY*)st-&gt;data;
+<a name="line83"> 83: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    j;
+<a name="line84"> 84: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line85"> 85: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> t,i,r;
+<a name="line86"> 86: </a><font color="#A020F0">#endif</font>
+
+<a name="line88"> 88: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line89"> 89: </a>  <font color="#4169E1">for</font> (j=0;j&lt;n;j++) {
+<a name="line90"> 90: </a>    <font color="#4169E1">if</font> (eigi[j] == 0.0) eigr[j] = (ctx-&gt;nu + eigr[j] * st-&gt;sigma) / (eigr[j] - 1.0);
+<a name="line91"> 91: </a>    <font color="#4169E1">else</font> {
+<a name="line92"> 92: </a>      r = eigr[j];
+<a name="line93"> 93: </a>      i = eigi[j];
+<a name="line94"> 94: </a>      r = st-&gt;sigma * (r * r + i * i - r) + ctx-&gt;nu * (r - 1);
+<a name="line95"> 95: </a>      i = - st-&gt;sigma * i - ctx-&gt;nu * i;
+<a name="line96"> 96: </a>      t = i * i + r * (r - 2.0) + 1.0;
+<a name="line97"> 97: </a>      eigr[j] = r / t;
+<a name="line98"> 98: </a>      eigi[j] = i / t;
+<a name="line99"> 99: </a>    }
+<a name="line100">100: </a>  }
+<a name="line101">101: </a><font color="#A020F0">#else</font>
+<a name="line102">102: </a>  <font color="#4169E1">for</font> (j=0;j&lt;n;j++) {
+<a name="line103">103: </a>    eigr[j] = (ctx-&gt;nu + eigr[j] * st-&gt;sigma) / (eigr[j] - 1.0);
+<a name="line104">104: </a>  }
+<a name="line105">105: </a><font color="#A020F0">#endif</font>
+<a name="line106">106: </a>  <font color="#4169E1">return</font> 0;
+<a name="line107">107: </a>}
+
+<a name="line109">109: </a><strong><font color="#4169E1"><a name="STPostSolve_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STPostSolve_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st)</font></strong>
+<a name="line110">110: </a>{
+<a name="line111">111: </a>  <font color="#4169E1">if</font> (st-&gt;matmode == <a href="../../../../../../docs/manualpages/ST/STMatMode.html#STMatMode">ST_MATMODE_INPLACE</a>) {
+<a name="line112">112: </a>    <font color="#4169E1">if</font> (st-&gt;nmat&gt;1) <a href="https://petsc.org/release/docs/manualpages/Mat/MatAXPY.html#MatAXPY">MatAXPY</a>(st-&gt;A[0],st-&gt;sigma,st-&gt;A[1],st-&gt;str);
+<a name="line113">113: </a>    <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Mat/MatShift.html#MatShift">MatShift</a>(st-&gt;A[0],st-&gt;sigma);
+<a name="line114">114: </a>    st-&gt;Astate[0] = ((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st-&gt;A[0])-&gt;state;
+<a name="line115">115: </a>    st-&gt;state   = ST_STATE_INITIAL;
+<a name="line116">116: </a>    st-&gt;opready = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line117">117: </a>  }
+<a name="line118">118: </a>  <font color="#4169E1">return</font> 0;
+<a name="line119">119: </a>}
+
+<a name="line121">121: </a><font color="#B22222">/*</font>
+<a name="line122">122: </a><font color="#B22222">   Operator (cayley):</font>
+<a name="line123">123: </a><font color="#B22222">               Op                  P         M</font>
+<a name="line124">124: </a><font color="#B22222">   if nmat=1:  (A-sI)^-1 (A+tI)    A-sI      A+tI</font>
+<a name="line125">125: </a><font color="#B22222">   if nmat=2:  (A-sB)^-1 (A+tB)    A-sB      A+tI</font>
+<a name="line126">126: </a><font color="#B22222">*/</font>
+<a name="line127">127: </a><strong><font color="#4169E1"><a name="STComputeOperator_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STComputeOperator_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st)</font></strong>
+<a name="line128">128: </a>{
+<a name="line129">129: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n,m;
+<a name="line130">130: </a>  ST_CAYLEY      *ctx = (ST_CAYLEY*)st-&gt;data;
+
+<a name="line132">132: </a>  <font color="#B22222">/* if the user did not set the shift, use the target value */</font>
+<a name="line133">133: </a>  <font color="#4169E1">if</font> (!st-&gt;sigma_set) st-&gt;sigma = st-&gt;defsigma;
+
+<a name="line135">135: </a>  <font color="#4169E1">if</font> (!ctx-&gt;nu_set) ctx-&gt;nu = st-&gt;sigma;
+
+<a name="line139">139: </a>  <font color="#B22222">/* T[0] = A+nu*B */</font>
+<a name="line140">140: </a>  <font color="#4169E1">if</font> (st-&gt;matmode==<a href="../../../../../../docs/manualpages/ST/STMatMode.html#STMatMode">ST_MATMODE_INPLACE</a>) {
+<a name="line141">141: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(st-&gt;A[0],&amp;n,&amp;m);
+<a name="line142">142: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st),n,m,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DETERMINE.html#PETSC_DETERMINE">PETSC_DETERMINE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DETERMINE.html#PETSC_DETERMINE">PETSC_DETERMINE</a>,st,&amp;st-&gt;T[0]);
+<a name="line143">143: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(st-&gt;T[0],MATOP_MULT,(void(*)(void))MatMult_Cayley);
+<a name="line144">144: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(st-&gt;T[0],MATOP_MULT_TRANSPOSE,(void(*)(void))MatMultTranspose_Cayley);
+<a name="line145">145: </a>  } <font color="#4169E1">else</font> STMatMAXPY_Private(st,ctx-&gt;nu,0.0,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscNot.html#PetscNot">PetscNot</a>(st-&gt;state==ST_STATE_UPDATED),<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,&amp;st-&gt;T[0]);
+<a name="line146">146: </a>  st-&gt;M = st-&gt;T[0];
+
+<a name="line148">148: </a>  <font color="#B22222">/* T[1] = A-sigma*B */</font>
+<a name="line149">149: </a>  STMatMAXPY_Private(st,-st-&gt;sigma,0.0,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscNot.html#PetscNot">PetscNot</a>(st-&gt;state==ST_STATE_UPDATED),<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,&amp;st-&gt;T[1]);
+<a name="line150">150: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st-&gt;T[1]);
+<a name="line151">151: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;st-&gt;P);
+<a name="line152">152: </a>  st-&gt;P = st-&gt;T[1];
+<a name="line153">153: </a>  <font color="#4169E1">if</font> (st-&gt;Psplit) {  <font color="#B22222">/* build custom preconditioner from the split matrices */</font>
+<a name="line154">154: </a>    STMatMAXPY_Private(st,-st-&gt;sigma,0.0,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,&amp;st-&gt;Pmat);
+<a name="line155">155: </a>  }
+<a name="line156">156: </a>  <font color="#4169E1">return</font> 0;
+<a name="line157">157: </a>}
+
+<a name="line159">159: </a><strong><font color="#4169E1"><a name="STSetUp_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STSetUp_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st)</font></strong>
+<a name="line160">160: </a>{
+<a name="line162">162: </a>  <a href="../../../../../../docs/manualpages/ST/STSetWorkVecs.html#STSetWorkVecs">STSetWorkVecs</a>(st,2);
+<a name="line163">163: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetUp.html#KSPSetUp">KSPSetUp</a>(st-&gt;ksp);
+<a name="line164">164: </a>  <font color="#4169E1">return</font> 0;
+<a name="line165">165: </a>}
+
+<a name="line167">167: </a><strong><font color="#4169E1"><a name="STSetShift_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STSetShift_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> newshift)</font></strong>
+<a name="line168">168: </a>{
+<a name="line169">169: </a>  ST_CAYLEY      *ctx = (ST_CAYLEY*)st-&gt;data;
+
+
+<a name="line174">174: </a>  <font color="#4169E1">if</font> (!ctx-&gt;nu_set) {
+<a name="line175">175: </a>    <font color="#4169E1">if</font> (st-&gt;matmode!=<a href="../../../../../../docs/manualpages/ST/STMatMode.html#STMatMode">ST_MATMODE_INPLACE</a>) STMatMAXPY_Private(st,newshift,ctx-&gt;nu,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,&amp;st-&gt;T[0]);
+<a name="line176">176: </a>    ctx-&gt;nu = newshift;
+<a name="line177">177: </a>  }
+<a name="line178">178: </a>  STMatMAXPY_Private(st,-newshift,-st-&gt;sigma,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,&amp;st-&gt;T[1]);
+<a name="line179">179: </a>  <font color="#4169E1">if</font> (st-&gt;P!=st-&gt;T[1]) {
+<a name="line180">180: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st-&gt;T[1]);
+<a name="line181">181: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;st-&gt;P);
+<a name="line182">182: </a>    st-&gt;P = st-&gt;T[1];
+<a name="line183">183: </a>  }
+<a name="line184">184: </a>  <font color="#4169E1">if</font> (st-&gt;Psplit) {  <font color="#B22222">/* build custom preconditioner from the split matrices */</font>
+<a name="line185">185: </a>    STMatMAXPY_Private(st,-newshift,-st-&gt;sigma,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,&amp;st-&gt;Pmat);
+<a name="line186">186: </a>  }
+<a name="line187">187: </a>  ST_KSPSetOperators(st,st-&gt;P,st-&gt;Pmat?st-&gt;Pmat:st-&gt;P);
+<a name="line188">188: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetUp.html#KSPSetUp">KSPSetUp</a>(st-&gt;ksp);
+<a name="line189">189: </a>  <font color="#4169E1">return</font> 0;
+<a name="line190">190: </a>}
+
+<a name="line192">192: </a><strong><font color="#4169E1"><a name="STSetFromOptions_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STSetFromOptions_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,PetscOptionItems *PetscOptionsObject)</font></strong>
+<a name="line193">193: </a>{
+<a name="line194">194: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    nu;
+<a name="line195">195: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg;
+<a name="line196">196: </a>  ST_CAYLEY      *ctx = (ST_CAYLEY*)st-&gt;data;
+
+<a name="line198">198: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHeadBegin.html#PetscOptionsHeadBegin">PetscOptionsHeadBegin</a>(PetscOptionsObject,<font color="#666666">"<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> Cayley Options"</font>);
+
+<a name="line200">200: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsScalar.html#PetscOptionsScalar">PetscOptionsScalar</a>(<font color="#666666">"-st_cayley_antishift"</font>,<font color="#666666">"Value of the antishift"</font>,<font color="#666666">"<a href="../../../../../../docs/manualpages/ST/STCayleySetAntishift.html#STCayleySetAntishift">STCayleySetAntishift</a>"</font>,ctx-&gt;nu,&amp;nu,&amp;flg);
+<a name="line201">201: </a>    <font color="#4169E1">if</font> (flg) <a href="../../../../../../docs/manualpages/ST/STCayleySetAntishift.html#STCayleySetAntishift">STCayleySetAntishift</a>(st,nu);
+
+<a name="line203">203: </a>  PetscOptionsHeadEnd();
+<a name="line204">204: </a>  <font color="#4169E1">return</font> 0;
+<a name="line205">205: </a>}
+
+<a name="line207">207: </a><strong><font color="#4169E1"><a name="STCayleySetAntishift_Cayley"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STCayleySetAntishift_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> newshift)</font></strong>
+<a name="line208">208: </a>{
+<a name="line209">209: </a>  ST_CAYLEY *ctx = (ST_CAYLEY*)st-&gt;data;
+
+<a name="line211">211: </a>  <font color="#4169E1">if</font> (ctx-&gt;nu != newshift) {
+<a name="line212">212: </a>    STCheckNotSeized(st,1);
+<a name="line213">213: </a>    <font color="#4169E1">if</font> (st-&gt;state &amp;&amp; st-&gt;matmode!=<a href="../../../../../../docs/manualpages/ST/STMatMode.html#STMatMode">ST_MATMODE_INPLACE</a>) STMatMAXPY_Private(st,newshift,ctx-&gt;nu,0,NULL,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>,&amp;st-&gt;T[0]);
+<a name="line214">214: </a>    ctx-&gt;nu = newshift;
+<a name="line215">215: </a>  }
+<a name="line216">216: </a>  ctx-&gt;nu_set = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line217">217: </a>  <font color="#4169E1">return</font> 0;
+<a name="line218">218: </a>}
+
+<a name="line220">220: </a><font color="#B22222">/*@</font>
+<a name="line221">221: </a><font color="#B22222">   <a href="../../../../../../docs/manualpages/ST/STCayleySetAntishift.html#STCayleySetAntishift">STCayleySetAntishift</a> - Sets the value of the anti-shift for the Cayley</font>
+<a name="line222">222: </a><font color="#B22222">   spectral transformation.</font>
+
+<a name="line224">224: </a><font color="#B22222">   Logically Collective on st</font>
+
+<a name="line226">226: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line227">227: </a><font color="#B22222">+  st  - the spectral transformation context</font>
+<a name="line228">228: </a><font color="#B22222">-  nu  - the anti-shift</font>
+
+<a name="line230">230: </a><font color="#B22222">   Options Database Key:</font>
+<a name="line231">231: </a><font color="#B22222">.  -st_cayley_antishift - Sets the value of the anti-shift</font>
+
+<a name="line233">233: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line235">235: </a><font color="#B22222">   Note:</font>
+<a name="line236">236: </a><font color="#B22222">   In the generalized Cayley transform, the operator can be expressed as</font>
+<a name="line237">237: </a><font color="#B22222">   OP = inv(A - sigma B)*(A + nu B). This function sets the value of nu.</font>
+<a name="line238">238: </a><font color="#B22222">   Use <a href="../../../../../../docs/manualpages/ST/STSetShift.html#STSetShift">STSetShift</a>() for setting sigma. The value nu=-sigma is not allowed.</font>
+
+<a name="line240">240: </a><font color="#B22222">.seealso: <a href="../../../../../../docs/manualpages/ST/STSetShift.html#STSetShift">STSetShift</a>(), <a href="../../../../../../docs/manualpages/ST/STCayleyGetAntishift.html#STCayleyGetAntishift">STCayleyGetAntishift</a>()</font>
+<a name="line241">241: </a><font color="#B22222">@*/</font>
+<a name="line242">242: </a><strong><font color="#4169E1"><a name="STCayleySetAntishift"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../../docs/manualpages/ST/STCayleySetAntishift.html#STCayleySetAntishift">STCayleySetAntishift</a>(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> nu)</font></strong>
+<a name="line243">243: </a>{
+<a name="line246">246: </a>  PetscTryMethod(st,<font color="#666666">"STCayleySetAntishift_C"</font>,(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>),(st,nu));
+<a name="line247">247: </a>  <font color="#4169E1">return</font> 0;
+<a name="line248">248: </a>}
+
+<a name="line250">250: </a><strong><font color="#4169E1"><a name="STCayleyGetAntishift_Cayley"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STCayleyGetAntishift_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *nu)</font></strong>
+<a name="line251">251: </a>{
+<a name="line252">252: </a>  ST_CAYLEY *ctx = (ST_CAYLEY*)st-&gt;data;
+
+<a name="line254">254: </a>  *nu = ctx-&gt;nu;
+<a name="line255">255: </a>  <font color="#4169E1">return</font> 0;
+<a name="line256">256: </a>}
+
+<a name="line258">258: </a><font color="#B22222">/*@</font>
+<a name="line259">259: </a><font color="#B22222">   <a href="../../../../../../docs/manualpages/ST/STCayleyGetAntishift.html#STCayleyGetAntishift">STCayleyGetAntishift</a> - Gets the value of the anti-shift used in the Cayley</font>
+<a name="line260">260: </a><font color="#B22222">   spectral transformation.</font>
+
+<a name="line262">262: </a><font color="#B22222">   Not Collective</font>
+
+<a name="line264">264: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line265">265: </a><font color="#B22222">.  st  - the spectral transformation context</font>
+
+<a name="line267">267: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line268">268: </a><font color="#B22222">.  nu  - the anti-shift</font>
+
+<a name="line270">270: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line272">272: </a><font color="#B22222">.seealso: <a href="../../../../../../docs/manualpages/ST/STGetShift.html#STGetShift">STGetShift</a>(), <a href="../../../../../../docs/manualpages/ST/STCayleySetAntishift.html#STCayleySetAntishift">STCayleySetAntishift</a>()</font>
+<a name="line273">273: </a><font color="#B22222">@*/</font>
+<a name="line274">274: </a><strong><font color="#4169E1"><a name="STCayleyGetAntishift"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../../../../docs/manualpages/ST/STCayleyGetAntishift.html#STCayleyGetAntishift">STCayleyGetAntishift</a>(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *nu)</font></strong>
+<a name="line275">275: </a>{
+<a name="line278">278: </a>  PetscUseMethod(st,<font color="#666666">"STCayleyGetAntishift_C"</font>,(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*),(st,nu));
+<a name="line279">279: </a>  <font color="#4169E1">return</font> 0;
+<a name="line280">280: </a>}
+
+<a name="line282">282: </a><strong><font color="#4169E1"><a name="STView_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STView_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer)</font></strong>
+<a name="line283">283: </a>{
+<a name="line284">284: </a>  char           str[50];
+<a name="line285">285: </a>  ST_CAYLEY      *ctx = (ST_CAYLEY*)st-&gt;data;
+<a name="line286">286: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      isascii;
+
+<a name="line288">288: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)viewer,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSCVIEWERASCII.html#PETSCVIEWERASCII">PETSCVIEWERASCII</a>,&amp;isascii);
+<a name="line289">289: </a>  <font color="#4169E1">if</font> (isascii) {
+<a name="line290">290: </a>    <a href="../../../../../../docs/manualpages/sys/SlepcSNPrintfScalar.html#SlepcSNPrintfScalar">SlepcSNPrintfScalar</a>(str,<font color="#4169E1">sizeof</font>(str),ctx-&gt;nu,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line291">291: </a>    <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerASCIIPrintf.html#PetscViewerASCIIPrintf">PetscViewerASCIIPrintf</a>(viewer,<font color="#666666">"  antishift: %s\n"</font>,str);
+<a name="line292">292: </a>  }
+<a name="line293">293: </a>  <font color="#4169E1">return</font> 0;
+<a name="line294">294: </a>}
+
+<a name="line296">296: </a><strong><font color="#4169E1"><a name="STDestroy_Cayley"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STDestroy_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st)</font></strong>
+<a name="line297">297: </a>{
+<a name="line298">298: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(st-&gt;data);
+<a name="line299">299: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st,<font color="#666666">"STCayleySetAntishift_C"</font>,NULL);
+<a name="line300">300: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st,<font color="#666666">"STCayleyGetAntishift_C"</font>,NULL);
+<a name="line301">301: </a>  <font color="#4169E1">return</font> 0;
+<a name="line302">302: </a>}
+
+<a name="line304">304: </a><strong><font color="#4169E1"><a name="STCreate_Cayley"></a>SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> STCreate_Cayley(<a href="../../../../../../docs/manualpages/ST/ST.html#ST">ST</a> st)</font></strong>
+<a name="line305">305: </a>{
+<a name="line306">306: </a>  ST_CAYLEY      *ctx;
+
+<a name="line308">308: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNew.html#PetscNew">PetscNew</a>(&amp;ctx);
+<a name="line309">309: </a>  st-&gt;data = (void*)ctx;
+
+<a name="line311">311: </a>  st-&gt;usesksp = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+
+<a name="line313">313: </a>  st-&gt;ops-&gt;apply           = STApply_Generic;
+<a name="line314">314: </a>  st-&gt;ops-&gt;applytrans      = STApplyTranspose_Generic;
+<a name="line315">315: </a>  st-&gt;ops-&gt;backtransform   = STBackTransform_Cayley;
+<a name="line316">316: </a>  st-&gt;ops-&gt;setshift        = STSetShift_Cayley;
+<a name="line317">317: </a>  st-&gt;ops-&gt;getbilinearform = STGetBilinearForm_Cayley;
+<a name="line318">318: </a>  st-&gt;ops-&gt;setup           = STSetUp_Cayley;
+<a name="line319">319: </a>  st-&gt;ops-&gt;computeoperator = STComputeOperator_Cayley;
+<a name="line320">320: </a>  st-&gt;ops-&gt;setfromoptions  = STSetFromOptions_Cayley;
+<a name="line321">321: </a>  st-&gt;ops-&gt;postsolve       = STPostSolve_Cayley;
+<a name="line322">322: </a>  st-&gt;ops-&gt;destroy         = STDestroy_Cayley;
+<a name="line323">323: </a>  st-&gt;ops-&gt;view            = STView_Cayley;
+<a name="line324">324: </a>  st-&gt;ops-&gt;checknullspace  = STCheckNullSpace_Default;
+<a name="line325">325: </a>  st-&gt;ops-&gt;setdefaultksp   = STSetDefaultKSP_Default;
+
+<a name="line327">327: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st,<font color="#666666">"STCayleySetAntishift_C"</font>,STCayleySetAntishift_Cayley);
+<a name="line328">328: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComposeFunction.html#PetscObjectComposeFunction">PetscObjectComposeFunction</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)st,<font color="#666666">"STCayleyGetAntishift_C"</font>,STCayleyGetAntishift_Cayley);
+<a name="line329">329: </a>  <font color="#4169E1">return</font> 0;
+<a name="line330">330: </a>}
+</pre>
+</body>
+
+</html>

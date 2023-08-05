@@ -1,0 +1,323 @@
+<center><a href="ex10f90.F90">Actual source code: ex10f90.F90</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/eps/tutorials/ex10f90.F90.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:42+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/eps/tutorials/ex10f90.F90.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a>!
+<a name="line2">  2: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line3">  3: </a>!  SLEPc - Scalable Library <font color="#4169E1">for</font> Eigenvalue Problem Computations
+<a name="line4">  4: </a>!  Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain
+<a name="line5">  5: </a>!
+<a name="line6">  6: </a>!  This file is part of SLEPc.
+<a name="line7">  7: </a>!  SLEPc is distributed under a 2-clause BSD license (see LICENSE).
+<a name="line8">  8: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line9">  9: </a>!
+<a name="line10"> 10: </a>!  Program usage: mpiexec -n &lt;np&gt; ./ex10f [-help] [-n &lt;n&gt;] [all SLEPc options]
+<a name="line11"> 11: </a>!
+<a name="line12"> 12: </a>!  Description: Illustrates the use of shell spectral transformations.
+<a name="line13"> 13: </a>!  The problem to be solved is the same as ex1.c and corresponds to the
+<a name="line14"> 14: </a>!  Laplacian operator in 1 dimension
+<a name="line15"> 15: </a>!
+<a name="line16"> 16: </a>!  The command line options are:
+<a name="line17"> 17: </a>!    nm &lt;n&gt;, where &lt;n&gt; is the number of grid subdivisions = matrix dimension
+<a name="line18"> 18: </a>!
+<a name="line19"> 19: </a>!  Note: this example illustrates old error checking with <a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a> instead
+<a name="line20"> 20: </a>!  of PetscCallA()
+<a name="line21"> 21: </a>! ----------------------------------------------------------------------
+<a name="line22"> 22: </a>!
+<a name="line23"> 23: </a>!     Module contains data needed by shell <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a>
+<a name="line24"> 24: </a>!
+<a name="line25"> 25: </a>      module mymoduleex10f90
+<a name="line26"> 26: </a>#include <A href="../../../include/slepc/finclude/slepceps.h.html">&lt;slepc/finclude/slepceps.h&gt;</A>
+<a name="line27"> 27: </a>      use slepceps
+<a name="line28"> 28: </a>      implicit none
+
+<a name="line30"> 30: </a>      <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a> myksp
+<a name="line31"> 31: </a>      end module
+
+<a name="line33"> 33: </a>! ----------------------------------------------------------------------
+
+<a name="line35"> 35: </a>      program main
+<a name="line36"> 36: </a>#include <A href="../../../include/slepc/finclude/slepceps.h.html">&lt;slepc/finclude/slepceps.h&gt;</A>
+<a name="line37"> 37: </a>      use slepceps
+<a name="line38"> 38: </a>      use mymoduleex10f90
+<a name="line39"> 39: </a>      implicit none
+
+<a name="line41"> 41: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line42"> 42: </a>!     Declarations
+<a name="line43"> 43: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line44"> 44: </a>!
+<a name="line45"> 45: </a>!  Variables:
+<a name="line46"> 46: </a>!     A     operator matrix
+<a name="line47"> 47: </a>!     eps   eigenproblem solver context
+
+<a name="line49"> 49: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A
+<a name="line50"> 50: </a>      <a href="../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>            eps
+<a name="line51"> 51: </a>      <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a>             st
+<a name="line52"> 52: </a>      <a href="../../../docs/manualpages/EPS/EPSType.html#EPSType">EPSType</a>        tname
+<a name="line53"> 53: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n, i, Istart, Iend, one, two, three
+<a name="line54"> 54: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       nev, row(1), col(3)
+<a name="line55"> 55: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    val(3)
+<a name="line56"> 56: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg, isShell, terse
+<a name="line57"> 57: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    rank
+<a name="line58"> 58: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+
+<a name="line60"> 60: </a>!     Note: Any user-defined Fortran routines MUST be declared as external.
+<a name="line61"> 61: </a>      external STApply_User, STApplyTranspose_User, STBackTransform_User
+
+<a name="line63"> 63: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line64"> 64: </a>!     Beginning of program
+<a name="line65"> 65: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line67"> 67: </a>      one = 1
+<a name="line68"> 68: </a>      two = 2
+<a name="line69"> 69: </a>      three = 3
+<a name="line70"> 70: </a>      call <a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>(PETSC_NULL_CHARACTER,ierr)
+<a name="line71"> 71: </a>      <font color="#4169E1">if</font> (ierr .ne. 0) then
+<a name="line72"> 72: </a>        print*,'<a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a> failed'
+<a name="line73"> 73: </a>        stop
+<a name="line74"> 74: </a>      endif
+<a name="line75"> 75: </a>      call <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,rank,ierr);CHKERRMPIA(ierr)
+<a name="line76"> 76: </a>      n = 30
+<a name="line77"> 77: </a>      call <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetInt.html#PetscOptionsGetInt">PetscOptionsGetInt</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-n',n,flg,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line79"> 79: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line80"> 80: </a>        write(*,'(/A,I6/)') '1-D Laplacian Eigenproblem (shell-enabled), n=',n
+<a name="line81"> 81: </a>      endif
+
+<a name="line83"> 83: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line84"> 84: </a>!     Compute the operator matrix that defines the eigensystem, Ax=kx
+<a name="line85"> 85: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line87"> 87: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,A,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line88"> 88: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(A,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,n,n,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line89"> 89: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(A,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line90"> 90: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(A,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line92"> 92: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(A,Istart,Iend,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line93"> 93: </a>      <font color="#4169E1">if</font> (Istart .eq. 0) then
+<a name="line94"> 94: </a>        row(1) = 0
+<a name="line95"> 95: </a>        col(1) = 0
+<a name="line96"> 96: </a>        col(2) = 1
+<a name="line97"> 97: </a>        val(1) =  2.0
+<a name="line98"> 98: </a>        val(2) = -1.0
+<a name="line99"> 99: </a>        call <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(A,one,row,two,col,val,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line100">100: </a>        Istart = Istart+1
+<a name="line101">101: </a>      endif
+<a name="line102">102: </a>      <font color="#4169E1">if</font> (Iend .eq. n) then
+<a name="line103">103: </a>        row(1) = n-1
+<a name="line104">104: </a>        col(1) = n-2
+<a name="line105">105: </a>        col(2) = n-1
+<a name="line106">106: </a>        val(1) = -1.0
+<a name="line107">107: </a>        val(2) =  2.0
+<a name="line108">108: </a>        call <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(A,one,row,two,col,val,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line109">109: </a>        Iend = Iend-1
+<a name="line110">110: </a>      endif
+<a name="line111">111: </a>      val(1) = -1.0
+<a name="line112">112: </a>      val(2) =  2.0
+<a name="line113">113: </a>      val(3) = -1.0
+<a name="line114">114: </a>      <font color="#4169E1">do</font> i=Istart,Iend-1
+<a name="line115">115: </a>        row(1) = i
+<a name="line116">116: </a>        col(1) = i-1
+<a name="line117">117: </a>        col(2) = i
+<a name="line118">118: </a>        col(3) = i+1
+<a name="line119">119: </a>        call <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(A,one,row,three,col,val,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line120">120: </a>      enddo
+
+<a name="line122">122: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(A,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line123">123: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(A,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line125">125: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line126">126: </a>!     Create the eigensolver and set various options
+<a name="line127">127: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line129">129: </a>!     ** Create eigensolver context
+<a name="line130">130: </a>      call <a href="../../../docs/manualpages/EPS/EPSCreate.html#EPSCreate">EPSCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,eps,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line132">132: </a>!     ** Set operators. In this <font color="#4169E1">case</font>, it is a standard eigenvalue problem
+<a name="line133">133: </a>      call <a href="../../../docs/manualpages/EPS/EPSSetOperators.html#EPSSetOperators">EPSSetOperators</a>(eps,A,PETSC_NULL_MAT,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line134">134: </a>      call <a href="../../../docs/manualpages/EPS/EPSSetProblemType.html#EPSSetProblemType">EPSSetProblemType</a>(eps,<a href="../../../docs/manualpages/EPS/EPSProblemType.html#EPSProblemType">EPS_NHEP</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line136">136: </a>!     ** Set solver parameters at runtime
+<a name="line137">137: </a>      call <a href="../../../docs/manualpages/EPS/EPSSetFromOptions.html#EPSSetFromOptions">EPSSetFromOptions</a>(eps,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line139">139: </a>!     ** Initialize shell spectral transformation <font color="#4169E1">if</font> selected by user
+<a name="line140">140: </a>      call <a href="../../../docs/manualpages/EPS/EPSGetST.html#EPSGetST">EPSGetST</a>(eps,st,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line141">141: </a>      call <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>(st,<a href="../../../docs/manualpages/ST/STSHELL.html#STSHELL">STSHELL</a>,isShell,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line143">143: </a>      <font color="#4169E1">if</font> (isShell) then
+<a name="line144">144: </a>!       ** Change sorting criterion since this <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a> example computes values
+<a name="line145">145: </a>!       ** closest to 0
+<a name="line146">146: </a>        call <a href="../../../docs/manualpages/EPS/EPSSetWhichEigenpairs.html#EPSSetWhichEigenpairs">EPSSetWhichEigenpairs</a>(eps,<a href="../../../docs/manualpages/EPS/EPSWhich.html#EPSWhich">EPS_SMALLEST_REAL</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line148">148: </a>!       ** In Fortran, instead of a context <font color="#4169E1">for</font> the user-defined spectral transform
+<a name="line149">149: </a>!       ** we use a module containing any application-specific data, initialized here
+<a name="line150">150: </a>        call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPCreate.html#KSPCreate">KSPCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,myksp,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line151">151: </a>        call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPAppendOptionsPrefix.html#KSPAppendOptionsPrefix">KSPAppendOptionsPrefix</a>(myksp,<font color="#666666">"st_"</font>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line153">153: </a>!       ** (Required) Set the user-defined routine <font color="#4169E1">for</font> applying the operator
+<a name="line154">154: </a>        call <a href="../../../docs/manualpages/ST/STShellSetApply.html#STShellSetApply">STShellSetApply</a>(st,STApply_User,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line156">156: </a>!       ** (Optional) Set the user-defined routine <font color="#4169E1">for</font> applying the transposed operator
+<a name="line157">157: </a>        call <a href="../../../docs/manualpages/ST/STShellSetApplyTranspose.html#STShellSetApplyTranspose">STShellSetApplyTranspose</a>(st,STApplyTranspose_User,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line159">159: </a>!       ** (Optional) Set the user-defined routine <font color="#4169E1">for</font> back-transformation
+<a name="line160">160: </a>        call <a href="../../../docs/manualpages/ST/STShellSetBackTransform.html#STShellSetBackTransform">STShellSetBackTransform</a>(st,STBackTransform_User,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line162">162: </a>!       ** (Optional) Set a name <font color="#4169E1">for</font> the transformation, used <font color="#4169E1">for</font> <a href="../../../docs/manualpages/ST/STView.html#STView">STView</a>()
+<a name="line163">163: </a>        call <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectSetName.html#PetscObjectSetName">PetscObjectSetName</a>(st,'MyTransformation',ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line165">165: </a>!       ** (Optional) Do any setup required <font color="#4169E1">for</font> the new transformation
+<a name="line166">166: </a>        call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetOperators.html#KSPSetOperators">KSPSetOperators</a>(myksp,A,A,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line167">167: </a>        call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetFromOptions.html#KSPSetFromOptions">KSPSetFromOptions</a>(myksp,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line168">168: </a>      endif
+
+<a name="line170">170: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line171">171: </a>!     Solve the eigensystem
+<a name="line172">172: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line174">174: </a>      call <a href="../../../docs/manualpages/EPS/EPSSolve.html#EPSSolve">EPSSolve</a>(eps,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+
+<a name="line176">176: </a>!     ** Optional: Get some information from the solver and display it
+<a name="line177">177: </a>      call <a href="../../../docs/manualpages/EPS/EPSGetType.html#EPSGetType">EPSGetType</a>(eps,tname,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line178">178: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line179">179: </a>        write(*,'(A,A,/)') ' Solution method: ', tname
+<a name="line180">180: </a>      endif
+<a name="line181">181: </a>      call <a href="../../../docs/manualpages/EPS/EPSGetDimensions.html#EPSGetDimensions">EPSGetDimensions</a>(eps,nev,PETSC_NULL_INTEGER,PETSC_NULL_INTEGER,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line182">182: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line183">183: </a>        write(*,'(A,I2)') ' Number of requested eigenvalues:',nev
+<a name="line184">184: </a>      endif
+
+<a name="line186">186: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line187">187: </a>!     Display solution and clean up
+<a name="line188">188: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line190">190: </a>!     ** show detailed info unless -terse option is given by user
+<a name="line191">191: </a>      call <a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHasName.html#PetscOptionsHasName">PetscOptionsHasName</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-terse',terse,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line192">192: </a>      <font color="#4169E1">if</font> (terse) then
+<a name="line193">193: </a>        call <a href="../../../docs/manualpages/EPS/EPSErrorView.html#EPSErrorView">EPSErrorView</a>(eps,<a href="../../../docs/manualpages/EPS/EPSErrorType.html#EPSErrorType">EPS_ERROR_RELATIVE</a>,PETSC_NULL_VIEWER,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line194">194: </a>      <font color="#4169E1">else</font>
+<a name="line195">195: </a>        call <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPushFormat.html#PetscViewerPushFormat">PetscViewerPushFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line196">196: </a>        call <a href="../../../docs/manualpages/EPS/EPSConvergedReasonView.html#EPSConvergedReasonView">EPSConvergedReasonView</a>(eps,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line197">197: </a>        call <a href="../../../docs/manualpages/EPS/EPSErrorView.html#EPSErrorView">EPSErrorView</a>(eps,<a href="../../../docs/manualpages/EPS/EPSErrorType.html#EPSErrorType">EPS_ERROR_RELATIVE</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line198">198: </a>        call <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPopFormat.html#PetscViewerPopFormat">PetscViewerPopFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line199">199: </a>      endif
+<a name="line200">200: </a>      <font color="#4169E1">if</font> (isShell) then
+<a name="line201">201: </a>        call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPDestroy.html#KSPDestroy">KSPDestroy</a>(myksp,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line202">202: </a>      endif
+<a name="line203">203: </a>      call <a href="../../../docs/manualpages/EPS/EPSDestroy.html#EPSDestroy">EPSDestroy</a>(eps,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line204">204: </a>      call <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(A,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRA.html#CHKERRA">CHKERRA</a>(ierr)
+<a name="line205">205: </a>      call <a href="../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>(ierr)
+<a name="line206">206: </a>      end
+
+<a name="line208">208: </a>! -------------------------------------------------------------------
+<a name="line209">209: </a>!
+<a name="line210">210: </a>!   STApply_User - This routine demonstrates the use of a user-provided spectral
+<a name="line211">211: </a>!   transformation. The transformation implemented in this code is just OP=A^-1.
+<a name="line212">212: </a>!
+<a name="line213">213: </a>!   Input Parameters:
+<a name="line214">214: </a>!   st - spectral transformation context
+<a name="line215">215: </a>!   x - input vector
+<a name="line216">216: </a>!
+<a name="line217">217: </a>!   Output Parameter:
+<a name="line218">218: </a>!   y - output vector
+<a name="line219">219: </a>!
+<a name="line220">220: </a>      subroutine STApply_User(st,x,y,ierr)
+<a name="line221">221: </a>#include <A href="../../../include/slepc/finclude/slepceps.h.html">&lt;slepc/finclude/slepceps.h&gt;</A>
+<a name="line222">222: </a>      use slepceps
+<a name="line223">223: </a>      use mymoduleex10f90
+<a name="line224">224: </a>      implicit none
+
+<a name="line226">226: </a>      <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a>             st
+<a name="line227">227: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            x,y
+<a name="line228">228: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+
+<a name="line230">230: </a>      call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolve.html#KSPSolve">KSPSolve</a>(myksp,x,y,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRQ.html#CHKERRQ">CHKERRQ</a>(ierr)
+
+<a name="line232">232: </a>      <font color="#4169E1">return</font>
+<a name="line233">233: </a>      end
+
+<a name="line235">235: </a>! -------------------------------------------------------------------
+<a name="line236">236: </a>!
+<a name="line237">237: </a>!   STApplyTranspose_User - This is not required unless using a two-sided eigensolver
+<a name="line238">238: </a>!
+<a name="line239">239: </a>!   Input Parameters:
+<a name="line240">240: </a>!   st - spectral transformation context
+<a name="line241">241: </a>!   x - input vector
+<a name="line242">242: </a>!
+<a name="line243">243: </a>!   Output Parameter:
+<a name="line244">244: </a>!   y - output vector
+<a name="line245">245: </a>!
+<a name="line246">246: </a>      subroutine STApplyTranspose_User(st,x,y,ierr)
+<a name="line247">247: </a>#include <A href="../../../include/slepc/finclude/slepceps.h.html">&lt;slepc/finclude/slepceps.h&gt;</A>
+<a name="line248">248: </a>      use slepceps
+<a name="line249">249: </a>      use mymoduleex10f90
+<a name="line250">250: </a>      implicit none
+
+<a name="line252">252: </a>      <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a>             st
+<a name="line253">253: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            x,y
+<a name="line254">254: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+
+<a name="line256">256: </a>      call <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolveTranspose.html#KSPSolveTranspose">KSPSolveTranspose</a>(myksp,x,y,ierr);<a href="https://petsc.org/release/docs/manualpages/Sys/CHKERRQ.html#CHKERRQ">CHKERRQ</a>(ierr)
+
+<a name="line258">258: </a>      <font color="#4169E1">return</font>
+<a name="line259">259: </a>      end
+
+<a name="line261">261: </a>! -------------------------------------------------------------------
+<a name="line262">262: </a>!
+<a name="line263">263: </a>!   STBackTransform_User - This routine demonstrates the use of a user-provided spectral
+<a name="line264">264: </a>!   transformation
+<a name="line265">265: </a>!
+<a name="line266">266: </a>!   Input Parameters:
+<a name="line267">267: </a>!   st - spectral transformation context
+<a name="line268">268: </a>!   n  - number of eigenvalues to transform
+<a name="line269">269: </a>!
+<a name="line270">270: </a>!   Output Parameters:
+<a name="line271">271: </a>!   eigr - real part of eigenvalues
+<a name="line272">272: </a>!   eigi - imaginary part of eigenvalues
+<a name="line273">273: </a>!
+<a name="line274">274: </a>      subroutine STBackTransform_User(st,n,eigr,eigi,ierr)
+<a name="line275">275: </a>#include <A href="../../../include/slepc/finclude/slepceps.h.html">&lt;slepc/finclude/slepceps.h&gt;</A>
+<a name="line276">276: </a>      use slepceps
+<a name="line277">277: </a>      use mymoduleex10f90
+<a name="line278">278: </a>      implicit none
+
+<a name="line280">280: </a>      <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a>             st
+<a name="line281">281: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       n, j
+<a name="line282">282: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    eigr(*), eigi(*)
+<a name="line283">283: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+
+<a name="line285">285: </a>      <font color="#4169E1">do</font> j=1,n
+<a name="line286">286: </a>        eigr(j) = 1.0 / eigr(j)
+<a name="line287">287: </a>      enddo
+<a name="line288">288: </a>      ierr = 0
+
+<a name="line290">290: </a>      <font color="#4169E1">return</font>
+<a name="line291">291: </a>      end
+
+<a name="line293">293: </a>!<font color="#B22222">/*TEST</font>
+<a name="line294">294: </a><font color="#B22222">!</font>
+<a name="line295">295: </a><font color="#B22222">!   testset:</font>
+<a name="line296">296: </a><font color="#B22222">!      args: -eps_nev 5 -eps_non_hermitian -terse</font>
+<a name="line297">297: </a><font color="#B22222">!      output_file: output/ex10_1.out</font>
+<a name="line298">298: </a><font color="#B22222">!      test:</font>
+<a name="line299">299: </a><font color="#B22222">!         suffix: 1_sinvert</font>
+<a name="line300">300: </a><font color="#B22222">!         args: -st_type sinvert</font>
+<a name="line301">301: </a><font color="#B22222">!      test:</font>
+<a name="line302">302: </a><font color="#B22222">!         suffix: 1_shell</font>
+<a name="line303">303: </a><font color="#B22222">!         args: -st_type shell</font>
+<a name="line304">304: </a><font color="#B22222">!         requires: !single</font>
+<a name="line305">305: </a><font color="#B22222">!</font>
+<a name="line306">306: </a><font color="#B22222">!TEST*/</font>
+</pre>
+</body>
+
+</html>

@@ -1,0 +1,553 @@
+<center><a href="neprefine.c">Actual source code: neprefine.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/nep/interface/neprefine.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:46:11+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/nep/interface/neprefine.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   Newton refinement for <a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>, simple version</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../include/slepc/private/nepimpl.h.html">&lt;slepc/private/nepimpl.h&gt;</A>
+<a name="line15"> 15: </a>#include <A href="../../../include/slepcblaslapack.h.html">&lt;slepcblaslapack.h&gt;</A>
+
+<a name="line17"> 17: </a><strong><font color="#228B22">#define NREF_MAXIT 10</font></strong>
+
+<a name="line19"> 19: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line20"> 20: </a>  <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatter.html#VecScatter">VecScatter</a>    *scatter_id,nst;
+<a name="line21"> 21: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>           *A;
+<a name="line22"> 22: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>           nv,vg,v,w;
+<a name="line23"> 23: </a>  <a href="../../../docs/manualpages/FN/FN.html#FN">FN</a>            *fn;
+<a name="line24"> 24: </a>} NEPSimpNRefctx;
+
+<a name="line26"> 26: </a><font color="#4169E1">typedef</font> <font color="#4169E1">struct</font> {
+<a name="line27"> 27: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>          M1;
+<a name="line28"> 28: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>          M2,M3;
+<a name="line29"> 29: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  M4,m3;
+<a name="line30"> 30: </a>} NEP_REFINE_MATSHELL;
+
+<a name="line32"> 32: </a><strong><font color="#4169E1"><a name="MatMult_FS"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> MatMult_FS(<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> M ,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> x,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> y)</font></strong>
+<a name="line33"> 33: </a>{
+<a name="line34"> 34: </a>  NEP_REFINE_MATSHELL *ctx;
+<a name="line35"> 35: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>         t;
+
+<a name="line37"> 37: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(M,&amp;ctx);
+<a name="line38"> 38: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDot.html#VecDot">VecDot</a>(x,ctx-&gt;M3,&amp;t);
+<a name="line39"> 39: </a>  t *= ctx-&gt;m3/ctx-&gt;M4;
+<a name="line40"> 40: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(ctx-&gt;M1,x,y);
+<a name="line41"> 41: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(y,-t,ctx-&gt;M2);
+<a name="line42"> 42: </a>  <font color="#4169E1">return</font> 0;
+<a name="line43"> 43: </a>}
+
+<a name="line45"> 45: </a><strong><font color="#4169E1"><a name="NEPSimpleNRefSetUp"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPSimpleNRefSetUp(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,NEPSimpNRefctx **ctx_)</font></strong>
+<a name="line46"> 46: </a>{
+<a name="line47"> 47: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i,si,j,n0,m0,nloc,*idx1,*idx2,ne;
+<a name="line48"> 48: </a>  <a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>             is1,is2;
+<a name="line49"> 49: </a>  NEPSimpNRefctx *ctx;
+<a name="line50"> 50: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            v;
+<a name="line51"> 51: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    rank,size;
+<a name="line52"> 52: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       child;
+
+<a name="line54"> 54: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCalloc1.html#PetscCalloc1">PetscCalloc1</a>(1,ctx_);
+<a name="line55"> 55: </a>  ctx = *ctx_;
+<a name="line56"> 56: </a>  <font color="#4169E1">if</font> (nep-&gt;npart==1) {
+<a name="line57"> 57: </a>    ctx-&gt;A  = nep-&gt;A;
+<a name="line58"> 58: </a>    ctx-&gt;fn = nep-&gt;f;
+<a name="line59"> 59: </a>    nep-&gt;refinesubc = NULL;
+<a name="line60"> 60: </a>    ctx-&gt;scatter_id = NULL;
+<a name="line61"> 61: </a>  } <font color="#4169E1">else</font> {
+<a name="line62"> 62: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommGetChild.html#PetscSubcommGetChild">PetscSubcommGetChild</a>(nep-&gt;refinesubc,&amp;child);
+<a name="line63"> 63: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc2.html#PetscMalloc2">PetscMalloc2</a>(nep-&gt;nt,&amp;ctx-&gt;A,nep-&gt;npart,&amp;ctx-&gt;scatter_id);
+
+<a name="line65"> 65: </a>    <font color="#B22222">/* Duplicate matrices */</font>
+<a name="line66"> 66: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;nt;i++) <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateRedundantMatrix.html#MatCreateRedundantMatrix">MatCreateRedundantMatrix</a>(nep-&gt;A[i],0,child,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;ctx-&gt;A[i]);
+<a name="line67"> 67: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateVecs.html#MatCreateVecs">MatCreateVecs</a>(ctx-&gt;A[0],&amp;ctx-&gt;v,NULL);
+
+<a name="line69"> 69: </a>    <font color="#B22222">/* Duplicate FNs */</font>
+<a name="line70"> 70: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(nep-&gt;nt,&amp;ctx-&gt;fn);
+<a name="line71"> 71: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;nt;i++) <a href="../../../docs/manualpages/FN/FNDuplicate.html#FNDuplicate">FNDuplicate</a>(nep-&gt;f[i],child,&amp;ctx-&gt;fn[i]);
+
+<a name="line73"> 73: </a>    <font color="#B22222">/* Create scatters for sending vectors to each subcommucator */</font>
+<a name="line74"> 74: </a>    <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line75"> 75: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetOwnershipRange.html#VecGetOwnershipRange">VecGetOwnershipRange</a>(v,&amp;n0,&amp;m0);
+<a name="line76"> 76: </a>    <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line77"> 77: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetLocalSize.html#VecGetLocalSize">VecGetLocalSize</a>(ctx-&gt;v,&amp;nloc);
+<a name="line78"> 78: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc2.html#PetscMalloc2">PetscMalloc2</a>(m0-n0,&amp;idx1,m0-n0,&amp;idx2);
+<a name="line79"> 79: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPI.html#VecCreateMPI">VecCreateMPI</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)nep),nloc,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,&amp;ctx-&gt;vg);
+<a name="line80"> 80: </a>    <font color="#4169E1">for</font> (si=0;si&lt;nep-&gt;npart;si++) {
+<a name="line81"> 81: </a>      j = 0;
+<a name="line82"> 82: </a>      <font color="#4169E1">for</font> (i=n0;i&lt;m0;i++) {
+<a name="line83"> 83: </a>        idx1[j]   = i;
+<a name="line84"> 84: </a>        idx2[j++] = i+nep-&gt;n*si;
+<a name="line85"> 85: </a>      }
+<a name="line86"> 86: </a>      <a href="https://petsc.org/release/docs/manualpages/IS/ISCreateGeneral.html#ISCreateGeneral">ISCreateGeneral</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)nep),(m0-n0),idx1,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscCopyMode.html#PetscCopyMode">PETSC_COPY_VALUES</a>,&amp;is1);
+<a name="line87"> 87: </a>      <a href="https://petsc.org/release/docs/manualpages/IS/ISCreateGeneral.html#ISCreateGeneral">ISCreateGeneral</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)nep),(m0-n0),idx2,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscCopyMode.html#PetscCopyMode">PETSC_COPY_VALUES</a>,&amp;is2);
+<a name="line88"> 88: </a>      <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line89"> 89: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterCreate.html#VecScatterCreate">VecScatterCreate</a>(v,is1,ctx-&gt;vg,is2,&amp;ctx-&gt;scatter_id[si]);
+<a name="line90"> 90: </a>      <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line91"> 91: </a>      <a href="https://petsc.org/release/docs/manualpages/IS/ISDestroy.html#ISDestroy">ISDestroy</a>(&amp;is1);
+<a name="line92"> 92: </a>      <a href="https://petsc.org/release/docs/manualpages/IS/ISDestroy.html#ISDestroy">ISDestroy</a>(&amp;is2);
+<a name="line93"> 93: </a>    }
+<a name="line94"> 94: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree2.html#PetscFree2">PetscFree2</a>(idx1,idx2);
+<a name="line95"> 95: </a>  }
+<a name="line96"> 96: </a>  <font color="#4169E1">if</font> (nep-&gt;scheme==<a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a>) {
+<a name="line97"> 97: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ctx-&gt;A[0]),&amp;rank);
+<a name="line98"> 98: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ctx-&gt;A[0]),&amp;size);
+<a name="line99"> 99: </a>    <font color="#4169E1">if</font> (size&gt;1) {
+<a name="line100">100: </a>      <font color="#4169E1">if</font> (nep-&gt;npart==1) <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line101">101: </a>      <font color="#4169E1">else</font> v = ctx-&gt;v;
+<a name="line102">102: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetOwnershipRange.html#VecGetOwnershipRange">VecGetOwnershipRange</a>(v,&amp;n0,&amp;m0);
+<a name="line103">103: </a>      ne = (rank == size-1)?nep-&gt;n:0;
+<a name="line104">104: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecCreateMPI.html#VecCreateMPI">VecCreateMPI</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ctx-&gt;A[0]),ne,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,&amp;ctx-&gt;nv);
+<a name="line105">105: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(m0-n0,&amp;idx1);
+<a name="line106">106: </a>      <font color="#4169E1">for</font> (i=n0;i&lt;m0;i++) {
+<a name="line107">107: </a>        idx1[i-n0] = i;
+<a name="line108">108: </a>      }
+<a name="line109">109: </a>      <a href="https://petsc.org/release/docs/manualpages/IS/ISCreateGeneral.html#ISCreateGeneral">ISCreateGeneral</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ctx-&gt;A[0]),(m0-n0),idx1,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscCopyMode.html#PetscCopyMode">PETSC_COPY_VALUES</a>,&amp;is1);
+<a name="line110">110: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterCreate.html#VecScatterCreate">VecScatterCreate</a>(v,is1,ctx-&gt;nv,is1,&amp;ctx-&gt;nst);
+<a name="line111">111: </a>      <font color="#4169E1">if</font> (nep-&gt;npart==1) <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line112">112: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(idx1);
+<a name="line113">113: </a>      <a href="https://petsc.org/release/docs/manualpages/IS/ISDestroy.html#ISDestroy">ISDestroy</a>(&amp;is1);
+<a name="line114">114: </a>    }
+<a name="line115">115: </a>  }  <font color="#4169E1">return</font> 0;
+<a name="line116">116: </a>}
+
+<a name="line118">118: </a><font color="#B22222">/*</font>
+<a name="line119">119: </a><font color="#B22222">  Gather Eigenpair idx from subcommunicator with color sc</font>
+<a name="line120">120: </a><font color="#B22222">*/</font>
+<a name="line121">121: </a><strong><font color="#4169E1"><a name="NEPSimpleNRefGatherEigenpair"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPSimpleNRefGatherEigenpair(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,NEPSimpNRefctx *ctx,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> sc,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> idx,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *fail)</font></strong>
+<a name="line122">122: </a>{
+<a name="line123">123: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    nproc,p;
+<a name="line124">124: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>       comm=((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)nep)-&gt;comm;
+<a name="line125">125: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            v;
+<a name="line126">126: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *array;
+
+<a name="line128">128: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(comm,&amp;nproc);
+<a name="line129">129: </a>  p = (nproc/nep-&gt;npart)*(sc+1)+<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(sc+1,nproc%nep-&gt;npart)-1;
+<a name="line130">130: </a>  <font color="#4169E1">if</font> (nep-&gt;npart&gt;1) {
+<a name="line131">131: </a>    <font color="#B22222">/* Communicate convergence successful */</font>
+<a name="line132">132: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(fail,1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_INT.html#MPIU_INT">MPIU_INT</a>,p,comm);
+<a name="line133">133: </a>    <font color="#4169E1">if</font> (!(*fail)) {
+<a name="line134">134: </a>      <font color="#B22222">/* Process 0 of subcommunicator sc broadcasts the eigenvalue */</font>
+<a name="line135">135: </a>      <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(&amp;nep-&gt;eigr[idx],1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,p,comm);
+<a name="line136">136: </a>      <font color="#B22222">/* Gather nep-&gt;V[idx] from the subcommuniator sc */</font>
+<a name="line137">137: </a>      <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,idx,&amp;v);
+<a name="line138">138: </a>      <font color="#4169E1">if</font> (nep-&gt;refinesubc-&gt;color==sc) {
+<a name="line139">139: </a>        <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(ctx-&gt;v,&amp;array);
+<a name="line140">140: </a>        <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(ctx-&gt;vg,array);
+<a name="line141">141: </a>      }
+<a name="line142">142: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterBegin.html#VecScatterBegin">VecScatterBegin</a>(ctx-&gt;scatter_id[sc],ctx-&gt;vg,v,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_REVERSE.html#SCATTER_REVERSE">SCATTER_REVERSE</a>);
+<a name="line143">143: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterEnd.html#VecScatterEnd">VecScatterEnd</a>(ctx-&gt;scatter_id[sc],ctx-&gt;vg,v,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_REVERSE.html#SCATTER_REVERSE">SCATTER_REVERSE</a>);
+<a name="line144">144: </a>      <font color="#4169E1">if</font> (nep-&gt;refinesubc-&gt;color==sc) {
+<a name="line145">145: </a>        <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(ctx-&gt;vg);
+<a name="line146">146: </a>        <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(ctx-&gt;v,&amp;array);
+<a name="line147">147: </a>      }
+<a name="line148">148: </a>      <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,idx,&amp;v);
+<a name="line149">149: </a>    }
+<a name="line150">150: </a>  } <font color="#4169E1">else</font> {
+<a name="line151">151: </a>    <font color="#4169E1">if</font> (nep-&gt;scheme==<a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a> &amp;&amp; !(*fail)) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(&amp;nep-&gt;eigr[idx],1,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,p,comm);
+<a name="line152">152: </a>  }
+<a name="line153">153: </a>  <font color="#4169E1">return</font> 0;
+<a name="line154">154: </a>}
+
+<a name="line156">156: </a><strong><font color="#4169E1"><a name="NEPSimpleNRefScatterEigenvector"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPSimpleNRefScatterEigenvector(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,NEPSimpNRefctx *ctx,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> sc,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> idx)</font></strong>
+<a name="line157">157: </a>{
+<a name="line158">158: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            v;
+<a name="line159">159: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *array;
+
+<a name="line161">161: </a>  <font color="#4169E1">if</font> (nep-&gt;npart&gt;1) {
+<a name="line162">162: </a>    <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,idx,&amp;v);
+<a name="line163">163: </a>    <font color="#4169E1">if</font> (nep-&gt;refinesubc-&gt;color==sc) {
+<a name="line164">164: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(ctx-&gt;v,&amp;array);
+<a name="line165">165: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(ctx-&gt;vg,array);
+<a name="line166">166: </a>    }
+<a name="line167">167: </a>    <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterBegin.html#VecScatterBegin">VecScatterBegin</a>(ctx-&gt;scatter_id[sc],v,ctx-&gt;vg,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_FORWARD.html#SCATTER_FORWARD">SCATTER_FORWARD</a>);
+<a name="line168">168: </a>    <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterEnd.html#VecScatterEnd">VecScatterEnd</a>(ctx-&gt;scatter_id[sc],v,ctx-&gt;vg,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_FORWARD.html#SCATTER_FORWARD">SCATTER_FORWARD</a>);
+<a name="line169">169: </a>    <font color="#4169E1">if</font> (nep-&gt;refinesubc-&gt;color==sc) {
+<a name="line170">170: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(ctx-&gt;vg);
+<a name="line171">171: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(ctx-&gt;v,&amp;array);
+<a name="line172">172: </a>    }
+<a name="line173">173: </a>    <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,idx,&amp;v);
+<a name="line174">174: </a>  }
+<a name="line175">175: </a>  <font color="#4169E1">return</font> 0;
+<a name="line176">176: </a>}
+
+<a name="line178">178: </a><strong><font color="#4169E1"><a name="NEPSimpleNRefSetUpSystem"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPSimpleNRefSetUpSystem(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,NEPSimpNRefctx *ctx,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *A,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> idx,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *Mt,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *T,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *P,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> ini,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> t,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> v)</font></strong>
+<a name="line179">179: </a>{
+<a name="line180">180: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>            i,st,ml,m0,n0,m1,mg;
+<a name="line181">181: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>            *dnz,*onz,ncols,*cols2=NULL,*nnz,nt=nep-&gt;nt;
+<a name="line182">182: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>         zero=0.0,*coeffs,*coeffs2;
+<a name="line183">183: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>         rank,size;
+<a name="line184">184: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>            comm;
+<a name="line185">185: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>      *cols;
+<a name="line186">186: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>   *vals,*array;
+<a name="line187">187: </a>  NEP_REFINE_MATSHELL *fctx;
+<a name="line188">188: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>                 w=ctx-&gt;w;
+<a name="line189">189: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>                 M;
+
+<a name="line191">191: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc2.html#PetscMalloc2">PetscMalloc2</a>(nt,&amp;coeffs,nt,&amp;coeffs2);
+<a name="line192">192: </a>  <font color="#4169E1">switch</font> (nep-&gt;scheme) {
+<a name="line193">193: </a>  <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_SCHUR</a>:
+<a name="line194">194: </a>    <font color="#4169E1">if</font> (ini) {
+<a name="line195">195: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCalloc1.html#PetscCalloc1">PetscCalloc1</a>(1,&amp;fctx);
+<a name="line196">196: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(A[0],&amp;m0,&amp;n0);
+<a name="line197">197: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A[0]),<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DECIDE.html#PETSC_DECIDE">PETSC_DECIDE</a>,m0,n0,fctx,T);
+<a name="line198">198: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(*T,MATOP_MULT,(void(*)(void))MatMult_FS);
+<a name="line199">199: </a>    } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(*T,&amp;fctx);
+<a name="line200">200: </a>    M=fctx-&gt;M1;
+<a name="line201">201: </a>    <font color="#4169E1">break</font>;
+<a name="line202">202: </a>  <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_MBE</a>:
+<a name="line203">203: </a>    M=*T;
+<a name="line204">204: </a>    <font color="#4169E1">break</font>;
+<a name="line205">205: </a>  <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a>:
+<a name="line206">206: </a>    M=*Mt;
+<a name="line207">207: </a>    <font color="#4169E1">break</font>;
+<a name="line208">208: </a>  }
+<a name="line209">209: </a>  <font color="#4169E1">if</font> (ini) <a href="https://petsc.org/release/docs/manualpages/Mat/MatDuplicate.html#MatDuplicate">MatDuplicate</a>(A[0],<a href="https://petsc.org/release/docs/manualpages/Mat/MatDuplicateOption.html#MatDuplicateOption">MAT_COPY_VALUES</a>,&amp;M);
+<a name="line210">210: </a>  <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(A[0],M,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">DIFFERENT_NONZERO_PATTERN</a>);
+<a name="line211">211: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nt;i++) <a href="../../../docs/manualpages/FN/FNEvaluateFunction.html#FNEvaluateFunction">FNEvaluateFunction</a>(ctx-&gt;fn[i],nep-&gt;eigr[idx],coeffs+i);
+<a name="line212">212: </a>  <font color="#4169E1">if</font> (coeffs[0]!=1.0) <a href="https://petsc.org/release/docs/manualpages/Mat/MatScale.html#MatScale">MatScale</a>(M,coeffs[0]);
+<a name="line213">213: </a>  <font color="#4169E1">for</font> (i=1;i&lt;nt;i++) <a href="https://petsc.org/release/docs/manualpages/Mat/MatAXPY.html#MatAXPY">MatAXPY</a>(M,coeffs[i],A[i],(ini)?nep-&gt;mstr:<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SUBSET_NONZERO_PATTERN</a>);
+<a name="line214">214: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nt;i++) <a href="../../../docs/manualpages/FN/FNEvaluateDerivative.html#FNEvaluateDerivative">FNEvaluateDerivative</a>(ctx-&gt;fn[i],nep-&gt;eigr[idx],coeffs2+i);
+<a name="line215">215: </a>  st = 0;
+<a name="line216">216: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nt &amp;&amp; PetscAbsScalar(coeffs2[i])==0.0;i++) st++;
+<a name="line217">217: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(A[st],v,w);
+<a name="line218">218: </a>  <font color="#4169E1">if</font> (coeffs2[st]!=1.0) <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(w,coeffs2[st]);
+<a name="line219">219: </a>  <font color="#4169E1">for</font> (i=st+1;i&lt;nt;i++) {
+<a name="line220">220: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(A[i],v,t);
+<a name="line221">221: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(w,coeffs2[i],t);
+<a name="line222">222: </a>  }
+
+<a name="line224">224: </a>  <font color="#4169E1">switch</font> (nep-&gt;scheme) {
+<a name="line225">225: </a>  <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a>:
+<a name="line226">226: </a>    comm = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A[0]);
+<a name="line227">227: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(comm,&amp;rank);
+<a name="line228">228: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(comm,&amp;size);
+<a name="line229">229: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(M,&amp;mg,NULL);
+<a name="line230">230: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(M,&amp;m0,&amp;m1);
+<a name="line231">231: </a>    <font color="#4169E1">if</font> (ini) {
+<a name="line232">232: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreate.html#MatCreate">MatCreate</a>(comm,T);
+<a name="line233">233: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(M,&amp;ml,NULL);
+<a name="line234">234: </a>      <font color="#4169E1">if</font> (rank==size-1) ml++;
+<a name="line235">235: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetSizes.html#MatSetSizes">MatSetSizes</a>(*T,ml,ml,mg+1,mg+1);
+<a name="line236">236: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetFromOptions.html#MatSetFromOptions">MatSetFromOptions</a>(*T);
+<a name="line237">237: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetUp.html#MatSetUp">MatSetUp</a>(*T);
+<a name="line238">238: </a>      <font color="#B22222">/* Preallocate M */</font>
+<a name="line239">239: </a>      <font color="#4169E1">if</font> (size&gt;1) {
+<a name="line240">240: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatPreallocateBegin.html#MatPreallocateBegin">MatPreallocateBegin</a>(comm,ml,ml,dnz,onz);
+<a name="line241">241: </a>        <font color="#4169E1">for</font> (i=m0;i&lt;m1;i++) {
+<a name="line242">242: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetRow.html#MatGetRow">MatGetRow</a>(M,i,&amp;ncols,&amp;cols,NULL);
+<a name="line243">243: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatPreallocateSet.html#MatPreallocateSet">MatPreallocateSet</a>(i,ncols,cols,dnz,onz);
+<a name="line244">244: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatPreallocateSet.html#MatPreallocateSet">MatPreallocateSet</a>(i,1,&amp;mg,dnz,onz);
+<a name="line245">245: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatRestoreRow.html#MatRestoreRow">MatRestoreRow</a>(M,i,&amp;ncols,&amp;cols,NULL);
+<a name="line246">246: </a>        }
+<a name="line247">247: </a>        <font color="#4169E1">if</font> (rank==size-1) {
+<a name="line248">248: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCalloc1.html#PetscCalloc1">PetscCalloc1</a>(mg+1,&amp;cols2);
+<a name="line249">249: </a>          <font color="#4169E1">for</font> (i=0;i&lt;mg+1;i++) cols2[i]=i;
+<a name="line250">250: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatPreallocateSet.html#MatPreallocateSet">MatPreallocateSet</a>(m1,mg+1,cols2,dnz,onz);
+<a name="line251">251: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(cols2);
+<a name="line252">252: </a>        }
+<a name="line253">253: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatMPIAIJSetPreallocation.html#MatMPIAIJSetPreallocation">MatMPIAIJSetPreallocation</a>(*T,0,dnz,0,onz);
+<a name="line254">254: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatPreallocateEnd.html#MatPreallocateEnd">MatPreallocateEnd</a>(dnz,onz);
+<a name="line255">255: </a>      } <font color="#4169E1">else</font> {
+<a name="line256">256: </a>        <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCalloc1.html#PetscCalloc1">PetscCalloc1</a>(mg+1,&amp;nnz);
+<a name="line257">257: </a>        <font color="#4169E1">for</font> (i=0;i&lt;mg;i++) {
+<a name="line258">258: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetRow.html#MatGetRow">MatGetRow</a>(M,i,&amp;ncols,NULL,NULL);
+<a name="line259">259: </a>          nnz[i] = ncols+1;
+<a name="line260">260: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatRestoreRow.html#MatRestoreRow">MatRestoreRow</a>(M,i,&amp;ncols,NULL,NULL);
+<a name="line261">261: </a>        }
+<a name="line262">262: </a>        nnz[mg] = mg+1;
+<a name="line263">263: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatSeqAIJSetPreallocation.html#MatSeqAIJSetPreallocation">MatSeqAIJSetPreallocation</a>(*T,0,nnz);
+<a name="line264">264: </a>        <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(nnz);
+<a name="line265">265: </a>      }
+<a name="line266">266: </a>      *Mt = M;
+<a name="line267">267: </a>      *P  = *T;
+<a name="line268">268: </a>    }
+
+<a name="line270">270: </a>    <font color="#B22222">/* Set values */</font>
+<a name="line271">271: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(w,&amp;array);
+<a name="line272">272: </a>    <font color="#4169E1">for</font> (i=m0;i&lt;m1;i++) {
+<a name="line273">273: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetRow.html#MatGetRow">MatGetRow</a>(M,i,&amp;ncols,&amp;cols,&amp;vals);
+<a name="line274">274: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(*T,1,&amp;i,ncols,cols,vals,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line275">275: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatRestoreRow.html#MatRestoreRow">MatRestoreRow</a>(M,i,&amp;ncols,&amp;cols,&amp;vals);
+<a name="line276">276: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(*T,1,&amp;i,1,&amp;mg,array+i-m0,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line277">277: </a>    }
+<a name="line278">278: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(w,&amp;array);
+<a name="line279">279: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line280">280: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A[0]),&amp;size);
+<a name="line281">281: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A[0]),&amp;rank);
+<a name="line282">282: </a>    <font color="#4169E1">if</font> (size&gt;1) {
+<a name="line283">283: </a>      <font color="#4169E1">if</font> (rank==size-1) {
+<a name="line284">284: </a>        <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(nep-&gt;n,&amp;cols2);
+<a name="line285">285: </a>        <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;n;i++) cols2[i]=i;
+<a name="line286">286: </a>      }
+<a name="line287">287: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterBegin.html#VecScatterBegin">VecScatterBegin</a>(ctx-&gt;nst,v,ctx-&gt;nv,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_FORWARD.html#SCATTER_FORWARD">SCATTER_FORWARD</a>);
+<a name="line288">288: </a>      <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterEnd.html#VecScatterEnd">VecScatterEnd</a>(ctx-&gt;nst,v,ctx-&gt;nv,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>,<a href="https://petsc.org/release/docs/manualpages/Vec/SCATTER_FORWARD.html#SCATTER_FORWARD">SCATTER_FORWARD</a>);
+<a name="line289">289: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(ctx-&gt;nv,&amp;array);
+<a name="line290">290: </a>      <font color="#4169E1">if</font> (rank==size-1) {
+<a name="line291">291: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(*T,1,&amp;mg,nep-&gt;n,cols2,array,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line292">292: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(*T,1,&amp;mg,1,&amp;mg,&amp;zero,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line293">293: </a>      }
+<a name="line294">294: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(ctx-&gt;nv,&amp;array);
+<a name="line295">295: </a>    } <font color="#4169E1">else</font> {
+<a name="line296">296: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(m1-m0,&amp;cols2);
+<a name="line297">297: </a>      <font color="#4169E1">for</font> (i=0;i&lt;m1-m0;i++) cols2[i]=m0+i;
+<a name="line298">298: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(v,&amp;array);
+<a name="line299">299: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(*T,1,&amp;mg,m1-m0,cols2,array,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line300">300: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatSetValues.html#MatSetValues">MatSetValues</a>(*T,1,&amp;mg,1,&amp;mg,&amp;zero,<a href="https://petsc.org/release/docs/manualpages/Sys/INSERT_VALUES.html#INSERT_VALUES">INSERT_VALUES</a>);
+<a name="line301">301: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(v,&amp;array);
+<a name="line302">302: </a>    }
+<a name="line303">303: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line304">304: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyBegin.html#MatAssemblyBegin">MatAssemblyBegin</a>(*T,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>);
+<a name="line305">305: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyEnd.html#MatAssemblyEnd">MatAssemblyEnd</a>(*T,<a href="https://petsc.org/release/docs/manualpages/Mat/MatAssemblyType.html#MatAssemblyType">MAT_FINAL_ASSEMBLY</a>);
+<a name="line306">306: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(cols2);
+<a name="line307">307: </a>    <font color="#4169E1">break</font>;
+<a name="line308">308: </a>  <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_SCHUR</a>:
+<a name="line309">309: </a>    fctx-&gt;M2 = ctx-&gt;w;
+<a name="line310">310: </a>    fctx-&gt;M3 = v;
+<a name="line311">311: </a>    fctx-&gt;m3 = 1.0+PetscConj(nep-&gt;eigr[idx])*nep-&gt;eigr[idx];
+<a name="line312">312: </a>    fctx-&gt;M4 = PetscConj(nep-&gt;eigr[idx]);
+<a name="line313">313: </a>    fctx-&gt;M1 = M;
+<a name="line314">314: </a>    <font color="#4169E1">if</font> (ini) <a href="https://petsc.org/release/docs/manualpages/Mat/MatDuplicate.html#MatDuplicate">MatDuplicate</a>(M,<a href="https://petsc.org/release/docs/manualpages/Mat/MatDuplicateOption.html#MatDuplicateOption">MAT_COPY_VALUES</a>,P);
+<a name="line315">315: </a>    <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(M,*P,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line316">316: </a>    <font color="#4169E1">if</font> (fctx-&gt;M4!=0.0) {
+<a name="line317">317: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line318">318: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecPointwiseMult.html#VecPointwiseMult">VecPointwiseMult</a>(t,v,w);
+<a name="line319">319: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line320">320: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(t,-fctx-&gt;m3/fctx-&gt;M4);
+<a name="line321">321: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/MatDiagonalSet.html#MatDiagonalSet">MatDiagonalSet</a>(*P,t,<a href="https://petsc.org/release/docs/manualpages/Sys/ADD_VALUES.html#ADD_VALUES">ADD_VALUES</a>);
+<a name="line322">322: </a>    }
+<a name="line323">323: </a>    <font color="#4169E1">break</font>;
+<a name="line324">324: </a>  <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_MBE</a>:
+<a name="line325">325: </a>    *T = M;
+<a name="line326">326: </a>    *P = M;
+<a name="line327">327: </a>    <font color="#4169E1">break</font>;
+<a name="line328">328: </a>  }
+<a name="line329">329: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree2.html#PetscFree2">PetscFree2</a>(coeffs,coeffs2);
+<a name="line330">330: </a>  <font color="#4169E1">return</font> 0;
+<a name="line331">331: </a>}
+
+<a name="line333">333: </a><strong><font color="#4169E1"><a name="NEPNewtonRefinementSimple"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> NEPNewtonRefinementSimple(<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a> nep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *maxits,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> tol,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> k)</font></strong>
+<a name="line334">334: </a>{
+<a name="line335">335: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>            i,n,its,idx=0,*idx_sc,*its_sc,color,*fail_sc;
+<a name="line336">336: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>         rank,size;
+<a name="line337">337: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>                 Mt=NULL,T=NULL,P=NULL;
+<a name="line338">338: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/MPI_Comm.html#MPI_Comm">MPI_Comm</a>            comm;
+<a name="line339">339: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>                 r,v,dv,rr=NULL,dvv=NULL,t[2];
+<a name="line340">340: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>   *array;
+<a name="line341">341: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>         *array2,deig=0.0,tt[2],ttt;
+<a name="line342">342: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>           norm,error;
+<a name="line343">343: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>           ini=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>,sc_pend,solved=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line344">344: </a>  NEPSimpNRefctx      *ctx;
+<a name="line345">345: </a>  NEP_REFINE_MATSHELL *fctx=NULL;
+<a name="line346">346: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSPConvergedReason.html#KSPConvergedReason">KSPConvergedReason</a>  reason;
+
+<a name="line348">348: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogEventBegin.html#PetscLogEventBegin">PetscLogEventBegin</a>(NEP_Refine,nep,0,0,0);
+<a name="line349">349: </a>  NEPSimpleNRefSetUp(nep,&amp;ctx);
+<a name="line350">350: </a>  its = (maxits)?*maxits:NREF_MAXIT;
+<a name="line351">351: </a>  <font color="#4169E1">if</font> (!nep-&gt;refineksp) <a href="../../../docs/manualpages/NEP/NEPRefineGetKSP.html#NEPRefineGetKSP">NEPRefineGetKSP</a>(nep,&amp;nep-&gt;refineksp);
+<a name="line352">352: </a>  <font color="#4169E1">if</font> (nep-&gt;npart==1) <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line353">353: </a>  <font color="#4169E1">else</font> v = ctx-&gt;v;
+<a name="line354">354: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicate.html#VecDuplicate">VecDuplicate</a>(v,&amp;ctx-&gt;w);
+<a name="line355">355: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicate.html#VecDuplicate">VecDuplicate</a>(v,&amp;r);
+<a name="line356">356: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicate.html#VecDuplicate">VecDuplicate</a>(v,&amp;dv);
+<a name="line357">357: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicate.html#VecDuplicate">VecDuplicate</a>(v,&amp;t[0]);
+<a name="line358">358: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicate.html#VecDuplicate">VecDuplicate</a>(v,&amp;t[1]);
+<a name="line359">359: </a>  <font color="#4169E1">if</font> (nep-&gt;npart==1) {
+<a name="line360">360: </a>    <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,0,&amp;v);
+<a name="line361">361: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectGetComm.html#PetscObjectGetComm">PetscObjectGetComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)nep,&amp;comm);
+<a name="line362">362: </a>  } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Sys/PetscSubcommGetChild.html#PetscSubcommGetChild">PetscSubcommGetChild</a>(nep-&gt;refinesubc,&amp;comm);
+<a name="line363">363: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(comm,&amp;size);
+<a name="line364">364: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(comm,&amp;rank);
+<a name="line365">365: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetLocalSize.html#VecGetLocalSize">VecGetLocalSize</a>(r,&amp;n);
+<a name="line366">366: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc3.html#PetscMalloc3">PetscMalloc3</a>(nep-&gt;npart,&amp;idx_sc,nep-&gt;npart,&amp;its_sc,nep-&gt;npart,&amp;fail_sc);
+<a name="line367">367: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;npart;i++) fail_sc[i] = 0;
+<a name="line368">368: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;npart;i++) its_sc[i] = 0;
+<a name="line369">369: </a>  color = (nep-&gt;npart==1)?0:nep-&gt;refinesubc-&gt;color;
+
+<a name="line371">371: </a>  <font color="#B22222">/* Loop performing iterative refinements */</font>
+<a name="line372">372: </a>  <font color="#4169E1">while</font> (!solved) {
+<a name="line373">373: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;npart;i++) {
+<a name="line374">374: </a>      sc_pend = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line375">375: </a>      <font color="#4169E1">if</font> (its_sc[i]==0) {
+<a name="line376">376: </a>        idx_sc[i] = idx++;
+<a name="line377">377: </a>        <font color="#4169E1">if</font> (idx_sc[i]&gt;=k) {
+<a name="line378">378: </a>          sc_pend = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line379">379: </a>        } <font color="#4169E1">else</font> NEPSimpleNRefScatterEigenvector(nep,ctx,i,idx_sc[i]);
+<a name="line380">380: </a>      }  <font color="#4169E1">else</font> { <font color="#B22222">/* Gather Eigenpair from subcommunicator i */</font>
+<a name="line381">381: </a>        NEPSimpleNRefGatherEigenpair(nep,ctx,i,idx_sc[i],&amp;fail_sc[i]);
+<a name="line382">382: </a>      }
+<a name="line383">383: </a>      <font color="#4169E1">while</font> (sc_pend) {
+<a name="line384">384: </a>        <font color="#4169E1">if</font> (!fail_sc[i]) <a href="../../../docs/manualpages/NEP/NEPComputeError.html#NEPComputeError">NEPComputeError</a>(nep,idx_sc[i],<a href="../../../docs/manualpages/NEP/NEPErrorType.html#NEPErrorType">NEP_ERROR_RELATIVE</a>,&amp;error);
+<a name="line385">385: </a>        <font color="#4169E1">if</font> (error&lt;=tol || its_sc[i]&gt;=its || fail_sc[i]) {
+<a name="line386">386: </a>          idx_sc[i] = idx++;
+<a name="line387">387: </a>          its_sc[i] = 0;
+<a name="line388">388: </a>          fail_sc[i] = 0;
+<a name="line389">389: </a>          <font color="#4169E1">if</font> (idx_sc[i]&lt;k) NEPSimpleNRefScatterEigenvector(nep,ctx,i,idx_sc[i]);
+<a name="line390">390: </a>        } <font color="#4169E1">else</font> {
+<a name="line391">391: </a>          sc_pend = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line392">392: </a>          its_sc[i]++;
+<a name="line393">393: </a>        }
+<a name="line394">394: </a>        <font color="#4169E1">if</font> (idx_sc[i]&gt;=k) sc_pend = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line395">395: </a>      }
+<a name="line396">396: </a>    }
+<a name="line397">397: </a>    solved = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line398">398: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;npart&amp;&amp;solved;i++) solved = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscNot.html#PetscNot">PetscNot</a>(idx_sc[i]&lt;k);
+<a name="line399">399: </a>    <font color="#4169E1">if</font> (idx_sc[color]&lt;k) {
+<a name="line400">400: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line402">402: </a><font color="#A020F0">#endif</font>
+<a name="line403">403: </a>      <font color="#4169E1">if</font> (nep-&gt;npart==1) <a href="../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(nep-&gt;V,idx_sc[color],&amp;v);
+<a name="line404">404: </a>      <font color="#4169E1">else</font> v = ctx-&gt;v;
+<a name="line405">405: </a>      NEPSimpleNRefSetUpSystem(nep,ctx,ctx-&gt;A,idx_sc[color],&amp;Mt,&amp;T,&amp;P,ini,t[0],v);
+<a name="line406">406: </a>      NEP_KSPSetOperators(nep-&gt;refineksp,T,P);
+<a name="line407">407: </a>      <font color="#4169E1">if</font> (ini) {
+<a name="line408">408: </a>        <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSetFromOptions.html#KSPSetFromOptions">KSPSetFromOptions</a>(nep-&gt;refineksp);
+<a name="line409">409: </a>        <font color="#4169E1">if</font> (nep-&gt;scheme==<a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a>) {
+<a name="line410">410: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateVecs.html#MatCreateVecs">MatCreateVecs</a>(T,&amp;dvv,NULL);
+<a name="line411">411: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecDuplicate.html#VecDuplicate">VecDuplicate</a>(dvv,&amp;rr);
+<a name="line412">412: </a>        }
+<a name="line413">413: </a>        ini = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line414">414: </a>      }
+<a name="line415">415: </a>      <font color="#4169E1">switch</font> (nep-&gt;scheme) {
+<a name="line416">416: </a>      <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a>:
+<a name="line417">417: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(Mt,v,r);
+<a name="line418">418: </a>        <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(r,&amp;array);
+<a name="line419">419: </a>        <font color="#4169E1">if</font> (rank==size-1) {
+<a name="line420">420: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(rr,&amp;array2);
+<a name="line421">421: </a>          <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>(array2,array,n);
+<a name="line422">422: </a>          array2[n] = 0.0;
+<a name="line423">423: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(rr,&amp;array2);
+<a name="line424">424: </a>        } <font color="#4169E1">else</font> <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(rr,array);
+<a name="line425">425: </a>        <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolve.html#KSPSolve">KSPSolve</a>(nep-&gt;refineksp,rr,dvv);
+<a name="line426">426: </a>        <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetConvergedReason.html#KSPGetConvergedReason">KSPGetConvergedReason</a>(nep-&gt;refineksp,&amp;reason);
+<a name="line427">427: </a>        <font color="#4169E1">if</font> (reason&gt;0) {
+<a name="line428">428: </a>          <font color="#4169E1">if</font> (rank != size-1) <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(rr);
+<a name="line429">429: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(r,&amp;array);
+<a name="line430">430: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(dvv,&amp;array);
+<a name="line431">431: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecPlaceArray.html#VecPlaceArray">VecPlaceArray</a>(dv,array);
+<a name="line432">432: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(v,-1.0,dv);
+<a name="line433">433: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecNorm.html#VecNorm">VecNorm</a>(v,<a href="https://petsc.org/release/docs/manualpages/Vec/NORM_2.html#NORM_2">NORM_2</a>,&amp;norm);
+<a name="line434">434: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(v,1.0/norm);
+<a name="line435">435: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecResetArray.html#VecResetArray">VecResetArray</a>(dv);
+<a name="line436">436: </a>          <font color="#4169E1">if</font> (rank==size-1) nep-&gt;eigr[idx_sc[color]] -= array[n];
+<a name="line437">437: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(dvv,&amp;array);
+<a name="line438">438: </a>        } <font color="#4169E1">else</font> fail_sc[color] = 1;
+<a name="line439">439: </a>        <font color="#4169E1">break</font>;
+<a name="line440">440: </a>      <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_MBE</a>:
+<a name="line441">441: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(T,v,r);
+<a name="line442">442: </a>        <font color="#B22222">/* Mixed block elimination */</font>
+<a name="line443">443: </a>        <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line444">444: </a>        <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolveTranspose.html#KSPSolveTranspose">KSPSolveTranspose</a>(nep-&gt;refineksp,v,t[0]);
+<a name="line445">445: </a>        <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetConvergedReason.html#KSPGetConvergedReason">KSPGetConvergedReason</a>(nep-&gt;refineksp,&amp;reason);
+<a name="line446">446: </a>        <font color="#4169E1">if</font> (reason&gt;0) {
+<a name="line447">447: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(t[0]);
+<a name="line448">448: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecDot.html#VecDot">VecDot</a>(ctx-&gt;w,t[0],&amp;tt[0]);
+<a name="line449">449: </a>          <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolve.html#KSPSolve">KSPSolve</a>(nep-&gt;refineksp,ctx-&gt;w,t[1]);
+<a name="line450">450: </a>          <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetConvergedReason.html#KSPGetConvergedReason">KSPGetConvergedReason</a>(nep-&gt;refineksp,&amp;reason);
+<a name="line451">451: </a>          <font color="#4169E1">if</font> (reason&gt;0) {
+<a name="line452">452: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecDot.html#VecDot">VecDot</a>(t[1],v,&amp;tt[1]);
+<a name="line453">453: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecDot.html#VecDot">VecDot</a>(r,t[0],&amp;ttt);
+<a name="line454">454: </a>            tt[0] = ttt/tt[0];
+<a name="line455">455: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(r,-tt[0],ctx-&gt;w);
+<a name="line456">456: </a>            <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolve.html#KSPSolve">KSPSolve</a>(nep-&gt;refineksp,r,dv);
+<a name="line457">457: </a>            <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetConvergedReason.html#KSPGetConvergedReason">KSPGetConvergedReason</a>(nep-&gt;refineksp,&amp;reason);
+<a name="line458">458: </a>            <font color="#4169E1">if</font> (reason&gt;0) {
+<a name="line459">459: </a>              <a href="https://petsc.org/release/docs/manualpages/Vec/VecDot.html#VecDot">VecDot</a>(dv,v,&amp;ttt);
+<a name="line460">460: </a>              tt[1] = ttt/tt[1];
+<a name="line461">461: </a>              <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(dv,-tt[1],t[1]);
+<a name="line462">462: </a>              deig = tt[0]+tt[1];
+<a name="line463">463: </a>            }
+<a name="line464">464: </a>          }
+<a name="line465">465: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line466">466: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(v,-1.0,dv);
+<a name="line467">467: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecNorm.html#VecNorm">VecNorm</a>(v,<a href="https://petsc.org/release/docs/manualpages/Vec/NORM_2.html#NORM_2">NORM_2</a>,&amp;norm);
+<a name="line468">468: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(v,1.0/norm);
+<a name="line469">469: </a>          nep-&gt;eigr[idx_sc[color]] -= deig;
+<a name="line470">470: </a>          fail_sc[color] = 0;
+<a name="line471">471: </a>        } <font color="#4169E1">else</font> {
+<a name="line472">472: </a>          <a href="https://petsc.org/release/docs/manualpages/Vec/VecConjugate.html#VecConjugate">VecConjugate</a>(v);
+<a name="line473">473: </a>          fail_sc[color] = 1;
+<a name="line474">474: </a>        }
+<a name="line475">475: </a>        <font color="#4169E1">break</font>;
+<a name="line476">476: </a>      <font color="#4169E1">case</font> <a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_SCHUR</a>:
+<a name="line477">477: </a>        fail_sc[color] = 1;
+<a name="line478">478: </a>        <a href="https://petsc.org/release/docs/manualpages/Mat/MatShellGetContext.html#MatShellGetContext">MatShellGetContext</a>(T,&amp;fctx);
+<a name="line479">479: </a>        <font color="#4169E1">if</font> (fctx-&gt;M4!=0.0) {
+<a name="line480">480: </a>          <a href="https://petsc.org/release/docs/manualpages/Mat/MatMult.html#MatMult">MatMult</a>(fctx-&gt;M1,v,r);
+<a name="line481">481: </a>          <a href="https://petsc.org/release/docs/manualpages/KSP/KSPSolve.html#KSPSolve">KSPSolve</a>(nep-&gt;refineksp,r,dv);
+<a name="line482">482: </a>          <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetConvergedReason.html#KSPGetConvergedReason">KSPGetConvergedReason</a>(nep-&gt;refineksp,&amp;reason);
+<a name="line483">483: </a>          <font color="#4169E1">if</font> (reason&gt;0) {
+<a name="line484">484: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecDot.html#VecDot">VecDot</a>(dv,v,&amp;deig);
+<a name="line485">485: </a>            deig *= -fctx-&gt;m3/fctx-&gt;M4;
+<a name="line486">486: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecAXPY.html#VecAXPY">VecAXPY</a>(v,-1.0,dv);
+<a name="line487">487: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecNorm.html#VecNorm">VecNorm</a>(v,<a href="https://petsc.org/release/docs/manualpages/Vec/NORM_2.html#NORM_2">NORM_2</a>,&amp;norm);
+<a name="line488">488: </a>            <a href="https://petsc.org/release/docs/manualpages/Vec/VecScale.html#VecScale">VecScale</a>(v,1.0/norm);
+<a name="line489">489: </a>            nep-&gt;eigr[idx_sc[color]] -= deig;
+<a name="line490">490: </a>            fail_sc[color] = 0;
+<a name="line491">491: </a>          }
+<a name="line492">492: </a>        }
+<a name="line493">493: </a>        <font color="#4169E1">break</font>;
+<a name="line494">494: </a>      }
+<a name="line495">495: </a>      <font color="#4169E1">if</font> (nep-&gt;npart==1) <a href="../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(nep-&gt;V,idx_sc[color],&amp;v);
+<a name="line496">496: </a>    }
+<a name="line497">497: </a>  }
+<a name="line498">498: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;t[0]);
+<a name="line499">499: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;t[1]);
+<a name="line500">500: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;dv);
+<a name="line501">501: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;w);
+<a name="line502">502: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;r);
+<a name="line503">503: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree3.html#PetscFree3">PetscFree3</a>(idx_sc,its_sc,fail_sc);
+<a name="line504">504: </a>  <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterDestroy.html#VecScatterDestroy">VecScatterDestroy</a>(&amp;ctx-&gt;nst);
+<a name="line505">505: </a>  <font color="#4169E1">if</font> (nep-&gt;npart&gt;1) {
+<a name="line506">506: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;vg);
+<a name="line507">507: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;v);
+<a name="line508">508: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;nt;i++) <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;ctx-&gt;A[i]);
+<a name="line509">509: </a>    <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;npart;i++) <a href="https://petsc.org/release/docs/manualpages/PetscSF/VecScatterDestroy.html#VecScatterDestroy">VecScatterDestroy</a>(&amp;ctx-&gt;scatter_id[i]);
+<a name="line510">510: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree2.html#PetscFree2">PetscFree2</a>(ctx-&gt;A,ctx-&gt;scatter_id);
+<a name="line511">511: </a>  }
+<a name="line512">512: </a>  <font color="#4169E1">if</font> (fctx &amp;&amp; nep-&gt;scheme==<a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_SCHUR</a>) {
+<a name="line513">513: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;P);
+<a name="line514">514: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;fctx-&gt;M1);
+<a name="line515">515: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(fctx);
+<a name="line516">516: </a>  }
+<a name="line517">517: </a>  <font color="#4169E1">if</font> (nep-&gt;scheme==<a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_EXPLICIT</a>) {
+<a name="line518">518: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;Mt);
+<a name="line519">519: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;dvv);
+<a name="line520">520: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;rr);
+<a name="line521">521: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;ctx-&gt;nv);
+<a name="line522">522: </a>    <font color="#4169E1">if</font> (nep-&gt;npart&gt;1) {
+<a name="line523">523: </a>      <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;nt;i++) <a href="../../../docs/manualpages/FN/FNDestroy.html#FNDestroy">FNDestroy</a>(&amp;ctx-&gt;fn[i]);
+<a name="line524">524: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx-&gt;fn);
+<a name="line525">525: </a>    }
+<a name="line526">526: </a>  }
+<a name="line527">527: </a>  <font color="#4169E1">if</font> (nep-&gt;scheme==<a href="../../../docs/manualpages/NEP/NEPRefineScheme.html#NEPRefineScheme">NEP_REFINE_SCHEME_MBE</a>) {
+<a name="line528">528: </a>    <font color="#4169E1">if</font> (nep-&gt;npart&gt;1) {
+<a name="line529">529: </a>      <font color="#4169E1">for</font> (i=0;i&lt;nep-&gt;nt;i++) <a href="../../../docs/manualpages/FN/FNDestroy.html#FNDestroy">FNDestroy</a>(&amp;ctx-&gt;fn[i]);
+<a name="line530">530: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx-&gt;fn);
+<a name="line531">531: </a>    }
+<a name="line532">532: </a>  }
+<a name="line533">533: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;T);
+<a name="line534">534: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ctx);
+<a name="line535">535: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogEventEnd.html#PetscLogEventEnd">PetscLogEventEnd</a>(NEP_Refine,nep,0,0,0);
+<a name="line536">536: </a>  <font color="#4169E1">return</font> 0;
+<a name="line537">537: </a>}
+</pre>
+</body>
+
+</html>

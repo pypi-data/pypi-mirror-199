@@ -1,0 +1,41 @@
+<center><a href="slepcmagma.c">Actual source code: slepcmagma.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/sys/magma/slepcmagma.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:44:42+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/sys/magma/slepcmagma.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+
+<a name="line11"> 11: </a>#include <A href="../../../include/slepc/private/slepcimpl.h.html">&lt;slepc/private/slepcimpl.h&gt;</A>
+<a name="line12"> 12: </a>#include <A href="../../../include/slepcmagma.h.html">&lt;slepcmagma.h&gt;</A>
+
+<a name="line14"> 14: </a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> SlepcBeganMagma = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line16"> 16: </a><strong><font color="#4169E1"><a name="SlepcMagmaInit"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SlepcMagmaInit(void)</font></strong>
+<a name="line17"> 17: </a>{
+<a name="line18"> 18: </a>  <font color="#4169E1">if</font> (!SlepcBeganMagma) {
+<a name="line19"> 19: </a>    magma_init();
+<a name="line20"> 20: </a>    SlepcBeganMagma = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line21"> 21: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRegisterFinalize.html#PetscRegisterFinalize">PetscRegisterFinalize</a>(magma_finalize);
+<a name="line22"> 22: </a>  }
+<a name="line23"> 23: </a>  <font color="#4169E1">return</font> 0;
+<a name="line24"> 24: </a>}
+</pre>
+</body>
+
+</html>

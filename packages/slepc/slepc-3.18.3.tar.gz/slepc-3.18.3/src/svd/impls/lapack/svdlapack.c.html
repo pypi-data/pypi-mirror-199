@@ -1,0 +1,193 @@
+<center><a href="svdlapack.c">Actual source code: svdlapack.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/svd/impls/lapack/svdlapack.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:49+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/svd/impls/lapack/svdlapack.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   This file implements a wrapper to the LAPACK <a href="../../../../docs/manualpages/SVD/SVD.html#SVD">SVD</a> subroutines</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../../include/slepc/private/svdimpl.h.html">&lt;slepc/private/svdimpl.h&gt;</A>
+<a name="line15"> 15: </a>#include <A href="../../../../include/slepcblaslapack.h.html">&lt;slepcblaslapack.h&gt;</A>
+
+<a name="line17"> 17: </a><strong><font color="#4169E1"><a name="SVDSetUp_LAPACK"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SVDSetUp_LAPACK(<a href="../../../../docs/manualpages/SVD/SVD.html#SVD">SVD</a> svd)</font></strong>
+<a name="line18"> 18: </a>{
+<a name="line19"> 19: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       M,N,P=0;
+
+<a name="line21"> 21: </a>  SVDCheckDefinite(svd);
+<a name="line22"> 22: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(svd-&gt;A,&amp;M,&amp;N);
+<a name="line23"> 23: </a>  <font color="#4169E1">if</font> (!svd-&gt;isgeneralized) svd-&gt;ncv = N;
+<a name="line24"> 24: </a>  <font color="#4169E1">else</font> {
+<a name="line25"> 25: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(svd-&gt;OPb,&amp;P,NULL);
+<a name="line26"> 26: </a>    svd-&gt;ncv = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(M,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(N,P));
+<a name="line27"> 27: </a>  }
+<a name="line28"> 28: </a>  <font color="#4169E1">if</font> (svd-&gt;mpd!=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscInfo.html#PetscInfo">PetscInfo</a>(svd,<font color="#666666">"Warning: parameter mpd ignored\n"</font>);
+<a name="line29"> 29: </a>  SVDCheckUnsupported(svd,SVD_FEATURE_STOPPING);
+<a name="line30"> 30: </a>  <font color="#4169E1">if</font> (svd-&gt;max_it==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) svd-&gt;max_it = 1;
+<a name="line31"> 31: </a>  svd-&gt;leftbasis = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line32"> 32: </a>  <a href="../../../../docs/manualpages/SVD/SVDAllocateSolution.html#SVDAllocateSolution">SVDAllocateSolution</a>(svd,0);
+<a name="line33"> 33: </a>  <a href="../../../../docs/manualpages/DS/DSSetType.html#DSSetType">DSSetType</a>(svd-&gt;ds,svd-&gt;isgeneralized?<a href="../../../../docs/manualpages/DS/DSGSVD.html#DSGSVD">DSGSVD</a>:<a href="../../../../docs/manualpages/DS/DSSVD.html#DSSVD">DSSVD</a>);
+<a name="line34"> 34: </a>  <a href="../../../../docs/manualpages/DS/DSAllocate.html#DSAllocate">DSAllocate</a>(svd-&gt;ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(N,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(M,P)));
+<a name="line35"> 35: </a>  <font color="#4169E1">return</font> 0;
+<a name="line36"> 36: </a>}
+
+<a name="line38"> 38: </a><strong><font color="#4169E1"><a name="SVDSolve_LAPACK"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SVDSolve_LAPACK(<a href="../../../../docs/manualpages/SVD/SVD.html#SVD">SVD</a> svd)</font></strong>
+<a name="line39"> 39: </a>{
+<a name="line40"> 40: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          M,N,n,i,j,k,ld,lowu,lowv,highu,highv;
+<a name="line41"> 41: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               A,Ar,mat;
+<a name="line42"> 42: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>               u,v;
+<a name="line43"> 43: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *pU,*pV,*pu,*pv,*w;
+
+<a name="line45"> 45: </a>  <a href="../../../../docs/manualpages/DS/DSGetLeadingDimension.html#DSGetLeadingDimension">DSGetLeadingDimension</a>(svd-&gt;ds,&amp;ld);
+<a name="line46"> 46: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateRedundantMatrix.html#MatCreateRedundantMatrix">MatCreateRedundantMatrix</a>(svd-&gt;OP,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;Ar);
+<a name="line47"> 47: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatConvert.html#MatConvert">MatConvert</a>(Ar,<a href="https://petsc.org/release/docs/manualpages/Mat/MATSEQDENSE.html#MATSEQDENSE">MATSEQDENSE</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;mat);
+<a name="line48"> 48: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;Ar);
+<a name="line49"> 49: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(mat,&amp;M,&amp;N);
+<a name="line50"> 50: </a>  <a href="../../../../docs/manualpages/DS/DSSetDimensions.html#DSSetDimensions">DSSetDimensions</a>(svd-&gt;ds,M,0,0);
+<a name="line51"> 51: </a>  <a href="../../../../docs/manualpages/DS/DSSVDSetDimensions.html#DSSVDSetDimensions">DSSVDSetDimensions</a>(svd-&gt;ds,N);
+<a name="line52"> 52: </a>  <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,&amp;A);
+<a name="line53"> 53: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(mat,A,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line54"> 54: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,&amp;A);
+<a name="line55"> 55: </a>  <a href="../../../../docs/manualpages/DS/DSSetState.html#DSSetState">DSSetState</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>);
+
+<a name="line57"> 57: </a>  n = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(M,N);
+<a name="line58"> 58: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(n,&amp;w);
+<a name="line59"> 59: </a>  <a href="../../../../docs/manualpages/DS/DSSolve.html#DSSolve">DSSolve</a>(svd-&gt;ds,w,NULL);
+<a name="line60"> 60: </a>  <a href="../../../../docs/manualpages/DS/DSSort.html#DSSort">DSSort</a>(svd-&gt;ds,w,NULL,NULL,NULL,NULL);
+<a name="line61"> 61: </a>  <a href="../../../../docs/manualpages/DS/DSSynchronize.html#DSSynchronize">DSSynchronize</a>(svd-&gt;ds,w,NULL);
+
+<a name="line63"> 63: </a>  <font color="#B22222">/* copy singular vectors */</font>
+<a name="line64"> 64: </a>  <a href="../../../../docs/manualpages/DS/DSGetArray.html#DSGetArray">DSGetArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_U</a>,&amp;pU);
+<a name="line65"> 65: </a>  <a href="../../../../docs/manualpages/DS/DSGetArray.html#DSGetArray">DSGetArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_V</a>,&amp;pV);
+<a name="line66"> 66: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) {
+<a name="line67"> 67: </a>    <font color="#4169E1">if</font> (svd-&gt;which == <a href="../../../../docs/manualpages/SVD/SVDWhich.html#SVDWhich">SVD_SMALLEST</a>) k = n - i - 1;
+<a name="line68"> 68: </a>    <font color="#4169E1">else</font> k = i;
+<a name="line69"> 69: </a>    svd-&gt;sigma[k] = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRealPart.html#PetscRealPart">PetscRealPart</a>(w[i]);
+<a name="line70"> 70: </a>    <a href="../../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(svd-&gt;U,k,&amp;u);
+<a name="line71"> 71: </a>    <a href="../../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(svd-&gt;V,k,&amp;v);
+<a name="line72"> 72: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetOwnershipRange.html#VecGetOwnershipRange">VecGetOwnershipRange</a>(u,&amp;lowu,&amp;highu);
+<a name="line73"> 73: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetOwnershipRange.html#VecGetOwnershipRange">VecGetOwnershipRange</a>(v,&amp;lowv,&amp;highv);
+<a name="line74"> 74: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(u,&amp;pu);
+<a name="line75"> 75: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(v,&amp;pv);
+<a name="line76"> 76: </a>    <font color="#4169E1">if</font> (M&gt;=N) {
+<a name="line77"> 77: </a>      <font color="#4169E1">for</font> (j=lowu;j&lt;highu;j++) pu[j-lowu] = pU[i*ld+j];
+<a name="line78"> 78: </a>      <font color="#4169E1">for</font> (j=lowv;j&lt;highv;j++) pv[j-lowv] = pV[i*ld+j];
+<a name="line79"> 79: </a>    } <font color="#4169E1">else</font> {
+<a name="line80"> 80: </a>      <font color="#4169E1">for</font> (j=lowu;j&lt;highu;j++) pu[j-lowu] = pV[i*ld+j];
+<a name="line81"> 81: </a>      <font color="#4169E1">for</font> (j=lowv;j&lt;highv;j++) pv[j-lowv] = pU[i*ld+j];
+<a name="line82"> 82: </a>    }
+<a name="line83"> 83: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(u,&amp;pu);
+<a name="line84"> 84: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(v,&amp;pv);
+<a name="line85"> 85: </a>    <a href="../../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(svd-&gt;U,k,&amp;u);
+<a name="line86"> 86: </a>    <a href="../../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(svd-&gt;V,k,&amp;v);
+<a name="line87"> 87: </a>  }
+<a name="line88"> 88: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreArray.html#DSRestoreArray">DSRestoreArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_U</a>,&amp;pU);
+<a name="line89"> 89: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreArray.html#DSRestoreArray">DSRestoreArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_V</a>,&amp;pV);
+
+<a name="line91"> 91: </a>  svd-&gt;nconv  = n;
+<a name="line92"> 92: </a>  svd-&gt;its    = 1;
+<a name="line93"> 93: </a>  svd-&gt;reason = <a href="../../../../docs/manualpages/SVD/SVDConvergedReason.html#SVDConvergedReason">SVD_CONVERGED_TOL</a>;
+
+<a name="line95"> 95: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;mat);
+<a name="line96"> 96: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(w);
+<a name="line97"> 97: </a>  <font color="#4169E1">return</font> 0;
+<a name="line98"> 98: </a>}
+
+<a name="line100">100: </a><strong><font color="#4169E1"><a name="SVDSolve_LAPACK_GSVD"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SVDSolve_LAPACK_GSVD(<a href="../../../../docs/manualpages/SVD/SVD.html#SVD">SVD</a> svd)</font></strong>
+<a name="line101">101: </a>{
+<a name="line102">102: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          nsv,m,n,p,i,j,mlocal,plocal,ld,lowx,lowu,lowv,highx;
+<a name="line103">103: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>               Ar,A,Ads,Br,B,Bds;
+<a name="line104">104: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>               uv,x;
+<a name="line105">105: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *U,*V,*X,*px,*puv,*w;
+
+<a name="line107">107: </a>  <a href="../../../../docs/manualpages/DS/DSGetLeadingDimension.html#DSGetLeadingDimension">DSGetLeadingDimension</a>(svd-&gt;ds,&amp;ld);
+<a name="line108">108: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateRedundantMatrix.html#MatCreateRedundantMatrix">MatCreateRedundantMatrix</a>(svd-&gt;OP,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;Ar);
+<a name="line109">109: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatConvert.html#MatConvert">MatConvert</a>(Ar,<a href="https://petsc.org/release/docs/manualpages/Mat/MATSEQDENSE.html#MATSEQDENSE">MATSEQDENSE</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;A);
+<a name="line110">110: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;Ar);
+<a name="line111">111: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateRedundantMatrix.html#MatCreateRedundantMatrix">MatCreateRedundantMatrix</a>(svd-&gt;OPb,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;Br);
+<a name="line112">112: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatConvert.html#MatConvert">MatConvert</a>(Br,<a href="https://petsc.org/release/docs/manualpages/Mat/MATSEQDENSE.html#MATSEQDENSE">MATSEQDENSE</a>,<a href="https://petsc.org/release/docs/manualpages/Mat/MatReuse.html#MatReuse">MAT_INITIAL_MATRIX</a>,&amp;B);
+<a name="line113">113: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;Br);
+<a name="line114">114: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(A,&amp;m,&amp;n);
+<a name="line115">115: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(svd-&gt;OP,&amp;mlocal,NULL);
+<a name="line116">116: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(svd-&gt;OPb,&amp;plocal,NULL);
+<a name="line117">117: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(B,&amp;p,NULL);
+<a name="line118">118: </a>  <a href="../../../../docs/manualpages/DS/DSSetDimensions.html#DSSetDimensions">DSSetDimensions</a>(svd-&gt;ds,m,0,0);
+<a name="line119">119: </a>  <a href="../../../../docs/manualpages/DS/DSGSVDSetDimensions.html#DSGSVDSetDimensions">DSGSVDSetDimensions</a>(svd-&gt;ds,n,p);
+<a name="line120">120: </a>  <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,&amp;Ads);
+<a name="line121">121: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(A,Ads,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line122">122: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,&amp;Ads);
+<a name="line123">123: </a>  <a href="../../../../docs/manualpages/DS/DSGetMat.html#DSGetMat">DSGetMat</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_B</a>,&amp;Bds);
+<a name="line124">124: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(B,Bds,<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line125">125: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreMat.html#DSRestoreMat">DSRestoreMat</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_B</a>,&amp;Bds);
+<a name="line126">126: </a>  <a href="../../../../docs/manualpages/DS/DSSetState.html#DSSetState">DSSetState</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>);
+
+<a name="line128">128: </a>  nsv  = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(p,m));
+<a name="line129">129: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(nsv,&amp;w);
+<a name="line130">130: </a>  <a href="../../../../docs/manualpages/DS/DSSolve.html#DSSolve">DSSolve</a>(svd-&gt;ds,w,NULL);
+<a name="line131">131: </a>  <a href="../../../../docs/manualpages/DS/DSSort.html#DSSort">DSSort</a>(svd-&gt;ds,w,NULL,NULL,NULL,NULL);
+<a name="line132">132: </a>  <a href="../../../../docs/manualpages/DS/DSSynchronize.html#DSSynchronize">DSSynchronize</a>(svd-&gt;ds,w,NULL);
+<a name="line133">133: </a>  <a href="../../../../docs/manualpages/DS/DSGetDimensions.html#DSGetDimensions">DSGetDimensions</a>(svd-&gt;ds,NULL,NULL,NULL,&amp;nsv);
+
+<a name="line135">135: </a>  <font color="#B22222">/* copy singular vectors */</font>
+<a name="line136">136: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(svd-&gt;OP,&amp;lowu,NULL);
+<a name="line137">137: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetOwnershipRange.html#MatGetOwnershipRange">MatGetOwnershipRange</a>(svd-&gt;OPb,&amp;lowv,NULL);
+<a name="line138">138: </a>  <a href="../../../../docs/manualpages/DS/DSGetArray.html#DSGetArray">DSGetArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>,&amp;X);
+<a name="line139">139: </a>  <a href="../../../../docs/manualpages/DS/DSGetArray.html#DSGetArray">DSGetArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_U</a>,&amp;U);
+<a name="line140">140: </a>  <a href="../../../../docs/manualpages/DS/DSGetArray.html#DSGetArray">DSGetArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_V</a>,&amp;V);
+<a name="line141">141: </a>  <font color="#4169E1">for</font> (j=0;j&lt;nsv;j++) {
+<a name="line142">142: </a>    svd-&gt;sigma[j] = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscRealPart.html#PetscRealPart">PetscRealPart</a>(w[j]);
+<a name="line143">143: </a>    <a href="../../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(svd-&gt;V,j,&amp;x);
+<a name="line144">144: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetOwnershipRange.html#VecGetOwnershipRange">VecGetOwnershipRange</a>(x,&amp;lowx,&amp;highx);
+<a name="line145">145: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayWrite.html#VecGetArrayWrite">VecGetArrayWrite</a>(x,&amp;px);
+<a name="line146">146: </a>    <font color="#4169E1">for</font> (i=lowx;i&lt;highx;i++) px[i-lowx] = X[i+j*ld];
+<a name="line147">147: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayWrite.html#VecRestoreArrayWrite">VecRestoreArrayWrite</a>(x,&amp;px);
+<a name="line148">148: </a>    <a href="../../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(svd-&gt;V,j,&amp;x);
+<a name="line149">149: </a>    <a href="../../../../docs/manualpages/BV/BVGetColumn.html#BVGetColumn">BVGetColumn</a>(svd-&gt;U,j,&amp;uv);
+<a name="line150">150: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayWrite.html#VecGetArrayWrite">VecGetArrayWrite</a>(uv,&amp;puv);
+<a name="line151">151: </a>    <font color="#4169E1">for</font> (i=0;i&lt;mlocal;i++) puv[i] = U[i+lowu+j*ld];
+<a name="line152">152: </a>    <font color="#4169E1">for</font> (i=0;i&lt;plocal;i++) puv[i+mlocal] = V[i+lowv+j*ld];
+<a name="line153">153: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayWrite.html#VecRestoreArrayWrite">VecRestoreArrayWrite</a>(uv,&amp;puv);
+<a name="line154">154: </a>    <a href="../../../../docs/manualpages/BV/BVRestoreColumn.html#BVRestoreColumn">BVRestoreColumn</a>(svd-&gt;U,j,&amp;uv);
+<a name="line155">155: </a>  }
+<a name="line156">156: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreArray.html#DSRestoreArray">DSRestoreArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>,&amp;X);
+<a name="line157">157: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreArray.html#DSRestoreArray">DSRestoreArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_U</a>,&amp;U);
+<a name="line158">158: </a>  <a href="../../../../docs/manualpages/DS/DSRestoreArray.html#DSRestoreArray">DSRestoreArray</a>(svd-&gt;ds,<a href="../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_V</a>,&amp;V);
+
+<a name="line160">160: </a>  svd-&gt;nconv  = nsv;
+<a name="line161">161: </a>  svd-&gt;its    = 1;
+<a name="line162">162: </a>  svd-&gt;reason = <a href="../../../../docs/manualpages/SVD/SVDConvergedReason.html#SVDConvergedReason">SVD_CONVERGED_TOL</a>;
+
+<a name="line164">164: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;A);
+<a name="line165">165: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(&amp;B);
+<a name="line166">166: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(w);
+<a name="line167">167: </a>  <font color="#4169E1">return</font> 0;
+<a name="line168">168: </a>}
+
+<a name="line170">170: </a><strong><font color="#4169E1"><a name="SVDCreate_LAPACK"></a>SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> SVDCreate_LAPACK(<a href="../../../../docs/manualpages/SVD/SVD.html#SVD">SVD</a> svd)</font></strong>
+<a name="line171">171: </a>{
+<a name="line172">172: </a>  svd-&gt;ops-&gt;setup   = SVDSetUp_LAPACK;
+<a name="line173">173: </a>  svd-&gt;ops-&gt;solve   = SVDSolve_LAPACK;
+<a name="line174">174: </a>  svd-&gt;ops-&gt;solveg  = SVDSolve_LAPACK_GSVD;
+<a name="line175">175: </a>  <font color="#4169E1">return</font> 0;
+<a name="line176">176: </a>}
+</pre>
+</body>
+
+</html>

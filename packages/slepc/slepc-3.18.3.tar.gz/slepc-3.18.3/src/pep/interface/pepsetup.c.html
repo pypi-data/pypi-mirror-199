@@ -1,0 +1,444 @@
+<center><a href="pepsetup.c">Actual source code: pepsetup.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/pep/interface/pepsetup.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:59+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/pep/interface/pepsetup.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+<a name="line10"> 10: </a><font color="#B22222">/*</font>
+<a name="line11"> 11: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> routines related to problem setup</font>
+<a name="line12"> 12: </a><font color="#B22222">*/</font>
+
+<a name="line14"> 14: </a>#include <A href="../../../include/slepc/private/pepimpl.h.html">&lt;slepc/private/pepimpl.h&gt;</A>
+
+<a name="line16"> 16: </a><font color="#B22222">/*</font>
+<a name="line17"> 17: </a><font color="#B22222">   Let the solver choose the <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a> type that should be used by default,</font>
+<a name="line18"> 18: </a><font color="#B22222">   otherwise set it to SHIFT.</font>
+<a name="line19"> 19: </a><font color="#B22222">   This is called at <a href="../../../docs/manualpages/PEP/PEPSetFromOptions.html#PEPSetFromOptions">PEPSetFromOptions</a> (before <a href="../../../docs/manualpages/ST/STSetFromOptions.html#STSetFromOptions">STSetFromOptions</a>)</font>
+<a name="line20"> 20: </a><font color="#B22222">   and also at <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a> (in case <a href="../../../docs/manualpages/PEP/PEPSetFromOptions.html#PEPSetFromOptions">PEPSetFromOptions</a> was not called).</font>
+<a name="line21"> 21: </a><font color="#B22222">*/</font>
+<a name="line22"> 22: </a><strong><font color="#4169E1"><a name="PEPSetDefaultST"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> PEPSetDefaultST(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep)</font></strong>
+<a name="line23"> 23: </a>{
+<a name="line24"> 24: </a>  PetscTryTypeMethod(pep,setdefaultst);
+<a name="line25"> 25: </a>  <font color="#4169E1">if</font> (!((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;st)-&gt;type_name) <a href="../../../docs/manualpages/ST/STSetType.html#STSetType">STSetType</a>(pep-&gt;st,STSHIFT);
+<a name="line26"> 26: </a>  <font color="#4169E1">return</font> 0;
+<a name="line27"> 27: </a>}
+
+<a name="line29"> 29: </a><font color="#B22222">/*</font>
+<a name="line30"> 30: </a><font color="#B22222">   This is used in Q-Arnoldi and STOAR to set the transform flag by</font>
+<a name="line31"> 31: </a><font color="#B22222">   default, otherwise the user has to explicitly run with -st_transform</font>
+<a name="line32"> 32: </a><font color="#B22222">*/</font>
+<a name="line33"> 33: </a><strong><font color="#4169E1"><a name="PEPSetDefaultST_Transform"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> PEPSetDefaultST_Transform(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep)</font></strong>
+<a name="line34"> 34: </a>{
+<a name="line35"> 35: </a>  <a href="../../../docs/manualpages/ST/STSetTransform.html#STSetTransform">STSetTransform</a>(pep-&gt;st,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line36"> 36: </a>  <font color="#4169E1">return</font> 0;
+<a name="line37"> 37: </a>}
+
+<a name="line39"> 39: </a><font color="#B22222">/*@</font>
+<a name="line40"> 40: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a> - Sets up all the internal data structures necessary for the</font>
+<a name="line41"> 41: </a><font color="#B22222">   execution of the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> solver.</font>
+
+<a name="line43"> 43: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line45"> 45: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line46"> 46: </a><font color="#B22222">.  pep   - solver context</font>
+
+<a name="line48"> 48: </a><font color="#B22222">   Notes:</font>
+<a name="line49"> 49: </a><font color="#B22222">   This function need not be called explicitly in most cases, since <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>()</font>
+<a name="line50"> 50: </a><font color="#B22222">   calls it. It can be useful when one wants to measure the set-up time</font>
+<a name="line51"> 51: </a><font color="#B22222">   separately from the solve time.</font>
+
+<a name="line53"> 53: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line55"> 55: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPCreate.html#PEPCreate">PEPCreate</a>(), <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>(), <a href="../../../docs/manualpages/PEP/PEPDestroy.html#PEPDestroy">PEPDestroy</a>()</font>
+<a name="line56"> 56: </a><font color="#B22222">@*/</font>
+<a name="line57"> 57: </a><strong><font color="#4169E1"><a name="PEPSetUp"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep)</font></strong>
+<a name="line58"> 58: </a>{
+<a name="line59"> 59: </a>  <a href="../../../docs/manualpages/sys/SlepcSC.html#SlepcSC">SlepcSC</a>        sc;
+<a name="line60"> 60: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      istrivial,flg;
+<a name="line61"> 61: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       k;
+<a name="line62"> 62: </a>  <a href="https://petsc.org/release/docs/manualpages/KSP/KSP.html#KSP">KSP</a>            ksp;
+<a name="line63"> 63: </a>  <a href="https://petsc.org/release/docs/manualpages/PC/PC.html#PC">PC</a>             pc;
+<a name="line64"> 64: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    size;
+<a name="line65"> 65: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatSolverType.html#MatSolverType">MatSolverType</a>  stype;
+
+<a name="line68"> 68: </a>  <font color="#4169E1">if</font> (pep-&gt;state) <font color="#4169E1">return</font> 0;
+<a name="line69"> 69: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogEventBegin.html#PetscLogEventBegin">PetscLogEventBegin</a>(PEP_SetUp,pep,0,0,0);
+
+<a name="line71"> 71: </a>  <font color="#B22222">/* reset the convergence flag from the previous solves */</font>
+<a name="line72"> 72: </a>  pep-&gt;reason = <a href="../../../docs/manualpages/PEP/PEPConvergedReason.html#PEPConvergedReason">PEP_CONVERGED_ITERATING</a>;
+
+<a name="line74"> 74: </a>  <font color="#B22222">/* set default solver type (<a href="../../../docs/manualpages/PEP/PEPSetFromOptions.html#PEPSetFromOptions">PEPSetFromOptions</a> was not called) */</font>
+<a name="line75"> 75: </a>  <font color="#4169E1">if</font> (!((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep)-&gt;type_name) <a href="../../../docs/manualpages/PEP/PEPSetType.html#PEPSetType">PEPSetType</a>(pep,PEPTOAR);
+<a name="line76"> 76: </a>  <font color="#4169E1">if</font> (!pep-&gt;st) <a href="../../../docs/manualpages/PEP/PEPGetST.html#PEPGetST">PEPGetST</a>(pep,&amp;pep-&gt;st);
+<a name="line77"> 77: </a>  PEPSetDefaultST(pep);
+<a name="line78"> 78: </a>  <font color="#4169E1">if</font> (!pep-&gt;ds) <a href="../../../docs/manualpages/PEP/PEPGetDS.html#PEPGetDS">PEPGetDS</a>(pep,&amp;pep-&gt;ds);
+<a name="line79"> 79: </a>  <font color="#4169E1">if</font> (!pep-&gt;rg) <a href="../../../docs/manualpages/PEP/PEPGetRG.html#PEPGetRG">PEPGetRG</a>(pep,&amp;pep-&gt;rg);
+<a name="line80"> 80: </a>  <font color="#4169E1">if</font> (!((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;rg)-&gt;type_name) <a href="../../../docs/manualpages/RG/RGSetType.html#RGSetType">RGSetType</a>(pep-&gt;rg,RGINTERVAL);
+
+<a name="line82"> 82: </a>  <font color="#B22222">/* check matrices, transfer them to <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a> */</font>
+<a name="line84"> 84: </a>  <a href="../../../docs/manualpages/ST/STSetMatrices.html#STSetMatrices">STSetMatrices</a>(pep-&gt;st,pep-&gt;nmat,pep-&gt;A);
+
+<a name="line86"> 86: </a>  <font color="#B22222">/* set problem dimensions */</font>
+<a name="line87"> 87: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(pep-&gt;A[0],&amp;pep-&gt;n,NULL);
+<a name="line88"> 88: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(pep-&gt;A[0],&amp;pep-&gt;nloc,NULL);
+
+<a name="line90"> 90: </a>  <font color="#B22222">/* set default problem type */</font>
+<a name="line91"> 91: </a>  <font color="#4169E1">if</font> (!pep-&gt;problem_type) <a href="../../../docs/manualpages/PEP/PEPSetProblemType.html#PEPSetProblemType">PEPSetProblemType</a>(pep,<a href="../../../docs/manualpages/PEP/PEPProblemType.html#PEPProblemType">PEP_GENERAL</a>);
+<a name="line92"> 92: </a>  <font color="#4169E1">if</font> (pep-&gt;nev &gt; (pep-&gt;nmat-1)*pep-&gt;n) pep-&gt;nev = (pep-&gt;nmat-1)*pep-&gt;n;
+<a name="line93"> 93: </a>  <font color="#4169E1">if</font> (pep-&gt;ncv &gt; (pep-&gt;nmat-1)*pep-&gt;n) pep-&gt;ncv = (pep-&gt;nmat-1)*pep-&gt;n;
+
+<a name="line95"> 95: </a>  <font color="#B22222">/* check consistency of refinement options */</font>
+<a name="line96"> 96: </a>  <font color="#4169E1">if</font> (pep-&gt;refine) {
+<a name="line97"> 97: </a>    <font color="#4169E1">if</font> (!pep-&gt;scheme) {  <font color="#B22222">/* set default scheme */</font>
+<a name="line98"> 98: </a>      <a href="../../../docs/manualpages/PEP/PEPRefineGetKSP.html#PEPRefineGetKSP">PEPRefineGetKSP</a>(pep,&amp;ksp);
+<a name="line99"> 99: </a>      <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetPC.html#KSPGetPC">KSPGetPC</a>(ksp,&amp;pc);
+<a name="line100">100: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ksp,<a href="https://petsc.org/release/docs/manualpages/KSP/KSPPREONLY.html#KSPPREONLY">KSPPREONLY</a>,&amp;flg);
+<a name="line101">101: </a>      <font color="#4169E1">if</font> (flg) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompareAny.html#PetscObjectTypeCompareAny">PetscObjectTypeCompareAny</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pc,&amp;flg,<a href="https://petsc.org/release/docs/manualpages/PC/PCLU.html#PCLU">PCLU</a>,<a href="https://petsc.org/release/docs/manualpages/PC/PCCHOLESKY.html#PCCHOLESKY">PCCHOLESKY</a>,<font color="#666666">""</font>);
+<a name="line102">102: </a>      pep-&gt;scheme = flg? <a href="../../../docs/manualpages/PEP/PEPRefineScheme.html#PEPRefineScheme">PEP_REFINE_SCHEME_MBE</a>: <a href="../../../docs/manualpages/PEP/PEPRefineScheme.html#PEPRefineScheme">PEP_REFINE_SCHEME_SCHUR</a>;
+<a name="line103">103: </a>    }
+<a name="line104">104: </a>    <font color="#4169E1">if</font> (pep-&gt;scheme==<a href="../../../docs/manualpages/PEP/PEPRefineScheme.html#PEPRefineScheme">PEP_REFINE_SCHEME_MBE</a>) {
+<a name="line105">105: </a>      <a href="../../../docs/manualpages/PEP/PEPRefineGetKSP.html#PEPRefineGetKSP">PEPRefineGetKSP</a>(pep,&amp;ksp);
+<a name="line106">106: </a>      <a href="https://petsc.org/release/docs/manualpages/KSP/KSPGetPC.html#KSPGetPC">KSPGetPC</a>(ksp,&amp;pc);
+<a name="line107">107: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompare.html#PetscObjectTypeCompare">PetscObjectTypeCompare</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ksp,<a href="https://petsc.org/release/docs/manualpages/KSP/KSPPREONLY.html#KSPPREONLY">KSPPREONLY</a>,&amp;flg);
+<a name="line108">108: </a>      <font color="#4169E1">if</font> (flg) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompareAny.html#PetscObjectTypeCompareAny">PetscObjectTypeCompareAny</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pc,&amp;flg,<a href="https://petsc.org/release/docs/manualpages/PC/PCLU.html#PCLU">PCLU</a>,<a href="https://petsc.org/release/docs/manualpages/PC/PCCHOLESKY.html#PCCHOLESKY">PCCHOLESKY</a>,<font color="#666666">""</font>);
+<a name="line110">110: </a>      <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pc),&amp;size);
+<a name="line111">111: </a>      <font color="#4169E1">if</font> (size&gt;1) {   <font color="#B22222">/* currently selected <a href="https://petsc.org/release/docs/manualpages/PC/PC.html#PC">PC</a> is a factorization */</font>
+<a name="line112">112: </a>        <a href="https://petsc.org/release/docs/manualpages/PC/PCFactorGetMatSolverType.html#PCFactorGetMatSolverType">PCFactorGetMatSolverType</a>(pc,&amp;stype);
+<a name="line113">113: </a>        <a href="https://petsc.org/release/docs/manualpages/Sys/PetscStrcmp.html#PetscStrcmp">PetscStrcmp</a>(stype,MATSOLVERPETSC,&amp;flg);
+<a name="line115">115: </a>      }
+<a name="line116">116: </a>    }
+<a name="line117">117: </a>    <font color="#4169E1">if</font> (pep-&gt;scheme==<a href="../../../docs/manualpages/PEP/PEPRefineScheme.html#PEPRefineScheme">PEP_REFINE_SCHEME_SCHUR</a>) {
+<a name="line119">119: </a>    }
+<a name="line120">120: </a>  }
+<a name="line121">121: </a>  <font color="#B22222">/* call specific solver setup */</font>
+<a name="line122">122: </a>  PetscUseTypeMethod(pep,setup);
+
+<a name="line124">124: </a>  <font color="#B22222">/* set tolerance if not yet set */</font>
+<a name="line125">125: </a>  <font color="#4169E1">if</font> (pep-&gt;tol==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) pep-&gt;tol = SLEPC_DEFAULT_TOL;
+<a name="line126">126: </a>  <font color="#4169E1">if</font> (pep-&gt;refine) {
+<a name="line127">127: </a>    <font color="#4169E1">if</font> (pep-&gt;rtol==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) pep-&gt;rtol = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(pep-&gt;tol/1000,PETSC_MACHINE_EPSILON);
+<a name="line128">128: </a>    <font color="#4169E1">if</font> (pep-&gt;rits==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) pep-&gt;rits = (pep-&gt;refine==<a href="../../../docs/manualpages/PEP/PEPRefine.html#PEPRefine">PEP_REFINE_SIMPLE</a>)? 10: 1;
+<a name="line129">129: </a>  }
+
+<a name="line131">131: </a>  <font color="#B22222">/* set default extraction */</font>
+<a name="line132">132: </a>  <font color="#4169E1">if</font> (!pep-&gt;extract) {
+<a name="line133">133: </a>    pep-&gt;extract = (pep-&gt;basis==<a href="../../../docs/manualpages/PEP/PEPBasis.html#PEPBasis">PEP_BASIS_MONOMIAL</a>)? <a href="../../../docs/manualpages/PEP/PEPExtract.html#PEPExtract">PEP_EXTRACT_NORM</a>: <a href="../../../docs/manualpages/PEP/PEPExtract.html#PEPExtract">PEP_EXTRACT_NONE</a>;
+<a name="line134">134: </a>  }
+
+<a name="line136">136: </a>  <font color="#B22222">/* fill sorting criterion context */</font>
+<a name="line137">137: </a>  <font color="#4169E1">switch</font> (pep-&gt;which) {
+<a name="line138">138: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_LARGEST_MAGNITUDE</a>:
+<a name="line139">139: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareLargestMagnitude;
+<a name="line140">140: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line141">141: </a>      <font color="#4169E1">break</font>;
+<a name="line142">142: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_SMALLEST_MAGNITUDE</a>:
+<a name="line143">143: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareSmallestMagnitude;
+<a name="line144">144: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line145">145: </a>      <font color="#4169E1">break</font>;
+<a name="line146">146: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_LARGEST_REAL</a>:
+<a name="line147">147: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareLargestReal;
+<a name="line148">148: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line149">149: </a>      <font color="#4169E1">break</font>;
+<a name="line150">150: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_SMALLEST_REAL</a>:
+<a name="line151">151: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareSmallestReal;
+<a name="line152">152: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line153">153: </a>      <font color="#4169E1">break</font>;
+<a name="line154">154: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_LARGEST_IMAGINARY</a>:
+<a name="line155">155: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareLargestImaginary;
+<a name="line156">156: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line157">157: </a>      <font color="#4169E1">break</font>;
+<a name="line158">158: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_SMALLEST_IMAGINARY</a>:
+<a name="line159">159: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareSmallestImaginary;
+<a name="line160">160: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line161">161: </a>      <font color="#4169E1">break</font>;
+<a name="line162">162: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_TARGET_MAGNITUDE</a>:
+<a name="line163">163: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareTargetMagnitude;
+<a name="line164">164: </a>      pep-&gt;sc-&gt;comparisonctx = &amp;pep-&gt;target;
+<a name="line165">165: </a>      <font color="#4169E1">break</font>;
+<a name="line166">166: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_TARGET_REAL</a>:
+<a name="line167">167: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareTargetReal;
+<a name="line168">168: </a>      pep-&gt;sc-&gt;comparisonctx = &amp;pep-&gt;target;
+<a name="line169">169: </a>      <font color="#4169E1">break</font>;
+<a name="line170">170: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_TARGET_IMAGINARY</a>:
+<a name="line171">171: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line172">172: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareTargetImaginary;
+<a name="line173">173: </a>      pep-&gt;sc-&gt;comparisonctx = &amp;pep-&gt;target;
+<a name="line174">174: </a><font color="#A020F0">#endif</font>
+<a name="line175">175: </a>      <font color="#4169E1">break</font>;
+<a name="line176">176: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_ALL</a>:
+<a name="line177">177: </a>      pep-&gt;sc-&gt;comparison    = SlepcCompareSmallestReal;
+<a name="line178">178: </a>      pep-&gt;sc-&gt;comparisonctx = NULL;
+<a name="line179">179: </a>      <font color="#4169E1">break</font>;
+<a name="line180">180: </a>    <font color="#4169E1">case</font> <a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_WHICH_USER</a>:
+<a name="line181">181: </a>      <font color="#4169E1">break</font>;
+<a name="line182">182: </a>  }
+<a name="line183">183: </a>  pep-&gt;sc-&gt;map    = NULL;
+<a name="line184">184: </a>  pep-&gt;sc-&gt;mapobj = NULL;
+
+<a name="line186">186: </a>  <font color="#B22222">/* fill sorting criterion for <a href="../../../docs/manualpages/DS/DS.html#DS">DS</a> */</font>
+<a name="line187">187: </a>  <font color="#4169E1">if</font> (pep-&gt;which!=<a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_ALL</a>) {
+<a name="line188">188: </a>    <a href="../../../docs/manualpages/DS/DSGetSlepcSC.html#DSGetSlepcSC">DSGetSlepcSC</a>(pep-&gt;ds,&amp;sc);
+<a name="line189">189: </a>    <a href="../../../docs/manualpages/RG/RGIsTrivial.html#RGIsTrivial">RGIsTrivial</a>(pep-&gt;rg,&amp;istrivial);
+<a name="line190">190: </a>    sc-&gt;rg            = istrivial? NULL: pep-&gt;rg;
+<a name="line191">191: </a>    sc-&gt;comparison    = pep-&gt;sc-&gt;comparison;
+<a name="line192">192: </a>    sc-&gt;comparisonctx = pep-&gt;sc-&gt;comparisonctx;
+<a name="line193">193: </a>    sc-&gt;map           = SlepcMap_ST;
+<a name="line194">194: </a>    sc-&gt;mapobj        = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep-&gt;st;
+<a name="line195">195: </a>  }
+<a name="line196">196: </a>  <font color="#B22222">/* setup <a href="../../../docs/manualpages/ST/ST.html#ST">ST</a> */</font>
+<a name="line197">197: </a>  <a href="../../../docs/manualpages/ST/STSetUp.html#STSetUp">STSetUp</a>(pep-&gt;st);
+
+<a name="line199">199: </a>  <font color="#B22222">/* compute matrix coefficients */</font>
+<a name="line200">200: </a>  <a href="../../../docs/manualpages/ST/STGetTransform.html#STGetTransform">STGetTransform</a>(pep-&gt;st,&amp;flg);
+<a name="line201">201: </a>  <font color="#4169E1">if</font> (!flg) {
+<a name="line202">202: </a>    <font color="#4169E1">if</font> (pep-&gt;which!=<a href="../../../docs/manualpages/PEP/PEPWhich.html#PEPWhich">PEP_ALL</a> &amp;&amp; pep-&gt;solvematcoeffs) <a href="../../../docs/manualpages/ST/STMatSetUp.html#STMatSetUp">STMatSetUp</a>(pep-&gt;st,1.0,pep-&gt;solvematcoeffs);
+<a name="line203">203: </a>  } <font color="#4169E1">else</font> {
+<a name="line205">205: </a>  }
+
+<a name="line207">207: </a>  <font color="#B22222">/* compute scale factor if no set by user */</font>
+<a name="line208">208: </a>  PEPComputeScaleFactor(pep);
+
+<a name="line210">210: </a>  <font color="#B22222">/* build balancing matrix if required */</font>
+<a name="line211">211: </a>  <font color="#4169E1">if</font> (pep-&gt;scale==<a href="../../../docs/manualpages/PEP/PEPScale.html#PEPScale">PEP_SCALE_DIAGONAL</a> || pep-&gt;scale==<a href="../../../docs/manualpages/PEP/PEPScale.html#PEPScale">PEP_SCALE_BOTH</a>) {
+<a name="line212">212: </a>    <font color="#4169E1">if</font> (!pep-&gt;Dl) <a href="../../../docs/manualpages/BV/BVCreateVec.html#BVCreateVec">BVCreateVec</a>(pep-&gt;V,&amp;pep-&gt;Dl);
+<a name="line213">213: </a>    <font color="#4169E1">if</font> (!pep-&gt;Dr) <a href="../../../docs/manualpages/BV/BVCreateVec.html#BVCreateVec">BVCreateVec</a>(pep-&gt;V,&amp;pep-&gt;Dr);
+<a name="line214">214: </a>    PEPBuildDiagonalScaling(pep);
+<a name="line215">215: </a>  }
+
+<a name="line217">217: </a>  <font color="#B22222">/* process initial vectors */</font>
+<a name="line218">218: </a>  <font color="#4169E1">if</font> (pep-&gt;nini&lt;0) {
+<a name="line219">219: </a>    k = -pep-&gt;nini;
+<a name="line221">221: </a>    <a href="../../../docs/manualpages/BV/BVInsertVecs.html#BVInsertVecs">BVInsertVecs</a>(pep-&gt;V,0,&amp;k,pep-&gt;<a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line222">222: </a>    SlepcBasisDestroy_Private(&amp;pep-&gt;nini,&amp;pep-&gt;<a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>);
+<a name="line223">223: </a>    pep-&gt;nini = k;
+<a name="line224">224: </a>  }
+<a name="line225">225: </a>  <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogEventEnd.html#PetscLogEventEnd">PetscLogEventEnd</a>(PEP_SetUp,pep,0,0,0);
+<a name="line226">226: </a>  pep-&gt;state = PEP_STATE_SETUP;
+<a name="line227">227: </a>  <font color="#4169E1">return</font> 0;
+<a name="line228">228: </a>}
+
+<a name="line230">230: </a><font color="#B22222">/*@</font>
+<a name="line231">231: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetOperators.html#PEPSetOperators">PEPSetOperators</a> - Sets the coefficient matrices associated with the polynomial</font>
+<a name="line232">232: </a><font color="#B22222">   eigenvalue problem.</font>
+
+<a name="line234">234: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line236">236: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line237">237: </a><font color="#B22222">+  pep  - the eigenproblem solver context</font>
+<a name="line238">238: </a><font color="#B22222">.  nmat - number of matrices in array A</font>
+<a name="line239">239: </a><font color="#B22222">-  A    - the array of matrices associated with the eigenproblem</font>
+
+<a name="line241">241: </a><font color="#B22222">   Notes:</font>
+<a name="line242">242: </a><font color="#B22222">   The polynomial eigenproblem is defined as P(l)*x=0, where l is</font>
+<a name="line243">243: </a><font color="#B22222">   the eigenvalue, x is the eigenvector, and P(l) is defined as</font>
+<a name="line244">244: </a><font color="#B22222">   P(l) = A_0 + l*A_1 + ... + l^d*A_d, with d=nmat-1 (the degree of P).</font>
+<a name="line245">245: </a><font color="#B22222">   For non-monomial bases, this expression is different.</font>
+
+<a name="line247">247: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line249">249: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>(), <a href="../../../docs/manualpages/PEP/PEPGetOperators.html#PEPGetOperators">PEPGetOperators</a>(), <a href="../../../docs/manualpages/PEP/PEPGetNumMatrices.html#PEPGetNumMatrices">PEPGetNumMatrices</a>(), <a href="../../../docs/manualpages/PEP/PEPSetBasis.html#PEPSetBasis">PEPSetBasis</a>()</font>
+<a name="line250">250: </a><font color="#B22222">@*/</font>
+<a name="line251">251: </a><strong><font color="#4169E1"><a name="PEPSetOperators"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetOperators.html#PEPSetOperators">PEPSetOperators</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nmat,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> A[])</font></strong>
+<a name="line252">252: </a>{
+<a name="line253">253: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i,n=0,m,m0=0,mloc,nloc,mloc0=0;
+
+
+<a name="line261">261: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nmat;i++) {
+<a name="line264">264: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(A[i],&amp;m,&amp;n);
+<a name="line265">265: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatGetLocalSize.html#MatGetLocalSize">MatGetLocalSize</a>(A[i],&amp;mloc,&amp;nloc);
+<a name="line268">268: </a>    <font color="#4169E1">if</font> (!i) { m0 = m; mloc0 = mloc; }
+<a name="line271">271: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectReference.html#PetscObjectReference">PetscObjectReference</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)A[i]);
+<a name="line272">272: </a>  }
+
+<a name="line274">274: </a>  <font color="#4169E1">if</font> (pep-&gt;state &amp;&amp; (n!=pep-&gt;n || nloc!=pep-&gt;nloc)) <a href="../../../docs/manualpages/PEP/PEPReset.html#PEPReset">PEPReset</a>(pep);
+<a name="line275">275: </a>  <font color="#4169E1">else</font> <font color="#4169E1">if</font> (pep-&gt;nmat) {
+<a name="line276">276: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroyMatrices.html#MatDestroyMatrices">MatDestroyMatrices</a>(pep-&gt;nmat,&amp;pep-&gt;A);
+<a name="line277">277: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree2.html#PetscFree2">PetscFree2</a>(pep-&gt;pbc,pep-&gt;nrma);
+<a name="line278">278: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(pep-&gt;solvematcoeffs);
+<a name="line279">279: </a>  }
+
+<a name="line281">281: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(nmat,&amp;pep-&gt;A);
+<a name="line282">282: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCalloc2.html#PetscCalloc2">PetscCalloc2</a>(3*nmat,&amp;pep-&gt;pbc,nmat,&amp;pep-&gt;nrma);
+<a name="line283">283: </a>  <font color="#4169E1">for</font> (i=0;i&lt;nmat;i++) {
+<a name="line284">284: </a>    pep-&gt;A[i]   = A[i];
+<a name="line285">285: </a>    pep-&gt;pbc[i] = 1.0;  <font color="#B22222">/* default to monomial basis */</font>
+<a name="line286">286: </a>  }
+<a name="line287">287: </a>  pep-&gt;nmat = nmat;
+<a name="line288">288: </a>  pep-&gt;state = PEP_STATE_INITIAL;
+<a name="line289">289: </a>  <font color="#4169E1">return</font> 0;
+<a name="line290">290: </a>}
+
+<a name="line292">292: </a><font color="#B22222">/*@</font>
+<a name="line293">293: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetOperators.html#PEPGetOperators">PEPGetOperators</a> - Gets the matrices associated with the polynomial eigensystem.</font>
+
+<a name="line295">295: </a><font color="#B22222">   Not collective, though parallel Mats are returned if the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> is parallel</font>
+
+<a name="line297">297: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line298">298: </a><font color="#B22222">+  pep - the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> context</font>
+<a name="line299">299: </a><font color="#B22222">-  k   - the index of the requested matrix (starting in 0)</font>
+
+<a name="line301">301: </a><font color="#B22222">   Output Parameter:</font>
+<a name="line302">302: </a><font color="#B22222">.  A - the requested matrix</font>
+
+<a name="line304">304: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line306">306: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>(), <a href="../../../docs/manualpages/PEP/PEPSetOperators.html#PEPSetOperators">PEPSetOperators</a>(), <a href="../../../docs/manualpages/PEP/PEPGetNumMatrices.html#PEPGetNumMatrices">PEPGetNumMatrices</a>()</font>
+<a name="line307">307: </a><font color="#B22222">@*/</font>
+<a name="line308">308: </a><strong><font color="#4169E1"><a name="PEPGetOperators"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetOperators.html#PEPGetOperators">PEPGetOperators</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> k,<a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a> *A)</font></strong>
+<a name="line309">309: </a>{
+<a name="line313">313: </a>  *A = pep-&gt;A[k];
+<a name="line314">314: </a>  <font color="#4169E1">return</font> 0;
+<a name="line315">315: </a>}
+
+<a name="line317">317: </a><font color="#B22222">/*@</font>
+<a name="line318">318: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPGetNumMatrices.html#PEPGetNumMatrices">PEPGetNumMatrices</a> - Returns the number of matrices stored in the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a>.</font>
+
+<a name="line320">320: </a><font color="#B22222">   Not collective</font>
+
+<a name="line322">322: </a><font color="#B22222">   Input Parameter:</font>
+<a name="line323">323: </a><font color="#B22222">.  pep - the <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> context</font>
+
+<a name="line325">325: </a><font color="#B22222">   Output Parameters:</font>
+<a name="line326">326: </a><font color="#B22222">.  nmat - the number of matrices passed in <a href="../../../docs/manualpages/PEP/PEPSetOperators.html#PEPSetOperators">PEPSetOperators</a>()</font>
+
+<a name="line328">328: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line330">330: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetOperators.html#PEPSetOperators">PEPSetOperators</a>()</font>
+<a name="line331">331: </a><font color="#B22222">@*/</font>
+<a name="line332">332: </a><strong><font color="#4169E1"><a name="PEPGetNumMatrices"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPGetNumMatrices.html#PEPGetNumMatrices">PEPGetNumMatrices</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *nmat)</font></strong>
+<a name="line333">333: </a>{
+<a name="line336">336: </a>  *nmat = pep-&gt;nmat;
+<a name="line337">337: </a>  <font color="#4169E1">return</font> 0;
+<a name="line338">338: </a>}
+
+<a name="line340">340: </a><font color="#B22222">/*@C</font>
+<a name="line341">341: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPSetInitialSpace.html#PEPSetInitialSpace">PEPSetInitialSpace</a> - Specify a basis of vectors that constitute the initial</font>
+<a name="line342">342: </a><font color="#B22222">   space, that is, the subspace from which the solver starts to iterate.</font>
+
+<a name="line344">344: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line346">346: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line347">347: </a><font color="#B22222">+  pep   - the polynomial eigensolver context</font>
+<a name="line348">348: </a><font color="#B22222">.  n     - number of vectors</font>
+<a name="line349">349: </a><font color="#B22222">-  is    - set of basis vectors of the initial space</font>
+
+<a name="line351">351: </a><font color="#B22222">   Notes:</font>
+<a name="line352">352: </a><font color="#B22222">   Some solvers start to iterate on a single vector (initial vector). In that case,</font>
+<a name="line353">353: </a><font color="#B22222">   the other vectors are ignored.</font>
+
+<a name="line355">355: </a><font color="#B22222">   These vectors do not persist from one <a href="../../../docs/manualpages/PEP/PEPSolve.html#PEPSolve">PEPSolve</a>() call to the other, so the</font>
+<a name="line356">356: </a><font color="#B22222">   initial space should be set every time.</font>
+
+<a name="line358">358: </a><font color="#B22222">   The vectors do not need to be mutually orthonormal, since they are explicitly</font>
+<a name="line359">359: </a><font color="#B22222">   orthonormalized internally.</font>
+
+<a name="line361">361: </a><font color="#B22222">   Common usage of this function is when the user can provide a rough approximation</font>
+<a name="line362">362: </a><font color="#B22222">   of the wanted eigenspace. Then, convergence may be faster.</font>
+
+<a name="line364">364: </a><font color="#B22222">   Level: intermediate</font>
+
+<a name="line366">366: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a>()</font>
+<a name="line367">367: </a><font color="#B22222">@*/</font>
+<a name="line368">368: </a><strong><font color="#4169E1"><a name="PEPSetInitialSpace"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPSetInitialSpace.html#PEPSetInitialSpace">PEPSetInitialSpace</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a> is[])</font></strong>
+<a name="line369">369: </a>{
+<a name="line373">373: </a>  <font color="#4169E1">if</font> (n&gt;0) {
+<a name="line376">376: </a>  }
+<a name="line377">377: </a>  SlepcBasisReference_Private(n,is,&amp;pep-&gt;nini,&amp;pep-&gt;<a href="https://petsc.org/release/docs/manualpages/IS/IS.html#IS">IS</a>);
+<a name="line378">378: </a>  <font color="#4169E1">if</font> (n&gt;0) pep-&gt;state = PEP_STATE_INITIAL;
+<a name="line379">379: </a>  <font color="#4169E1">return</font> 0;
+<a name="line380">380: </a>}
+
+<a name="line382">382: </a><font color="#B22222">/*</font>
+<a name="line383">383: </a><font color="#B22222">  PEPSetDimensions_Default - Set reasonable values for ncv, mpd if not set</font>
+<a name="line384">384: </a><font color="#B22222">  by the user. This is called at setup.</font>
+<a name="line385">385: </a><font color="#B22222"> */</font>
+<a name="line386">386: </a><strong><font color="#4169E1"><a name="PEPSetDimensions_Default"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> PEPSetDimensions_Default(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> nev,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *ncv,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *mpd)</font></strong>
+<a name="line387">387: </a>{
+<a name="line388">388: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      krylov;
+<a name="line389">389: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       dim;
+
+<a name="line391">391: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectTypeCompareAny.html#PetscObjectTypeCompareAny">PetscObjectTypeCompareAny</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)pep,&amp;krylov,PEPTOAR,PEPSTOAR,PEPQARNOLDI,<font color="#666666">""</font>);
+<a name="line392">392: </a>  dim = (pep-&gt;nmat-1)*pep-&gt;n;
+<a name="line393">393: </a>  <font color="#4169E1">if</font> (*ncv!=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) { <font color="#B22222">/* ncv set */</font>
+<a name="line394">394: </a>    <font color="#4169E1">if</font> (krylov) {
+<a name="line396">396: </a>    } <font color="#4169E1">else</font> {
+<a name="line398">398: </a>    }
+<a name="line399">399: </a>  } <font color="#4169E1">else</font> <font color="#4169E1">if</font> (*mpd!=<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) { <font color="#B22222">/* mpd set */</font>
+<a name="line400">400: </a>    *ncv = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(dim,nev+(*mpd));
+<a name="line401">401: </a>  } <font color="#4169E1">else</font> { <font color="#B22222">/* neither set: defaults depend on nev being small or large */</font>
+<a name="line402">402: </a>    <font color="#4169E1">if</font> (nev&lt;500) *ncv = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(dim,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscMax.html#PetscMax">PetscMax</a>(2*nev,nev+15));
+<a name="line403">403: </a>    <font color="#4169E1">else</font> {
+<a name="line404">404: </a>      *mpd = 500;
+<a name="line405">405: </a>      *ncv = <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMin.html#PetscMin">PetscMin</a>(dim,nev+(*mpd));
+<a name="line406">406: </a>    }
+<a name="line407">407: </a>  }
+<a name="line408">408: </a>  <font color="#4169E1">if</font> (*mpd==<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_DEFAULT.html#PETSC_DEFAULT">PETSC_DEFAULT</a>) *mpd = *ncv;
+<a name="line409">409: </a>  <font color="#4169E1">return</font> 0;
+<a name="line410">410: </a>}
+
+<a name="line412">412: </a><font color="#B22222">/*@</font>
+<a name="line413">413: </a><font color="#B22222">   <a href="../../../docs/manualpages/PEP/PEPAllocateSolution.html#PEPAllocateSolution">PEPAllocateSolution</a> - Allocate memory storage for common variables such</font>
+<a name="line414">414: </a><font color="#B22222">   as eigenvalues and eigenvectors.</font>
+
+<a name="line416">416: </a><font color="#B22222">   Collective on pep</font>
+
+<a name="line418">418: </a><font color="#B22222">   Input Parameters:</font>
+<a name="line419">419: </a><font color="#B22222">+  pep   - eigensolver context</font>
+<a name="line420">420: </a><font color="#B22222">-  extra - number of additional positions, used for methods that require a</font>
+<a name="line421">421: </a><font color="#B22222">           working basis slightly larger than ncv</font>
+
+<a name="line423">423: </a><font color="#B22222">   Developer Notes:</font>
+<a name="line424">424: </a><font color="#B22222">   This is SLEPC_EXTERN because it may be required by user plugin <a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a></font>
+<a name="line425">425: </a><font color="#B22222">   implementations.</font>
+
+<a name="line427">427: </a><font color="#B22222">   Level: developer</font>
+
+<a name="line429">429: </a><font color="#B22222">.seealso: <a href="../../../docs/manualpages/PEP/PEPSetUp.html#PEPSetUp">PEPSetUp</a>()</font>
+<a name="line430">430: </a><font color="#B22222">@*/</font>
+<a name="line431">431: </a><strong><font color="#4169E1"><a name="PEPAllocateSolution"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> <a href="../../../docs/manualpages/PEP/PEPAllocateSolution.html#PEPAllocateSolution">PEPAllocateSolution</a>(<a href="../../../docs/manualpages/PEP/PEP.html#PEP">PEP</a> pep,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> extra)</font></strong>
+<a name="line432">432: </a>{
+<a name="line433">433: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       oldsize,requested,requestedbv;
+<a name="line434">434: </a>  <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            t;
+
+<a name="line436">436: </a>  requested = (pep-&gt;lineariz? pep-&gt;ncv: pep-&gt;ncv*(pep-&gt;nmat-1)) + extra;
+<a name="line437">437: </a>  requestedbv = pep-&gt;ncv + extra;
+
+<a name="line439">439: </a>  <font color="#B22222">/* oldsize is zero if this is the first time setup is called */</font>
+<a name="line440">440: </a>  <a href="../../../docs/manualpages/BV/BVGetSizes.html#BVGetSizes">BVGetSizes</a>(pep-&gt;V,NULL,NULL,&amp;oldsize);
+
+<a name="line442">442: </a>  <font color="#B22222">/* allocate space for eigenvalues and friends */</font>
+<a name="line443">443: </a>  <font color="#4169E1">if</font> (requested != oldsize || !pep-&gt;eigr) {
+<a name="line444">444: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree4.html#PetscFree4">PetscFree4</a>(pep-&gt;eigr,pep-&gt;eigi,pep-&gt;errest,pep-&gt;perm);
+<a name="line445">445: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc4.html#PetscMalloc4">PetscMalloc4</a>(requested,&amp;pep-&gt;eigr,requested,&amp;pep-&gt;eigi,requested,&amp;pep-&gt;errest,requested,&amp;pep-&gt;perm);
+<a name="line446">446: </a>  }
+
+<a name="line448">448: </a>  <font color="#B22222">/* allocate V */</font>
+<a name="line449">449: </a>  <font color="#4169E1">if</font> (!pep-&gt;V) <a href="../../../docs/manualpages/PEP/PEPGetBV.html#PEPGetBV">PEPGetBV</a>(pep,&amp;pep-&gt;V);
+<a name="line450">450: </a>  <font color="#4169E1">if</font> (!oldsize) {
+<a name="line451">451: </a>    <font color="#4169E1">if</font> (!((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)(pep-&gt;V))-&gt;type_name) <a href="../../../docs/manualpages/BV/BVSetType.html#BVSetType">BVSetType</a>(pep-&gt;V,BVSVEC);
+<a name="line452">452: </a>    <a href="../../../docs/manualpages/ST/STMatCreateVecsEmpty.html#STMatCreateVecsEmpty">STMatCreateVecsEmpty</a>(pep-&gt;st,&amp;t,NULL);
+<a name="line453">453: </a>    <a href="../../../docs/manualpages/BV/BVSetSizesFromVec.html#BVSetSizesFromVec">BVSetSizesFromVec</a>(pep-&gt;V,t,requestedbv);
+<a name="line454">454: </a>    <a href="https://petsc.org/release/docs/manualpages/Vec/VecDestroy.html#VecDestroy">VecDestroy</a>(&amp;t);
+<a name="line455">455: </a>  } <font color="#4169E1">else</font> <a href="../../../docs/manualpages/BV/BVResize.html#BVResize">BVResize</a>(pep-&gt;V,requestedbv,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line456">456: </a>  <font color="#4169E1">return</font> 0;
+<a name="line457">457: </a>}
+</pre>
+</body>
+
+</html>

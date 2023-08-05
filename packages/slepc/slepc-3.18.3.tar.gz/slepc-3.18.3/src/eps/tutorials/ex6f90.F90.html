@@ -1,0 +1,315 @@
+<center><a href="ex6f90.F90">Actual source code: ex6f90.F90</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/eps/tutorials/ex6f90.F90.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:45:42+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/eps/tutorials/ex6f90.F90.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a>!
+<a name="line2">  2: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line3">  3: </a>!  SLEPc - Scalable Library <font color="#4169E1">for</font> Eigenvalue Problem Computations
+<a name="line4">  4: </a>!  Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain
+<a name="line5">  5: </a>!
+<a name="line6">  6: </a>!  This file is part of SLEPc.
+<a name="line7">  7: </a>!  SLEPc is distributed under a 2-clause BSD license (see LICENSE).
+<a name="line8">  8: </a>!  - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line9">  9: </a>!
+<a name="line10"> 10: </a>!  Program usage: mpiexec -n &lt;np&gt; ./ex6f [-help] [-m &lt;m&gt;] [all SLEPc options]
+<a name="line11"> 11: </a>!
+<a name="line12"> 12: </a>!  Description: Eigensystem from the Ising model <font color="#4169E1">for</font> ferromagnetic materials.
+<a name="line13"> 13: </a>!  Information about the model can be found at the following
+<a name="line14"> 14: </a>!  site https://math.nist.gov/MatrixMarket/data/<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>
+<a name="line15"> 15: </a>!
+<a name="line16"> 16: </a>!  The command line options are:
+<a name="line17"> 17: </a>!    -m &lt;m&gt;, where &lt;m&gt; is the number of 2x2 blocks, i.e. matrix size N=2*m
+<a name="line18"> 18: </a>!
+<a name="line19"> 19: </a>! ----------------------------------------------------------------------
+<a name="line20"> 20: </a>!
+<a name="line21"> 21: </a>      program main
+<a name="line22"> 22: </a>#include <A href="../../../include/slepc/finclude/slepceps.h.html">&lt;slepc/finclude/slepceps.h&gt;</A>
+<a name="line23"> 23: </a>      use slepceps
+<a name="line24"> 24: </a>      implicit none
+
+<a name="line26"> 26: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line27"> 27: </a>!     Declarations
+<a name="line28"> 28: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line29"> 29: </a>!
+<a name="line30"> 30: </a>!  Variables:
+<a name="line31"> 31: </a>!     A     operator matrix
+<a name="line32"> 32: </a>!     eps   eigenproblem solver context
+
+<a name="line34"> 34: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A
+<a name="line35"> 35: </a>      <a href="../../../docs/manualpages/EPS/EPS.html#EPS">EPS</a>            eps
+<a name="line36"> 36: </a>      <a href="../../../docs/manualpages/EPS/EPSType.html#EPSType">EPSType</a>        tname
+<a name="line37"> 37: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      tol
+<a name="line38"> 38: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       N, m
+<a name="line39"> 39: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       nev, maxit, its
+<a name="line40"> 40: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    sz, rank
+<a name="line41"> 41: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+<a name="line42"> 42: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>      flg, terse
+
+<a name="line44"> 44: </a>!     This is the routine to use <font color="#4169E1">for</font> matrix-free approach
+<a name="line45"> 45: </a>!
+<a name="line46"> 46: </a>      external MatIsing_Mult
+
+<a name="line48"> 48: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line49"> 49: </a>!     Beginning of program
+<a name="line50"> 50: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line52"> 52: </a>      PetscCallA(<a href="../../../docs/manualpages/sys/SlepcInitialize.html#SlepcInitialize">SlepcInitialize</a>(PETSC_NULL_CHARACTER,ierr))
+<a name="line53"> 53: </a><font color="#A020F0">#if defined(PETSC_USE_COMPLEX)</font>
+<a name="line54"> 54: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/SETERRA.html#SETERRA">SETERRA</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,PETSC_ERR_SUP,'This example requires real numbers')
+<a name="line55"> 55: </a><font color="#A020F0">#endif</font>
+<a name="line56"> 56: </a>      PetscCallMPIA(<a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_size.html#MPI_Comm_size">MPI_Comm_size</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,sz,ierr))
+<a name="line57"> 57: </a>      PetscCallMPIA(<a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,rank,ierr))
+<a name="line58"> 58: </a>      <font color="#4169E1">if</font> (sz .ne. 1) then; <a href="https://petsc.org/release/docs/manualpages/Sys/SETERRA.html#SETERRA">SETERRA</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_SELF.html#PETSC_COMM_SELF">PETSC_COMM_SELF</a>,PETSC_ERR_WRONG_MPI_SIZE,'This is a uniprocessor example only!'); endif
+<a name="line59"> 59: </a>      m = 30
+<a name="line60"> 60: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsGetInt.html#PetscOptionsGetInt">PetscOptionsGetInt</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-m',m,flg,ierr))
+<a name="line61"> 61: </a>      N = 2*m
+
+<a name="line63"> 63: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line64"> 64: </a>        write(*,'(/A,I6,A/)') 'Ising Model Eigenproblem, m=',m,', (N=2*m)'
+<a name="line65"> 65: </a>      endif
+
+<a name="line67"> 67: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line68"> 68: </a>!     Register the matrix-vector subroutine <font color="#4169E1">for</font> the operator that defines
+<a name="line69"> 69: </a>!     the eigensystem, Ax=kx
+<a name="line70"> 70: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line72"> 72: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatCreateShell.html#MatCreateShell">MatCreateShell</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,N,N,N,N,PETSC_NULL_INTEGER,A,ierr))
+<a name="line73"> 73: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatShellSetOperation.html#MatShellSetOperation">MatShellSetOperation</a>(A,MATOP_MULT,MatIsing_Mult,ierr))
+
+<a name="line75"> 75: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line76"> 76: </a>!     Create the eigensolver and display info
+<a name="line77"> 77: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line79"> 79: </a>!     ** Create eigensolver context
+<a name="line80"> 80: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSCreate.html#EPSCreate">EPSCreate</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_COMM_WORLD.html#PETSC_COMM_WORLD">PETSC_COMM_WORLD</a>,eps,ierr))
+
+<a name="line82"> 82: </a>!     ** Set operators. In this <font color="#4169E1">case</font>, it is a standard eigenvalue problem
+<a name="line83"> 83: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSSetOperators.html#EPSSetOperators">EPSSetOperators</a>(eps,A,PETSC_NULL_MAT,ierr))
+<a name="line84"> 84: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSSetProblemType.html#EPSSetProblemType">EPSSetProblemType</a>(eps,<a href="../../../docs/manualpages/EPS/EPSProblemType.html#EPSProblemType">EPS_NHEP</a>,ierr))
+
+<a name="line86"> 86: </a>!     ** Set solver parameters at runtime
+<a name="line87"> 87: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSSetFromOptions.html#EPSSetFromOptions">EPSSetFromOptions</a>(eps,ierr))
+
+<a name="line89"> 89: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line90"> 90: </a>!     Solve the eigensystem
+<a name="line91"> 91: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line93"> 93: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSSolve.html#EPSSolve">EPSSolve</a>(eps,ierr))
+<a name="line94"> 94: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSGetIterationNumber.html#EPSGetIterationNumber">EPSGetIterationNumber</a>(eps,its,ierr))
+<a name="line95"> 95: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line96"> 96: </a>        write(*,'(A,I4)') ' Number of iterations of the method: ',its
+<a name="line97"> 97: </a>      endif
+
+<a name="line99"> 99: </a>!     ** Optional: Get some information from the solver and display it
+<a name="line100">100: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSGetType.html#EPSGetType">EPSGetType</a>(eps,tname,ierr))
+<a name="line101">101: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line102">102: </a>        write(*,'(A,A)') ' Solution method: ', tname
+<a name="line103">103: </a>      endif
+<a name="line104">104: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSGetDimensions.html#EPSGetDimensions">EPSGetDimensions</a>(eps,nev,PETSC_NULL_INTEGER,PETSC_NULL_INTEGER,ierr))
+<a name="line105">105: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line106">106: </a>        write(*,'(A,I2)') ' Number of requested eigenvalues:',nev
+<a name="line107">107: </a>      endif
+<a name="line108">108: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSGetTolerances.html#EPSGetTolerances">EPSGetTolerances</a>(eps,tol,maxit,ierr))
+<a name="line109">109: </a>      <font color="#4169E1">if</font> (rank .eq. 0) then
+<a name="line110">110: </a>        write(*,'(A,1PE11.4,A,I6)') ' Stopping condition: tol=',tol,', maxit=', maxit
+<a name="line111">111: </a>      endif
+
+<a name="line113">113: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+<a name="line114">114: </a>!     Display solution and clean up
+<a name="line115">115: </a>! - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+<a name="line117">117: </a>!     ** show detailed info unless -terse option is given by user
+<a name="line118">118: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscOptionsHasName.html#PetscOptionsHasName">PetscOptionsHasName</a>(PETSC_NULL_OPTIONS,PETSC_NULL_CHARACTER,'-terse',terse,ierr))
+<a name="line119">119: </a>      <font color="#4169E1">if</font> (terse) then
+<a name="line120">120: </a>        PetscCallA(<a href="../../../docs/manualpages/EPS/EPSErrorView.html#EPSErrorView">EPSErrorView</a>(eps,<a href="../../../docs/manualpages/EPS/EPSErrorType.html#EPSErrorType">EPS_ERROR_RELATIVE</a>,PETSC_NULL_VIEWER,ierr))
+<a name="line121">121: </a>      <font color="#4169E1">else</font>
+<a name="line122">122: </a>        PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPushFormat.html#PetscViewerPushFormat">PetscViewerPushFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>,ierr))
+<a name="line123">123: </a>        PetscCallA(<a href="../../../docs/manualpages/EPS/EPSConvergedReasonView.html#EPSConvergedReasonView">EPSConvergedReasonView</a>(eps,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr))
+<a name="line124">124: </a>        PetscCallA(<a href="../../../docs/manualpages/EPS/EPSErrorView.html#EPSErrorView">EPSErrorView</a>(eps,<a href="../../../docs/manualpages/EPS/EPSErrorType.html#EPSErrorType">EPS_ERROR_RELATIVE</a>,<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr))
+<a name="line125">125: </a>        PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerPopFormat.html#PetscViewerPopFormat">PetscViewerPopFormat</a>(<a href="https://petsc.org/release/docs/manualpages/Viewer/PETSC_VIEWER_STDOUT_WORLD.html#PETSC_VIEWER_STDOUT_WORLD">PETSC_VIEWER_STDOUT_WORLD</a>,ierr))
+<a name="line126">126: </a>      endif
+<a name="line127">127: </a>      PetscCallA(<a href="../../../docs/manualpages/EPS/EPSDestroy.html#EPSDestroy">EPSDestroy</a>(eps,ierr))
+<a name="line128">128: </a>      PetscCallA(<a href="https://petsc.org/release/docs/manualpages/Mat/MatDestroy.html#MatDestroy">MatDestroy</a>(A,ierr))
+<a name="line129">129: </a>      PetscCallA(<a href="../../../docs/manualpages/sys/SlepcFinalize.html#SlepcFinalize">SlepcFinalize</a>(ierr))
+<a name="line130">130: </a>      end
+
+<a name="line132">132: </a>! -------------------------------------------------------------------
+<a name="line133">133: </a>!
+<a name="line134">134: </a>!   MatIsing_Mult - user provided matrix-vector multiply
+<a name="line135">135: </a>!
+<a name="line136">136: </a>!   Input Parameters:
+<a name="line137">137: </a>!   A - matrix
+<a name="line138">138: </a>!   x - input vector
+<a name="line139">139: </a>!
+<a name="line140">140: </a>!   Output Parameter:
+<a name="line141">141: </a>!   y - output vector
+<a name="line142">142: </a>!
+<a name="line143">143: </a>      subroutine MatIsing_Mult(A,x,y,ierr)
+<a name="line144">144: </a><font color="#A020F0">#include &lt;petsc/finclude/petscmat.h&gt;</font>
+<a name="line145">145: </a>      use petscmat
+<a name="line146">146: </a>      implicit none
+
+<a name="line148">148: </a>      <a href="https://petsc.org/release/docs/manualpages/Mat/Mat.html#Mat">Mat</a>            A
+<a name="line149">149: </a>      <a href="https://petsc.org/release/docs/manualpages/Vec/Vec.html#Vec">Vec</a>            x,y
+<a name="line150">150: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       trans,one,N
+<a name="line151">151: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    x_array(1),y_array(1)
+<a name="line152">152: </a>      PetscOffset    i_x,i_y
+<a name="line153">153: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> ierr
+
+<a name="line155">155: </a>!     The actual routine <font color="#4169E1">for</font> the matrix-vector product
+<a name="line156">156: </a>      external mvmisg
+
+<a name="line158">158: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Mat/MatGetSize.html#MatGetSize">MatGetSize</a>(A,N,PETSC_NULL_INTEGER,ierr))
+<a name="line159">159: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArrayRead.html#VecGetArrayRead">VecGetArrayRead</a>(x,x_array,i_x,ierr))
+<a name="line160">160: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/VecGetArray.html#VecGetArray">VecGetArray</a>(y,y_array,i_y,ierr))
+
+<a name="line162">162: </a>      trans = 0
+<a name="line163">163: </a>      one = 1
+<a name="line164">164: </a>      call mvmisg(trans,N,one,x_array(i_x+1),N,y_array(i_y+1),N)
+
+<a name="line166">166: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArrayRead.html#VecRestoreArrayRead">VecRestoreArrayRead</a>(x,x_array,i_x,ierr))
+<a name="line167">167: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCall.html#PetscCall">PetscCall</a>(<a href="https://petsc.org/release/docs/manualpages/Vec/VecRestoreArray.html#VecRestoreArray">VecRestoreArray</a>(y,y_array,i_y,ierr))
+
+<a name="line169">169: </a>      <font color="#4169E1">return</font>
+<a name="line170">170: </a>      end
+
+<a name="line172">172: </a>! -------------------------------------------------------------------
+<a name="line173">173: </a>!     The actual routine <font color="#4169E1">for</font> the matrix-vector product
+<a name="line174">174: </a>!     See https://math.nist.gov/MatrixMarket/data/<a href="../../../docs/manualpages/NEP/NEP.html#NEP">NEP</a>/mvmisg/mvmisg.html
+
+<a name="line176">176: </a>      SUBROUTINE MVMISG(TRANS, N, M, X, LDX, Y, LDY)
+<a name="line177">177: </a><font color="#A020F0">#include &lt;petsc/finclude/petscsys.h&gt;</font>
+<a name="line178">178: </a>      use petscsys
+<a name="line179">179: </a>!     ..
+<a name="line180">180: </a>!     .. Scalar Arguments ..
+<a name="line181">181: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>     LDY, LDX, M, N, TRANS
+<a name="line182">182: </a>!     ..
+<a name="line183">183: </a>!     .. Array Arguments ..
+<a name="line184">184: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>  Y(LDY, *), X(LDX, *)
+<a name="line185">185: </a>!     ..
+<a name="line186">186: </a>!
+<a name="line187">187: </a>!  Purpose
+<a name="line188">188: </a>!  =======
+<a name="line189">189: </a>!
+<a name="line190">190: </a>!  Compute
+<a name="line191">191: </a>!
+<a name="line192">192: </a>!               Y(:,1:M) = op(A)*X(:,1:M)
+<a name="line193">193: </a>!
+<a name="line194">194: </a>!  where op(A) is A or A' (the transpose of A). The A is the Ising
+<a name="line195">195: </a>!  matrix.
+<a name="line196">196: </a>!
+<a name="line197">197: </a>!  Arguments
+<a name="line198">198: </a>!  =========
+<a name="line199">199: </a>!
+<a name="line200">200: </a>!  TRANS   (input) INTEGER
+<a name="line201">201: </a>!          If TRANS = 0, compute Y(:,1:M) = A*X(:,1:M)
+<a name="line202">202: </a>!          If TRANS = 1, compute Y(:,1:M) = A'*X(:,1:M)
+<a name="line203">203: </a>!
+<a name="line204">204: </a>!  N       (input) INTEGER
+<a name="line205">205: </a>!          The order of the matrix A. N has to be an even number.
+<a name="line206">206: </a>!
+<a name="line207">207: </a>!  M       (input) INTEGER
+<a name="line208">208: </a>!          The number of columns of X to multiply.
+<a name="line209">209: </a>!
+<a name="line210">210: </a>!  X       (input) DOUBLE PRECISION array, dimension (LDX, M)
+<a name="line211">211: </a>!          X contains the matrix (vectors) X.
+<a name="line212">212: </a>!
+<a name="line213">213: </a>!  LDX     (input) INTEGER
+<a name="line214">214: </a>!          The leading dimension of array X, LDX &gt;= max(1, N)
+<a name="line215">215: </a>!
+<a name="line216">216: </a>!  Y       (output) DOUBLE PRECISION array, dimension (LDX, M)
+<a name="line217">217: </a>!          contains the product of the matrix op(A) with X.
+<a name="line218">218: </a>!
+<a name="line219">219: </a>!  LDY     (input) INTEGER
+<a name="line220">220: </a>!          The leading dimension of array Y, LDY &gt;= max(1, N)
+<a name="line221">221: </a>!
+<a name="line222">222: </a>!  ===================================================================
+<a name="line223">223: </a>!
+<a name="line224">224: </a>!
+
+<a name="line226">226: </a>!     .. Local Variables ..
+<a name="line227">227: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    I, K
+<a name="line228">228: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>   ALPHA, BETA
+<a name="line229">229: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>   COSA, COSB, SINA, SINB
+<a name="line230">230: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> TEMP, TEMP1
+<a name="line231">231: </a>!
+<a name="line232">232: </a>!     .. Intrinsic functions ..
+<a name="line233">233: </a>      INTRINSIC   COS, SIN
+<a name="line234">234: </a>!
+<a name="line235">235: </a>      ALPHA = PETSC_PI/4
+<a name="line236">236: </a>      BETA = PETSC_PI/4
+<a name="line237">237: </a>      COSA = COS(ALPHA)
+<a name="line238">238: </a>      SINA = SIN(ALPHA)
+<a name="line239">239: </a>      COSB = COS(BETA)
+<a name="line240">240: </a>      SINB = SIN(BETA)
+<a name="line241">241: </a>!
+<a name="line242">242: </a>      IF (TRANS.EQ.0) THEN
+<a name="line243">243: </a>!
+<a name="line244">244: </a>!     Compute Y(:,1:M) = A*X(:,1:M)
+
+<a name="line246">246: </a>         DO 30 K = 1, M
+<a name="line247">247: </a>!
+<a name="line248">248: </a>            Y(1, K) = COSB*X(1, K) - SINB*X(N, K)
+<a name="line249">249: </a>            DO 10 I = 2, N-1, 2
+<a name="line250">250: </a>               Y(I, K)   =  COSB*X(I, K) + SINB*X(I+1, K)
+<a name="line251">251: </a>               Y(I+1, K) = -SINB*X(I, K) + COSB*X(I+1, K)
+<a name="line252">252: </a>   10       CONTINUE
+<a name="line253">253: </a>            Y(N, K) = SINB*X(1, K) + COSB*X(N, K)
+<a name="line254">254: </a>!
+<a name="line255">255: </a>            DO 20 I = 1, N, 2
+<a name="line256">256: </a>               TEMP      =  COSA*Y(I, K) + SINA*Y(I+1, K)
+<a name="line257">257: </a>               Y(I+1, K) = -SINA*Y(I, K) + COSA*Y(I+1, K)
+<a name="line258">258: </a>               Y(I, K)   = TEMP
+<a name="line259">259: </a>   20       CONTINUE
+<a name="line260">260: </a>!
+<a name="line261">261: </a>   30    CONTINUE
+<a name="line262">262: </a>!
+<a name="line263">263: </a>      ELSE IF (TRANS.EQ.1) THEN
+<a name="line264">264: </a>!
+<a name="line265">265: </a>!        Compute Y(:1:M) = A'*X(:,1:M)
+<a name="line266">266: </a>!
+<a name="line267">267: </a>         DO 60 K = 1, M
+<a name="line268">268: </a>!
+<a name="line269">269: </a>            DO 40 I = 1, N, 2
+<a name="line270">270: </a>               Y(I, K)   =  COSA*X(I, K) - SINA*X(I+1, K)
+<a name="line271">271: </a>               Y(I+1, K) =  SINA*X(I, K) + COSA*X(I+1, K)
+<a name="line272">272: </a>   40       CONTINUE
+<a name="line273">273: </a>            TEMP  = COSB*Y(1,K) + SINB*Y(N,K)
+<a name="line274">274: </a>            DO 50 I = 2, N-1, 2
+<a name="line275">275: </a>               TEMP1     =  COSB*Y(I, K) - SINB*Y(I+1, K)
+<a name="line276">276: </a>               Y(I+1, K) =  SINB*Y(I, K) + COSB*Y(I+1, K)
+<a name="line277">277: </a>               Y(I, K)   =  TEMP1
+<a name="line278">278: </a>   50       CONTINUE
+<a name="line279">279: </a>            Y(N, K) = -SINB*Y(1, K) + COSB*Y(N, K)
+<a name="line280">280: </a>            Y(1, K) = TEMP
+<a name="line281">281: </a>!
+<a name="line282">282: </a>   60    CONTINUE
+<a name="line283">283: </a>!
+<a name="line284">284: </a>      END IF
+<a name="line285">285: </a>!
+<a name="line286">286: </a>      RETURN
+<a name="line287">287: </a>!
+<a name="line288">288: </a>!     END OF MVMISG
+<a name="line289">289: </a>      END
+
+<a name="line291">291: </a>!<font color="#B22222">/*TEST</font>
+<a name="line292">292: </a><font color="#B22222">!</font>
+<a name="line293">293: </a><font color="#B22222">!   test:</font>
+<a name="line294">294: </a><font color="#B22222">!      suffix: 1</font>
+<a name="line295">295: </a><font color="#B22222">!      args: -eps_max_it 1000 -eps_ncv 12 -eps_tol 1e-5 -eps_nev 4 -eps_largest_imaginary -terse</font>
+<a name="line296">296: </a><font color="#B22222">!      requires: !complex</font>
+<a name="line297">297: </a><font color="#B22222">!</font>
+<a name="line298">298: </a><font color="#B22222">!TEST*/</font>
+</pre>
+</body>
+
+</html>

@@ -1,0 +1,42 @@
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/nep/tests/index.html" />
+  <link rel="stylesheet" href="/slepc.css" type="text/css">
+  <title>Nonlinear Eigenvalue Problem Solvers - NEP</title>
+</head>
+
+<body class="manpageindex">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/nep/tests/index.html "><small>Report Typos and Errors</small></a></div>
+
+<h2>Nonlinear Eigenvalue Problem Solvers - NEP: <a href="../../../src/nep/tutorials/index.html">Examples</a> <a href="../../../src/nep/tutorials/nlevp/index.html">NLEVP</a></h2>
+
+<p>
+The Nonlinear Eigenvalue Problem (NEP) solver is the object provided by SLEPc for specifying an eigenvalue problem that is nonlinear with respect to the eigenvalue (not the eigenvector). This is intended for general nonlinear problems (rather than polynomial eigenproblems) described as <i>T(&lambda;)x=0</i>.
+</p>
+<p>
+As in the other solver objects, users can set various options at runtime via the options database (e.g., <code>-nep_nev 4 -nep_type narnoldi</code>).
+Options can also be set directly in application codes by calling the corresponding routines (e.g., <a href="NEPSetDimensions.html">NEPSetDimensions</a>() / <a href="NEPSetType.html">NEPSetType</a>()).
+</p>
+
+<p>
+ 
+<a href="test1.c.html">test1.c</a><br>
+<a href="test10.c.html">test10.c</a><br>
+<a href="test11.c.html">test11.c</a><br>
+<a href="test12.c.html">test12.c</a><br>
+<a href="test13.c.html">test13.c</a><br>
+<a href="test14.c.html">test14.c</a><br>
+<a href="test15.c.html">test15.c</a><br>
+<a href="test16.c.html">test16.c</a><br>
+<a href="test17.c.html">test17.c</a><br>
+<a href="test2.c.html">test2.c</a><br>
+<a href="test2f.F.html">test2f.F</a><br>
+<a href="test3.c.html">test3.c</a><br>
+<a href="test4.c.html">test4.c</a><br>
+<a href="test5.c.html">test5.c</a><br>
+<a href="test6.c.html">test6.c</a><br>
+<a href="test7.c.html">test7.c</a><br>
+<a href="test8.c.html">test8.c</a><br>
+<a href="test9.c.html">test9.c</a><br>
+ 
+<a href="makefile.html">makefile</a><br>

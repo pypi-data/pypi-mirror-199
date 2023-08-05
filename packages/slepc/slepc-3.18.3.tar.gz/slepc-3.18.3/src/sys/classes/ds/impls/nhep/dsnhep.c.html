@@ -1,0 +1,575 @@
+<center><a href="dsnhep.c">Actual source code: dsnhep.c</a></center><br>
+
+<html>
+<head> <link rel="canonical" href="https://slepc.upv.es/documentation/current/src/sys/classes/ds/impls/nhep/dsnhep.c.html" />
+<title></title>
+<meta name="generator" content="c2html 0.9.4">
+<meta name="date" content="2023-03-24T11:44:52+00:00">
+</head>
+
+<body bgcolor="#FFFFFF">
+   <div id="version" align=right><b>slepc-3.18.3 2023-03-24</b></div>
+   <div id="bugreport" align=right><a href="mailto:slepc-maint@upv.es?subject=Typo or Error in Documentation &body=Please describe the typo or error in the documentation: slepc-3.18.3 v3.18.3 src/sys/classes/ds/impls/nhep/dsnhep.c.html "><small>Report Typos and Errors</small></a></div>
+<pre width="80">
+<a name="line1">  1: </a><font color="#B22222">/*</font>
+<a name="line2">  2: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line3">  3: </a><font color="#B22222">   SLEPc - Scalable Library for Eigenvalue Problem Computations</font>
+<a name="line4">  4: </a><font color="#B22222">   Copyright (c) 2002-, Universitat Politecnica de Valencia, Spain</font>
+
+<a name="line6">  6: </a><font color="#B22222">   This file is part of SLEPc.</font>
+<a name="line7">  7: </a><font color="#B22222">   SLEPc is distributed under a 2-clause BSD license (see LICENSE).</font>
+<a name="line8">  8: </a><font color="#B22222">   - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -</font>
+<a name="line9">  9: </a><font color="#B22222">*/</font>
+
+<a name="line11"> 11: </a>#include <A href="../../../../../../include/slepc/private/dsimpl.h.html">&lt;slepc/private/dsimpl.h&gt;</A>
+<a name="line12"> 12: </a>#include <A href="../../../../../../include/slepcblaslapack.h.html">&lt;slepcblaslapack.h&gt;</A>
+
+<a name="line14"> 14: </a><strong><font color="#4169E1"><a name="DSAllocate_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSAllocate_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> ld)</font></strong>
+<a name="line15"> 15: </a>{
+<a name="line16"> 16: </a>  DSAllocateMat_Private(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>);
+<a name="line17"> 17: </a>  DSAllocateMat_Private(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>);
+<a name="line18"> 18: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscFree.html#PetscFree">PetscFree</a>(ds-&gt;perm);
+<a name="line19"> 19: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMalloc1.html#PetscMalloc1">PetscMalloc1</a>(ld,&amp;ds-&gt;perm);
+<a name="line20"> 20: </a>  <font color="#4169E1">return</font> 0;
+<a name="line21"> 21: </a>}
+
+<a name="line23"> 23: </a><strong><font color="#4169E1"><a name="DSView_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSView_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewer.html#PetscViewer">PetscViewer</a> viewer)</font></strong>
+<a name="line24"> 24: </a>{
+<a name="line25"> 25: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PetscViewerFormat</a> format;
+
+<a name="line27"> 27: </a>  <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerGetFormat.html#PetscViewerGetFormat">PetscViewerGetFormat</a>(viewer,&amp;format);
+<a name="line28"> 28: </a>  <font color="#4169E1">if</font> (format == <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO</a> || format == <a href="https://petsc.org/release/docs/manualpages/Viewer/PetscViewerFormat.html#PetscViewerFormat">PETSC_VIEWER_ASCII_INFO_DETAIL</a>) <font color="#4169E1">return</font> 0;
+<a name="line29"> 29: </a>  <a href="../../../../../../docs/manualpages/DS/DSViewMat.html#DSViewMat">DSViewMat</a>(ds,viewer,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>);
+<a name="line30"> 30: </a>  <font color="#4169E1">if</font> (ds-&gt;state&gt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_INTERMEDIATE</a>) <a href="../../../../../../docs/manualpages/DS/DSViewMat.html#DSViewMat">DSViewMat</a>(ds,viewer,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>);
+<a name="line31"> 31: </a>  <font color="#4169E1">if</font> (ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>]) <a href="../../../../../../docs/manualpages/DS/DSViewMat.html#DSViewMat">DSViewMat</a>(ds,viewer,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>);
+<a name="line32"> 32: </a>  <font color="#4169E1">if</font> (ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>]) <a href="../../../../../../docs/manualpages/DS/DSViewMat.html#DSViewMat">DSViewMat</a>(ds,viewer,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>);
+<a name="line33"> 33: </a>  <font color="#4169E1">return</font> 0;
+<a name="line34"> 34: </a>}
+
+<a name="line36"> 36: </a><strong><font color="#4169E1"><a name="DSVectors_NHEP_Refined_Some"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSVectors_NHEP_Refined_Some(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *k,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *rnorm,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> left)</font></strong>
+<a name="line37"> 37: </a>{
+<a name="line38"> 38: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,j;
+<a name="line39"> 39: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>      info,ld,n,n1,lwork,inc=1;
+<a name="line40"> 40: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       sdummy,done=1.0,zero=0.0;
+<a name="line41"> 41: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         *sigma;
+<a name="line42"> 42: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         iscomplex = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line43"> 43: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *X,*W;
+<a name="line44"> 44: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *A,*Q;
+
+<a name="line47"> 47: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line48"> 48: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line49"> 49: </a>  n1 = n+1;
+<a name="line50"> 50: </a>  DSAllocateWork_Private(ds,5*ld,6*ld,0);
+<a name="line51"> 51: </a>  DSAllocateMat_Private(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>);
+<a name="line52"> 52: </a>  lwork = 5*ld;
+<a name="line53"> 53: </a>  sigma = ds-&gt;rwork+5*ld;
+
+<a name="line55"> 55: </a>  <font color="#B22222">/* build A-w*I in W */</font>
+<a name="line56"> 56: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line57"> 57: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayWrite.html#MatDenseGetArrayWrite">MatDenseGetArrayWrite</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],&amp;W);
+<a name="line58"> 58: </a>  <font color="#4169E1">if</font> ((*k)&lt;n-1 &amp;&amp; A[(*k)+1+(*k)*ld]!=0.0) iscomplex = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line60"> 60: </a>  <font color="#4169E1">for</font> (j=0;j&lt;n;j++)
+<a name="line61"> 61: </a>    <font color="#4169E1">for</font> (i=0;i&lt;=n;i++)
+<a name="line62"> 62: </a>      W[i+j*ld] = A[i+j*ld];
+<a name="line63"> 63: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++)
+<a name="line64"> 64: </a>    W[i+i*ld] -= A[(*k)+(*k)*ld];
+<a name="line65"> 65: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+
+<a name="line67"> 67: </a>  <font color="#B22222">/* compute <a href="../../../../../../docs/manualpages/SVD/SVD.html#SVD">SVD</a> of W */</font>
+<a name="line68"> 68: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line69"> 69: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKgesvd"</font>,LAPACKgesvd_(<font color="#666666">"N"</font>,<font color="#666666">"O"</font>,&amp;n1,&amp;n,W,&amp;ld,sigma,&amp;sdummy,&amp;ld,&amp;sdummy,&amp;ld,ds-&gt;work,&amp;lwork,&amp;info));
+<a name="line70"> 70: </a><font color="#A020F0">#else</font>
+<a name="line71"> 71: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKgesvd"</font>,LAPACKgesvd_(<font color="#666666">"N"</font>,<font color="#666666">"O"</font>,&amp;n1,&amp;n,W,&amp;ld,sigma,&amp;sdummy,&amp;ld,&amp;sdummy,&amp;ld,ds-&gt;work,&amp;lwork,ds-&gt;rwork,&amp;info));
+<a name="line72"> 72: </a><font color="#A020F0">#endif</font>
+<a name="line73"> 73: </a>  SlepcCheckLapackInfo(<font color="#666666">"gesvd"</font>,info);
+
+<a name="line75"> 75: </a>  <font color="#B22222">/* the smallest singular value is the new error estimate */</font>
+<a name="line76"> 76: </a>  <font color="#4169E1">if</font> (rnorm) *rnorm = sigma[n-1];
+
+<a name="line78"> 78: </a>  <font color="#B22222">/* update vector with right singular vector associated to smallest singular value,</font>
+<a name="line79"> 79: </a><font color="#B22222">     accumulating the transformation matrix Q */</font>
+<a name="line80"> 80: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line81"> 81: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[left?<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>:<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>],&amp;X);
+<a name="line82"> 82: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"BLASgemv"</font>,BLASgemv_(<font color="#666666">"N"</font>,&amp;n,&amp;n,&amp;done,Q,&amp;ld,W+n-1,&amp;ld,&amp;zero,X+(*k)*ld,&amp;inc));
+<a name="line83"> 83: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line84"> 84: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[left?<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>:<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>],&amp;X);
+<a name="line85"> 85: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayWrite.html#MatDenseRestoreArrayWrite">MatDenseRestoreArrayWrite</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],&amp;W);
+<a name="line86"> 86: </a>  <font color="#4169E1">return</font> 0;
+<a name="line87"> 87: </a>}
+
+<a name="line89"> 89: </a><strong><font color="#4169E1"><a name="DSVectors_NHEP_Refined_All"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSVectors_NHEP_Refined_All(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> left)</font></strong>
+<a name="line90"> 90: </a>{
+<a name="line91"> 91: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+
+<a name="line93"> 93: </a>  <font color="#4169E1">for</font> (i=0;i&lt;ds-&gt;n;i++) DSVectors_NHEP_Refined_Some(ds,&amp;i,NULL,left);
+<a name="line94"> 94: </a>  <font color="#4169E1">return</font> 0;
+<a name="line95"> 95: </a>}
+
+<a name="line97"> 97: </a><strong><font color="#4169E1"><a name="DSVectors_NHEP_Eigen_Some"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSVectors_NHEP_Eigen_Some(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *k,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *rnorm,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> left)</font></strong>
+<a name="line98"> 98: </a>{
+<a name="line99"> 99: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i;
+<a name="line100">100: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>      mm=1,mout,info,ld,n,*select,inc=1,cols=1,zero=0;
+<a name="line101">101: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       sone=1.0,szero=0.0;
+<a name="line102">102: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         norm,done=1.0;
+<a name="line103">103: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         iscomplex = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line104">104: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *X,*Y;
+<a name="line105">105: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *A,*Q;
+
+<a name="line107">107: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line108">108: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line109">109: </a>  DSAllocateWork_Private(ds,0,0,ld);
+<a name="line110">110: </a>  select = ds-&gt;iwork;
+<a name="line111">111: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) select[i] = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>)<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+
+<a name="line113">113: </a>  <font color="#B22222">/* compute k-th eigenvector Y of A */</font>
+<a name="line114">114: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line115">115: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[left?<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>:<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>],&amp;X);
+<a name="line116">116: </a>  Y = X+(*k)*ld;
+<a name="line117">117: </a>  select[*k] = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>)<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line118">118: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line119">119: </a>  <font color="#4169E1">if</font> ((*k)&lt;n-1 &amp;&amp; A[(*k)+1+(*k)*ld]!=0.0) iscomplex = <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line120">120: </a>  mm = iscomplex? 2: 1;
+<a name="line121">121: </a>  <font color="#4169E1">if</font> (iscomplex) select[(*k)+1] = (<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>)<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>;
+<a name="line122">122: </a>  DSAllocateWork_Private(ds,3*ld,0,0);
+<a name="line123">123: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKtrevc"</font>,LAPACKtrevc_(left?<font color="#666666">"L"</font>:<font color="#666666">"R"</font>,<font color="#666666">"S"</font>,select,&amp;n,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)A,&amp;ld,Y,&amp;ld,Y,&amp;ld,&amp;mm,&amp;mout,ds-&gt;work,&amp;info));
+<a name="line124">124: </a><font color="#A020F0">#else</font>
+<a name="line125">125: </a>  DSAllocateWork_Private(ds,2*ld,ld,0);
+<a name="line126">126: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKtrevc"</font>,LAPACKtrevc_(left?<font color="#666666">"L"</font>:<font color="#666666">"R"</font>,<font color="#666666">"S"</font>,select,&amp;n,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)A,&amp;ld,Y,&amp;ld,Y,&amp;ld,&amp;mm,&amp;mout,ds-&gt;work,ds-&gt;rwork,&amp;info));
+<a name="line127">127: </a><font color="#A020F0">#endif</font>
+<a name="line128">128: </a>  SlepcCheckLapackInfo(<font color="#666666">"trevc"</font>,info);
+<a name="line130">130: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+
+<a name="line132">132: </a>  <font color="#B22222">/* accumulate and normalize eigenvectors */</font>
+<a name="line133">133: </a>  <font color="#4169E1">if</font> (ds-&gt;state&gt;=<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_CONDENSED</a>) {
+<a name="line134">134: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line135">135: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>(ds-&gt;work,Y,mout*ld);
+<a name="line136">136: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"BLASgemv"</font>,BLASgemv_(<font color="#666666">"N"</font>,&amp;n,&amp;n,&amp;sone,Q,&amp;ld,ds-&gt;work,&amp;inc,&amp;szero,Y,&amp;inc));
+<a name="line137">137: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line138">138: </a>    <font color="#4169E1">if</font> (iscomplex) <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"BLASgemv"</font>,BLASgemv_(<font color="#666666">"N"</font>,&amp;n,&amp;n,&amp;sone,Q,&amp;ld,ds-&gt;work+ld,&amp;inc,&amp;szero,Y+ld,&amp;inc));
+<a name="line139">139: </a><font color="#A020F0">#endif</font>
+<a name="line140">140: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line141">141: </a>    cols = 1;
+<a name="line142">142: </a>    norm = BLASnrm2_(&amp;n,Y,&amp;inc);
+<a name="line143">143: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line144">144: </a>    <font color="#4169E1">if</font> (iscomplex) {
+<a name="line145">145: </a>      norm = <a href="../../../../../../docs/manualpages/sys/SlepcAbsEigenvalue.html#SlepcAbsEigenvalue">SlepcAbsEigenvalue</a>(norm,BLASnrm2_(&amp;n,Y+ld,&amp;inc));
+<a name="line146">146: </a>      cols = 2;
+<a name="line147">147: </a>    }
+<a name="line148">148: </a><font color="#A020F0">#endif</font>
+<a name="line149">149: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKlascl"</font>,LAPACKlascl_(<font color="#666666">"G"</font>,&amp;zero,&amp;zero,&amp;norm,&amp;done,&amp;n,&amp;cols,Y,&amp;ld,&amp;info));
+<a name="line150">150: </a>    SlepcCheckLapackInfo(<font color="#666666">"lascl"</font>,info);
+<a name="line151">151: </a>  }
+
+<a name="line153">153: </a>  <font color="#B22222">/* set output arguments */</font>
+<a name="line154">154: </a>  <font color="#4169E1">if</font> (iscomplex) (*k)++;
+<a name="line155">155: </a>  <font color="#4169E1">if</font> (rnorm) {
+<a name="line156">156: </a>    <font color="#4169E1">if</font> (iscomplex) *rnorm = <a href="../../../../../../docs/manualpages/sys/SlepcAbsEigenvalue.html#SlepcAbsEigenvalue">SlepcAbsEigenvalue</a>(Y[n-1],Y[n-1+ld]);
+<a name="line157">157: </a>    <font color="#4169E1">else</font> *rnorm = PetscAbsScalar(Y[n-1]);
+<a name="line158">158: </a>  }
+<a name="line159">159: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[left?<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>:<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>],&amp;X);
+<a name="line160">160: </a>  <font color="#4169E1">return</font> 0;
+<a name="line161">161: </a>}
+
+<a name="line163">163: </a><strong><font color="#4169E1"><a name="DSVectors_NHEP_Eigen_All"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSVectors_NHEP_Eigen_All(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> left)</font></strong>
+<a name="line164">164: </a>{
+<a name="line165">165: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i;
+<a name="line166">166: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>      n,ld,mout,info,inc=1,cols,zero=0;
+<a name="line167">167: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a>         iscomplex;
+<a name="line168">168: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *X,*Y,*Z;
+<a name="line169">169: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *A,*Q;
+<a name="line170">170: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         norm,done=1.0;
+<a name="line171">171: </a>  const char        *side,*back;
+
+<a name="line173">173: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line174">174: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line175">175: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line176">176: </a>  <font color="#4169E1">if</font> (left) {
+<a name="line177">177: </a>    X = NULL;
+<a name="line178">178: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>],&amp;Y);
+<a name="line179">179: </a>    side = <font color="#666666">"L"</font>;
+<a name="line180">180: </a>  } <font color="#4169E1">else</font> {
+<a name="line181">181: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>],&amp;X);
+<a name="line182">182: </a>    Y = NULL;
+<a name="line183">183: </a>    side = <font color="#666666">"R"</font>;
+<a name="line184">184: </a>  }
+<a name="line185">185: </a>  Z = left? Y: X;
+<a name="line186">186: </a>  <font color="#4169E1">if</font> (ds-&gt;state&gt;=<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_CONDENSED</a>) {
+<a name="line187">187: </a>    <font color="#B22222">/* <a href="../../../../../../docs/manualpages/DS/DSSolve.html#DSSolve">DSSolve</a>() has been called, backtransform with matrix Q */</font>
+<a name="line188">188: </a>    back = <font color="#666666">"B"</font>;
+<a name="line189">189: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line190">190: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArraycpy.html#PetscArraycpy">PetscArraycpy</a>(Z,Q,ld*ld);
+<a name="line191">191: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line192">192: </a>  } <font color="#4169E1">else</font> back = <font color="#666666">"A"</font>;
+<a name="line193">193: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line194">194: </a>  DSAllocateWork_Private(ds,3*ld,0,0);
+<a name="line195">195: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKtrevc"</font>,LAPACKtrevc_(side,back,NULL,&amp;n,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)A,&amp;ld,Y,&amp;ld,X,&amp;ld,&amp;n,&amp;mout,ds-&gt;work,&amp;info));
+<a name="line196">196: </a><font color="#A020F0">#else</font>
+<a name="line197">197: </a>  DSAllocateWork_Private(ds,2*ld,ld,0);
+<a name="line198">198: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKtrevc"</font>,LAPACKtrevc_(side,back,NULL,&amp;n,(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>*)A,&amp;ld,Y,&amp;ld,X,&amp;ld,&amp;n,&amp;mout,ds-&gt;work,ds-&gt;rwork,&amp;info));
+<a name="line199">199: </a><font color="#A020F0">#endif</font>
+<a name="line200">200: </a>  SlepcCheckLapackInfo(<font color="#666666">"trevc"</font>,info);
+
+<a name="line202">202: </a>  <font color="#B22222">/* normalize eigenvectors */</font>
+<a name="line203">203: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) {
+<a name="line204">204: </a>    iscomplex = (i&lt;n-1 &amp;&amp; A[i+1+i*ld]!=0.0)? <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>: <a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>;
+<a name="line205">205: </a>    cols = 1;
+<a name="line206">206: </a>    norm = BLASnrm2_(&amp;n,Z+i*ld,&amp;inc);
+<a name="line207">207: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line208">208: </a>    <font color="#4169E1">if</font> (iscomplex) {
+<a name="line209">209: </a>      norm = <a href="../../../../../../docs/manualpages/sys/SlepcAbsEigenvalue.html#SlepcAbsEigenvalue">SlepcAbsEigenvalue</a>(norm,BLASnrm2_(&amp;n,Z+(i+1)*ld,&amp;inc));
+<a name="line210">210: </a>      cols = 2;
+<a name="line211">211: </a>    }
+<a name="line212">212: </a><font color="#A020F0">#endif</font>
+<a name="line213">213: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKlascl"</font>,LAPACKlascl_(<font color="#666666">"G"</font>,&amp;zero,&amp;zero,&amp;norm,&amp;done,&amp;n,&amp;cols,Z+i*ld,&amp;ld,&amp;info));
+<a name="line214">214: </a>    SlepcCheckLapackInfo(<font color="#666666">"lascl"</font>,info);
+<a name="line215">215: </a>    <font color="#4169E1">if</font> (iscomplex) i++;
+<a name="line216">216: </a>  }
+<a name="line217">217: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line218">218: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[left?<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>:<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>],&amp;Z);
+<a name="line219">219: </a>  <font color="#4169E1">return</font> 0;
+<a name="line220">220: </a>}
+
+<a name="line222">222: </a><strong><font color="#4169E1"><a name="DSVectors_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSVectors_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DSMatType</a> mat,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *j,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *rnorm)</font></strong>
+<a name="line223">223: </a>{
+<a name="line224">224: </a>  <font color="#4169E1">switch</font> (mat) {
+<a name="line225">225: </a>    <font color="#4169E1">case</font> <a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_X</a>:
+<a name="line226">226: </a>      <font color="#4169E1">if</font> (ds-&gt;refined) {
+<a name="line228">228: </a>        <font color="#4169E1">if</font> (j) DSVectors_NHEP_Refined_Some(ds,j,rnorm,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line229">229: </a>        <font color="#4169E1">else</font> DSVectors_NHEP_Refined_All(ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line230">230: </a>      } <font color="#4169E1">else</font> {
+<a name="line231">231: </a>        <font color="#4169E1">if</font> (j) DSVectors_NHEP_Eigen_Some(ds,j,rnorm,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line232">232: </a>        <font color="#4169E1">else</font> DSVectors_NHEP_Eigen_All(ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line233">233: </a>      }
+<a name="line234">234: </a>      <font color="#4169E1">break</font>;
+<a name="line235">235: </a>    <font color="#4169E1">case</font> <a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Y</a>:
+<a name="line237">237: </a>      <font color="#4169E1">if</font> (j) DSVectors_NHEP_Eigen_Some(ds,j,rnorm,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line238">238: </a>      <font color="#4169E1">else</font> DSVectors_NHEP_Eigen_All(ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_TRUE.html#PETSC_TRUE">PETSC_TRUE</a>);
+<a name="line239">239: </a>      <font color="#4169E1">break</font>;
+<a name="line240">240: </a>    <font color="#4169E1">case</font> <a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_U</a>:
+<a name="line241">241: </a>    <font color="#4169E1">case</font> <a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_V</a>:
+<a name="line242">242: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/SETERRQ.html#SETERRQ">SETERRQ</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds),PETSC_ERR_SUP,<font color="#666666">"Not implemented yet"</font>);
+<a name="line243">243: </a><strong><font color="#FF0000">    default:</font></strong>
+<a name="line244">244: </a>      <a href="https://petsc.org/release/docs/manualpages/Sys/SETERRQ.html#SETERRQ">SETERRQ</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds),PETSC_ERR_ARG_OUTOFRANGE,<font color="#666666">"Invalid mat parameter"</font>);
+<a name="line245">245: </a>  }
+<a name="line246">246: </a>  <font color="#4169E1">return</font> 0;
+<a name="line247">247: </a>}
+
+<a name="line249">249: </a><strong><font color="#4169E1"><a name="DSSort_NHEP_Arbitrary"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSSort_NHEP_Arbitrary(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wi,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *rr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *ri,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *k)</font></strong>
+<a name="line250">250: </a>{
+<a name="line251">251: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       i;
+<a name="line252">252: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>   info,n,ld,mout,lwork,*selection;
+<a name="line253">253: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *T,*Q,*work;
+<a name="line254">254: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      dummy;
+<a name="line255">255: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line256">256: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>   *iwork,liwork;
+<a name="line257">257: </a><font color="#A020F0">#endif</font>
+
+<a name="line260">260: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;T);
+<a name="line261">261: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line262">262: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line263">263: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line264">264: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line265">265: </a>  lwork = n;
+<a name="line266">266: </a>  liwork = 1;
+<a name="line267">267: </a>  DSAllocateWork_Private(ds,lwork,0,liwork+n);
+<a name="line268">268: </a>  work = ds-&gt;work;
+<a name="line269">269: </a>  lwork = ds-&gt;lwork;
+<a name="line270">270: </a>  selection = ds-&gt;iwork;
+<a name="line271">271: </a>  iwork = ds-&gt;iwork + n;
+<a name="line272">272: </a>  liwork = ds-&gt;liwork - n;
+<a name="line273">273: </a><font color="#A020F0">#else</font>
+<a name="line274">274: </a>  lwork = 1;
+<a name="line275">275: </a>  DSAllocateWork_Private(ds,lwork,0,n);
+<a name="line276">276: </a>  work = ds-&gt;work;
+<a name="line277">277: </a>  selection = ds-&gt;iwork;
+<a name="line278">278: </a><font color="#A020F0">#endif</font>
+<a name="line279">279: </a>  <font color="#B22222">/* Compute the selected eigenvalue to be in the leading position */</font>
+<a name="line280">280: </a>  DSSortEigenvalues_Private(ds,rr,ri,ds-&gt;perm,<a href="https://petsc.org/release/docs/manualpages/Sys/PETSC_FALSE.html#PETSC_FALSE">PETSC_FALSE</a>);
+<a name="line281">281: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArrayzero.html#PetscArrayzero">PetscArrayzero</a>(selection,n);
+<a name="line282">282: </a>  <font color="#4169E1">for</font> (i=0;i&lt;*k;i++) selection[ds-&gt;perm[i]] = 1;
+<a name="line283">283: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line284">284: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKtrsen"</font>,LAPACKtrsen_(<font color="#666666">"N"</font>,<font color="#666666">"V"</font>,selection,&amp;n,T,&amp;ld,Q,&amp;ld,wr,wi,&amp;mout,&amp;dummy,&amp;dummy,work,&amp;lwork,iwork,&amp;liwork,&amp;info));
+<a name="line285">285: </a><font color="#A020F0">#else</font>
+<a name="line286">286: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKtrsen"</font>,LAPACKtrsen_(<font color="#666666">"N"</font>,<font color="#666666">"V"</font>,selection,&amp;n,T,&amp;ld,Q,&amp;ld,wr,&amp;mout,&amp;dummy,&amp;dummy,work,&amp;lwork,&amp;info));
+<a name="line287">287: </a><font color="#A020F0">#endif</font>
+<a name="line288">288: </a>  SlepcCheckLapackInfo(<font color="#666666">"trsen"</font>,info);
+<a name="line289">289: </a>  *k = mout;
+<a name="line290">290: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;T);
+<a name="line291">291: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line292">292: </a>  <font color="#4169E1">return</font> 0;
+<a name="line293">293: </a>}
+
+<a name="line295">295: </a><strong><font color="#4169E1"><a name="DSSort_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSSort_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wi,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *rr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *ri,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *k)</font></strong>
+<a name="line296">296: </a>{
+<a name="line297">297: </a>  <font color="#4169E1">if</font> (!rr || wr == rr) DSSort_NHEP_Total(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,wr,wi);
+<a name="line298">298: </a>  <font color="#4169E1">else</font> DSSort_NHEP_Arbitrary(ds,wr,wi,rr,ri,k);
+<a name="line299">299: </a>  <font color="#4169E1">return</font> 0;
+<a name="line300">300: </a>}
+
+<a name="line302">302: </a><strong><font color="#4169E1"><a name="DSSortWithPermutation_NHEP"></a>static <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSSortWithPermutation_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> *perm,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wi)</font></strong>
+<a name="line303">303: </a>{
+<a name="line304">304: </a>  DSSortWithPermutation_NHEP_Private(ds,perm,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,wr,wi);
+<a name="line305">305: </a>  <font color="#4169E1">return</font> 0;
+<a name="line306">306: </a>}
+
+<a name="line308">308: </a><strong><font color="#4169E1"><a name="DSUpdateExtraRow_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSUpdateExtraRow_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds)</font></strong>
+<a name="line309">309: </a>{
+<a name="line310">310: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i;
+<a name="line311">311: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>      n,ld,incx=1;
+<a name="line312">312: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *A,*x,*y,one=1.0,zero=0.0;
+<a name="line313">313: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *Q;
+
+<a name="line315">315: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line316">316: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line317">317: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line318">318: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line319">319: </a>  DSAllocateWork_Private(ds,2*ld,0,0);
+<a name="line320">320: </a>  x = ds-&gt;work;
+<a name="line321">321: </a>  y = ds-&gt;work+ld;
+<a name="line322">322: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) x[i] = PetscConj(A[n+i*ld]);
+<a name="line323">323: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"BLASgemv"</font>,BLASgemv_(<font color="#666666">"C"</font>,&amp;n,&amp;n,&amp;one,Q,&amp;ld,x,&amp;incx,&amp;zero,y,&amp;incx));
+<a name="line324">324: </a>  <font color="#4169E1">for</font> (i=0;i&lt;n;i++) A[n+i*ld] = PetscConj(y[i]);
+<a name="line325">325: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line326">326: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line327">327: </a>  ds-&gt;k = n;
+<a name="line328">328: </a>  <font color="#4169E1">return</font> 0;
+<a name="line329">329: </a>}
+
+<a name="line331">331: </a><strong><font color="#4169E1"><a name="DSSolve_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSSolve_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wr,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *wi)</font></strong>
+<a name="line332">332: </a>{
+<a name="line333">333: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line335">335: </a><font color="#A020F0">#endif</font>
+<a name="line336">336: </a>  DSSolve_NHEP_Private(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>,wr,wi);
+<a name="line337">337: </a>  <font color="#4169E1">return</font> 0;
+<a name="line338">338: </a>}
+
+<a name="line340">340: </a><font color="#A020F0">#if !defined(PETSC_HAVE_MPIUNI)</font>
+<a name="line341">341: </a><strong><font color="#4169E1"><a name="DSSynchronize_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSSynchronize_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> eigr[],<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> eigi[])</font></strong>
+<a name="line342">342: </a>{
+<a name="line343">343: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>       ld=ds-&gt;ld,l=ds-&gt;l,k;
+<a name="line344">344: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIInt.html#PetscMPIInt">PetscMPIInt</a>    n,rank,off=0,size,ldn;
+<a name="line345">345: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *A,*Q;
+
+<a name="line347">347: </a>  k = (ds-&gt;n-l)*ld;
+<a name="line348">348: </a>  <font color="#4169E1">if</font> (ds-&gt;state&gt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>) k += (ds-&gt;n-l)*ld;
+<a name="line349">349: </a>  <font color="#4169E1">if</font> (eigr) k += ds-&gt;n-l;
+<a name="line350">350: </a>  <font color="#4169E1">if</font> (eigi) k += ds-&gt;n-l;
+<a name="line351">351: </a>  DSAllocateWork_Private(ds,k,0,0);
+<a name="line352">352: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIIntCast.html#PetscMPIIntCast">PetscMPIIntCast</a>(k*<font color="#4169E1">sizeof</font>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>),&amp;size);
+<a name="line353">353: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIIntCast.html#PetscMPIIntCast">PetscMPIIntCast</a>(ds-&gt;n-l,&amp;n);
+<a name="line354">354: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscMPIIntCast.html#PetscMPIIntCast">PetscMPIIntCast</a>(ld*(ds-&gt;n-l),&amp;ldn);
+<a name="line355">355: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line356">356: </a>  <font color="#4169E1">if</font> (ds-&gt;state&gt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>) <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line357">357: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Comm_rank.html#MPI_Comm_rank">MPI_Comm_rank</a>(<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds),&amp;rank);
+<a name="line358">358: </a>  <font color="#4169E1">if</font> (!rank) {
+<a name="line359">359: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Pack.html#MPI_Pack">MPI_Pack</a>(A+l*ld,ldn,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ds-&gt;work,size,&amp;off,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line360">360: </a>    <font color="#4169E1">if</font> (ds-&gt;state&gt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Pack.html#MPI_Pack">MPI_Pack</a>(Q+l*ld,ldn,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ds-&gt;work,size,&amp;off,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line361">361: </a>    <font color="#4169E1">if</font> (eigr) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Pack.html#MPI_Pack">MPI_Pack</a>(eigr+l,n,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ds-&gt;work,size,&amp;off,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line362">362: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line363">363: </a>    <font color="#4169E1">if</font> (eigi) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Pack.html#MPI_Pack">MPI_Pack</a>(eigi+l,n,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,ds-&gt;work,size,&amp;off,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line364">364: </a><font color="#A020F0">#endif</font>
+<a name="line365">365: </a>  }
+<a name="line366">366: </a>  <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Bcast.html#MPI_Bcast">MPI_Bcast</a>(ds-&gt;work,size,MPI_BYTE,0,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line367">367: </a>  <font color="#4169E1">if</font> (rank) {
+<a name="line368">368: </a>    <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Unpack.html#MPI_Unpack">MPI_Unpack</a>(ds-&gt;work,size,&amp;off,A+l*ld,ldn,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line369">369: </a>    <font color="#4169E1">if</font> (ds-&gt;state&gt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Unpack.html#MPI_Unpack">MPI_Unpack</a>(ds-&gt;work,size,&amp;off,Q+l*ld,ldn,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line370">370: </a>    <font color="#4169E1">if</font> (eigr) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Unpack.html#MPI_Unpack">MPI_Unpack</a>(ds-&gt;work,size,&amp;off,eigr+l,n,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line371">371: </a><font color="#A020F0">#if !defined(PETSC_USE_COMPLEX)</font>
+<a name="line372">372: </a>    <font color="#4169E1">if</font> (eigi) <a href="http://www.mpich.org/static/docs/latest/www3/MPI_Unpack.html#MPI_Unpack">MPI_Unpack</a>(ds-&gt;work,size,&amp;off,eigi+l,n,<a href="https://petsc.org/release/docs/manualpages/Sys/MPIU_SCALAR.html#MPIU_SCALAR">MPIU_SCALAR</a>,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObjectComm.html#PetscObjectComm">PetscObjectComm</a>((<a href="https://petsc.org/release/docs/manualpages/Sys/PetscObject.html#PetscObject">PetscObject</a>)ds));
+<a name="line373">373: </a><font color="#A020F0">#endif</font>
+<a name="line374">374: </a>  }
+<a name="line375">375: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line376">376: </a>  <font color="#4169E1">if</font> (ds-&gt;state&gt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_RAW</a>) <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line377">377: </a>  <font color="#4169E1">return</font> 0;
+<a name="line378">378: </a>}
+<a name="line379">379: </a><font color="#A020F0">#endif</font>
+
+<a name="line381">381: </a><strong><font color="#4169E1"><a name="DSTruncate_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSTruncate_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a> n,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> trim)</font></strong>
+<a name="line382">382: </a>{
+<a name="line383">383: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>    i,ld=ds-&gt;ld,l=ds-&gt;l;
+<a name="line384">384: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *A;
+
+<a name="line386">386: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line387">387: </a><font color="#A020F0">#if defined(PETSC_USE_DEBUG)</font>
+<a name="line388">388: </a>  <font color="#B22222">/* make sure diagonal 2x2 block is not broken */</font>
+<a name="line390">390: </a><font color="#A020F0">#endif</font>
+<a name="line391">391: </a>  <font color="#4169E1">if</font> (trim) {
+<a name="line392">392: </a>    <font color="#4169E1">if</font> (ds-&gt;extrarow) {   <font color="#B22222">/* clean extra row */</font>
+<a name="line393">393: </a>      <font color="#4169E1">for</font> (i=l;i&lt;ds-&gt;n;i++) A[ds-&gt;n+i*ld] = 0.0;
+<a name="line394">394: </a>    }
+<a name="line395">395: </a>    ds-&gt;l = 0;
+<a name="line396">396: </a>    ds-&gt;k = 0;
+<a name="line397">397: </a>    ds-&gt;n = n;
+<a name="line398">398: </a>    ds-&gt;t = ds-&gt;n;   <font color="#B22222">/* truncated length equal to the new dimension */</font>
+<a name="line399">399: </a>  } <font color="#4169E1">else</font> {
+<a name="line400">400: </a>    <font color="#4169E1">if</font> (ds-&gt;extrarow &amp;&amp; ds-&gt;k==ds-&gt;n) {
+<a name="line401">401: </a>      <font color="#B22222">/* copy entries of extra row to the new position, then clean last row */</font>
+<a name="line402">402: </a>      <font color="#4169E1">for</font> (i=l;i&lt;n;i++) A[n+i*ld] = A[ds-&gt;n+i*ld];
+<a name="line403">403: </a>      <font color="#4169E1">for</font> (i=l;i&lt;ds-&gt;n;i++) A[ds-&gt;n+i*ld] = 0.0;
+<a name="line404">404: </a>    }
+<a name="line405">405: </a>    ds-&gt;k = (ds-&gt;extrarow)? n: 0;
+<a name="line406">406: </a>    ds-&gt;t = ds-&gt;n;   <font color="#B22222">/* truncated length equal to previous dimension */</font>
+<a name="line407">407: </a>    ds-&gt;n = n;
+<a name="line408">408: </a>  }
+<a name="line409">409: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line410">410: </a>  <font color="#4169E1">return</font> 0;
+<a name="line411">411: </a>}
+
+<a name="line413">413: </a><strong><font color="#4169E1"><a name="DSCond_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSCond_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *cond)</font></strong>
+<a name="line414">414: </a>{
+<a name="line415">415: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *work;
+<a name="line416">416: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      *rwork;
+<a name="line417">417: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>   *ipiv;
+<a name="line418">418: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>   lwork,info,n,ld;
+<a name="line419">419: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>      hn,hin;
+<a name="line420">420: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>    *A;
+
+<a name="line422">422: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line423">423: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line424">424: </a>  lwork = 8*ld;
+<a name="line425">425: </a>  DSAllocateWork_Private(ds,lwork,ld,ld);
+<a name="line426">426: </a>  work  = ds-&gt;work;
+<a name="line427">427: </a>  rwork = ds-&gt;rwork;
+<a name="line428">428: </a>  ipiv  = ds-&gt;iwork;
+
+<a name="line430">430: </a>  <font color="#B22222">/* use workspace matrix W to avoid overwriting A */</font>
+<a name="line431">431: </a>  DSAllocateMat_Private(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>);
+<a name="line432">432: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line433">433: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],&amp;A);
+
+<a name="line435">435: </a>  <font color="#B22222">/* norm of A */</font>
+<a name="line436">436: </a>  <font color="#4169E1">if</font> (ds-&gt;state&lt;<a href="../../../../../../docs/manualpages/DS/DSStateType.html#DSStateType">DS_STATE_INTERMEDIATE</a>) hn = LAPACKlange_(<font color="#666666">"I"</font>,&amp;n,&amp;n,A,&amp;ld,rwork);
+<a name="line437">437: </a>  <font color="#4169E1">else</font> hn = LAPACKlanhs_(<font color="#666666">"I"</font>,&amp;n,A,&amp;ld,rwork);
+
+<a name="line439">439: </a>  <font color="#B22222">/* norm of inv(A) */</font>
+<a name="line440">440: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKgetrf"</font>,LAPACKgetrf_(&amp;n,&amp;n,A,&amp;ld,ipiv,&amp;info));
+<a name="line441">441: </a>  SlepcCheckLapackInfo(<font color="#666666">"getrf"</font>,info);
+<a name="line442">442: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKgetri"</font>,LAPACKgetri_(&amp;n,A,&amp;ld,ipiv,work,&amp;lwork,&amp;info));
+<a name="line443">443: </a>  SlepcCheckLapackInfo(<font color="#666666">"getri"</font>,info);
+<a name="line444">444: </a>  hin = LAPACKlange_(<font color="#666666">"I"</font>,&amp;n,&amp;n,A,&amp;ld,rwork);
+<a name="line445">445: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],&amp;A);
+
+<a name="line447">447: </a>  *cond = hn*hin;
+<a name="line448">448: </a>  <font color="#4169E1">return</font> 0;
+<a name="line449">449: </a>}
+
+<a name="line451">451: </a><strong><font color="#4169E1"><a name="DSTranslateHarmonic_NHEP"></a><a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSTranslateHarmonic_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> tau,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> beta,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscBool.html#PetscBool">PetscBool</a> recover,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *gin,<a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a> *gammaout)</font></strong>
+<a name="line452">452: </a>{
+<a name="line453">453: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscInt.html#PetscInt">PetscInt</a>          i,j;
+<a name="line454">454: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASInt.html#PetscBLASInt">PetscBLASInt</a>      *ipiv,info,n,ld,one=1,ncol;
+<a name="line455">455: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a>       *A,*B,*g=gin,*ghat,done=1.0,dmone=-1.0,dzero=0.0;
+<a name="line456">456: </a>  const <a href="https://petsc.org/release/docs/manualpages/Sys/PetscScalar.html#PetscScalar">PetscScalar</a> *Q;
+<a name="line457">457: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscReal.html#PetscReal">PetscReal</a>         gamma=1.0;
+
+<a name="line459">459: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;n,&amp;n);
+<a name="line460">460: </a>  <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;ld,&amp;ld);
+<a name="line461">461: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+
+<a name="line463">463: </a>  <font color="#4169E1">if</font> (!recover) {
+
+<a name="line465">465: </a>    DSAllocateWork_Private(ds,0,0,ld);
+<a name="line466">466: </a>    ipiv = ds-&gt;iwork;
+<a name="line467">467: </a>    <font color="#4169E1">if</font> (!g) {
+<a name="line468">468: </a>      DSAllocateWork_Private(ds,ld,0,0);
+<a name="line469">469: </a>      g = ds-&gt;work;
+<a name="line470">470: </a>    }
+<a name="line471">471: </a>    <font color="#B22222">/* use workspace matrix W to factor A-tau*eye(n) */</font>
+<a name="line472">472: </a>    DSAllocateMat_Private(ds,<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>);
+<a name="line473">473: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatCopy.html#MatCopy">MatCopy</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],<a href="https://petsc.org/release/docs/manualpages/Mat/MatStructure.html#MatStructure">SAME_NONZERO_PATTERN</a>);
+<a name="line474">474: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArray.html#MatDenseGetArray">MatDenseGetArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],&amp;B);
+
+<a name="line476">476: </a>    <font color="#B22222">/* Vector g initially stores b = beta*e_n^T */</font>
+<a name="line477">477: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscArrayzero.html#PetscArrayzero">PetscArrayzero</a>(g,n);
+<a name="line478">478: </a>    g[n-1] = beta;
+
+<a name="line480">480: </a>    <font color="#B22222">/* g = (A-tau*eye(n))'\b */</font>
+<a name="line481">481: </a>    <font color="#4169E1">for</font> (i=0;i&lt;n;i++) B[i+i*ld] -= tau;
+<a name="line482">482: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKgetrf"</font>,LAPACKgetrf_(&amp;n,&amp;n,B,&amp;ld,ipiv,&amp;info));
+<a name="line483">483: </a>    SlepcCheckLapackInfo(<font color="#666666">"getrf"</font>,info);
+<a name="line484">484: </a>    <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogFlops.html#PetscLogFlops">PetscLogFlops</a>(2.0*n*n*n/3.0);
+<a name="line485">485: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"LAPACKgetrs"</font>,LAPACKgetrs_(<font color="#666666">"C"</font>,&amp;n,&amp;one,B,&amp;ld,ipiv,g,&amp;ld,&amp;info));
+<a name="line486">486: </a>    SlepcCheckLapackInfo(<font color="#666666">"getrs"</font>,info);
+<a name="line487">487: </a>    <a href="https://petsc.org/release/docs/manualpages/Profiling/PetscLogFlops.html#PetscLogFlops">PetscLogFlops</a>(2.0*n*n-n);
+<a name="line488">488: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_W</a>],&amp;B);
+
+<a name="line490">490: </a>    <font color="#B22222">/* A = A + g*b' */</font>
+<a name="line491">491: </a>    <font color="#4169E1">for</font> (i=0;i&lt;n;i++) A[i+(n-1)*ld] += g[i]*beta;
+
+<a name="line493">493: </a>  } <font color="#4169E1">else</font> { <font color="#B22222">/* recover */</font>
+
+<a name="line495">495: </a>    DSAllocateWork_Private(ds,ld,0,0);
+<a name="line496">496: </a>    ghat = ds-&gt;work;
+<a name="line497">497: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseGetArrayRead.html#MatDenseGetArrayRead">MatDenseGetArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+
+<a name="line499">499: </a>    <font color="#B22222">/* g^ = -Q(:,idx)'*g */</font>
+<a name="line500">500: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscBLASIntCast.html#PetscBLASIntCast">PetscBLASIntCast</a>(ds-&gt;l+ds-&gt;k,&amp;ncol);
+<a name="line501">501: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"BLASgemv"</font>,BLASgemv_(<font color="#666666">"C"</font>,&amp;n,&amp;ncol,&amp;dmone,Q,&amp;ld,g,&amp;one,&amp;dzero,ghat,&amp;one));
+
+<a name="line503">503: </a>    <font color="#B22222">/* A = A + g^*b' */</font>
+<a name="line504">504: </a>    <font color="#4169E1">for</font> (i=0;i&lt;ds-&gt;l+ds-&gt;k;i++)
+<a name="line505">505: </a>      <font color="#4169E1">for</font> (j=ds-&gt;l;j&lt;ds-&gt;l+ds-&gt;k;j++)
+<a name="line506">506: </a>        A[i+j*ld] += ghat[i]*Q[n-1+j*ld]*beta;
+
+<a name="line508">508: </a>    <font color="#B22222">/* g~ = (I-Q(:,idx)*Q(:,idx)')*g = g+Q(:,idx)*g^ */</font>
+<a name="line509">509: </a>    <a href="https://petsc.org/release/docs/manualpages/Sys/PetscCallBLAS.html#PetscCallBLAS">PetscCallBLAS</a>(<font color="#666666">"BLASgemv"</font>,BLASgemv_(<font color="#666666">"N"</font>,&amp;n,&amp;ncol,&amp;done,Q,&amp;ld,ghat,&amp;one,&amp;done,g,&amp;one));
+<a name="line510">510: </a>    <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArrayRead.html#MatDenseRestoreArrayRead">MatDenseRestoreArrayRead</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a>],&amp;Q);
+<a name="line511">511: </a>  }
+
+<a name="line513">513: </a>  <font color="#B22222">/* Compute gamma factor */</font>
+<a name="line514">514: </a>  <font color="#4169E1">if</font> (gammaout || (recover &amp;&amp; ds-&gt;extrarow)) gamma = <a href="../../../../../../docs/manualpages/sys/SlepcAbs.html#SlepcAbs">SlepcAbs</a>(1.0,BLASnrm2_(&amp;n,g,&amp;one));
+<a name="line515">515: </a>  <font color="#4169E1">if</font> (gammaout) *gammaout = gamma;
+<a name="line516">516: </a>  <font color="#4169E1">if</font> (recover &amp;&amp; ds-&gt;extrarow) {
+<a name="line517">517: </a>    <font color="#4169E1">for</font> (j=ds-&gt;l;j&lt;ds-&gt;l+ds-&gt;k;j++) A[ds-&gt;n+j*ld] *= gamma;
+<a name="line518">518: </a>  }
+<a name="line519">519: </a>  <a href="https://petsc.org/release/docs/manualpages/Mat/MatDenseRestoreArray.html#MatDenseRestoreArray">MatDenseRestoreArray</a>(ds-&gt;omat[<a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a>],&amp;A);
+<a name="line520">520: </a>  <font color="#4169E1">return</font> 0;
+<a name="line521">521: </a>}
+
+<a name="line523">523: </a><font color="#B22222">/*MC</font>
+<a name="line524">524: </a><font color="#B22222">   <a href="../../../../../../docs/manualpages/DS/DSNHEP.html#DSNHEP">DSNHEP</a> - Dense Non-Hermitian Eigenvalue Problem.</font>
+
+<a name="line526">526: </a><font color="#B22222">   Level: beginner</font>
+
+<a name="line528">528: </a><font color="#B22222">   Notes:</font>
+<a name="line529">529: </a><font color="#B22222">   The problem is expressed as A*X = X*Lambda, where A is the input matrix.</font>
+<a name="line530">530: </a><font color="#B22222">   Lambda is a diagonal matrix whose diagonal elements are the arguments of</font>
+<a name="line531">531: </a><font color="#B22222">   <a href="../../../../../../docs/manualpages/DS/DSSolve.html#DSSolve">DSSolve</a>(). After solve, A is overwritten with the upper quasi-triangular</font>
+<a name="line532">532: </a><font color="#B22222">   matrix T of the (real) Schur form, A*Q = Q*T.</font>
+
+<a name="line534">534: </a><font color="#B22222">   In the intermediate state A is reduced to upper Hessenberg form.</font>
+
+<a name="line536">536: </a><font color="#B22222">   Computation of left eigenvectors is supported, but two-sided Krylov solvers</font>
+<a name="line537">537: </a><font color="#B22222">   usually rely on the related <a href="../../../../../../docs/manualpages/DS/DSNHEPTS.html#DSNHEPTS">DSNHEPTS</a>.</font>
+
+<a name="line539">539: </a><font color="#B22222">   Used <a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> matrices:</font>
+<a name="line540">540: </a><font color="#B22222">+  <a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_A</a> - problem matrix</font>
+<a name="line541">541: </a><font color="#B22222">-  <a href="../../../../../../docs/manualpages/DS/DSMatType.html#DSMatType">DS_MAT_Q</a> - orthogonal/unitary transformation that reduces to Hessenberg form</font>
+<a name="line542">542: </a><font color="#B22222">   (intermediate step) or matrix of orthogonal Schur vectors</font>
+
+<a name="line544">544: </a><font color="#B22222">   Implemented methods:</font>
+<a name="line545">545: </a><font color="#B22222">.  0 - Implicit QR (_hseqr)</font>
+
+<a name="line547">547: </a><font color="#B22222">.seealso: <a href="../../../../../../docs/manualpages/DS/DSCreate.html#DSCreate">DSCreate</a>(), <a href="../../../../../../docs/manualpages/DS/DSSetType.html#DSSetType">DSSetType</a>(), <a href="../../../../../../docs/manualpages/DS/DSType.html#DSType">DSType</a></font>
+<a name="line548">548: </a><font color="#B22222">M*/</font>
+<a name="line549">549: </a><strong><font color="#4169E1"><a name="DSCreate_NHEP"></a>SLEPC_EXTERN <a href="https://petsc.org/release/docs/manualpages/Sys/PetscErrorCode.html#PetscErrorCode">PetscErrorCode</a> DSCreate_NHEP(<a href="../../../../../../docs/manualpages/DS/DS.html#DS">DS</a> ds)</font></strong>
+<a name="line550">550: </a>{
+<a name="line551">551: </a>  ds-&gt;ops-&gt;allocate        = DSAllocate_NHEP;
+<a name="line552">552: </a>  ds-&gt;ops-&gt;view            = DSView_NHEP;
+<a name="line553">553: </a>  ds-&gt;ops-&gt;vectors         = DSVectors_NHEP;
+<a name="line554">554: </a>  ds-&gt;ops-&gt;solve[0]        = DSSolve_NHEP;
+<a name="line555">555: </a>  ds-&gt;ops-&gt;sort            = DSSort_NHEP;
+<a name="line556">556: </a>  ds-&gt;ops-&gt;sortperm        = DSSortWithPermutation_NHEP;
+<a name="line557">557: </a><font color="#A020F0">#if !defined(PETSC_HAVE_MPIUNI)</font>
+<a name="line558">558: </a>  ds-&gt;ops-&gt;synchronize     = DSSynchronize_NHEP;
+<a name="line559">559: </a><font color="#A020F0">#endif</font>
+<a name="line560">560: </a>  ds-&gt;ops-&gt;gettruncatesize = DSGetTruncateSize_Default;
+<a name="line561">561: </a>  ds-&gt;ops-&gt;truncate        = DSTruncate_NHEP;
+<a name="line562">562: </a>  ds-&gt;ops-&gt;update          = DSUpdateExtraRow_NHEP;
+<a name="line563">563: </a>  ds-&gt;ops-&gt;cond            = DSCond_NHEP;
+<a name="line564">564: </a>  ds-&gt;ops-&gt;transharm       = DSTranslateHarmonic_NHEP;
+<a name="line565">565: </a>  <font color="#4169E1">return</font> 0;
+<a name="line566">566: </a>}
+</pre>
+</body>
+
+</html>
