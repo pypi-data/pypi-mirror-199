@@ -1,0 +1,43 @@
+# VPITools
+
+`VPITools` is a Python library developed by the Vietnam Petroleum Institute (VPI) that provides a collection of functions for various tasks related to petroleum engineering, including data analysis, visualization, and machine learning.
+## Features
+### Exploratory Data Analysis (EDA)
+
+The EDA module of VPITools includes functions for data cleaning, preprocessing, and visualization. You can use these functions to explore and analyze your data, and gain insights into its characteristics. Some of the functions in this module include:
+
+- `Data Cleaning`: remove duplicate values, replace missing values, and more
+- `Data Preprocessing`: normalize, standardize, and scale your data
+- `Visualization`: plot histograms, scatter plots, box plots, and more
+
+### Curves, Logs, and Petrophysics Plotting
+
+The Curves module of VPITools includes functions for plotting various types of well logs, including gamma ray, resistivity, porosity, and more. Additionally, the module includes functions for plotting petrophysical data, such as saturation and lithology. Some of the functions in this module include:
+
+- `Gamma Ray Log Plotting`: plot gamma ray curves and compute shale volume
+- `Resistivity Log Plotting`: plot resistivity curves and compute water saturation
+- `Porosity Log Plotting`: plot porosity curves and compute lithology
+
+### Machine Learning
+
+The Machine Learning module of VPITools includes functions for various tasks related to machine learning, including classification, regression, and feature importance analysis. The library provides support for popular machine learning algorithms such as LightGBM, CatBoost, and XGBoost. Some of the functions in this module include:
+
+- `Classification`: train models for binary or multi-class classification problems
+- `Regression`: train models for regression problems
+- `Feature Importance`: compute feature importance using SHAPLEY values
+
+## Installation
+
+To install VPITools, you can use pip:
+```python
+pip install vpitools
+```
+## Usage
+
+Once installed, you can import VPITools into your Python script:
+
+```python
+import vpitools as vpi
+```
+## License
+VPITools is released under the MIT License. Please see the LICENSE file for details.
