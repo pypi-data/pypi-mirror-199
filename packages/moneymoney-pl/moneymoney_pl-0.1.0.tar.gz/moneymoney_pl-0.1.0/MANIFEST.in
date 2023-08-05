@@ -1,0 +1,4 @@
+include LICENSE  *.py
+recursive-include moneymoney_pl *.py
+prune __pycache__
+global-exclude *.pyc
