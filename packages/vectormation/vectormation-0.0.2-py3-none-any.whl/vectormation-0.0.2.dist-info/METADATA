@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: vectormation
+Version: 0.0.2
+Summary: Create SVG-based math animations
+Project-URL: Homepage, https://github.com/jorisperrenet/VectorMation
+Project-URL: Bug Tracker, https://github.com/jorisperrenet/VectorMation/issues
+Author-email: Joris Perrenet <joris.perrenet@gmail.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: bs4==0.0.1
+Requires-Dist: lxml==4.9.2
+Requires-Dist: pyqt5==5.15.9
+Requires-Dist: svgpathtools==1.6.0
+Description-Content-Type: text/markdown
+
+# VectorMation
+Create SVG-based math animations
+
+<p align="center">
+    <img width="800" height="800" src="https://raw.githubusercontent.com/jorisperrenet/VectorMation/main/explanation.svg">
+</p>
+
