@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: SeleCrawler
+Version: 0.0.2
+Summary: Collection Of Tools To Ease Selenium Operation
+Author: Gee Tech Labs
+Author-email: geetechlabs@gmail.com
+Keywords: SeleCrawler,Sele Crawler,Selenium Crawler,Selenium,Crawler,Browser,BrowserAutomation
+Requires-Dist: webdriver-manager (==3.8.5)
+Requires-Dist: selenium (==4.8.2)
+Requires-Dist: undetected-chromedriver (==3.4.6)
+
