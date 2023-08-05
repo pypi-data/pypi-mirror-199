@@ -1,0 +1,11 @@
+
+[build]
+wheel
+
+[lint]
+isort
+black
+mypy
+
+[test]
+pytest
