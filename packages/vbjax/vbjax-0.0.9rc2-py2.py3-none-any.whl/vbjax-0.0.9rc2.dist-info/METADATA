@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: vbjax
+Version: 0.0.9rc2
+Summary: Virtual brains w/ JAX
+Project-URL: Homepage, https://github.com/ins-amu/vbjax
+Project-URL: Bug Tracker, https://github.com/ins-amu/vbjax/issues
+Author-email: Marmaduke Woodman <marmaduke.woodman@univ-amu.fr>
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Dist: jax
+Requires-Dist: jaxlib
+Requires-Dist: numpy
+Requires-Dist: numpyro
+Requires-Dist: scipy
+Provides-Extra: dev
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: jupyter; extra == 'dev'
+Requires-Dist: matplotlib; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: pytest-benchmark; extra == 'dev'
+Requires-Dist: pytest-xdist; extra == 'dev'
+Requires-Dist: tqdm; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# `vbjax`
+
+`vbjax` is a Jax-based package for working with virtual brain style models.
+
+Installs with `pip install vbjax`, or manually install dependencies with
+`pip install numpy scipy jax jaxlib` or `conda install -y numpy scipy jax`.
+
+## Examples
+
+
+
+## Development
+```
+git clone https://github.com/ins-amu/vbjax
+cd vbjax
+pip install '.[dev]'
+pytest
+```
+
+## Releases
+a release of version `v1.2.3` requires following steps
+- [ ] `git checkout main`: tag releases from main for now
+- [ ] edit `_version.py` to have correct release number
+- [ ] `python -m vbjax._version tag` to create and push new tag
+  - [GitHub tests, builds and pushes tag release to PyPI](.github/workflows/publish-tags.yml)
+- [ ] use GitHub UI to create new release
