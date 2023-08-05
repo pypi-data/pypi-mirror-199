@@ -1,0 +1,68 @@
+pyCARLANeT
+===============
+## Introduction
+pyCARLANeT is the carla side of the open source library CARLANeT for the co-simulation between CARLA and OMNeT++.
+
+## Requirements
+
+According to the [CARLA documentation](https://carla.readthedocs.io/en/latest/start_quickstart/), To use pyCARLANeT, your system must meet the following requirements:
+
+- Python 3.8.x
+- Pip version greater than 22.x
+
+```shell
+pip install --upgrade pip==22.*
+```
+
+## Installation
+You can install **pyCARLANeT** directly from [pypi](https://pypi.org/project/pycarlanet/). 
+```shell
+pip install pycarlanet
+```
+
+## Usage
+To use the library, you must have an instance of CARLA simulator already active.
+
+First, create an instance of the **\`CarlanetManager\`** class:
+
+```
+carlanet_manager = CarlanetManager(listening_port, event_listener)
+```
+
+In the code above, **\`listening_port\`** is the port number used by ZeroMQ for communication between the two sides of CARLANeT, while **\`event_listener\`** is an implementation of the class CarlaEventListener, which contains all the callback methods of the event of CARLANeT. The callbacks are the follow:
+
+- **`omnet_init_completed(run_id, carla_configuration, user_defined) -> (SimulatorStatus, World)`**<br>
+  This method is called when the initialization in the OMNeT world is completed. Here, you can insert the initialization code for the CARLA world. This method receives:
+  - **\`run_id\`:** the identifier of the current run in the OMNeT++ simulation. This is used to map the results of the two simulators. 
+  - **\`carla_configuration\`:**  a dictionary that contains the basic parameters to create the CARLA world:
+    - **\`seed\`:** the seed for the random number generator used in OMNeT++.
+    - **\`sim_time_limit\`:** the maximum simulation time for the CARLA world.
+    - **\`carla_timestep\`:** the time step to use in the CARLA simulation.
+    
+  This method returns a **SimulatorStatus** and the **World** of the CARLA simulator that was just created.
+
+- **actor_created(actor_id: str, actor_type: str, actor_config) -> CarlanetActor**<br>
+  Called for each actor created from omnet at the initialization phase, it return an object of CarlanetActor, which is a wrapper of the object CarlaActor contained in carlalib, which add the property of activeness of the actor. It received as 
+
+- **carla_init_completed()**<br>
+  this method is called
+
+- **before_world_tick(timestamp)**<br>
+  this method is called
+
+- **carla_simulation_step(timestamp) -> SimulatorStatus**<br>
+  this method is called
+
+- **generic_message(timestamp, user_defined_message) -> (SimulatorStatus, dict)**<br>
+  this method is called
+
+- **simulation_finished(status_code: SimulatorStatus)**<br>
+  this method is called
+  
+- **simulation_error(exception)**<br>
+  this method is called
+
+
+
+To learn how to utilize this library, refer to the [sample code provided](https://github.com/carlanet/pycarlanet/blob/main/sample/sample_car_light.py).
+A preliminary version of the documentation will be available soon.
