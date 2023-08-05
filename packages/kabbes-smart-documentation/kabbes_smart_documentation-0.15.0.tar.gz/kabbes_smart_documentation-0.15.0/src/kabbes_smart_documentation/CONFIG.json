@@ -1,0 +1,14 @@
+{
+
+    "!sphinx_script_Path":{
+        "$ref": "{R{_Dir}R}",
+        "method":{
+            "name": "join_Path",
+            "kwargs":{
+                "path": "sphinx_script.sh"
+            }
+        }
+    },
+    "html_theme": "sphinx_rtd_theme",
+    "release": "{{kabbes_repository_generator.repo.version}}"
+}
