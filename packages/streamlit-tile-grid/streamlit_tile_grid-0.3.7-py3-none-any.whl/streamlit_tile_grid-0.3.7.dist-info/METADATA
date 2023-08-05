@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: streamlit-tile-grid
+Version: 0.3.7
+Summary: A custom Streamlit component for rendering tiles
+Author: Ramee Abdallah
+Author-email: ramee.abdallah@hotmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Dist: streamlit (>=0.86.0)
+Requires-Dist: pandas (>=1.3.0)
+Requires-Dist: numpy (>=1.21.0)
+
