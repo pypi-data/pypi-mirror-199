@@ -1,0 +1,36 @@
+[package]
+name = "johnnycanencrypt"
+version = "0.13.1"
+authors = ["Kushal Das <mail@kushaldas.in>"]
+edition = "2018"
+description = "Python module for OpenPGP."
+documentation = "https://johnnycanencrypt.readthedocs.io/en/latest/index.html"
+readme = "README.md"
+homepage = "https://johnnycanencrypt.readthedocs.io/en/latest/introduction.html"
+repository = "https://github.com/kushaldas/johnnycanencrypt"
+license-file = "LICENSE"
+exclude = ["examples/**/*.py", "*.patch", "smartcardtests/jce.db"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+name = "johnnycanencrypt"
+crate-type = ["cdylib"]
+
+[features]
+default = ["pyo3/extension-module"]
+
+
+[dependencies]
+sequoia-openpgp = "1.0.0"
+anyhow = "1.0.62"
+chrono = "0.4.22"
+tempfile = "3.0.0"
+#talktosc = { git = "https://github.com/kushaldas/talktosc", branch="main"}
+talktosc = "0.2"
+sshkeys = "0.3.2"
+regex = "1"
+ 
+[dependencies.pyo3]
+version = "0.18.1"
+
