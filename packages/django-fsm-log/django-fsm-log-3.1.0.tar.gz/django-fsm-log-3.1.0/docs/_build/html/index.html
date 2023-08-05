@@ -1,0 +1,309 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+    <title>Welcome to django-fsm-log’s documentation! &#8212; django-fsm-log  documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="welcome-to-django-fsm-log-s-documentation">
+<h1>Welcome to django-fsm-log’s documentation!<a class="headerlink" href="#welcome-to-django-fsm-log-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+<section class="tex2jax_ignore mathjax_ignore" id="django-finite-state-machine-log">
+<h2>Django Finite State Machine Log<a class="headerlink" href="#django-finite-state-machine-log" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://github.com/jazzband/django-fsm-log/actions/workflows/test_suite.yml"><img alt="test suite" src="https://github.com/jazzband/django-fsm-log/actions/workflows/test_suite.yml/badge.svg" /></a>
+<a class="reference external" href="https://codecov.io/gh/jazzband/django-fsm-log"><img alt="codecov" src="https://codecov.io/gh/jazzband/django-fsm-log/branch/master/graph/badge.svg" /></a>
+<a class="reference external" href="https://jazzband.co/"><img alt="Jazzband" src="https://jazzband.co/static/img/badge.svg" /></a></p>
+<p>Automatic logging for the excellent <a class="reference external" href="https://github.com/kmmbvnr/django-fsm">Django FSM</a>
+package.</p>
+<p>Logs can be accessed before a transition occurs and before they are persisted to the database
+by enabling a cached backend. See <a class="reference external" href="#advanced-usage">Advanced Usage</a></p>
+<section id="changelog">
+<h3>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline">¶</a></h3>
+<section id="id1">
+<h4>3.0.0 (2022-01-14)<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Switch to github actions (from travis-ci)</p></li>
+<li><p>Test against django 3.2 and 4.0, then python 3.9 and 3.10</p></li>
+<li><p>Drop support for django 1.11, 2.0, 2.1, 3.0, 3.1</p></li>
+<li><p>Drop support for python 3.4, 3.5, 3.6</p></li>
+<li><p>allow using StateLogManager in migrations <a class="reference external" href="https://github.com/jazzband/django-fsm-log/pull/95">#95</a></p></li>
+</ul>
+</section>
+<section id="id2">
+<h4>2.0.1 (2020-03-26)<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Add support for django3.0</p></li>
+<li><p>Drop support for python2</p></li>
+</ul>
+</section>
+<section id="id3">
+<h4>1.6.2 (2019-01-06)<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Address Migration history breakage added in 1.6.1</p></li>
+</ul>
+</section>
+<section id="id4">
+<h4>1.6.1 (2018-12-02)<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Make StateLog.description field nullable</p></li>
+</ul>
+</section>
+<section id="id5">
+<h4>1.6.0 (2018-11-14)<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Add source state on transitions</p></li>
+<li><p>Fixed <code class="docutils literal notranslate"><span class="pre">get_state_display</span></code> with FSMIntegerField (#63)</p></li>
+<li><p>Fixed handling of transitions if target is None (#71)</p></li>
+<li><p>Added <code class="docutils literal notranslate"><span class="pre">fsm_log_description</span></code> decorator (#1, #67)</p></li>
+<li><p>Dropped support for Django 1.10 (#64)</p></li>
+</ul>
+</section>
+<section id="id6">
+<h4>1.5.0 (2017-11-29)<a class="headerlink" href="#id6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>cleanup deprecated code.</p></li>
+<li><p>add codecov support.</p></li>
+<li><p>switch to pytest.</p></li>
+<li><p>add Admin integration to visualize past transitions.</p></li>
+</ul>
+</section>
+<section id="id7">
+<h4>1.4.0 (2017-11-09)<a class="headerlink" href="#id7" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Bring compatibility with Django 2.0 and drop support of unsupported versions
+of Django: <code class="docutils literal notranslate"><span class="pre">1.6</span></code>, <code class="docutils literal notranslate"><span class="pre">1.7</span></code>, <code class="docutils literal notranslate"><span class="pre">1.9</span></code>.</p></li>
+</ul>
+</section>
+<section id="compatibility">
+<h4>Compatibility<a class="headerlink" href="#compatibility" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Python 2.7 and 3.4+</p></li>
+<li><p>Django 1.8+</p></li>
+<li><p>Django-FSM 2+</p></li>
+</ul>
+</section>
+</section>
+<section id="installation">
+<h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
+<p>First, install the package with pip. This will automatically install any
+dependencies you may be missing</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install django-fsm-log
+</pre></div>
+</div>
+<p>Register django_fsm_log in your list of Django applications:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">INSTALLED_APPS</span> <span class="o">=</span> <span class="p">(</span>
+    <span class="o">...</span><span class="p">,</span>
+    <span class="s1">&#39;django_fsm_log&#39;</span><span class="p">,</span>
+    <span class="o">...</span><span class="p">,</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Then migrate the app to create the database table</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python manage.py migrate django_fsm_log
+</pre></div>
+</div>
+</section>
+<section id="usage">
+<h3>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h3>
+<p>The app listens for the <code class="docutils literal notranslate"><span class="pre">django_fsm.signals.post_transition</span></code> signal and
+creates a new record for each transition.</p>
+<p>To query the log:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_fsm_log.models</span> <span class="kn">import</span> <span class="n">StateLog</span>
+<span class="n">StateLog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+<span class="c1"># ...all recorded logs...</span>
+</pre></div>
+</div>
+<section id="disabling-logging-for-specific-models">
+<h4>Disabling logging for specific models<a class="headerlink" href="#disabling-logging-for-specific-models" title="Permalink to this headline">¶</a></h4>
+<p>By default transitions get recorded for all models. Logging can be disabled for
+specific models by adding their fully qualified name to <code class="docutils literal notranslate"><span class="pre">DJANGO_FSM_LOG_IGNORED_MODELS</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DJANGO_FSM_LOG_IGNORED_MODELS</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;poll.models.Vote&#39;</span><span class="p">,)</span>
+</pre></div>
+</div>
+</section>
+<section id="for-manager-method">
+<h4><code class="docutils literal notranslate"><span class="pre">for_</span></code> Manager Method<a class="headerlink" href="#for-manager-method" title="Permalink to this headline">¶</a></h4>
+<p>For convenience there is a custom <code class="docutils literal notranslate"><span class="pre">for_</span></code> manager method to easily filter on the generic foreign key:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">my_app.models</span> <span class="kn">import</span> <span class="n">Article</span>
+<span class="kn">from</span> <span class="nn">django_fsm_log.models</span> <span class="kn">import</span> <span class="n">StateLog</span>
+
+<span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="n">StateLog</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">for_</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+<span class="c1"># ...logs for article...</span>
+</pre></div>
+</div>
+</section>
+<section id="by-decorator">
+<h4><code class="docutils literal notranslate"><span class="pre">by</span></code> Decorator<a class="headerlink" href="#by-decorator" title="Permalink to this headline">¶</a></h4>
+<p>We found that our transitions are commonly called by a user, so we’ve added a
+decorator to make logging this easy:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django_fsm</span> <span class="kn">import</span> <span class="n">FSMField</span><span class="p">,</span> <span class="n">transition</span>
+<span class="kn">from</span> <span class="nn">django_fsm_log.decorators</span> <span class="kn">import</span> <span class="n">fsm_log_by</span>
+
+<span class="k">class</span> <span class="nc">Article</span><span class="p">(</span><span class="n">models</span><span class="o">.</span><span class="n">Model</span><span class="p">):</span>
+
+    <span class="n">state</span> <span class="o">=</span> <span class="n">FSMField</span><span class="p">(</span><span class="n">default</span><span class="o">=</span><span class="s1">&#39;draft&#39;</span><span class="p">,</span> <span class="n">protected</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="nd">@fsm_log_by</span>
+    <span class="nd">@transition</span><span class="p">(</span><span class="n">field</span><span class="o">=</span><span class="n">state</span><span class="p">,</span> <span class="n">source</span><span class="o">=</span><span class="s1">&#39;draft&#39;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="s1">&#39;submitted&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">submit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">by</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+</div>
+<p>With this the transition gets logged when the <code class="docutils literal notranslate"><span class="pre">by</span></code> kwarg is present.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">()</span>
+<span class="n">article</span><span class="o">.</span><span class="n">submit</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="n">some_user</span><span class="p">)</span> <span class="c1"># StateLog.by will be some_user</span>
+</pre></div>
+</div>
+</section>
+<section id="admin-integration">
+<h4>Admin integration<a class="headerlink" href="#admin-integration" title="Permalink to this headline">¶</a></h4>
+<p>There is an InlineForm available that can be used to display the history of changes.</p>
+<p>To use it expand your own <code class="docutils literal notranslate"><span class="pre">AdminModel</span></code> by adding <code class="docutils literal notranslate"><span class="pre">StateLogInline</span></code> to its inlines:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django.contrib</span> <span class="kn">import</span> <span class="n">admin</span>
+<span class="kn">from</span> <span class="nn">django_fsm_log.admin</span> <span class="kn">import</span> <span class="n">StateLogInline</span>
+
+
+<span class="nd">@admin</span><span class="o">.</span><span class="n">register</span><span class="p">(</span><span class="n">FSMModel</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">FSMModelAdmin</span><span class="p">(</span><span class="n">admin</span><span class="o">.</span><span class="n">ModelAdmin</span><span class="p">):</span>
+    <span class="n">inlines</span> <span class="o">=</span> <span class="p">[</span><span class="n">StateLogInline</span><span class="p">]</span>
+</pre></div>
+</div>
+</section>
+<section id="advanced-usage">
+<h4>Advanced Usage<a class="headerlink" href="#advanced-usage" title="Permalink to this headline">¶</a></h4>
+<p>You can change the behaviour of this app by turning on caching for StateLog records.
+Simply add <code class="docutils literal notranslate"><span class="pre">DJANGO_FSM_LOG_STORAGE_METHOD</span> <span class="pre">=</span> <span class="pre">'django_fsm_log.backends.CachedBackend'</span></code> to your project’s settings file.
+It will use your project’s default cache backend by default. If you wish to use a specific cache backend, you can add to
+your project’s settings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">DJANGO_FSM_LOG_CACHE_BACKEND</span> <span class="o">=</span> <span class="s1">&#39;some_other_cache_backend&#39;</span>
+</pre></div>
+</div>
+<p>The StateLog object is now available after the <code class="docutils literal notranslate"><span class="pre">django_fsm.signals.pre_transition</span></code>
+signal is fired, but is deleted from the cache and persisted to the database after <code class="docutils literal notranslate"><span class="pre">django_fsm.signals.post_transition</span></code>
+is fired.</p>
+<p>This is useful if:</p>
+<ul class="simple">
+<li><p>you need immediate access to StateLog details, and cannot wait until <code class="docutils literal notranslate"><span class="pre">django_fsm.signals.post_transition</span></code>
+has been fired</p></li>
+<li><p>at any stage, you need to verify whether or not the StateLog has been written to the database</p></li>
+</ul>
+<p>Access to the pending StateLog record is available via the <code class="docutils literal notranslate"><span class="pre">pending_objects</span></code> manager</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">django_fsm_log.models</span> <span class="kn">import</span> <span class="n">StateLog</span>
+<span class="n">article</span> <span class="o">=</span> <span class="n">Article</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">pending_state_log</span> <span class="o">=</span> <span class="n">StateLog</span><span class="o">.</span><span class="n">pending_objects</span><span class="o">.</span><span class="n">get_for_object</span><span class="p">(</span><span class="n">article</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+</section>
+<section id="running-tests">
+<h3>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install tox
+tox
+</pre></div>
+</div>
+</section>
+</section>
+</section>
+<section id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
+<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
+<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
+</ul>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="#">django-fsm-log</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2022, Various Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 4.3.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

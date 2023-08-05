@@ -1,0 +1,14 @@
+django>=1.8
+django_fsm>=2
+django_appconf
+
+[docs]
+sphinx
+sphinx_rtd_theme
+myst-parser
+
+[testing]
+pytest
+pytest-cov
+pytest-django
+pytest-mock
