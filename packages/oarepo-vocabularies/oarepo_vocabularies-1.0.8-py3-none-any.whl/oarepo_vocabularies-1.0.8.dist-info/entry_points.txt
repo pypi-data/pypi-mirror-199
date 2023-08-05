@@ -1,0 +1,11 @@
+[invenio_base.api_apps]
+oarepo_vocabularies = oarepo_vocabularies.ext:OARepoVocabularies
+
+[invenio_base.apps]
+oarepo_vocabularies = oarepo_vocabularies.ext:OARepoVocabularies
+
+[invenio_base.blueprints]
+oarepo_ui = oarepo_vocabularies.views:blueprint
+
+[invenio_jsonschemas.schemas]
+oarepo_vocabularies = oarepo_vocabularies.records.jsonschemas
