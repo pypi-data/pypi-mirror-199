@@ -1,0 +1,61 @@
+Metadata-Version: 2.1
+Name: pyrandvec
+Version: 1.0.1
+Summary: Generate random vectors whose components sum up to one
+Home-page: https://github.com/jakobbossek/pyrandvec/
+Author: Jakob Bossek
+Author-email: j.bossek@gmail.com
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
+# Generate random vectors whose components sum up to one
+
+This Python3 module implements different approaches [1] to randomly and uniformly generate d-dimensional vectors whose components sum up to one.
+
+[1] Maziero, J. Generating Pseudo-Random Discrete Probability Distributions. Brazilian Journal of Physics 45, 377–382 (2015). https://doi.org/10.1007/s13538-015-0337-8
+
+
+## Installation
+
+Run the following to install the module:
+
+```bash
+pip install pyrandvec
+```
+
+## Usage
+
+```python
+from pyrandvec import sample
+
+# Generate 10 4-dimensional vectors with the simplex-method
+sample(10, 4, method = 'simplex')
+
+# Generate 10 3-dimensional vectors with the trigonometric methdod with subsequent shuffling
+sample(10, 3, method = 'trigonometric', shuffle = True)
+```
+
+# Developing randvec
+
+To install the **pyrandvec** module along with the tools you need to develop and run test, run the following command in your *virtual environment* (virtualenv):
+
+```bash
+pip install -e .[dev]
+```
+
