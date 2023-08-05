@@ -1,0 +1,3 @@
+[console_scripts]
+ap_new = airpage.cmd_entry:CMD_NewProject
+ap_version = airpage.cmd_entry:CMD_Version
