@@ -1,0 +1,14 @@
+hydra-core
+GitPython
+pandas
+
+[dev]
+black
+isort
+ruff
+
+[test]
+pytest
+pytest-cov
+pytest-xdist
+pytest-sugar
