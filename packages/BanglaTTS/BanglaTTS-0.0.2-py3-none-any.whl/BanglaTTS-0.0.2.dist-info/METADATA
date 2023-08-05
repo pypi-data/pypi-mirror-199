@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: BanglaTTS
+Version: 0.0.2
+Summary: An open-source offline text-to-speech package for Bangla language. Convert text to speech in male or female voice.
+Home-page: https://github.com/shhossain/BanglaTTS
+Author: sifat (shhossain)
+Author-email: <hossain@gmail.com>
+Project-URL: Documentation, https://github.com/shhossain/BanglaTTS
+Project-URL: Source, https://github.com/shhossain/BanglaTTS
+Project-URL: Bug Tracker, https://github.com/shhossain/BanglaTTS/issues
+Keywords: python,text to speech,bangla text to speech,bangla tts,offline bangla tts,offline bangla text to speech
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing :: Linguistic
+Classifier: Topic :: Utilities
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aksharamukha (>=2.1.2)
+Requires-Dist: omegaconf (>=2.3.0)
+Requires-Dist: torch
+
+# BanglaTTS
+BanglaTTS is a text-to-speech (TTS) system for Bangla language that works in offline mode. You can convert text to speech in male or female voice.
+
+## Features
+* Convert any bangla text to speech.
+* Save the converted speech as an audio file.
+
+## Requirements
+* Python 3.6 or higher
+
+## Installation
+```bash
+pip install BanglaTTS
+```
+
+## Usage
+```python
+from banglatts import BanglaTTS
+
+
+tts = BanglaTTS(save_location="save_model_location")
+path = tts("আমি বাংলায় কথা বলতে পারি।", voice='female', filename='1.wav') # voice can be male or female
+```
+
+
