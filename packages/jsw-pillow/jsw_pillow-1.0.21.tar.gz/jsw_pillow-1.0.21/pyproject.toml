@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "jsw-pillow"
+version = "1.0.21"
+description = "Pillow for jsw."
+authors = ["aric <1290657123@qq.com>"]
+readme = "README.md"
+repository = "https://github.com/aric-pypi/jsw-pillow"
+homepage = "https://js.work"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pillow = "^9.3.0"
+requests = "^2.28.1"
+python-resize-image = "^1.1.20"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
