@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: myIMD-gauge
+Version: 0.0.4
+Summary: To get Force/Torque gauge data through USB.
+Author: Toshihiro Nishimura
+Author-email: tnishimura@se.kanazawa-u.ac.jp
+License: MIT
+Requires-Dist: pyserial
+
