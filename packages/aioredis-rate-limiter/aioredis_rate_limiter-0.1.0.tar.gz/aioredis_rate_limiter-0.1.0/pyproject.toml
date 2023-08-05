@@ -1,0 +1,31 @@
+[tool.poetry]
+name = "aioredis-rate-limiter"
+version = "0.1.0"
+license = "MIT"
+description = "Rate limiter implements on Redis"
+authors = ["DFilyushin <Dmitriy.Filyushin@yandex.ru>"]
+readme = "README.md"
+packages = [{include = "aioredis_rate_limiter"}]
+classifiers = [
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development",
+    "Typing :: Typed",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+]
+keywords=["aioredis", "redis", "rate-limiting", "distributed", "asyncio"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aioredis = "^2.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
