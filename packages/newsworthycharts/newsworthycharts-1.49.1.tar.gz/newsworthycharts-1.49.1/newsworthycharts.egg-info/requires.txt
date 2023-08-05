@@ -1,0 +1,13 @@
+boto3>=1.26
+matplotlib==3.7.1
+langcodes>=3.3
+Babel>=2.12
+PyYAML>=3
+adjustText==0.8.0
+numpy<2,>=1.19.1
+python-dateutil>=2
+Pillow>=8
+requests>=2.22
+matplotlib-label-lines==0.5.1
+geopandas==0.12.2
+mapclassify==2.5.0
