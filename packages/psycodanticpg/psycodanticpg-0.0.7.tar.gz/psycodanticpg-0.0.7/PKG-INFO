@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: psycodanticpg
+Version: 0.0.7
+Summary: psycopg2 database utilizing pydantic models
+License: MIT
+Author: wayfaring-stranger
+Author-email: zw6p226m@duck.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: psycopg2-binary (>=2.9.5,<3.0.0)
+Requires-Dist: pydantic (>=1.10.2,<2.0.0)
+Requires-Dist: python-dotenv (==1.0.0)
+Description-Content-Type: text/markdown
+
+# psycodanticpg
+## psycopg2 database utilizing pydantic models
+### scripts:
+    psycodanticpg may be invoked as an executable file. see 'scripts' directory for all possible scripts to run using the cli.
+
+    examples:
+        to generate the pydantic schemas from an existing database, invoke the 'generate_schemas' script like this:
+            python3 -m psycodanticpg generate_schemas --dsn=postgres://postgres:password@localhost:5432/mydatabase --output_path=test_generate_schema_source.py
