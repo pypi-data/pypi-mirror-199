@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "MovieGraphBenchmark"
+version = "1.0.2"
+description = "Benchmark datasets for Entity Resolution on Knowledge Graphs containing information about movies, tv shows and persons from IMDB,TMDB and TheTVDB"
+authors = ["Daniel Obraczka <obraczka@informatik.uni-leipzig.de>"]
+readme = "README.md"
+repository = "https://github.com/ScaDS/MovieGraphBenchmark"
+
+
+[tool.poetry.dependencies]
+python = ">=3.7.1"
+requests = "*"
+tqdm  = "*"
+pandas = "*"
+pystow = "*"
+
+[tool.poetry.scripts]
+moviegraphbenchmark = "moviegraphbenchmark.create_graph:create_graph_data"
+
+[tool.poetry.dev-dependencies]
+ipdb = "^0.13.9"
+pytest = "^7.1.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
