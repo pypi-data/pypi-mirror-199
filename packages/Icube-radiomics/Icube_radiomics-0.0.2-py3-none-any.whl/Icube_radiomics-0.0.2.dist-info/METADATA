@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: Icube-radiomics
+Version: 0.0.2
+Summary: Perform Radiomics Feature Extraction and Machine Learning
+Home-page: https://github.com/dorkylever/BQ_radiomics
+Download-URL: https://github.com/dorkylever/BQ_radiomics/archive/refs/tags/0.0.1.tar.gz
+Author: Kyle Drover
+Author-email: kyle.drover@anu.edu.au
+Keywords: radiomics
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Dist: appdirs
+Requires-Dist: setuptools (==59.8.0)
+Requires-Dist: matplotlib (>=2.2.0)
+Requires-Dist: numpy (==1.21.5)
+Requires-Dist: pandas (>=1.1.0)
+Requires-Dist: scikit-learn (==1.0.2)
+Requires-Dist: scipy (>=1.1.0)
+Requires-Dist: scikit-image (==0.17.2)
+Requires-Dist: seaborn (>=0.9.0)
+Requires-Dist: PyYAML (>=3.13)
+Requires-Dist: catboost (==1.1.0)
+Requires-Dist: SimpleITK (>=2.1.0)
+Requires-Dist: pyradiomics (>=3.0.1)
+Requires-Dist: threadpoolctl (==3.1.0)
+Requires-Dist: imbalanced-learn (==0.9.0)
+Requires-Dist: raster-geometry
+Requires-Dist: filelock
+Requires-Dist: psutil (==5.9.3)
+Requires-Dist: plotly
+Requires-Dist: logzero (==1.7.0)
+Requires-Dist: addict
+Requires-Dist: toml
+Requires-Dist: pynrrd
+Requires-Dist: pytest
+Requires-Dist: tqdm
+Requires-Dist: gitpython
+Requires-Dist: pacmap
+Requires-Dist: shap
+Requires-Dist: joblib
+Requires-Dist: wheel
+Requires-Dist: numexpr
+Requires-Dist: bottleneck
+
