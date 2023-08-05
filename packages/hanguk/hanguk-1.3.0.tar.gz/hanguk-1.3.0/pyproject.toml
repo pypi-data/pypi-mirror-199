@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=67.4.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hanguk"
+version = "1.3.0"
+description = "The official Korean language romanization system in Python."
+readme = "README.md"
+authors = [{ name = "joumaico", email = "joumaico@gmx.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/joumaico/hanguk"
+
+[tool.setuptools.package-data]
+hanguk = ["static/data.json"]
