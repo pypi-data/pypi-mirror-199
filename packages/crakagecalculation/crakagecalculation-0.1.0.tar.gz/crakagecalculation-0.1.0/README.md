@@ -1,0 +1,1 @@
+This is a simple calculation library created for our crackage application
