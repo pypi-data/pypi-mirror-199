@@ -1,0 +1,26 @@
+ploomber-core>=0.2.6
+scikit-learn
+matplotlib
+decorator
+tabulate
+jinja2
+mistune
+pandas
+nbformat
+ipython
+black
+parso
+
+[:python_version < "3.8"]
+importlib-metadata
+
+[dev]
+pkgmt
+jupytext
+ploomber-engine
+ipykernel
+pytest
+pytest-cov
+coveralls<3
+altair
+lxml
