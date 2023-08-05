@@ -1,0 +1,16 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/stactools/cop_dem/__init__.py
+src/stactools/cop_dem/commands.py
+src/stactools/cop_dem/constants.py
+src/stactools/cop_dem/stac.py
+src/stactools_cop_dem.egg-info/PKG-INFO
+src/stactools_cop_dem.egg-info/SOURCES.txt
+src/stactools_cop_dem.egg-info/dependency_links.txt
+src/stactools_cop_dem.egg-info/requires.txt
+src/stactools_cop_dem.egg-info/top_level.txt
+tests/test_commands.py
+tests/test_module.py
+tests/test_stac.py
