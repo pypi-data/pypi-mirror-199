@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "testdummypackage"
+version = "0.1.1"
+description = "test package for addition"
+authors = ["Caroline Reynier <caroline.reynier@jaid.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pyfiglet = "^0.8.post1"
+termcolor = "^2.2.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2"
+
+[tool.poetry.group.dev.dependencies]
+scriv = "^1.2.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

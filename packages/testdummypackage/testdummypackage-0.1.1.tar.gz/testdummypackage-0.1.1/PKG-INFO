@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: testdummypackage
+Version: 0.1.1
+Summary: test package for addition
+Author: Caroline Reynier
+Author-email: caroline.reynier@jaid.io
+Requires-Python: >=3.11,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pyfiglet (>=0.8.post1,<0.9)
+Requires-Dist: termcolor (>=2.2.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+test sample for adding 1
