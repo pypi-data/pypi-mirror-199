@@ -1,0 +1,4 @@
+[console_scripts]
+generate-template = jira_assistant:generate_template
+sort-excel-file = jira_assistant:sort_excel_file
+update-jira-info = jira_assistant:update_jira_info
