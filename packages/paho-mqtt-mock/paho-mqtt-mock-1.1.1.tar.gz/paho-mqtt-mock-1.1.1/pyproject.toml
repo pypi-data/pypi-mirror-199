@@ -1,0 +1,25 @@
+# SPDX-License-Identifier: GPL-2.0-or-later
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "paho-mqtt-mock"
+version = "1.1.1"
+authors = [
+    { name="Marco Melletti", email="melletti.marco@gmail.com" },
+]
+description = "Simple mock library wrapping paho-mqtt for unit testing"
+requires-python = ">=3.7"
+dynamic = ["dependencies"]
+
+classifiers = [
+   "Programming Language :: Python :: 3",
+   "Operating System :: OS Independent",
+]
+
+[tool.setuptools.dynamic]
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.package-data]
+"pahomqttmock" = ["py.typed"]
