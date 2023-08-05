@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: 2048-Wallpaper-Edition
+Version: 1.0.0
+Summary: A Python implementation of the 2048 game on your desktop background
+Home-page: https://github.com/impavloh/2048-Wallpaper-Edition
+Author: Pavloh
+Author-email: impavloh@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Pillow (==8.4.0)
+Requires-Dist: keyboard (==0.13.5)
+
+# 2048-Wallpaper-Edition
+2048 is a puzzle game that can be played right on your desktop background! Move the tiles around to create a tile with the value of 2048. Keep playing to see how high you can go.
