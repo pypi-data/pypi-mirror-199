@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+packages = [
+    "drfsc",
+]
+
+[project]
+name = "drfsc"
+version = "0.0.7"
+authors = [
+  { name="Mark Chiu Chong", email="mark.chiuchong@gmail.com"},
+]
+description = "A Python package implementing a distributed randomised feature selection algorithm."
+readme = "README.md"
+requires-python = ">=3.9.12"
+classifiers = [
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Science/Research",
+]
+
+dependencies = [
+  "numpy==1.23.4",
+  "pandas==1.5.2",
+  "pip==22.3.1",
+  "scikit-learn==1.1.2",
+  "setuptools==65.5.0",
+  "statsmodels==0.13.2",
+  "matplotlib==3.6.2",
+  "toml==0.10.2",
+  "wheel==0.37.1",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/markcc309/drfsc"
+"Documentation" = "https://markcc309.github.io/drfsc/"
+
+[project.optional-dependencies]
+tests = [
+  "pytest == 7.1.2"
+]
