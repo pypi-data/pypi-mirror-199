@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: ewoksndreg
+Version: 0.0.1a0
+Summary: Workflows for data registration (e.g. curve, image and volume registration).
+Home-page: https://gitlab.esrf.fr/workflow/ewoksndreg/
+Author: ESRF
+Author-email: wout.de_nolf@esrf.fr
+License: MIT
+Project-URL: Source, https://gitlab.esrf.fr/workflow/ewoksndreg/
+Project-URL: Documentation, https://ewoksndreg.readthedocs.io/
+Project-URL: Tracker, https://gitlab.esrf.fr/workflow/ewoksndreg/issues/
+Keywords: orange3 add-on
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: full
+Provides-Extra: test
+Provides-Extra: dev
+Provides-Extra: doc
+License-File: LICENSE.md
+
+# ewoksndreg
+
+Workflows for data registration (e.g. curve, image and volume registration).
+
+## Documentation
+
+https://ewoksndreg.readthedocs.io/
