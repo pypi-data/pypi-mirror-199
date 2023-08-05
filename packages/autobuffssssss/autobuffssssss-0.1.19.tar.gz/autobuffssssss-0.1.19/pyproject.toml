@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "AutoBuffssssss"
+version = "0.1.19"
+description = ""
+authors = ["SDK"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pillow = "^9.4.0"
+customtkinter = "^5.1.2"
+opencv-python = "^4.7.0.72"
+easyimap = "^0.7.0"
+requests = "^2.28.2"
+pygetwindow = "^0.0.9"
+pyautogui = "^0.9.53"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
