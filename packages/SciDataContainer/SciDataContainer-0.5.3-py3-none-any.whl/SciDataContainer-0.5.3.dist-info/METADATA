@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: SciDataContainer
+Version: 0.5.3
+Summary: A container class for the storage of scientific data together with meta data
+Home-page: https://github.com/reincas/scidatacontainer
+Author: Reinhard Caspary
+Author-email: reinhard.caspary@phoenixd.uni-hannover.de
+License: MIT License
+Keywords: Research Data Management,Data Container,Meta Data
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+# SciDataContainer for Python
+
+This a Python 3 library for the container file format [SciDataContainer](https://github.com/reincas/scidatacontainer) intended to store scientific data.
+
+## Documenation
+
+You find the [documentation](https://scidatacontainer.readthedocs.io/en/latest/python_library) of the Python package `scidatacontainer` and more on [Read the Docs](https://readthedocs.org/).
+
+## Installation
+
+The easiest way to install the latest version of [`SciDataContainer`](https://pypi.org/project/scidatacontainer/) is using PIP:
+```
+>>> pip install SciDataContainer
+```
