@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pfrtf"
+version = "0.0.1"
+authors = [
+  { name="Artem Grigorev", email="ofyenn@gmail.com" },
+]
+description = "Pandas fast reading table file by using pickle"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+
+dependencies = [
+  "Pandas>=1.4.4",
+  "openpyxl>=2.6.0",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ofyenn/pandas_quick_table_rereading"
+"Bug Tracker" = "https://github.com/ofyenn/pandas_quick_table_rereading/issues"
