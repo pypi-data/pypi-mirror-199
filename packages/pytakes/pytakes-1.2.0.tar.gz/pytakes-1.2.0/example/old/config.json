@@ -1,0 +1,95 @@
+{
+  "resources": {
+    "dictionary": {
+      "type": "sql",
+      "connection": "sql server",
+      "name": "term_table",
+      "schema": "dbo"
+    },
+    "document": {
+      "type": "sql",
+      "connection": "sql server",
+      "name": "docText1",
+      "schema": "dbo"
+    },
+    "output": {
+      "type": "sql",
+      "connection": "sql server",
+      "name": "outputTable",
+      "schema": "dbo"
+    },
+    "negation": {
+      "type": "sql",
+      "connection": "sql server",
+      "name": "negexTable",
+      "schema": "dbo"
+    },
+    "csv_example": {
+      "type": "csv",
+      "name": "test.csv",
+      "path": "D:\\"
+    }
+  },
+
+  "connections": {
+    "sql server": {
+      "driver": "SQL Server",
+      "server": "DAVID-ASUS",
+      "database": "ghri"
+    }
+  },
+
+  "dictionary": [
+    {
+      "resource": "dictionary",
+      "id": "id",
+      "pattern": "text"
+    },
+    {
+      "resource": "negation",
+      "id": "id",
+      "pattern": "text",
+      "type": "type",
+      "direction": "direction"
+    }
+  ],
+
+  "document": [
+    {
+      "resource": "document",
+      "meta": ["id", "pat_id", "note_id"],
+      "text": ["note_text"]
+    }
+  ],
+
+  "output": [
+    {
+      "resource": "output"
+    }
+  ],
+
+  "miner": [{
+    "type": "keyword",
+    "stopwords": {
+
+    },
+    "features": {
+
+    },
+    "exclusions": {
+
+    },
+    "numberNormalization": true,
+    "maxLengthOfSearch": 2,
+    "maxInterveningTerms": 1,
+    "sentenceSplit": "boundary"
+  }],
+
+  "settings": {
+    "logging": {
+      "verbosity": 3,
+      "path": "output.log"
+    }
+  }
+
+}
