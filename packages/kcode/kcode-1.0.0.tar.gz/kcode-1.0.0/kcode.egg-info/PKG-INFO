@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: kcode
+Version: 1.0.0
+Summary: King-code package
+Home-page: https://github.com/frolpaxa/kcode
+Author: Pavel Frolov
+Author-email: pfrol007@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# King code
+
+#### Software that makes life easier.
+
+- utils:
+
+  - pid (creating a controlled number of program instances)
+
+```Python
+# example: one instance
+from kcode.utils.pid import Pid
+
+Pid("app_name").create_pid_file() # -> success create pid
+Pid("app_name").create_pid_file() # -> error crete pid
+
+# example: two instances
+from kcode.utils.pid import Pid
+
+Pid("app_name", quantity=2).create_pid_file() # -> success create pid
+Pid("app_name", quantity=2).create_pid_file() # -> success create pid
+Pid("app_name", quantity=2).create_pid_file() # -> error crete pid
+```
