@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "curlconverter"
+version = "1.0.1"
+description = "The library is responsible for parsing a cURL request string and converting it into a Python dictionary containing the method, URL, headers, and data"
+authors = ["Dmitrii Malygin <malygin.agency@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
