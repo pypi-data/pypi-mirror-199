@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: pyef
+Version: 0.1.0a1
+Summary: Energy Forecasting Toolkit in Python
+License: MIT
+Author-email: Bhav Sardana <sardana.bhav@gmail.com>
+Requires-Python: >=3.8
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Documentation
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Documentation
+Classifier: Topic :: Utilities
+Classifier: Typing :: Typed
+Provides-Extra: plot
+Project-URL: Changelog, https://sardanabhav.github.io/pyef/changelog
+Project-URL: Discussions, https://github.com/sardanabhav/pyef/discussions
+Project-URL: Documentation, https://sardanabhav.github.io/pyef
+Project-URL: Funding, https://github.com/sponsors/sardanabhav
+Project-URL: Gitter, https://gitter.im/pyef/community
+Project-URL: Homepage, https://sardanabhav.github.io/pyef
+Project-URL: Issues, https://github.com/sardanabhav/pyef/issues
+Project-URL: Repository, https://github.com/sardanabhav/pyef
+Description-Content-Type: text/markdown
+
+# pyef
+
+[![ci](https://github.com/sardanabhav/pyef/workflows/ci/badge.svg)](https://github.com/sardanabhav/pyef/actions?query=workflow%3Aci)
+[![documentation](https://img.shields.io/badge/docs-mkdocs%20material-blue.svg?style=flat)](https://sardanabhav.github.io/pyef/)
+[![pypi version](https://img.shields.io/pypi/v/pyef.svg)](https://pypi.org/project/pyef/)
+<!-- [![pre-commit.ci status](https://results.pre-commit.ci/badge/github/sardanabhav/pyef/main.svg)](https://results.pre-commit.ci/latest/github/sardanabhav/pyef/main) -->
+<!-- [![gitpod](https://img.shields.io/badge/gitpod-workspace-blue.svg?style=flat)](https://gitpod.io/#https://github.com/sardanabhav/pyef)
+[![gitter](https://badges.gitter.im/join%20chat.svg)](https://gitter.im/pyef/community) -->
+
+Energy Forecasting Toolkit in Python
+This is a work in progress. Do not use
+
+## Installation
+
+With `pip`:
+```bash
+pip install pyef
+```
+
+With [`pipx`](https://github.com/pipxproject/pipx):
+```bash
+python3.7 -m pip install --user pipx
+pipx install pyef
+```
+
