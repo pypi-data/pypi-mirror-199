@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: piOLED-display-plugin
+Version: 0.0.1
+Summary: Use an OLED display with your Pioreactor
+Home-page: https://github.com/Pioreactor/PiOLED-display-plugin
+Author: Cameron Davidson-Pilon
+Author-email: hello@pioreactor.com
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: adafruit-circuitpython-ssd1306
+
+## PiOLD Display plugin for the Pioreactor
+
+Display growth rate, normalized OD, and temperature for each Pioreactor.
