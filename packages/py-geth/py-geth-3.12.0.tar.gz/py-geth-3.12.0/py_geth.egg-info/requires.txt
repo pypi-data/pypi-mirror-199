@@ -1,0 +1,27 @@
+semantic-version>=2.6.0
+
+[dev]
+bumpversion<1,>=0.5.3
+wheel
+setuptools>=38.6.0
+requests<3,>=2.20
+tox>=2.7.0
+twine
+pytest<8,>=6.2.5
+flaky<4,>=3.2.0
+pluggy<1,>=0.7.1
+flake8<4,>=3.9.2
+
+[dev:python_version < "3.8"]
+importlib-metadata<5
+
+[lint]
+flake8<4,>=3.9.2
+
+[lint:python_version < "3.8"]
+importlib-metadata<5
+
+[test]
+pytest<8,>=6.2.5
+flaky<4,>=3.2.0
+pluggy<1,>=0.7.1
