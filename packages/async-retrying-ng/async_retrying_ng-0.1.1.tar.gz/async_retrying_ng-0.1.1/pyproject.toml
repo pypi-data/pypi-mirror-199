@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "async_retrying_ng"
+version = "0.1.1"
+description = "Next Gen. simple retrying for asyncio."
+authors = ["Malene Trab <malene@trab.dk>"]
+documentation = "https://github.com/mtrab/async_retrying_ng"
+classifiers = [
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
+packages = [
+    { include = "async_retrying_ng" },
+]
+
+license = "MIT"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+async-timeout = "4.0.2"
