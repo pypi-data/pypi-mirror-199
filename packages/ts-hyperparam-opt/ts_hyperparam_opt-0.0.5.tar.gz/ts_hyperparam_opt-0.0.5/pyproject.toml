@@ -1,0 +1,25 @@
+[project]
+name = "ts_hyperparam_opt"
+version = "0.0.5"
+license = {file = "LICENSE"}
+authors = [
+  { name="nick2202" },
+]
+description = "Convenience package for parallelized hyperparameter optimization (e.g. in Jupyter Notebooks) using grid search and CV"
+readme = "README.md"
+keywords=['python', 'time series', 'hyperparameter optimization', 'cross validation', 'parallel']
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "numpy",
+    "statsmodels",
+    "scikit-learn",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/nick2202/ts-hyperparam-opt"
+"Bug Tracker" = "https://github.com/nick2202/ts-hyperparam-opt/issues"
