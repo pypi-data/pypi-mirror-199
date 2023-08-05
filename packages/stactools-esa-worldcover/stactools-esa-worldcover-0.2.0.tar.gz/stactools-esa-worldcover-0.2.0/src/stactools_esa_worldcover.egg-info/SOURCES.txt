@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+setup.cfg
+src/stactools/esa_worldcover/__init__.py
+src/stactools/esa_worldcover/commands.py
+src/stactools/esa_worldcover/constants.py
+src/stactools/esa_worldcover/metadata.py
+src/stactools/esa_worldcover/stac.py
+src/stactools_esa_worldcover.egg-info/PKG-INFO
+src/stactools_esa_worldcover.egg-info/SOURCES.txt
+src/stactools_esa_worldcover.egg-info/dependency_links.txt
+src/stactools_esa_worldcover.egg-info/requires.txt
+src/stactools_esa_worldcover.egg-info/top_level.txt
+tests/test_commands.py
+tests/test_module.py
+tests/test_stac.py
