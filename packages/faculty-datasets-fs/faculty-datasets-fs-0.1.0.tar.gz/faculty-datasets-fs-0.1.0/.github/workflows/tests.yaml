@@ -1,0 +1,48 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ['3.10', '3.11']
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Tox
+        run: pip install tox
+      - name: Run tests
+        env:
+          FACULTY_DOMAIN: ${{ vars.FACULTY_DOMAIN }}
+          FACULTY_PROJECT_ID: ${{ vars.FACULTY_PROJECT_ID }}
+          FACULTY_CLIENT_ID: ${{ secrets.FACULTY_CLIENT_ID }}
+          FACULTY_CLIENT_SECRET: ${{ secrets.FACULTY_CLIENT_SECRET }}
+        run: tox -e py
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        linter: [flake8, black, isort, mypy]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup Python
+        uses: actions/setup-python@v1
+        with:
+          python-version: '3.10'
+      - name: Install Tox
+        run: pip install tox
+      - name: Run linter
+        run: tox -e ${{ matrix.linter }}
