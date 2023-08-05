@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: PythonCoordinates
+Version: 0.5.3a0
+Summary: A collection of classes for representing the physical measurable quantities and the methods to locate them
+Home-page: https://gitlab.com/frankmobley/physical_quantities_coordinates
+Author: Dr. Frank Mobley
+Author-email: frank.mobley.1@afrl.af.mil
+Description-Content-Type: text/markdown
+
+During the development of code to construct the source noise directivity patterns from my dissertation, it became 
+apparent that on limitation of coding of physical elements was units. Whether it was the code I wrote myself, or 
+what I found online it was difficult to know the specific units that we expected, and how to convert them for the 
+appropriate unit base used within the function.
+
+In addition to units, there is the locating of the objects in 3-space, how to move and rotate them. And just as 
+important how two or more were related. This Python module provides access to the appropriate linear algebra equations,
+a series of measurement objects, and the coordinates that can represent a location in 3-space. These coordinates were
+extended to represent the real world, providing an interface for converting the geodesic(latitude/longitude) to 
+geodetic(UTM) coordinate descriptions. 
+
+This code is part of a larger sweet of tools for the determination of physical phenomena that propagate through the
+atmosphere from a source to a receiver.
+
+Dr. Frank Mobley
+
+This code was cleared for public release on 15 March 2023 with originator Reference Number: RH-23-124158, Case Reviewer: 
+Katie Brakeville using Case Number: AFRL-2023-1262
+
+This file details the usage and history of the physical quantity classes contained within this module.
+
+# Version History
+## 2023
+### January
+- Created the initial structure and module from the Hawkeye code.
+
+### February
+- Moved the repository to GitLab through AFRL ELSZ. This is where the code will live until we receive public affairs approval for releasing this code to the public.
+- Reorganized the tests and the code according to the typical structure within PyCharm
+- All tests pass.
+
+### March
+- Refactored the name
+- Created a new folder structure
+- Updated the setup.py to actually install code
+- published version 0.5.2 to Pypi.org
+- published version 0.5.3 to Pypi.org
