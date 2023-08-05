@@ -1,0 +1,53 @@
+[tool.poetry]
+name = "anqa-events"
+version = "0.0.1"
+description = ""
+authors = []
+readme = "README.md"
+packages = [
+    { include = "anqa" }
+]
+
+[tool.poetry.scripts]
+anqa-events = "anqa.events.cli:cli"
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+anqa-core = "==0.0.1"
+async-timeout = ">=4.0"
+
+# cli
+aiorun = {version = "^2022.11.1", optional = true}
+typer = {version = "^0.7.0", optional = true}
+
+# encoders
+ormsgpack = {version = "^1.2.5", optional = true}
+
+# brokers
+aio-pika = {version = ">=9.0.4", optional = true}
+nats-py = {version = ">=2.2,<3.0", optional = true}
+aiokafka = {version = ">=0.8,<1.0", optional = true}
+aioredis = {version = "^2.0.1", optional = true}
+gcloud-aio-pubsub = {version = "^5.2.0", optional = true}
+
+[tool.poetry.extras]
+all = ["aiorun", "typer", "nats-py", "aiokafka", "aio-pika", "ormsgpack", "aioredis", "gcloud-aio-pubsub"]
+cli = ["aiorun", "typer"]
+
+# backends
+
+nats = ["nats-py"]
+kafka = ["aiokafka"]
+rabbitmq = ["aio-pika"]
+redis = ["aioredis"]
+pubsub = ["gcloud-aio-pubsub"]
+
+# encoders
+msgpack = ["ormsgpack"]
+
+[tool.poetry.group.dev.dependencies]
+anqa-core = { path = "../anqa-core", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
