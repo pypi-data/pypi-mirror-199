@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr" data-fr-scheme="system">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="{{ "dsfr/dsfr.min.css"|url }}">
+		<link rel="stylesheet" href="{{ "css/theme.css"|url }}">
+
+		<meta
+		name="theme-color" content="#000091">
+		<!-- Défini la couleur de thème du navigateur (Safari/Android) -->
+		<link
+		rel="apple-touch-icon" href="{{ "favicon/apple-touch-icon.png"|url }}">
+		<!-- 180×180 -->
+		<link rel="icon" href="{{ "favicon/favicon.svg"|url }}" type="image/svg+xml">
+		<link
+		rel="shortcut icon" href="{{ "favicon/favicon.ico"|url }}">
+		<!-- 32×32 -->
+		<link rel="manifest" href="{{ "favicon/manifest.webmanifest"|url }}" crossorigin="use-credentials">
+		<!-- Modifier les chemins relatifs des favicons en fonction de la structure du projet -->
+		<!-- Dans le fichier manifest.webmanifest aussi, modifier les chemins vers les images -->
+			{% for path in config.extra_css %}
+		<link href="{{ path|url }}" rel="stylesheet"> {% endfor %}
+
+		<title>
+			{% if page.title %}
+				{{ page.title }}
+				-
+			{% endif %}
+			{{ config.site_name }}
+		</title>
+		{% block extrahead %}{% endblock %}
+		{%- block libs %}
+			<script src="{{ 'js/jquery-1.10.2.min.js'|url }}" defer></script>
+			<script src="{{ 'js/bootstrap.min.js'|url }}" defer></script>
+		{%- endblock %}
+	</head>
+	<body>
+		{% include "header.html" %}
+		<main id="content" role="main">
+			<div class="fr-container">
+				<div class="fr-grid-row">
+					{% if config.theme.menulateral %}
+						{% include "lateral.html" %}
+						<div id="contenu" class="fr-col-12 fr-col-md-9 fr-py-12v">
+					{% else %}
+						<div id="contenu" class="fr-col-12 fr-col-md-12 fr-py-12v">
+					{% endif %}
+					{% block content %}
+						{{ page.content }}
+					{% endblock %}
+					</div>
+					<hr/>
+					{% include "prev-next-nav.html" %}
+				</div>
+			</div>
+		</main>
+			<!--MkDocs version      : {{ mkdocs_version }}
+				Docs Build Date UTC : {{ build_date_utc }}-->
+			<!-- Script en version es6 module et nomodule pour les navigateurs le ne supportant pas -->
+
+		{%- block scripts %}
+			<script>
+				var base_url = {{ base_url | tojson }},
+					shortcuts = {{ config.theme.shortcuts | tojson }};
+			</script>
+			<script type="module" src="{{ "dsfr/dsfr.module.min.js"|url }}"></script>
+			<script type="text/javascript" nomodule src="{{ "dsfr/dsfr.nomodule.min.js"|url }}"></script>
+			<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+			<script src="{{ 'js/base.js'|url }}" defer></script>
+			{%- for path in extra_javascript %}
+			<script src="{{ path }}" defer></script>
+			{%- endfor %}
+		{%- endblock %}
+	</body>
+</html>

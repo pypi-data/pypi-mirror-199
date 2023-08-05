@@ -1,0 +1,49 @@
+{# <div class="fr-tabs">
+	<ul class="fr-tabs__list" role="tablist" aria-label="[A modifier | nom du système d'onglet]">
+		<li role="presentation">
+			<button id="filtres" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="0" role="tab" aria-selected="true" aria-controls="filtres-panel">Filtres</button>
+		</li>
+		<li role="presentation">
+			<button id="tabpanel-405" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-405-panel">retraiter</button>
+		</li>
+		<li role="presentation">
+			<button id="formats" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="formats-panel">Formats</button>
+		</li>
+		<li role="presentation">
+			<button id="lazy" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="lazy-panel">Lazy Gallery</button>
+		</li>
+		<li role="presentation">
+			<button id="gallery" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="gallery-panel">Gallery</button>
+		</li>
+		<li role="presentation">
+			<button id="tabpanel-407" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="tabpanel-407-panel">layout</button>
+		</li>
+		<li role="presentation">
+			<button id="quiz" class="fr-tabs__tab fr-icon-checkbox-line fr-tabs__tab--icon-left" tabindex="-1" role="tab" aria-selected="false" aria-controls="quiz-panel">Quiz</button>
+		</li>
+	</ul>
+
+
+	<div id="filtres-panel" class="fr-tabs__panel fr-tabs__panel--selected" role="tabpanel" aria-labelledby="filtres" tabindex="0">
+		{% include "/tabs/filtrer.html" %}
+	</div>
+	<div id="tabpanel-405-panel" class="fr-tabs__panel retraiter" role="tabpanel" aria-labelledby="tabpanel-405" tabindex="0">
+		{% include "/tabs/retraiter.html" %}
+	</div>
+	<div id="quiz-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="quiz" tabindex="0">
+		{% include "/tabs/quiz.html" %}
+	</div>
+	<div id="formats-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="formats" tabindex="0">
+		{% include "/tabs/formats.html" %}
+	</div>
+	<div id="lazy-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="formats" tabindex="0">
+		{% include "/tabs/lazy.html" %}
+	</div>
+	<div id="gallery-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="formats" tabindex="0">
+{% include "/tabs/gallery.html" %}
+
+	</div>
+	<div id="tabpanel-407-panel" class="fr-tabs__panel" role="tabpanel" aria-labelledby="tabpanel-407" tabindex="0">
+		<p>D. Montrer deux exemples de layout, un hyper responsive pour les conteneurs d'image, et un autre qui ne varie que sur les paliers desktop, tablette, phone</p>
+	</div>
+</div> #}
