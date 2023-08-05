@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: hasaki
+Version: 0.0.2
+Summary: hasaki是一个python3开发常用工具的包
+Home-page: https://github.com/BishopMarcel/hasaki.git
+Author: BishopMarcel
+Author-email: bishopmarcel@163.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Provides-Extra: all
+License-File: LICENSE
+
+# hasaki
+
+~~~shell
+python -m pip install --user --upgrade setuptools wheel twine
+
+python setup.py sdist bdist_wheel
+
+# https://test.pypi.org/
+python -m twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# pip install -i https://test.pypi.org/simple/ hasaki
+
+# https://pypi.org
+python -m twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+# pip install hasaki
+~~~
