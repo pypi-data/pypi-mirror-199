@@ -1,0 +1,89 @@
+Metadata-Version: 2.1
+Name: terramagic
+Version: 0.1.8
+Summary: A automate tool for terraform projects
+Home-page: https://github.com/miltlima/terramagic
+License: MIT
+Keywords: terraform,terramagic,python
+Author: Milton Jesus
+Author-email: milton.lima@outlook.com
+Requires-Python: >=3.9,<4.0
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Documentation
+Requires-Dist: click (>=8.0.3,<9.0.0)
+Requires-Dist: python-hcl2 (>=4.3.0,<5.0.0)
+Requires-Dist: termcolor (>=1.1.0,<2.0.0)
+Project-URL: Repository, https://github.com/miltlima/terramagic
+Description-Content-Type: text/markdown
+
+# Terramagic CLI
+
+## Motivation
+
+Every time , I needed create a terraform files to a new project, and a new terraform files., but this is not good. and now we have a Terramagic tool to help us to create a terraform files.
+
+## Requirements
+
+- Python 3.8 >=
+
+## How to install?
+
+```shell
+pip install terramagic
+```
+
+## Check the version
+
+```bash
+terramagic --version
+```
+
+### Create a new project
+
+```shell
+terramagic create --name <project name> --env <env>
+```
+
+```shell
+terramagic create --name terraform --env prod --env dev
+```
+
+### Delete a project
+
+```shell
+terramagic delete --name <project name>
+```
+
+### Check if all terraform files configuration are valid.
+
+```shell
+terramagic check --name <project name>
+```
+
+## How to use this tool ?
+
+```shell
+Usage: terramagic [OPTIONS] COMMAND [ARGS]...
+
+  ClI tool to create Terraform project
+
+Options:
+  -v, --version  Show version
+  --help         Show this message and exit.
+
+Commands:
+  check   Check all files inside a Terraform project are valid.
+  create  Create a new Terraform project with specified name and environment
+  remove  Delete the project
+```
+
+Enjoy!
+
