@@ -1,0 +1,9 @@
+appName: werfklas 
+logLevel: WARN 
+
+database: 
+    path: '/Users/yvesvanelk/Git/Werfklas/'
+    name: 'werfklas.db' 
+
+flask: 
+  secretKey: 'qTR0VvJug9ReWzmTfxPbkM7bSFpd8BlXklQuC1hK1D0'         
