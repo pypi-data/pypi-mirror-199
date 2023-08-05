@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "psycodanticpg"
+version = "0.0.4"
+description = "psycopg2 database utilizing pydantic models"
+authors = ["wayfaring-stranger <zw6p226m@duck.com>"]
+packages = [
+    { include = "psycodanticpg" }
+]
+
+
+license = "mit"
+readme = "README.md"
+[tool.poetry.dependencies]
+python = "^3.9"
+pydantic = "^1.10.2"
+psycopg2-binary = "^2.9.5"
+python-dotenv = "1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
