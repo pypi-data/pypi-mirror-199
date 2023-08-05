@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: django-fernet-fields-v2
+Version: 0.7
+Summary: Fernet-encrypted model fields for Django
+Home-page: https://github.com/MichelML/django-fernet-fields/
+Author: MichelML, ORCAS, Inc
+Author-email: MichelML <michmoreau.l@gmail.com>
+Project-URL: Homepage, https://github.com/MichelML/django-fernet-fields
+Project-URL: Bug Tracker, https://github.com/MichelML/django-fernet-fields/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+License-File: AUTHORS.rst
+Requires-Dist: Django (>=4.0)
+Requires-Dist: cryptography (>=0.9)
+
