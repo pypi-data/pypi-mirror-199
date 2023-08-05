@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: poeminv
+Version: 1.0
+Summary: Tools to create emission inventories for ports.
+Home-page: https://github.com/Navisense/poeminv
+Author: Navisense GmbH
+Author-email: support@navisense.de
+License: AGPL-3.0-or-later
+Requires-Python: >=3.11
+Description-Content-Type: text/plain
+License-File: LICENSE
+Requires-Dist: pendulum (==2.1.2)
+Requires-Dist: PyYAML (==6.0)
+Provides-Extra: dev
+Requires-Dist: PyHamcrest (>=2.0.4) ; extra == 'dev'
+Requires-Dist: pytest (>=7.2.2) ; extra == 'dev'
+Requires-Dist: toml (>=0.10.2) ; extra == 'dev'
+Requires-Dist: yapf (>=0.32.0) ; extra == 'dev'
+Provides-Extra: test
+Requires-Dist: PyHamcrest (>=2.0.4) ; extra == 'test'
+Requires-Dist: pytest (>=7.2.2) ; extra == 'test'
+
