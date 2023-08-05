@@ -1,0 +1,3 @@
+[sqlalchemy.dialects]
+bytehouse = bytehouse_sqlalchemy.drivers.native.base:ByteHouseDialect_native
+bytehouse.native = bytehouse_sqlalchemy.drivers.native.base:ByteHouseDialect_native
