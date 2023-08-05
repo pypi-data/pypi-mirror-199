@@ -1,0 +1,17 @@
+pandas
+praw
+scipy
+click>=8.0
+fuzzywuzzy
+
+[analysis]
+matplotlib
+seaborn
+tabulate
+
+[dev]
+black
+flake8
+isort
+pylint
+build
