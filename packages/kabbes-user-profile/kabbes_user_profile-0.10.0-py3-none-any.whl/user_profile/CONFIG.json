@@ -1,0 +1,29 @@
+{
+    "!templates_Dir":{
+        "$ref": "{R{_Dir}R}",
+        "method":{
+            "name": "join_Dir",
+            "kwargs":{
+                "path": "Templates"
+            }
+        }
+    },
+    "!profiles_Dir":{
+        "$ref": "{R{package.config.cache.Dir}R}",
+        "method":{
+            "name": "join_Dir",
+            "kwargs":{
+                "path": "profiles"
+            }
+        }
+    },
+    "!profile_Path":{
+        "$ref": "{R{profiles_Dir}R}",
+        "method":{
+            "name": "join_Path",
+            "kwargs":{
+                "path": "{R{user_to_load}R}.json"
+            }
+        }
+    }
+}
