@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mcfc"
+description = 'Text formatting using Minecraft color codes.'
+readme = "README.md"
+license-files = { paths = ["LICENSE.txt"] }
+requires-python = ">=3.7"
+license = "MIT"
+keywords = ["console", "terminal", "cmd", "command prompt", "color"]
+authors = [
+  { name = "woidzero", email = "woidzerov@gmail.com" },
+]
+classifiers = [
+  "Development Status :: 5 - Production/Stable",
+  "Environment :: Console",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: Implementation :: CPython",
+  "Programming Language :: Python :: Implementation :: PyPy",
+]
+dependencies = []
+dynamic = ["version"]
+
+[project.urls]
+Documentation = "https://github.com/woidzero/mcfc#readme"
+Issues = "https://github.com/woidzero/mcfc/issues"
+Source = "https://github.com/woidzero/mcfc"
+
+[tool.hatch.version]
+path = "mcfc/__about__.py"
