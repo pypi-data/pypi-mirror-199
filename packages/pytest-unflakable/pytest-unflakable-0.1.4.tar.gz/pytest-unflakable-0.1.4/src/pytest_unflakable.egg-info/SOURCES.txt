@@ -1,0 +1,17 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.cfg
+src/pytest_unflakable/README.md
+src/pytest_unflakable/__init__.py
+src/pytest_unflakable/_api.py
+src/pytest_unflakable/_git.py
+src/pytest_unflakable/_plugin.py
+src/pytest_unflakable.egg-info/PKG-INFO
+src/pytest_unflakable.egg-info/SOURCES.txt
+src/pytest_unflakable.egg-info/dependency_links.txt
+src/pytest_unflakable.egg-info/entry_points.txt
+src/pytest_unflakable.egg-info/requires.txt
+src/pytest_unflakable.egg-info/top_level.txt
+tests/test_unflakable.py
