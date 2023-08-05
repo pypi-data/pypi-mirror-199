@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: MassSpecJing
+Version: 0.0.1
+Summary: Bounded ThreadPoolExecutor and ProcessPoolExecutor
+Home-page: UNKNOWN
+Author: Jing YU
+Author-email: ecustyj@gmail.com
+License: BSD License
+Platform: all
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.2
+Description-Content-Type: text/x-rst
+Requires-Dist: urllib3 (<1.27,>=1.21.1)
+Requires-Dist: certifi
+Requires-Dist: idna (>=2.5)
+
+Test
+
