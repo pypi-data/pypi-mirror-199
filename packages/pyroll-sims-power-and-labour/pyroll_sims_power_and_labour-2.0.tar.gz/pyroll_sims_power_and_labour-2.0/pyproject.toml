@@ -1,0 +1,33 @@
+[project]
+name = "pyroll-sims-power-and-labour"
+description = "Plugin for PyRolL providing the power and labour calculation after R. B. Sims."
+authors = [
+    { name = "Christoph Renzing", email = "christoph.renzing@imf.tu-freiberg.de" }
+]
+
+license = "BSD-3-Clause"
+homepage = "https://pyroll-project.github.io/"
+repository = "https://github.com/pyroll-project/pyroll-sims-power-and-labour"
+documentation = "https://pyroll-project.github.io/modules/pyroll-sims-power-and-labour/docs/"
+packages = [
+    { include = "pyroll/sims_power_and_labour" }
+]
+readme = "README.md"
+classifiers = [
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Manufacturing",
+    "Operating System :: OS Independent",
+    "Topic :: Scientific/Engineering"
+]
+
+requires-python = ">=3.9, <4.0"
+dependencies = [
+    "pyroll-core ~= 2.0.0",
+    "pyroll-hitchcock-roll-flattening ~=2.0.0"
+]
+
+dynamic = ["version"]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
