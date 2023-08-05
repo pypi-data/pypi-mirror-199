@@ -1,0 +1,143 @@
+Metadata-Version: 2.1
+Name: iliascw
+Version: 0.2.0
+Summary: Library to check if courses are available.
+Home-page: https://gitlab.com/dann-merlin/ilias-course-watcher
+Author: Merlin Sievers
+Author-email: merlin.sievers@posteo.net
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Description-Content-Type: text/markdown
+License-File: COPYING
+Requires-Dist: beautifulsoup4 (==4.12.0)
+Requires-Dist: certifi (==2022.12.7)
+Requires-Dist: charset-normalizer (==3.1.0)
+Requires-Dist: idna (==3.4)
+Requires-Dist: pydantic (==1.10.7)
+Requires-Dist: requests (==2.28.2)
+Requires-Dist: soupsieve (==2.4)
+Requires-Dist: typing-extensions (==4.5.0)
+Requires-Dist: urllib3 (==1.26.15)
+
+# Course Watcher Module for ILIAS
+
+## This README is outdated...
+
+This is an unoffial Application. It is not associated with the ILIAS project.
+
+This library let's you query your ILIAS instance in some specific ways
+described in the [task types section](#task-types).
+
+## Usage
+
+Because I hate argparse, getopt and the likes and because a command might get pretty complicated otherwise, you only need to specify exactly one argument:
+
+The path of the [config file]{#configuration}. Alternatively `-` can be specified to read the config file from stdin.
+
+```bash
+# Setup needed before!
+./icw config.json
+```
+
+This programm does not (yet?) have any daemon capabilities. It conceived to be run regularly by another tool such as cron or systemd timers.
+
+Example configurations are provided in `ilias-course-watcher.service` + `ilias-course-watcher.timer` and `ilias-course-watcher.crontab`.
+
+## Setup
+
+### pypi.org (Recommended)
+
+```bash
+pip install --user ilias-course-watcher
+```
+
+### Manual
+
+```bash
+# Install poetry using your package manager and then run:
+poetry install
+poetry build
+pip install --user dist/*.tar.gz
+# This will install all needed dependencies in a virtual environment
+#
+### You could also install the dependencies specified in the
+### pyproject.toml yourself (maybe also in a virtual environment)
+### and run CourseWatcher.py directly. There's no need to use poetry.
+```
+
+### Systemd timer
+
+```bash
+./install-systemd-user-config.sh
+```
+
+## Configuration
+
+The configuration is specified in JSON format.
+A template can be found in `template-config.json`.
+
+Always specified need to be the fields:
+
+- "Domain": string
+- "Username": string
+- "Password": string
+- "Tasks": list of tasks
+
+```json
+{
+	"Domain": "https://www.studon.fau.de",
+	"Username": "my-username",
+	"Password": "my-password",
+	"Tasks": [
+		... See Task Types ...
+	]
+}
+```
+
+## Task Types
+
+There are 3 different task types serving each a different function.
+
+### Search Entry (search_entry)
+
+A category search searches in a given Category page for entries containing
+the given search string (case-insensitive).
+
+```json
+{
+	"type": "search_entry",
+	"search_object": "crs123456",
+	"search_string": "WS 2023",
+	"success_command": "notify-send"
+}
+```
+
+The search_object can optionally include a `.html`-suffix.
+
+The success_command is executed if the search_string was found in the title of one of the entries of the specified category, course or fold.
+
+
+### Search Update (search_update)
+
+An update search remembers the contents of a category, course or fold page (if the search has been run before) and compares them to the current contents.
+
+A history of past contents is saved in the cached files.
+
+A cache directory can optionally be specified. By default the XDG Cache Directory is used (`~/.cache/ilias-course-watcher` by default).
+
+```json
+{
+	"type": "search_update",
+	"search_object": "fold123456.html",
+	"cache_dir": "~/.ilias-course-watcher",
+	"success_command": "command ls -1 -c ~/.ilias-course-watcher/fold123456.icw* | head -n 2 | tac | xargs diff"
+}
+```
+
+The success_command is executed if an update has been detected.
+The command pipeline in the example above prints the name of the files containing the up-to-date contents and the previous contents respectively. This output is then piped to xargs, which in turn then runs diff providing these two files as parameters. Other possible may include sending emails for example.
+
+### Queue Availability (queue)
+
+The queue task is not yet implemented. It should in the future monitor a queue to a course, running the success command if the course is open for sign-up and maybe even try to sign up by itself.
