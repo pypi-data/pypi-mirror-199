@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lz_drip"
+version = "1.0.0.dev17"
+description = "Provides the LZ specific code to run a drip-drip"
+readme = "README.md"
+authors = [
+    { "name"="Simon Patton", "email" ="sjpatton@lbl.gov"}
+]
+license = { text = "BSD-3-Clause-LBNL" }
+classifiers=[  # Optional
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering",
+    "Programming Language :: Python :: 3.10",
+]
+keywords=["LZ", "drip", "drip feed", "drip-drip", "salting"]  # Optional
+dependencies = [ # Optional
+    "mysql-connector-python >= 8.0.32",
+    "Flask >= 2.2.2",
+    "Flask-MySQL>=1.5.2",
+    "drip-drip >= 1.1.0.dev2",
+    "psquared-client == 3.0.0.dev2",
+]
+requires-python = ">=3.10, <4"
+
+[project.scripts]
+pipeline_exit = "pipeline_exit:main"
+
+# Note the quotes around drip.dropper in order to escape the dot .
+[project.entry-points."drip.dropper"]
+salt_arrival = "lz_drip:SaltArrival"
+spade_reception = "lz_drip:SpadeReception"
+
+[tool.setuptools.packages.find]
+# All the following settings are optional:
+where = ["src/main/python/drip_pkg"]  # ["."] by default
+# include = # ["*"] by default
+# exclude = # [] by default
+
+[tool.setuptools]
+py-modules = ["lz_drip", "pipeline_exit"]
+
+[tool.setuptools.package-data]
+lz_drip = ["py.typed"]
