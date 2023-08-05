@@ -1,0 +1,78 @@
+name: CI
+
+on:
+  push:
+
+  pull_request:
+    branches: [ main ]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  code-quality:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@main
+      name: Checkout code
+    - uses: actions/setup-python@main
+      name: Setup Python 3.10
+      with:
+        python-version: "3.10"
+    - uses: syphar/restore-virtualenv@12258d3ee4cdf69f808951f8363005c53cef4f0a
+      name: Restore virtualenv
+      id: cache-virtualenv
+
+    - uses: syphar/restore-pip-download-cache@5f49c7c20e91db623dfaf102d92b7eb3d25e9703
+      name: Restore pip download cache
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+    - run: pip install -r requirements.txt
+      name: Install requirements
+      if: steps.cache-virtualenv.outputs.cache-hit != 'true'
+
+    - uses: actions/cache@main
+      name: Restore .mypy_cache
+      with:
+        path: .mypy_cache
+        key: ${{ runner.os }}-${{ hashFiles('**/*.py') }}
+        restore-keys: |
+          ${{ runner.os }}-
+
+    # Linters
+    - run: flake8 src
+      name: "🕵️ flake8"
+      if: ${{ always() }}
+    
+    - run: isort --check --diff --color src
+      name: "🕵️ isort"
+      if: ${{ always() }}
+    
+    - run: black --check --diff --color src
+      name: "🕵️ black"
+      if: ${{ always() }}
+
+    - run: mypy --check-untyped-defs src
+      name: "🕵️ mypy"
+      if: ${{ always() }}
+
+    # Extra linters
+    - run: pylint --disable=all --enable=duplicate-code src
+      name: "✨ pylint (duplicate code)"
+      if: ${{ always() }}
+      continue-on-error: true
+    
+    - run: flake8 --ignore= --select=D
+      name: "✨ flake8 (docstrings)"
+      if: ${{ always() }}
+      continue-on-error: true
+    
+    - run: flake8 --ignore= --select=CC
+      name: "✨ flake8 (complexity)"
+      if: ${{ always() }}
+      continue-on-error: true
+
+    - run: flake8 --ignore= --select=TAE
+      name: "✨ flake8 (type annotation complexity)"
+      if: ${{ always() }}
+      continue-on-error: true

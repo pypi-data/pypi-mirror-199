@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: provision-ai
+Version: 23.3.24
+Summary: AI experiment provisioner
+Author-email: "Karol J. Piczak" <karol@piczak.com>
+License: MIT
+Project-URL: Homepage, https://github.com/provision-ai/provision
+Project-URL: Bug Tracker, https://github.com/provision-ai/provision/issues
+Keywords: neural networks,experiment,template,provisioning
+Platform: any
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+Provides-Extra: dev
+License-File: LICENSE
+
+Provision AI
+========================================
+
+AI experiment provisioner. Work in progress.
+
+
+For development install:
+
+    pip install --editable ".[dev]"
