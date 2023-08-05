@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: spinecore
+Version: 0.0.13
+Summary: The core lib of spine library
+Author-email: Shahar Luftig <shaharluftig@gmail.com>
+Project-URL: Homepage, https://github.com/shaharluftig/spine
+Keywords: dataframe,dag,core,spine,workflow,data pipline,data enginnering
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: polars
+Provides-Extra: spark
+Provides-Extra: all

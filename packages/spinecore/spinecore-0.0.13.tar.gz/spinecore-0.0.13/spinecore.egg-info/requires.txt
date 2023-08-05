@@ -1,0 +1,15 @@
+stringcase~=1.2.0
+matplotlib~=3.7.1
+networkx~=3.0
+
+[all]
+spinecore[polars]
+spinecore[spark]
+
+[polars]
+polars~=0.16.11
+pyarrow~=11.0.0
+connectorx~=0.3.2a2
+
+[spark]
+pyspark~=3.2.1
