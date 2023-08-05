@@ -1,0 +1,755 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.core.ants_image_io &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.core.ants_image_io</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Image IO</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;image_header_info&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image_clone&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image_read&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dicom_read&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image_write&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_image&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;matrix_to_images&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;images_from_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;image_list_to_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;images_to_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;matrix_from_images&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;timeseries_to_matrix&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;matrix_to_timeseries&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;from_numpy&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;_from_numpy&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ants_image</span> <span class="k">as</span> <span class="n">iio</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">registration</span> <span class="k">as</span> <span class="n">reg</span>
+
+<span class="n">_supported_pclasses</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;scalar&quot;</span><span class="p">,</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="s2">&quot;rgb&quot;</span><span class="p">,</span> <span class="s2">&quot;rgba&quot;</span><span class="p">}</span>
+<span class="n">_supported_ptypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;unsigned char&quot;</span><span class="p">,</span> <span class="s2">&quot;unsigned int&quot;</span><span class="p">,</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">}</span>
+<span class="n">_supported_ntypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;uint8&quot;</span><span class="p">,</span> <span class="s2">&quot;uint32&quot;</span><span class="p">,</span> <span class="s2">&quot;float32&quot;</span><span class="p">,</span> <span class="s2">&quot;float64&quot;</span><span class="p">}</span>
+<span class="n">_unsupported_ptypes</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;char&quot;</span><span class="p">,</span> <span class="s2">&quot;unsigned short&quot;</span><span class="p">,</span> <span class="s2">&quot;short&quot;</span><span class="p">,</span> <span class="s2">&quot;int&quot;</span><span class="p">}</span>
+<span class="n">_unsupported_ptype_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;char&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unsigned short&quot;</span><span class="p">:</span> <span class="s2">&quot;unsigned int&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;short&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;int&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+<span class="n">_image_type_map</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;scalar&quot;</span><span class="p">:</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="s2">&quot;vector&quot;</span><span class="p">:</span> <span class="s2">&quot;V&quot;</span><span class="p">,</span> <span class="s2">&quot;rgb&quot;</span><span class="p">:</span> <span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="s2">&quot;rgba&quot;</span><span class="p">:</span> <span class="s2">&quot;RGBA&quot;</span><span class="p">}</span>
+<span class="n">_ptype_type_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;unsigned char&quot;</span><span class="p">:</span> <span class="s2">&quot;UC&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;unsigned int&quot;</span><span class="p">:</span> <span class="s2">&quot;UI&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;float&quot;</span><span class="p">:</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;double&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_ntype_type_map</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;uint8&quot;</span><span class="p">:</span> <span class="s2">&quot;UC&quot;</span><span class="p">,</span> <span class="s2">&quot;uint32&quot;</span><span class="p">:</span> <span class="s2">&quot;UI&quot;</span><span class="p">,</span> <span class="s2">&quot;float32&quot;</span><span class="p">:</span> <span class="s2">&quot;F&quot;</span><span class="p">,</span> <span class="s2">&quot;float64&quot;</span><span class="p">:</span> <span class="s2">&quot;D&quot;</span><span class="p">}</span>
+<span class="n">_npy_to_itk_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;uint8&quot;</span><span class="p">:</span> <span class="s2">&quot;unsigned char&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;uint32&quot;</span><span class="p">:</span> <span class="s2">&quot;unsigned int&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;float32&quot;</span><span class="p">:</span> <span class="s2">&quot;float&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;float64&quot;</span><span class="p">:</span> <span class="s2">&quot;double&quot;</span><span class="p">,</span>
+<span class="p">}</span>
+
+<span class="n">_image_read_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">itype</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&quot;scalar&quot;</span><span class="p">,</span> <span class="s2">&quot;vector&quot;</span><span class="p">,</span> <span class="s2">&quot;rgb&quot;</span><span class="p">,</span> <span class="s2">&quot;rgba&quot;</span><span class="p">}:</span>
+    <span class="n">_image_read_dict</span><span class="p">[</span><span class="n">itype</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">_supported_ptypes</span><span class="p">:</span>
+        <span class="n">_image_read_dict</span><span class="p">[</span><span class="n">itype</span><span class="p">][</span><span class="n">p</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">}:</span>
+            <span class="n">ita</span> <span class="o">=</span> <span class="n">_image_type_map</span><span class="p">[</span><span class="n">itype</span><span class="p">]</span>
+            <span class="n">pa</span> <span class="o">=</span> <span class="n">_ptype_type_map</span><span class="p">[</span><span class="n">p</span><span class="p">]</span>
+            <span class="n">_image_read_dict</span><span class="p">[</span><span class="n">itype</span><span class="p">][</span><span class="n">p</span><span class="p">][</span><span class="n">d</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;imageRead</span><span class="si">%s%s%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">ita</span><span class="p">,</span> <span class="n">pa</span><span class="p">,</span> <span class="n">d</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="from_numpy"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.from_numpy">[docs]</a><span class="k">def</span> <span class="nf">from_numpy</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_components</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_rgb</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an ANTsImage object from a numpy array</span>
+
+<span class="sd">    ANTsR function: `as.antsImage`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    data : ndarray</span>
+<span class="sd">        image data array</span>
+
+<span class="sd">    origin : tuple/list</span>
+<span class="sd">        image origin</span>
+
+<span class="sd">    spacing : tuple/list</span>
+<span class="sd">        image spacing</span>
+
+<span class="sd">    direction : list/ndarray</span>
+<span class="sd">        image direction</span>
+
+<span class="sd">    has_components : boolean</span>
+<span class="sd">        whether the image has components</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+<span class="sd">        image with given data and any given information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span> <span class="o">==</span> <span class="s2">&quot;float64&quot;</span> <span class="k">else</span> <span class="n">data</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">_from_numpy</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">origin</span><span class="p">,</span> <span class="n">spacing</span><span class="p">,</span> <span class="n">direction</span><span class="p">,</span> <span class="n">has_components</span><span class="p">,</span> <span class="n">is_rgb</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span></div>
+
+
+<span class="k">def</span> <span class="nf">_from_numpy</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">has_components</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">is_rgb</span><span class="o">=</span><span class="kc">False</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Internal function for creating an ANTsImage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">is_rgb</span><span class="p">:</span>
+        <span class="n">has_components</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="k">if</span> <span class="n">has_components</span><span class="p">:</span>
+        <span class="n">ndim</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="n">dtype</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="o">.</span><span class="n">name</span>
+    <span class="n">ptype</span> <span class="o">=</span> <span class="n">_npy_to_itk_map</span><span class="p">[</span><span class="n">dtype</span><span class="p">]</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">origin</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">origin</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="mf">0.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">spacing</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="mf">1.0</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="n">ndim</span><span class="p">)</span>
+
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;fromNumpy</span><span class="si">%s%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">_ntype_type_map</span><span class="p">[</span><span class="n">dtype</span><span class="p">],</span> <span class="n">ndim</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">has_components</span><span class="p">:</span>
+        <span class="n">itk_image</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">ants_image</span> <span class="o">=</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span>
+            <span class="n">pixeltype</span><span class="o">=</span><span class="n">ptype</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">ndim</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="n">itk_image</span>
+        <span class="p">)</span>
+        <span class="n">ants_image</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+        <span class="n">ants_image</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">(</span><span class="n">spacing</span><span class="p">)</span>
+        <span class="n">ants_image</span><span class="o">.</span><span class="n">set_direction</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+        <span class="n">ants_image</span><span class="o">.</span><span class="n">_ndarr</span> <span class="o">=</span> <span class="n">data</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">arrays</span> <span class="o">=</span> <span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])]</span>
+        <span class="n">data_shape</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+        <span class="n">ants_images</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">arrays</span><span class="p">)):</span>
+            <span class="n">tmp_ptr</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">arrays</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">data_shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">tmp_img</span> <span class="o">=</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span>
+                <span class="n">pixeltype</span><span class="o">=</span><span class="n">ptype</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">ndim</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="n">tmp_ptr</span>
+            <span class="p">)</span>
+            <span class="n">tmp_img</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span>
+            <span class="n">tmp_img</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">(</span><span class="n">spacing</span><span class="p">)</span>
+            <span class="n">tmp_img</span><span class="o">.</span><span class="n">set_direction</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span>
+            <span class="n">tmp_img</span><span class="o">.</span><span class="n">_ndarr</span> <span class="o">=</span> <span class="n">arrays</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">ants_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp_img</span><span class="p">)</span>
+        <span class="n">ants_image</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">merge_channels</span><span class="p">(</span><span class="n">ants_images</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">is_rgb</span><span class="p">:</span>
+            <span class="n">ants_image</span> <span class="o">=</span> <span class="n">ants_image</span><span class="o">.</span><span class="n">vector_to_rgb</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">ants_image</span>
+
+
+<div class="viewcode-block" id="make_image"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.make_image">[docs]</a><span class="k">def</span> <span class="nf">make_image</span><span class="p">(</span>
+    <span class="n">imagesize</span><span class="p">,</span>
+    <span class="n">voxval</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">origin</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">direction</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">has_components</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">pixeltype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Make an image with given size and voxel value or given a mask and vector</span>
+
+<span class="sd">    ANTsR function: `makeImage`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    shape : tuple/ANTsImage</span>
+<span class="sd">        input image size or mask</span>
+
+<span class="sd">    voxval : scalar</span>
+<span class="sd">        input image value or vector, size of mask</span>
+
+<span class="sd">    spacing : tuple/list</span>
+<span class="sd">        image spatial resolution</span>
+
+<span class="sd">    origin  : tuple/list</span>
+<span class="sd">        image spatial origin</span>
+
+<span class="sd">    direction : list/ndarray</span>
+<span class="sd">        direction matrix to convert from index to physical space</span>
+
+<span class="sd">    components : boolean</span>
+<span class="sd">        whether there are components per pixel or not</span>
+
+<span class="sd">    pixeltype : float</span>
+<span class="sd">        data type of image values</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">imagesize</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">imagesize</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">sel</span> <span class="o">=</span> <span class="n">imagesize</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">if</span> <span class="n">voxval</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">voxval</span> <span class="o">=</span> <span class="n">voxval</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">voxval</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">((</span><span class="n">sel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">voxval</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">):</span>
+            <span class="n">img</span><span class="p">[</span><span class="n">sel</span><span class="p">]</span> <span class="o">=</span> <span class="n">voxval</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;Num given voxels </span><span class="si">%i</span><span class="s2"> not same as num positive values </span><span class="si">%i</span><span class="s2"> in `imagesize`&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">voxval</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">sel</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()))</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">img</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">voxval</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">voxval</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">imagesize</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">imagesize</span><span class="p">,</span> <span class="n">voxval</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="s2">&quot;float32&quot;</span><span class="p">)</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">from_numpy</span><span class="p">(</span>
+            <span class="n">array</span><span class="p">,</span>
+            <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">,</span>
+            <span class="n">has_components</span><span class="o">=</span><span class="n">has_components</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="matrix_to_images"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.matrix_to_images">[docs]</a><span class="k">def</span> <span class="nf">matrix_to_images</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">,</span> <span class="n">mask</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Unmasks rows of a matrix and writes as images</span>
+
+<span class="sd">    ANTsR function: `matrixToImages`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    data_matrix : numpy.ndarray</span>
+<span class="sd">        each row corresponds to an image</span>
+<span class="sd">        array should have number of columns equal to non-zero voxels in the mask</span>
+
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        image containing a binary mask. Rows of the matrix are</span>
+<span class="sd">        unmasked and written as images. The mask defines the output image space</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of ANTsImage types</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; msk = ants.get_mask( img )</span>
+<span class="sd">    &gt;&gt;&gt; img2 = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; img3 = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; mat = ants.image_list_to_matrix([img,img2,img3], msk )</span>
+<span class="sd">    &gt;&gt;&gt; ilist = ants.matrix_to_images( mat, msk )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">data_matrix</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">data_matrix</span> <span class="o">=</span> <span class="n">data_matrix</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">data_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="n">numimages</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_matrix</span><span class="p">)</span>
+    <span class="n">numVoxelsInMatrix</span> <span class="o">=</span> <span class="n">data_matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">numVoxelsInMask</span> <span class="o">=</span> <span class="p">(</span><span class="n">mask</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">numVoxelsInMask</span> <span class="o">!=</span> <span class="n">numVoxelsInMatrix</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Num masked voxels </span><span class="si">%i</span><span class="s2"> must match data matrix </span><span class="si">%i</span><span class="s2">&quot;</span>
+            <span class="o">%</span> <span class="p">(</span><span class="n">numVoxelsInMask</span><span class="p">,</span> <span class="n">numVoxelsInMatrix</span><span class="p">)</span>
+        <span class="p">)</span>
+
+    <span class="n">imagelist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">numimages</span><span class="p">):</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+        <span class="n">img</span><span class="p">[</span><span class="n">mask</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span>
+        <span class="n">imagelist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">imagelist</span></div>
+
+
+<span class="n">images_from_matrix</span> <span class="o">=</span> <span class="n">matrix_to_images</span>
+
+
+<div class="viewcode-block" id="images_to_matrix"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.images_to_matrix">[docs]</a><span class="k">def</span> <span class="nf">images_to_matrix</span><span class="p">(</span><span class="n">image_list</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read images into rows of a matrix, given a mask - much faster for</span>
+<span class="sd">    large datasets as it is based on C++ implementations.</span>
+
+<span class="sd">    ANTsR function: `imagesToMatrix`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image_list : list of ANTsImage types</span>
+<span class="sd">        images to convert to ndarray</span>
+
+<span class="sd">    mask : ANTsImage (optional)</span>
+<span class="sd">        image containing binary mask. voxels in the mask are placed in the matrix</span>
+
+<span class="sd">    sigma : scaler (optional)</span>
+<span class="sd">        smoothing factor</span>
+
+<span class="sd">    epsilon : scalar</span>
+<span class="sd">        threshold for mask</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        array with a row for each image</span>
+<span class="sd">        shape = (N_IMAGES, N_VOXELS)</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; img2 = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; img3 = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; mat = ants.image_list_to_matrix([img,img2,img3])</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">listfunc</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">mask</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">reg</span><span class="o">.</span><span class="n">resample_image_to_target</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+    <span class="n">num_images</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_list</span><span class="p">)</span>
+    <span class="n">mask_arr</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span> <span class="o">&gt;=</span> <span class="n">epsilon</span>
+    <span class="n">num_voxels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">mask_arr</span><span class="p">)</span>
+
+    <span class="n">data_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">((</span><span class="n">num_images</span><span class="p">,</span> <span class="n">num_voxels</span><span class="p">))</span>
+    <span class="n">do_smooth</span> <span class="o">=</span> <span class="n">sigma</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">img</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">image_list</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">do_smooth</span><span class="p">:</span>
+            <span class="n">data_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">listfunc</span><span class="p">(</span>
+                <span class="n">utils</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">sigma</span><span class="p">,</span> <span class="n">sigma_in_physical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_matrix</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">listfunc</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">data_matrix</span></div>
+
+
+<span class="n">image_list_to_matrix</span> <span class="o">=</span> <span class="n">images_to_matrix</span>
+<span class="n">matrix_from_images</span> <span class="o">=</span> <span class="n">images_to_matrix</span>
+
+
+<div class="viewcode-block" id="timeseries_to_matrix"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image_io.timeseries_to_matrix">[docs]</a><span class="k">def</span> <span class="nf">timeseries_to_matrix</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert a timeseries image into a matrix.</span>
+
+<span class="sd">    ANTsR function: `timeseries2matrix`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : image whose slices we convert to a matrix. E.g. a 3D image of size</span>
+<span class="sd">           x by y by z will convert to a z by x*y sized matrix</span>
+
+<span class="sd">    mask : ANTsImage (optional)</span>
+<span class="sd">        image containing binary mask. voxels in the mask are placed in the matrix</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray</span>
+<span class="sd">        array with a row for each image</span>
+<span class="sd">        shape = (N_IMAGES, N_VOXELS)</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.make_image( (10,10,10,5 ) )</span>
+<span class="sd">    &gt;&gt;&gt; mat = ants.timeseries_to_matrix( img )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">ndimage_to_list</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">image_list_to_matrix</span><span class="p">(</span><span class="n">temp</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="matrix_to_timeseries"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image_io.matrix_to_timeseries">[docs]</a><span class="k">def</span> <span class="nf">matrix_to_timeseries</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    converts a matrix to a ND image.</span>
+
+<span class="sd">    ANTsR function: `matrix2timeseries`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    image: reference ND image</span>
+
+<span class="sd">    matrix: matrix to convert to image</span>
+
+<span class="sd">    mask: mask image defining voxels of interest</span>
+
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.make_image( (10,10,10,5 ) )</span>
+<span class="sd">    &gt;&gt;&gt; mask = ants.ndimage_to_list( img )[0] * 0</span>
+<span class="sd">    &gt;&gt;&gt; mask[ 4:8, 4:8, 4:8 ] = 1</span>
+<span class="sd">    &gt;&gt;&gt; mat = ants.timeseries_to_matrix( img, mask = mask )</span>
+<span class="sd">    &gt;&gt;&gt; img2 = ants.matrix_to_timeseries( img,  mat, mask)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">temp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="mi">0</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">matrix_to_images</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+    <span class="n">newImage</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">list_to_ndimage</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">temp</span><span class="p">)</span>
+    <span class="n">iio</span><span class="o">.</span><span class="n">copy_image_info</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">newImage</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">newImage</span></div>
+
+
+<div class="viewcode-block" id="image_header_info"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.image_header_info">[docs]</a><span class="k">def</span> <span class="nf">image_header_info</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read file info from image header</span>
+
+<span class="sd">    ANTsR function: `antsImageHeaderInfo`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    filename : string</span>
+<span class="sd">        name of image file from which info will be read</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;filename does not exist&quot;</span><span class="p">)</span>
+
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;antsImageHeaderInfo&quot;</span><span class="p">)</span>
+    <span class="n">retval</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">retval</span><span class="p">[</span><span class="s2">&quot;dimensions&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">retval</span><span class="p">[</span><span class="s2">&quot;dimensions&quot;</span><span class="p">])</span>
+    <span class="n">retval</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">o</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="n">retval</span><span class="p">[</span><span class="s2">&quot;origin&quot;</span><span class="p">]])</span>
+    <span class="n">retval</span><span class="p">[</span><span class="s2">&quot;spacing&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">retval</span><span class="p">[</span><span class="s2">&quot;spacing&quot;</span><span class="p">]])</span>
+    <span class="n">retval</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">retval</span><span class="p">[</span><span class="s2">&quot;direction&quot;</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">retval</span></div>
+
+
+<div class="viewcode-block" id="image_clone"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.image_clone">[docs]</a><span class="k">def</span> <span class="nf">image_clone</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Clone an ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsImageClone`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to clone</span>
+
+<span class="sd">    dtype : string (optional)</span>
+<span class="sd">        new datatype for image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="image_read"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.image_read">[docs]</a><span class="k">def</span> <span class="nf">image_read</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">reorient</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read an ANTsImage from file</span>
+
+<span class="sd">    ANTsR function: `antsImageRead`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    filename : string</span>
+<span class="sd">        Name of the file to read the image from.</span>
+
+<span class="sd">    dimension : int</span>
+<span class="sd">        Number of dimensions of the image read. This need not be the same as</span>
+<span class="sd">        the dimensions of the image in the file. Allowed values: 2, 3, 4.</span>
+<span class="sd">        If not provided, the dimension is obtained from the image file</span>
+
+<span class="sd">    pixeltype : string</span>
+<span class="sd">        C++ datatype to be used to represent the pixels read. This datatype</span>
+<span class="sd">        need not be the same as the datatype used in the file.</span>
+<span class="sd">        Options: unsigned char, unsigned int, float, double</span>
+
+<span class="sd">    reorient : boolean | string</span>
+<span class="sd">        if True, the image will be reoriented to RPI if it is 3D</span>
+<span class="sd">        if False, nothing will happen</span>
+<span class="sd">        if string, this should be the 3-letter orientation to which the</span>
+<span class="sd">            input image will reoriented if 3D.</span>
+<span class="sd">        if the image is 2D, this argument is ignored</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">):</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">img_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">)):</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">))</span> <span class="k">as</span> <span class="n">json_data</span><span class="p">:</span>
+                <span class="n">img_header</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">json_data</span><span class="p">)</span>
+            <span class="n">ants_image</span> <span class="o">=</span> <span class="n">from_numpy</span><span class="p">(</span>
+                <span class="n">img_array</span><span class="p">,</span>
+                <span class="n">origin</span><span class="o">=</span><span class="n">img_header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;origin&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">spacing</span><span class="o">=</span><span class="n">img_header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;spacing&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                <span class="n">direction</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">img_header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;direction&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)),</span>
+                <span class="n">has_components</span><span class="o">=</span><span class="n">img_header</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;components&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">,</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img_header</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="n">ants_image</span> <span class="o">=</span> <span class="n">from_numpy</span><span class="p">(</span><span class="n">img_array</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File </span><span class="si">%s</span><span class="s2"> does not exist!&quot;</span> <span class="o">%</span> <span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">hinfo</span> <span class="o">=</span> <span class="n">image_header_info</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">ptype</span> <span class="o">=</span> <span class="n">hinfo</span><span class="p">[</span><span class="s2">&quot;pixeltype&quot;</span><span class="p">]</span>
+        <span class="n">pclass</span> <span class="o">=</span> <span class="n">hinfo</span><span class="p">[</span><span class="s2">&quot;pixelclass&quot;</span><span class="p">]</span>
+        <span class="n">ndim</span> <span class="o">=</span> <span class="n">hinfo</span><span class="p">[</span><span class="s2">&quot;nDimensions&quot;</span><span class="p">]</span>
+        <span class="n">ncomp</span> <span class="o">=</span> <span class="n">hinfo</span><span class="p">[</span><span class="s2">&quot;nComponents&quot;</span><span class="p">]</span>
+        <span class="n">is_rgb</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">pclass</span> <span class="o">==</span> <span class="s2">&quot;rgb&quot;</span><span class="p">:</span>
+            <span class="n">pclass</span> <span class="o">=</span> <span class="s2">&quot;vector&quot;</span>
+        <span class="k">if</span> <span class="n">pclass</span> <span class="o">==</span> <span class="s2">&quot;rgba&quot;</span><span class="p">:</span>
+            <span class="n">pclass</span> <span class="o">=</span> <span class="s2">&quot;vector&quot;</span>
+<span class="c1">#        is_rgb = True if pclass == &quot;rgb&quot; else False</span>
+        <span class="k">if</span> <span class="n">dimension</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ndim</span> <span class="o">=</span> <span class="n">dimension</span>
+
+        <span class="c1"># error handling on pixelclass</span>
+        <span class="k">if</span> <span class="n">pclass</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_supported_pclasses</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pixel class </span><span class="si">%s</span><span class="s2"> not supported!&quot;</span> <span class="o">%</span> <span class="n">pclass</span><span class="p">)</span>
+
+        <span class="c1"># error handling on pixeltype</span>
+        <span class="k">if</span> <span class="n">ptype</span> <span class="ow">in</span> <span class="n">_unsupported_ptypes</span><span class="p">:</span>
+            <span class="n">ptype</span> <span class="o">=</span> <span class="n">_unsupported_ptype_map</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">ptype</span><span class="p">,</span> <span class="s2">&quot;unsupported&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">ptype</span> <span class="o">==</span> <span class="s2">&quot;unsupported&quot;</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Pixeltype </span><span class="si">%s</span><span class="s2"> not supported&quot;</span> <span class="o">%</span> <span class="n">ptype</span><span class="p">)</span>
+
+        <span class="c1"># error handling on dimension</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Found </span><span class="si">%i</span><span class="s2">-dimensional image - not supported!&quot;</span> <span class="o">%</span> <span class="n">ndim</span><span class="p">)</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="n">_image_read_dict</span><span class="p">[</span><span class="n">pclass</span><span class="p">][</span><span class="n">ptype</span><span class="p">][</span><span class="n">ndim</span><span class="p">])</span>
+        <span class="n">itk_pointer</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+        <span class="n">ants_image</span> <span class="o">=</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span>
+            <span class="n">pixeltype</span><span class="o">=</span><span class="n">ptype</span><span class="p">,</span>
+            <span class="n">dimension</span><span class="o">=</span><span class="n">ndim</span><span class="p">,</span>
+            <span class="n">components</span><span class="o">=</span><span class="n">ncomp</span><span class="p">,</span>
+            <span class="n">pointer</span><span class="o">=</span><span class="n">itk_pointer</span><span class="p">,</span>
+            <span class="n">is_rgb</span><span class="o">=</span><span class="n">is_rgb</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">pixeltype</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ants_image</span> <span class="o">=</span> <span class="n">ants_image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">reorient</span> <span class="o">!=</span> <span class="kc">False</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">ants_image</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">reorient</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="n">ants_image</span> <span class="o">=</span> <span class="n">ants_image</span><span class="o">.</span><span class="n">reorient_image2</span><span class="p">(</span><span class="s2">&quot;RPI&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">reorient</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+            <span class="n">ants_image</span> <span class="o">=</span> <span class="n">ants_image</span><span class="o">.</span><span class="n">reorient_image2</span><span class="p">(</span><span class="n">reorient</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ants_image</span></div>
+
+
+<div class="viewcode-block" id="dicom_read"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image_io.dicom_read">[docs]</a><span class="k">def</span> <span class="nf">dicom_read</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a set of dicom files in a directory into a single ANTsImage.</span>
+<span class="sd">    The origin of the resulting 3D image will be the origin of the</span>
+<span class="sd">    first dicom image read.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    directory : string</span>
+<span class="sd">        folder in which all the dicom images exist</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.dicom_read(&#39;~/desktop/dicom-subject/&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">imgidx</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">imgpath</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">directory</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">imgpath</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.dcm&quot;</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">imgidx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">image_read</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">imgpath</span><span class="p">),</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="n">pixeltype</span>
+                <span class="p">)</span>
+                <span class="n">origin</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">origin</span>
+                <span class="n">spacing</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">spacing</span>
+                <span class="n">direction</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">direction</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">.</span><span class="n">numpy</span><span class="p">()[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">tmp</span> <span class="o">=</span> <span class="n">image_read</span><span class="p">(</span>
+                    <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">directory</span><span class="p">,</span> <span class="n">imgpath</span><span class="p">),</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="n">pixeltype</span>
+                <span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+            <span class="n">slices</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">tmp</span><span class="p">)</span>
+            <span class="n">imgidx</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">slices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">from_numpy</span><span class="p">(</span><span class="n">slices</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="n">origin</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="n">direction</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="image_write"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image_io.image_write">[docs]</a><span class="k">def</span> <span class="nf">image_write</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">ri</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write an ANTsImage to file</span>
+
+<span class="sd">    ANTsR function: `antsImageWrite`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to save to file</span>
+
+<span class="sd">    filename : string</span>
+<span class="sd">        name of file to which image will be saved</span>
+
+<span class="sd">    ri : boolean</span>
+<span class="sd">        if True, return image. This allows for using this function in a pipeline:</span>
+<span class="sd">            &gt;&gt;&gt; img2 = img.smooth_image(2.).image_write(file1, ri=True).threshold_image(0,20).image_write(file2, ri=True)</span>
+<span class="sd">        if False, do not return image</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">filename</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">):</span>
+        <span class="n">img_array</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">img_header</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;origin&quot;</span><span class="p">:</span> <span class="n">image</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+            <span class="s2">&quot;spacing&quot;</span><span class="p">:</span> <span class="n">image</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span>
+            <span class="s2">&quot;direction&quot;</span><span class="p">:</span> <span class="n">image</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span>
+            <span class="s2">&quot;components&quot;</span><span class="p">:</span> <span class="n">image</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
+        <span class="p">}</span>
+
+        <span class="n">np</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">img_array</span><span class="p">)</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.npy&quot;</span><span class="p">,</span> <span class="s2">&quot;.json&quot;</span><span class="p">),</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">json</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">img_header</span><span class="p">,</span> <span class="n">outfile</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">image</span><span class="o">.</span><span class="n">to_file</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">ri</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">image</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

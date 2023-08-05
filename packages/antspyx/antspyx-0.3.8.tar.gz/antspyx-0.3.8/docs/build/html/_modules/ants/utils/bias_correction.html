@@ -1,0 +1,431 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.utils.bias_correction &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.utils.bias_correction</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;n3_bias_field_correction&quot;</span><span class="p">,</span> <span class="s2">&quot;n3_bias_field_correction2&quot;</span><span class="p">,</span> <span class="s2">&quot;n4_bias_field_correction&quot;</span><span class="p">,</span> <span class="s2">&quot;abp_n4&quot;</span><span class="p">]</span>
+
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">process_args</span> <span class="k">as</span> <span class="n">pargs</span>
+<span class="kn">from</span> <span class="nn">.get_mask</span> <span class="kn">import</span> <span class="n">get_mask</span>
+<span class="kn">from</span> <span class="nn">.iMath</span> <span class="kn">import</span> <span class="n">iMath</span>
+
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">ants_image</span> <span class="k">as</span> <span class="n">iio</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+
+
+<div class="viewcode-block" id="n3_bias_field_correction"><a class="viewcode-back" href="../../../utils.html#ants.utils.bias_correction.n3_bias_field_correction">[docs]</a><span class="k">def</span> <span class="nf">n3_bias_field_correction</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">downsample_factor</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N3 Bias Field Correction</span>
+
+<span class="sd">    ANTsR function: `n3BiasFieldCorrection`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to be bias corrected</span>
+
+<span class="sd">    downsample_factor : scalar</span>
+<span class="sd">        how much to downsample image before performing bias correction</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read( ants.get_ants_data(&#39;r16&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; image_n3 = ants.n3_bias_field_correction(image)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">outimage</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="p">[</span><span class="n">image</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">outimage</span><span class="p">,</span> <span class="n">downsample_factor</span><span class="p">]</span>
+    <span class="n">processed_args</span> <span class="o">=</span> <span class="n">pargs</span><span class="o">.</span><span class="n">_int_antsProcessArguments</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;N3BiasFieldCorrection&quot;</span><span class="p">)</span>
+    <span class="n">libfn</span><span class="p">(</span><span class="n">processed_args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outimage</span></div>
+
+<div class="viewcode-block" id="n3_bias_field_correction2"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.bias_correction.n3_bias_field_correction2">[docs]</a><span class="k">def</span> <span class="nf">n3_bias_field_correction2</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">rescale_intensities</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">shrink_factor</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">convergence</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;iters&quot;</span><span class="p">:</span> <span class="mi">50</span><span class="p">,</span> <span class="s2">&quot;tol&quot;</span><span class="p">:</span> <span class="mf">1e-7</span><span class="p">},</span>
+    <span class="n">spline_param</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">number_of_fitting_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">return_bias_field</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">weight_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N3 Bias Field Correction</span>
+
+<span class="sd">    ANTsR function: `n3BiasFieldCorrection2`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to bias correct</span>
+
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        input mask, if one is not passed one will be made</span>
+
+<span class="sd">    rescale_intensities : boolean</span>
+<span class="sd">        At each iteration, a new intensity mapping is</span>
+<span class="sd">        calculated and applied but there is nothing which constrains the new</span>
+<span class="sd">        intensity range to be within certain values. The result is that the</span>
+<span class="sd">        range can &quot;drift&quot; from the original at each iteration. This option</span>
+<span class="sd">        rescales to the [min,max] range of the original image intensities within</span>
+<span class="sd">        the user-specified mask. A mask is required to perform rescaling.  Default</span>
+<span class="sd">        is False in ANTsR/ANTsPy but True in ANTs.</span>
+
+<span class="sd">    shrink_factor : scalar</span>
+<span class="sd">        Shrink factor for multi-resolution correction, typically integer less than 4</span>
+
+<span class="sd">    convergence : dict w/ keys `iters` and `tol`</span>
+<span class="sd">        iters : maximum number of iterations</span>
+<span class="sd">        tol : the convergence tolerance.  Default tolerance is 1e-7 in ANTsR/ANTsPy but 0.0 in ANTs.</span>
+
+<span class="sd">    spline_param : float or vector Parameter controlling number of control</span>
+<span class="sd">        points in spline. Either single value, indicating the spacing in each</span>
+<span class="sd">        direction, or vector with one entry per dimension of image, indicating</span>
+<span class="sd">        the mesh size.</span>
+
+<span class="sd">    number_of_fitting_levels : integer</span>
+<span class="sd">        Number of fitting levels per iteration.</span>
+
+<span class="sd">    return_bias_field : boolean</span>
+<span class="sd">        Return bias field instead of bias corrected image.</span>
+
+<span class="sd">    verbose : boolean</span>
+<span class="sd">        enables verbose output.</span>
+
+<span class="sd">    weight_mask : ANTsImage (optional)</span>
+<span class="sd">        antsImage of weight mask</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read( ants.get_ants_data(&#39;r16&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; image_n3 = ants.n3_bias_field_correction2(image)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span> <span class="o">!=</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">iters</span> <span class="o">=</span> <span class="n">convergence</span><span class="p">[</span><span class="s2">&quot;iters&quot;</span><span class="p">]</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="n">convergence</span><span class="p">[</span><span class="s2">&quot;tol&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">get_mask</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="n">N3_CONVERGENCE_1</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%i</span><span class="s2">,</span><span class="si">%.10f</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">iters</span><span class="p">,</span> <span class="n">tol</span><span class="p">)</span>
+    <span class="n">N3_SHRINK_FACTOR_1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">shrink_factor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spline_param</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spline_param</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">N3_BSPLINE_PARAMS</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%i</span><span class="s2">,</span><span class="si">%i</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">spline_param</span><span class="p">,</span> <span class="n">number_of_fitting_levels</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">spline_param</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">spline_param</span><span class="p">)</span> <span class="o">==</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="p">):</span>
+        <span class="n">N3_BSPLINE_PARAMS</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">,</span><span class="si">%i</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">((</span><span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">spline_param</span><span class="p">])),</span> <span class="n">number_of_fitting_levels</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Length of splineParam must either be 1 or dimensionality of image&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">weight_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight_mask</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Weight Image must be an antsImage&quot;</span><span class="p">)</span>
+
+    <span class="n">outimage</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">outbiasfield</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pointer_string</span><span class="p">(</span><span class="n">outimage</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pointer_string</span><span class="p">(</span><span class="n">outbiasfield</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">outimage</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+        <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">image</span><span class="p">,</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">weight_mask</span><span class="p">,</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">N3_SHRINK_FACTOR_1</span><span class="p">,</span>
+        <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">N3_CONVERGENCE_1</span><span class="p">,</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">N3_BSPLINE_PARAMS</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">mask</span><span class="p">,</span>
+        <span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rescale_intensities</span><span class="p">),</span>
+        <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
+        <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">verbose</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">processed_args</span> <span class="o">=</span> <span class="n">pargs</span><span class="o">.</span><span class="n">_int_antsProcessArguments</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;N3BiasFieldCorrection&quot;</span><span class="p">)</span>
+    <span class="n">libfn</span><span class="p">(</span><span class="n">processed_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_bias_field</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outbiasfield</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outimage</span></div>
+
+<div class="viewcode-block" id="n4_bias_field_correction"><a class="viewcode-back" href="../../../utils.html#ants.utils.bias_correction.n4_bias_field_correction">[docs]</a><span class="k">def</span> <span class="nf">n4_bias_field_correction</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">rescale_intensities</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">shrink_factor</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+    <span class="n">convergence</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;iters&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span> <span class="s2">&quot;tol&quot;</span><span class="p">:</span> <span class="mf">1e-7</span><span class="p">},</span>
+    <span class="n">spline_param</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span>
+    <span class="n">return_bias_field</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="n">weight_mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    N4 Bias Field Correction</span>
+
+<span class="sd">    ANTsR function: `n4BiasFieldCorrection`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to bias correct</span>
+
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        input mask, if one is not passed one will be made</span>
+
+<span class="sd">    rescale_intensities : boolean</span>
+<span class="sd">        At each iteration, a new intensity mapping is</span>
+<span class="sd">        calculated and applied but there is nothing which constrains the new</span>
+<span class="sd">        intensity range to be within certain values. The result is that the</span>
+<span class="sd">        range can &quot;drift&quot; from the original at each iteration. This option</span>
+<span class="sd">        rescales to the [min,max] range of the original image intensities within</span>
+<span class="sd">        the user-specified mask. A mask is required to perform rescaling.  Default</span>
+<span class="sd">        is False in ANTsR/ANTsPy but True in ANTs.</span>
+
+<span class="sd">    shrink_factor : scalar</span>
+<span class="sd">        Shrink factor for multi-resolution correction, typically integer less than 4</span>
+
+<span class="sd">    convergence : dict w/ keys `iters` and `tol`</span>
+<span class="sd">        iters : vector of maximum number of iterations for each level</span>
+<span class="sd">        tol : the convergence tolerance.  Default tolerance is 1e-7 in ANTsR/ANTsPy but 0.0 in ANTs.</span>
+
+<span class="sd">    spline_param : float or vector</span>
+<span class="sd">        Parameter controlling number of control points in spline. Either single value,</span>
+<span class="sd">        indicating the spacing in each direction, or vector with one entry per</span>
+<span class="sd">        dimension of image, indicating the mesh size.</span>
+
+<span class="sd">    return_bias_field : boolean</span>
+<span class="sd">        Return bias field instead of bias corrected image.</span>
+
+<span class="sd">    verbose : boolean</span>
+<span class="sd">        enables verbose output.</span>
+
+<span class="sd">    weight_mask : ANTsImage (optional)</span>
+<span class="sd">        antsImage of weight mask</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read( ants.get_ants_data(&#39;r16&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; image_n4 = ants.n4_bias_field_correction(image)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span> <span class="o">!=</span> <span class="s2">&quot;float&quot;</span><span class="p">:</span>
+        <span class="n">image</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">iters</span> <span class="o">=</span> <span class="n">convergence</span><span class="p">[</span><span class="s2">&quot;iters&quot;</span><span class="p">]</span>
+    <span class="n">tol</span> <span class="o">=</span> <span class="n">convergence</span><span class="p">[</span><span class="s2">&quot;tol&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">get_mask</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+
+    <span class="n">N4_CONVERGENCE_1</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">, </span><span class="si">%.10f</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="k">for</span> <span class="n">it</span> <span class="ow">in</span> <span class="n">iters</span><span class="p">]),</span> <span class="n">tol</span><span class="p">)</span>
+    <span class="n">N4_SHRINK_FACTOR_1</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">shrink_factor</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">spline_param</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">spline_param</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="n">N4_BSPLINE_PARAMS</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%i</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="n">spline_param</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">spline_param</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">spline_param</span><span class="p">)</span> <span class="o">==</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="p">):</span>
+        <span class="n">N4_BSPLINE_PARAMS</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="s2">&quot;x&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">sp</span><span class="p">)</span> <span class="k">for</span> <span class="n">sp</span> <span class="ow">in</span> <span class="n">spline_param</span><span class="p">]))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+            <span class="s2">&quot;Length of splineParam must either be 1 or dimensionality of image&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">weight_mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weight_mask</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Weight Image must be an antsImage&quot;</span><span class="p">)</span>
+
+    <span class="n">outimage</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">outbiasfield</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pointer_string</span><span class="p">(</span><span class="n">outimage</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_pointer_string</span><span class="p">(</span><span class="n">outbiasfield</span><span class="p">)</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="s2">&quot;[</span><span class="si">%s</span><span class="s2">,</span><span class="si">%s</span><span class="s2">]&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">outimage</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+        <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">image</span><span class="p">,</span>
+        <span class="s2">&quot;w&quot;</span><span class="p">:</span> <span class="n">weight_mask</span><span class="p">,</span>
+        <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="n">N4_SHRINK_FACTOR_1</span><span class="p">,</span>
+        <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="n">N4_CONVERGENCE_1</span><span class="p">,</span>
+        <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="n">N4_BSPLINE_PARAMS</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">mask</span><span class="p">,</span>
+        <span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">rescale_intensities</span><span class="p">),</span>
+        <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="n">output</span><span class="p">,</span>
+        <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">verbose</span><span class="p">),</span>
+    <span class="p">}</span>
+
+    <span class="n">processed_args</span> <span class="o">=</span> <span class="n">pargs</span><span class="o">.</span><span class="n">_int_antsProcessArguments</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;N4BiasFieldCorrection&quot;</span><span class="p">)</span>
+    <span class="n">libfn</span><span class="p">(</span><span class="n">processed_args</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">return_bias_field</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outbiasfield</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">outimage</span></div>
+
+
+<div class="viewcode-block" id="abp_n4"><a class="viewcode-back" href="../../../utils.html#ants.utils.bias_correction.abp_n4">[docs]</a><span class="k">def</span> <span class="nf">abp_n4</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">intensity_truncation</span><span class="o">=</span><span class="p">(</span><span class="mf">0.025</span><span class="p">,</span> <span class="mf">0.975</span><span class="p">,</span> <span class="mi">256</span><span class="p">),</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">usen3</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Truncate outlier intensities and bias correct with the N4 algorithm.</span>
+
+<span class="sd">    ANTsR function: `abpN4`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to correct and truncate</span>
+
+<span class="sd">    intensity_truncation : 3-tuple</span>
+<span class="sd">        quantiles for intensity truncation</span>
+
+<span class="sd">    mask : ANTsImage (optional)</span>
+<span class="sd">        mask for bias correction</span>
+
+<span class="sd">    usen3 : boolean</span>
+<span class="sd">        if True, use N3 bias correction instead of N4</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; image2 = ants.abp_n4(image)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">intensity_truncation</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span>
+        <span class="nb">len</span><span class="p">(</span><span class="n">intensity_truncation</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">3</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;intensity_truncation must be list/tuple with 3 values&quot;</span><span class="p">)</span>
+    <span class="n">outimage</span> <span class="o">=</span> <span class="n">iMath</span><span class="p">(</span>
+        <span class="n">image</span><span class="p">,</span>
+        <span class="s2">&quot;TruncateIntensity&quot;</span><span class="p">,</span>
+        <span class="n">intensity_truncation</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+        <span class="n">intensity_truncation</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="n">intensity_truncation</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span>
+    <span class="p">)</span>
+    <span class="k">if</span> <span class="n">usen3</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">outimage</span> <span class="o">=</span> <span class="n">n3_bias_field_correction</span><span class="p">(</span><span class="n">outimage</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+        <span class="n">outimage</span> <span class="o">=</span> <span class="n">n3_bias_field_correction</span><span class="p">(</span><span class="n">outimage</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">outimage</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">outimage</span> <span class="o">=</span> <span class="n">n4_bias_field_correction</span><span class="p">(</span><span class="n">outimage</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">outimage</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

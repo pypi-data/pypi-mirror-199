@@ -1,0 +1,517 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.learn.decomposition &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.learn.decomposition</h1><div class="highlight"><pre>
+<span></span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;eig_seg&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;initialize_eigenanatomy&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;sparse_decom2&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">core</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">ants_image</span> <span class="k">as</span> <span class="n">iio</span>
+
+
+<div class="viewcode-block" id="sparse_decom2"><a class="viewcode-back" href="../../../learn.html#ants.learn.decomposition.sparse_decom2">[docs]</a><span class="k">def</span> <span class="nf">sparse_decom2</span><span class="p">(</span><span class="n">inmatrix</span><span class="p">,</span>
+                    <span class="n">inmask</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+                    <span class="n">sparseness</span><span class="o">=</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">),</span>
+                    <span class="n">nvecs</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+                    <span class="n">its</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                    <span class="n">cthresh</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span>
+                    <span class="n">statdir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">perms</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">uselong</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">z</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">smooth</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">robust</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">mycoption</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">initialization_list</span><span class="o">=</span><span class="p">[],</span>
+                    <span class="n">initialization_list2</span><span class="o">=</span><span class="p">[],</span>
+                    <span class="n">ell1</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                    <span class="n">prior_weight</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">rejector</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                    <span class="n">max_based</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                    <span class="n">version</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Decomposes two matrices into paired sparse eigenevectors to</span>
+<span class="sd">    maximize canonical correlation - aka Sparse CCA.</span>
+<span class="sd">    Note: we do not scale the matrices internally. We leave</span>
+<span class="sd">    scaling choices to the user.</span>
+
+<span class="sd">    ANTsR function: `sparseDecom2`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    inmatrix : 2-tuple of ndarrays</span>
+<span class="sd">        input as inmatrix=(mat1,mat2). n by p input matrix and n by q input matrix , spatial variable lies along columns.</span>
+
+<span class="sd">    inmask : 2-tuple of ANTsImage types (optional - one or both)</span>
+<span class="sd">        optional pair of image masks</span>
+
+<span class="sd">    sparseness : tuple</span>
+<span class="sd">        a pair of float values e.g c(0.01,0.1) enforces an unsigned 99 percent and 90 percent sparse solution for each respective view</span>
+
+<span class="sd">    nvecs : integer</span>
+<span class="sd">        number of eigenvector pairs</span>
+
+<span class="sd">    its : integer</span>
+<span class="sd">        number of iterations, 10 or 20 usually sufficient</span>
+
+<span class="sd">    cthresh : 2-tuple</span>
+<span class="sd">        cluster threshold pair</span>
+
+<span class="sd">    statdir : string (optional)</span>
+<span class="sd">        temporary directory if you want to look at full output</span>
+
+<span class="sd">    perms : integer</span>
+<span class="sd">        number of permutations. settings permutations greater than 0 will estimate significance per vector empirically. For small datasets, these may be conservative. p-values depend on how one scales the input matrices.</span>
+
+<span class="sd">    uselong : boolean</span>
+<span class="sd">        enforce solutions of both views to be the same - requires matrices to be the same size</span>
+
+<span class="sd">    z : float</span>
+<span class="sd">        subject space (low-dimensional space) sparseness value</span>
+
+<span class="sd">    smooth : float</span>
+<span class="sd">        smooth the data (only available when mask is used)</span>
+
+<span class="sd">    robust : boolean</span>
+<span class="sd">        rank transform input matrices</span>
+
+<span class="sd">    mycoption : integer</span>
+<span class="sd">        enforce 1 - spatial orthogonality, 2 - low-dimensional orthogonality or 0 - both</span>
+
+<span class="sd">    initialization_list : list</span>
+<span class="sd">        initialization for first view</span>
+
+<span class="sd">    initialization_list2 : list</span>
+<span class="sd">        initialization for 2nd view</span>
+
+<span class="sd">    ell1 : float</span>
+<span class="sd">        gradient descent parameter, if negative then l0 otherwise use l1</span>
+
+<span class="sd">    prior_weight : scalar</span>
+<span class="sd">        Scalar value weight on prior between 0 (prior is weak) and 1 (prior is strong). Only engaged if initialization is used</span>
+
+<span class="sd">    verbose : boolean</span>
+<span class="sd">        activates verbose output to screen</span>
+
+<span class="sd">    rejector : scalar</span>
+<span class="sd">        rejects small correlation solutions</span>
+
+<span class="sd">    max_based : boolean</span>
+<span class="sd">        whether to choose max-based thresholding</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict w/ following key/value pairs:</span>
+
+<span class="sd">        `projections` : ndarray</span>
+<span class="sd">            X projections</span>
+
+<span class="sd">        `projections2` : ndarray</span>
+<span class="sd">            Y projections</span>
+
+<span class="sd">        `eig1` : ndarray</span>
+<span class="sd">            X components</span>
+
+<span class="sd">        `eig2` : ndarray</span>
+<span class="sd">            Y components</span>
+
+<span class="sd">        `summary` : pd.DataFrame</span>
+<span class="sd">            first column is canonical correlations,</span>
+<span class="sd">            second column is p-values (these are `None` if perms &gt; 0)</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; mat = np.random.randn(20, 100)</span>
+<span class="sd">    &gt;&gt;&gt; mat2 = np.random.randn(20, 90)</span>
+<span class="sd">    &gt;&gt;&gt; mydecom = ants.sparse_decom2(inmatrix = (mat,mat2),</span>
+<span class="sd">                                    sparseness=(0.1,0.3), nvecs=3,</span>
+<span class="sd">                                    its=3, perms=0)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">inmatrix</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">inmatrix</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Matrices must have same number of rows (samples)&#39;</span><span class="p">)</span>
+
+    <span class="n">idim</span> <span class="o">=</span> <span class="mi">3</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="n">maskx</span> <span class="o">=</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">idim</span> <span class="o">=</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dimension</span>
+        <span class="n">hasmaskx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">maskx</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">idim</span> <span class="o">=</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span>
+        <span class="n">hasmaskx</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">maskx</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">make_image</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">idim</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">hasmaskx</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="n">masky</span> <span class="o">=</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">idim</span> <span class="o">=</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">dimension</span>
+        <span class="n">hasmasky</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">masky</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">idim</span> <span class="o">=</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">ndim</span>
+        <span class="n">hasmasky</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">masky</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">make_image</span><span class="p">([</span><span class="mi">1</span><span class="p">]</span><span class="o">*</span><span class="n">idim</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">hasmasky</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">inmask</span> <span class="o">=</span> <span class="p">[</span><span class="n">maskx</span><span class="p">,</span> <span class="n">masky</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">robust</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;robust &gt; 0 not currently implemented&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">input_matrices</span> <span class="o">=</span> <span class="n">inmatrix</span>
+
+    <span class="k">if</span> <span class="n">idim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sccancpp_fn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;sccanCpp2D&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">sccancpp_fn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;sccanCpp2DV2&#39;</span><span class="p">)</span>
+            <span class="n">input_matrices</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">input_matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+    <span class="k">elif</span> <span class="n">idim</span> <span class="o">==</span><span class="mi">3</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">version</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">sccancpp_fn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;sccanCpp3D&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">version</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="n">sccancpp_fn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;sccanCpp3DV2&#39;</span><span class="p">)</span>
+            <span class="n">input_matrices</span> <span class="o">=</span> <span class="p">(</span><span class="n">input_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="n">input_matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+
+    <span class="n">outval</span> <span class="o">=</span> <span class="n">sccancpp_fn</span><span class="p">(</span><span class="n">input_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">input_matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span>
+                        <span class="n">hasmaskx</span><span class="p">,</span> <span class="n">hasmasky</span><span class="p">,</span>
+                        <span class="n">sparseness</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sparseness</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">nvecs</span><span class="p">,</span> <span class="n">its</span><span class="p">,</span>
+                        <span class="n">cthresh</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cthresh</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                        <span class="n">z</span><span class="p">,</span> <span class="n">smooth</span><span class="p">,</span>
+                        <span class="n">initialization_list</span><span class="p">,</span> <span class="n">initialization_list2</span><span class="p">,</span>
+                        <span class="n">ell1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span>
+                        <span class="n">prior_weight</span><span class="p">,</span> <span class="n">mycoption</span><span class="p">,</span> <span class="n">max_based</span><span class="p">)</span>
+
+
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">input_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">input_matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+    <span class="n">outcorrs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">p1</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span><span class="n">p2</span><span class="p">[:,</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p1</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+    <span class="k">if</span> <span class="n">prior_weight</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+        <span class="n">myord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">outcorrs</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">outcorrs</span> <span class="o">=</span> <span class="n">outcorrs</span><span class="p">[</span><span class="n">myord</span><span class="p">]</span>
+        <span class="n">p1</span> <span class="o">=</span> <span class="n">p1</span><span class="p">[:,</span> <span class="n">myord</span><span class="p">]</span>
+        <span class="n">p2</span> <span class="o">=</span> <span class="n">p2</span><span class="p">[:,</span> <span class="n">myord</span><span class="p">]</span>
+        <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig1&#39;</span><span class="p">][</span><span class="n">myord</span><span class="p">,:]</span>
+        <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig2&#39;</span><span class="p">][</span><span class="n">myord</span><span class="p">,:]</span>
+
+    <span class="n">cca_summary</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">outcorrs</span><span class="p">,[</span><span class="kc">None</span><span class="p">]</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">outcorrs</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span>
+
+    <span class="k">if</span> <span class="n">perms</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">cca_summary</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="n">nsubs</span> <span class="o">=</span> <span class="n">input_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">permer</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">perms</span><span class="p">):</span>
+            <span class="n">m1</span> <span class="o">=</span> <span class="n">input_matrices</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">nsubs</span><span class="p">),:]</span>
+            <span class="n">m2</span> <span class="o">=</span> <span class="n">input_matrices</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">nsubs</span><span class="p">),:]</span>
+            <span class="n">outvalperm</span> <span class="o">=</span> <span class="n">sccancpp_fn</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">m2</span><span class="p">,</span>
+                                <span class="n">inmask</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">inmask</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span>
+                                <span class="n">hasmaskx</span><span class="p">,</span> <span class="n">hasmasky</span><span class="p">,</span>
+                                <span class="n">sparseness</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sparseness</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="n">nvecs</span><span class="p">,</span> <span class="n">its</span><span class="p">,</span>
+                                <span class="n">cthresh</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cthresh</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                                <span class="n">z</span><span class="p">,</span> <span class="n">smooth</span><span class="p">,</span>
+                                <span class="n">initialization_list</span><span class="p">,</span> <span class="n">initialization_list2</span><span class="p">,</span>
+                                <span class="n">ell1</span><span class="p">,</span> <span class="n">verbose</span><span class="p">,</span>
+                                <span class="n">prior_weight</span><span class="p">,</span> <span class="n">mycoption</span><span class="p">,</span> <span class="n">max_based</span><span class="p">)</span>
+            <span class="n">p1perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">m1</span><span class="p">,</span> <span class="n">outvalperm</span><span class="p">[</span><span class="s1">&#39;eig1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">p2perm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">m2</span><span class="p">,</span> <span class="n">outvalperm</span><span class="p">[</span><span class="s1">&#39;eig2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+            <span class="n">outcorrsperm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">p1perm</span><span class="p">[:,</span><span class="n">i</span><span class="p">],</span><span class="n">p2perm</span><span class="p">[:,</span><span class="n">i</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p1perm</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])])</span>
+            <span class="k">if</span> <span class="n">prior_weight</span> <span class="o">&lt;</span> <span class="mf">1e-10</span><span class="p">:</span>
+                <span class="n">myord</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">outcorrsperm</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">outcorrsperm</span> <span class="o">=</span> <span class="n">outcorrsperm</span><span class="p">[</span><span class="n">myord</span><span class="p">]</span>
+            <span class="n">counter</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">cca_summary</span><span class="p">[:,</span><span class="mi">0</span><span class="p">])</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">outcorrsperm</span><span class="p">)</span>
+            <span class="n">counter</span> <span class="o">=</span> <span class="n">counter</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+            <span class="n">cca_summary</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cca_summary</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">counter</span>
+
+        <span class="n">cca_summary</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">cca_summary</span><span class="p">[:,</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="nb">float</span><span class="p">(</span><span class="n">perms</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;projections&#39;</span><span class="p">:</span> <span class="n">p1</span><span class="p">,</span>
+            <span class="s1">&#39;projections2&#39;</span><span class="p">:</span> <span class="n">p2</span><span class="p">,</span>
+            <span class="s1">&#39;eig1&#39;</span><span class="p">:</span> <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig1&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+            <span class="s1">&#39;eig2&#39;</span><span class="p">:</span> <span class="n">outval</span><span class="p">[</span><span class="s1">&#39;eig2&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">T</span><span class="p">,</span>
+            <span class="s1">&#39;summary&#39;</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">cca_summary</span><span class="p">,</span><span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;corrs&#39;</span><span class="p">,</span><span class="s1">&#39;pvalues&#39;</span><span class="p">])}</span></div>
+
+
+<div class="viewcode-block" id="initialize_eigenanatomy"><a class="viewcode-back" href="../../../learn.html#ants.learn.decomposition.initialize_eigenanatomy">[docs]</a><span class="k">def</span> <span class="nf">initialize_eigenanatomy</span><span class="p">(</span><span class="n">initmat</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">initlabels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nreps</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">smoothing</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    InitializeEigenanatomy is a helper function to initialize sparseDecom</span>
+<span class="sd">    and sparseDecom2. Can be used to estimate sparseness parameters per</span>
+<span class="sd">    eigenvector. The user then only chooses nvecs and optional</span>
+<span class="sd">    regularization parameters.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    initmat : np.ndarray or ANTsImage</span>
+<span class="sd">        input matrix where rows provide initial vector values.</span>
+<span class="sd">        alternatively, this can be an antsImage which contains labeled regions.</span>
+
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        mask if available</span>
+
+<span class="sd">    initlabels : list/tuple of integers</span>
+<span class="sd">        which labels in initmat to use as initial components</span>
+
+<span class="sd">    nreps : integer</span>
+<span class="sd">        nrepetitions to use</span>
+
+<span class="sd">    smoothing : float</span>
+<span class="sd">        if using an initial label image, optionally smooth each roi</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dict w/ the following key/value pairs:</span>
+<span class="sd">        `initlist` : list of ANTsImage types</span>
+<span class="sd">            initialization list(s) for sparseDecom(2)</span>
+
+<span class="sd">        `mask` : ANTsImage</span>
+<span class="sd">            mask(s) for sparseDecom(2)</span>
+
+<span class="sd">        `enames` : list of strings</span>
+<span class="sd">            string names of components for sparseDecom(2)</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; mat = np.random.randn(4,100).astype(&#39;float32&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; init = ants.initialize_eigenanatomy(mat)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">initmat</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="c1"># create initmat from each of the unique labels</span>
+        <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">selectvec</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">selectvec</span> <span class="o">=</span> <span class="n">initmat</span> <span class="o">&gt;</span> <span class="mi">0</span>
+        <span class="n">initmatvec</span> <span class="o">=</span> <span class="n">initmat</span><span class="p">[</span><span class="n">selectvec</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">initlabels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">ulabs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">initmatvec</span><span class="p">))</span>
+            <span class="n">ulabs</span> <span class="o">=</span> <span class="n">ulabs</span><span class="p">[</span><span class="n">ulabs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ulabs</span> <span class="o">=</span> <span class="n">initlabels</span>
+
+        <span class="n">nvox</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">initmatvec</span><span class="p">)</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">ulabs</span><span class="p">),</span> <span class="n">nvox</span><span class="p">))</span>
+
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ulabs</span><span class="p">)):</span>
+            <span class="n">timg</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="n">initmat</span><span class="p">,</span> <span class="n">ulabs</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">-</span><span class="mf">1e-4</span><span class="p">,</span> <span class="n">ulabs</span><span class="p">[</span><span class="n">x</span><span class="p">]</span><span class="o">+</span><span class="mf">1e-4</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">smoothing</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="n">timg</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="n">timg</span><span class="p">,</span> <span class="n">smoothing</span><span class="p">)</span>
+            <span class="n">temp</span><span class="p">[</span><span class="n">x</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">timg</span><span class="p">[</span><span class="n">selectvec</span><span class="p">]</span>
+        <span class="n">initmat</span> <span class="o">=</span> <span class="n">temp</span>
+
+    <span class="n">nclasses</span> <span class="o">=</span> <span class="n">initmat</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">classlabels</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;init</span><span class="si">%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nclasses</span><span class="p">)]</span>
+    <span class="n">initlist</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">maskmat</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">initmat</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">maskmat</span><span class="p">[</span><span class="mi">0</span><span class="p">,:]</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">maskmat</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">))</span>
+
+    <span class="n">eanatnames</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;A&#39;</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">nclasses</span><span class="o">*</span><span class="n">nreps</span><span class="p">)</span>
+    <span class="n">ct</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nclasses</span><span class="p">):</span>
+        <span class="n">vecimg</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+        <span class="n">initf</span> <span class="o">=</span> <span class="n">initmat</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span>
+        <span class="n">vecimg</span><span class="p">[</span><span class="n">mask</span><span class="o">==</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">initf</span>
+        <span class="k">for</span> <span class="n">nr</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">nreps</span><span class="p">):</span>
+            <span class="n">initlist</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vecimg</span><span class="p">)</span>
+            <span class="n">eanatnames</span><span class="p">[</span><span class="n">ct</span><span class="o">+</span><span class="n">nr</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">classlabels</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="n">ct</span> <span class="o">=</span> <span class="n">ct</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;initlist&#39;</span><span class="p">:</span> <span class="n">initlist</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">:</span> <span class="n">mask</span><span class="p">,</span> <span class="s1">&#39;enames&#39;</span><span class="p">:</span> <span class="n">eanatnames</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="eig_seg"><a class="viewcode-back" href="../../../learn.html#ants.learn.decomposition.eig_seg">[docs]</a><span class="k">def</span> <span class="nf">eig_seg</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">img_list</span><span class="p">,</span> <span class="n">apply_segmentation_to_images</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">cthresh</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Segment a mask into regions based on the max value in an image list.</span>
+<span class="sd">    At a given voxel the segmentation label will contain the index to the image</span>
+<span class="sd">    that has the largest value. If the 3rd image has the greatest value,</span>
+<span class="sd">    the segmentation label will be 3 at that voxel.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        D-dimensional mask &gt; 0 defining segmentation region.</span>
+
+<span class="sd">    img_list : collection of ANTsImage or np.ndarray</span>
+<span class="sd">        images to use</span>
+
+<span class="sd">    apply_segmentation_to_images : boolean</span>
+<span class="sd">        determines if original image list is modified by the segmentation.</span>
+
+<span class="sd">    cthresh : integer</span>
+<span class="sd">        throw away isolated clusters smaller than this value</span>
+
+<span class="sd">    smooth : float</span>
+<span class="sd">        smooth the input data first by this value</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; mylist = [ants.image_read(ants.get_ants_data(&#39;r16&#39;)),</span>
+<span class="sd">                  ants.image_read(ants.get_ants_data(&#39;r27&#39;)),</span>
+<span class="sd">                  ants.image_read(ants.get_ants_data(&#39;r85&#39;))]</span>
+<span class="sd">    &gt;&gt;&gt; myseg = ants.eig_seg(ants.get_mask(mylist[0]), mylist)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">maskvox</span> <span class="o">=</span> <span class="n">mask</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">maskseg</span> <span class="o">=</span> <span class="n">mask</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+    <span class="n">maskseg</span><span class="p">[</span><span class="n">maskvox</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">mydata</span> <span class="o">=</span> <span class="n">img_list</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img_list</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+        <span class="n">mydata</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">image_list_to_matrix</span><span class="p">(</span><span class="n">img_list</span><span class="p">,</span> <span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">smooth</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">mydata</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+            <span class="n">temp_img</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">make_image</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">mydata</span><span class="p">[</span><span class="n">i</span><span class="p">,:],</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span>
+            <span class="n">temp_img</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="n">temp_img</span><span class="p">,</span> <span class="n">smooth</span><span class="p">,</span> <span class="n">sigma_in_physical_coordinates</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">mydata</span><span class="p">[</span><span class="n">i</span><span class="p">,:]</span> <span class="o">=</span> <span class="n">temp_img</span><span class="p">[</span><span class="n">mask</span> <span class="o">&gt;=</span> <span class="mf">0.5</span><span class="p">]</span>
+
+    <span class="n">segids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mydata</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+    <span class="n">segmax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">mydata</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">maskseg</span><span class="p">[</span><span class="n">maskvox</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">segids</span> <span class="o">*</span> <span class="p">(</span><span class="n">segmax</span> <span class="o">&gt;</span> <span class="mf">1e-09</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">cthresh</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">kk</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">maskseg</span><span class="o">.</span><span class="n">max</span><span class="p">())):</span>
+            <span class="n">timg</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="n">maskseg</span><span class="p">,</span> <span class="n">kk</span><span class="p">,</span> <span class="n">kk</span><span class="p">)</span>
+            <span class="n">timg</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">label_clusters</span><span class="p">(</span><span class="n">timg</span><span class="p">,</span> <span class="n">cthresh</span><span class="p">)</span>
+            <span class="n">timg</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="n">timg</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1e15</span><span class="p">)</span> <span class="o">*</span> <span class="nb">float</span><span class="p">(</span><span class="n">kk</span><span class="p">)</span>
+            <span class="n">maskseg</span><span class="p">[</span><span class="n">maskseg</span> <span class="o">==</span> <span class="n">kk</span><span class="p">]</span> <span class="o">=</span> <span class="n">timg</span><span class="p">[</span><span class="n">maskseg</span> <span class="o">==</span> <span class="n">kk</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">apply_segmentation_to_images</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img_list</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)):</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">img_list</span><span class="p">)):</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">img_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">img</span><span class="p">[</span><span class="n">maskseg</span> <span class="o">!=</span> <span class="nb">float</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">img_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span>
+
+    <span class="k">return</span> <span class="n">maskseg</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

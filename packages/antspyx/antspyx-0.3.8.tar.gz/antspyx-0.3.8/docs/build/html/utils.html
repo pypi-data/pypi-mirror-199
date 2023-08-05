@@ -1,0 +1,1275 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Utilities &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Visualization" href="vis.html" />
+    <link rel="prev" title="Statistical Learning" href="learn.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ants">
+<span id="utilities"></span><h1>Utilities<a class="headerlink" href="#module-ants" title="Permalink to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.n3_bias_field_correction">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">n3_bias_field_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downsample_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/bias_correction.html#n3_bias_field_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.n3_bias_field_correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>N3 Bias Field Correction</p>
+<p>ANTsR function: <cite>n3BiasFieldCorrection</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to be bias corrected</p></li>
+<li><p><strong>downsample_factor</strong> (<em>scalar</em>) – how much to downsample image before performing bias correction</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_n3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">n3_bias_field_correction</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.n4_bias_field_correction">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">n4_bias_field_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_intensities</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shrink_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convergence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{'iters':</span> <span class="pre">[50,</span> <span class="pre">50,</span> <span class="pre">50,</span> <span class="pre">50],</span> <span class="pre">'tol':</span> <span class="pre">1e-07}</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_param</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_bias_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weight_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/bias_correction.html#n4_bias_field_correction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.n4_bias_field_correction" title="Permalink to this definition">¶</a></dt>
+<dd><p>N4 Bias Field Correction</p>
+<p>ANTsR function: <cite>n4BiasFieldCorrection</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to bias correct</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input mask, if one is not passed one will be made</p></li>
+<li><p><strong>rescale_intensities</strong> (<em>boolean</em>) – At each iteration, a new intensity mapping is
+calculated and applied but there is nothing which constrains the new
+intensity range to be within certain values. The result is that the
+range can “drift” from the original at each iteration. This option
+rescales to the [min,max] range of the original image intensities within
+the user-specified mask. A mask is required to perform rescaling.  Default
+is False in ANTsR/ANTsPy but True in ANTs.</p></li>
+<li><p><strong>shrink_factor</strong> (<em>scalar</em>) – Shrink factor for multi-resolution correction, typically integer less than 4</p></li>
+<li><p><strong>convergence</strong> (dict w/ keys <cite>iters</cite> and <cite>tol</cite>) – iters : vector of maximum number of iterations for each level
+tol : the convergence tolerance.  Default tolerance is 1e-7 in ANTsR/ANTsPy but 0.0 in ANTs.</p></li>
+<li><p><strong>spline_param</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a><em> or </em><em>vector</em>) – Parameter controlling number of control points in spline. Either single value,
+indicating the spacing in each direction, or vector with one entry per
+dimension of image, indicating the mesh size.</p></li>
+<li><p><strong>return_bias_field</strong> (<em>boolean</em>) – Return bias field instead of bias corrected image.</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – enables verbose output.</p></li>
+<li><p><strong>weight_mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – antsImage of weight mask</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_n4</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">n4_bias_field_correction</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.abp_n4">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">abp_n4</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.025,</span> <span class="pre">0.975,</span> <span class="pre">256)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">usen3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/bias_correction.html#abp_n4"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.abp_n4" title="Permalink to this definition">¶</a></dt>
+<dd><p>Truncate outlier intensities and bias correct with the N4 algorithm.</p>
+<p>ANTsR function: <cite>abpN4</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to correct and truncate</p></li>
+<li><p><strong>intensity_truncation</strong> (<em>3-tuple</em>) – quantiles for intensity truncation</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – mask for bias correction</p></li>
+<li><p><strong>usen3</strong> (<em>boolean</em>) – if True, use N3 bias correction instead of N4</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">abp_n4</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.merge_channels">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">merge_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_list</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/channels.html#merge_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.merge_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Merge channels of multiple scalar ANTsImage types into one
+multi-channel ANTsImage</p>
+<p>ANTsR function: <cite>mergeChannels</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image_list</strong> (<em>list/tuple</em><em> of </em><em>ANTsImage python:types</em>) – scalar images to merge</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">),</span> <span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">),</span> <span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">merge_channels</span><span class="p">([</span><span class="n">image</span><span class="p">,</span><span class="n">image2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image3</span><span class="o">.</span><span class="n">components</span> <span class="o">==</span> <span class="mi">2</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.split_channels">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">split_channels</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/channels.html#split_channels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.split_channels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Split channels of a multi-channel ANTsImage into a collection
+of scalar ANTsImage types</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – multi-channel image to split</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a> of ANTsImage types</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">),</span> <span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">),</span> <span class="s1">&#39;float&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imagemerge</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">merge_channels</span><span class="p">([</span><span class="n">image</span><span class="p">,</span><span class="n">image2</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imagemerge</span><span class="o">.</span><span class="n">components</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images_unmerged</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">split_channels</span><span class="p">(</span><span class="n">imagemerge</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">len</span><span class="p">(</span><span class="n">images_unmerged</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images_unmerged</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">components</span> <span class="o">==</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.crop_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">crop_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/crop_image.html#crop_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.crop_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Use a label image to crop a smaller ANTsImage from within a larger ANTsImage</p>
+<p>ANTsR function: <cite>cropImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to crop</p></li>
+<li><p><strong>label_image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image with label values. If not supplied, estimated from data.</p></li>
+<li><p><strong>label</strong> (<em>python:integer</em>) – the label value to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">crop_image</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">crop_image</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="n">fi</span><span class="p">,</span> <span class="mi">100</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.crop_indices">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">crop_indices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lowerind</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upperind</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/crop_image.html#crop_indices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.crop_indices" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a proper ANTsImage sub-image by indexing the image with indices.
+This is similar to but different from array sub-setting in that
+the resulting sub-image can be decropped back into its place without
+having to store its original index locations explicitly.</p>
+<p>ANTsR function: <cite>cropIndices</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to crop</p></li>
+<li><p><strong>lowerind</strong> (<em>list/tuple</em><em> of </em><em>python:integers</em>) – vector of lower index, should be length image dimensionality</p></li>
+<li><p><strong>upperind</strong> (<em>list/tuple</em><em> of </em><em>python:integers</em>) – vector of upper index, should be length image dimensionality</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s2">&quot;r16&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">crop_indices</span><span class="p">(</span> <span class="n">fi</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="n">cropped</span><span class="p">,</span> <span class="mi">5</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">decrop_image</span><span class="p">(</span> <span class="n">cropped</span><span class="p">,</span> <span class="n">fi</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.decrop_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">decrop_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cropped_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">full_image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/crop_image.html#decrop_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.decrop_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>The inverse function for <cite>ants.crop_image</cite></p>
+<p>ANTsR function: <cite>decropImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cropped_image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – cropped image</p></li>
+<li><p><strong>full_image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image in which the cropped image will be put back</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">fi</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">crop_image</span><span class="p">(</span><span class="n">fi</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="n">cropped</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">decropped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">decrop_image</span><span class="p">(</span><span class="n">cropped</span><span class="p">,</span> <span class="n">fi</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.denoise_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">denoise_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shrink_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">p</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">noise_model</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Rician'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/denoise_image.html#denoise_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.denoise_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Denoise an image using a spatially adaptive filter originally described in
+J. V. Manjon, P. Coupe, Luis Marti-Bonmati, D. L. Collins, and M. Robles.
+Adaptive Non-Local Means Denoising of MR Images With Spatially Varying
+Noise Levels, Journal of Magnetic Resonance Imaging, 31:192-203, June 2010.</p>
+<p>ANTsR function: <cite>denoiseImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – scalar image to denoise.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – to limit the denoise region.</p></li>
+<li><p><strong>shrink_factor</strong> (<em>scalar</em>) – downsampling level performed within the algorithm.</p></li>
+<li><p><strong>p</strong> (<em>python:integer</em><em> or </em><em>character</em><em> of </em><em>format '2x2' where the x separates vector entries</em>) – patch radius for local sample.</p></li>
+<li><p><strong>r</strong> (<em>python:integer</em><em> or </em><em>character</em><em> of </em><em>format '2x2' where the x separates vector entries</em>) – search radius from which to choose extra local samples.</p></li>
+<li><p><strong>noise_model</strong> (<em>string</em>) – ‘Rician’ or ‘Gaussian’</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># add fairly large salt and pepper noise</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imagenoise</span> <span class="o">=</span> <span class="n">image</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="o">*</span><span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">)</span><span class="o">*</span><span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imagedenoise</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">denoise_image</span><span class="p">(</span><span class="n">imagenoise</span><span class="p">,</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">image</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.fit_bspline_object_to_scattered_data">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">fit_bspline_object_to_scattered_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scattered_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametric_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametric_domain_origin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametric_domain_spacing</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parametric_domain_size</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_parametric_dimension_closed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_fitting_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/fit_bspline_object_to_scattered_data.html#fit_bspline_object_to_scattered_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.fit_bspline_object_to_scattered_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit a b-spline object to scattered data.  This is basically a wrapper
+for the ITK filter</p>
+<p><a class="reference external" href="https://itk.org/Doxygen/html/classitk_1_1BSplineScatteredDataPointSetToImageFilter.html">https://itk.org/Doxygen/html/classitk_1_1BSplineScatteredDataPointSetToImageFilter.html</a></p>
+<p>This filter is flexible in the possible objects that can be approximated.
+Possibilities include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>1/2/3/4-D curve</p></li>
+<li><p>2-D surface in 3-D space (not available/templated)</p></li>
+<li><p>2/3/4-D scalar field</p></li>
+<li><p>2/3-D displacement field</p></li>
+<li><p>2/3-D time-varying velocity field</p></li>
+</ul>
+</div></blockquote>
+<p>In order to understand the input parameters, it is important to understand
+the difference between the parametric and data dimensions.  A curve as one
+parametric dimension but the data dimension can be 1-D, 2-D, 3-D, or 4-D.
+In contrast, a 3-D displacement field has a parametric and data dimension
+of 3.  The scattered data is what’s approximated by the B-spline object and
+the parametric point is the location of scattered data within the domain of
+the B-spline object.</p>
+<p>ANTsR function: <cite>fitBsplineObjectToScatteredData</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scattered_data</strong> (<em>2-D numpy array</em>) – Defines the scattered data input to be approximated. Data is organized
+by row –&gt; data v, column —&gt; data dimension.</p></li>
+<li><p><strong>parametric_data</strong> (<em>2-D numpy array</em>) – Defines the parametric location of the scattered data.  Data is organized
+by row –&gt; parametric point, column –&gt; parametric dimension.  Note that
+each row corresponds to the same row in the scatteredData.</p></li>
+<li><p><strong>data_weights</strong> (<em>1-D numpy array</em>) – Defines the individual weighting of the corresponding scattered data value.
+Default = None meaning all values are weighted the same.</p></li>
+<li><p><strong>parametric_domain_origin</strong> (<em>n-D tuple</em>) – Defines the parametric origin of the B-spline object.</p></li>
+<li><p><strong>parametric_domain_spacing</strong> (<em>n-D tuple</em>) – Defines the parametric spacing of the B-spline object.  Defines the sampling
+rate in the parametric domain.</p></li>
+<li><p><strong>parametric_domain_size</strong> (<em>n-D tuple</em>) – Defines the size (length) of the B-spline object.  Note that the length of the
+B-spline object in dimension d is defined as
+parametric_domain_spacing[d] * parametric_domain_size[d]-1.</p></li>
+<li><p><strong>is_parametric_dimension_closed</strong> (<em>n-D tuple</em>) – Booleans defining whether or not the corresponding parametric dimension is
+closed (e.g., closed loop).  Default = None.</p></li>
+<li><p><strong>number_of_fitting_levels</strong> (<em>python:integer</em>) – Specifies the number of fitting levels.</p></li>
+<li><p><strong>mesh_size</strong> (<em>n-D tuple</em>) – Defines the mesh size at the initial fitting level.</p></li>
+<li><p><strong>spline_order</strong> (<em>python:integer</em>) – Spline order of the B-spline object.  Default = 3.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>returns numpy array for B-spline curve (parametric dimension = 1).  Otherwise,</em></p></li>
+<li><p><em>returns an ANTsImage.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perform 2-D curve example</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span><span class="o">,</span> <span class="nn">numpy</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">numpy</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span> <span class="o">+</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">u</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">num</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scattered_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">column_stack</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parametric_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">expand_dims</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">spacing</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">;</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bspline_curve</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">fit_bspline_object_to_scattered_data</span><span class="p">(</span><span class="n">scattered_data</span><span class="p">,</span> <span class="n">parametric_data</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">parametric_domain_origin</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">],</span> <span class="n">parametric_domain_spacing</span><span class="o">=</span><span class="p">[</span><span class="n">spacing</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">parametric_domain_size</span><span class="o">=</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)],</span> <span class="n">is_parametric_dimension_closed</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">number_of_fitting_levels</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mesh_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;Noisy points&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bspline_curve</span><span class="p">[:,</span><span class="mi">0</span><span class="p">],</span> <span class="n">bspline_curve</span><span class="p">[:,</span><span class="mi">1</span><span class="p">],</span> <span class="n">label</span><span class="o">=</span><span class="s1">&#39;B-spline curve&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;tight&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">###########################################################################</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perform 2-D scalar field (i.e., image) example</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span><span class="o">,</span> <span class="nn">numpy</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">number_of_random_points</span> <span class="o">=</span> <span class="mi">10000</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s2">&quot;r16&quot;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img_array</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">row_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">img_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">number_of_random_points</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">col_indices</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">img_array</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">number_of_random_points</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">scattered_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_random_points</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">parametric_data</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">number_of_random_points</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number_of_random_points</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">scattered_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">img_array</span><span class="p">[</span><span class="n">row_indices</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">col_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]]</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">parametric_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">row_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">parametric_data</span><span class="p">[</span><span class="n">i</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">col_indices</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bspline_img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">fit_bspline_object_to_scattered_data</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">scattered_data</span><span class="p">,</span> <span class="n">parametric_data</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">parametric_domain_origin</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">parametric_domain_spacing</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">parametric_domain_size</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">number_of_fitting_levels</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">mesh_size</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;Original&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">bspline_img</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s2">&quot;B-spline approximation&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.fit_bspline_displacement_field">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">fit_bspline_displacement_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">displacement_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacement_weight_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacement_origins</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacements</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacement_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_fitting_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spline_order</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enforce_stationary_boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">estimate_inverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rasterize_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/fit_bspline_displacement_field.html#fit_bspline_displacement_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.fit_bspline_displacement_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Fit a b-spline object to a dense displacement field image and/or a set of points
+with associated displacements and smooths them using B-splines.  The inverse
+can also be estimated..  This is basically a wrapper for the ITK filter</p>
+<p><a class="reference external" href="https://itk.org/Doxygen/html/classitk_1_1DisplacementFieldToBSplineImageFilter.html">https://itk.org/Doxygen/html/classitk_1_1DisplacementFieldToBSplineImageFilter.html</a>}</p>
+<p>which, in turn is a wrapper for the ITK filter used for the function
+fit_bspline_object_to_scattered_data.</p>
+<p>ANTsR function: <cite>fitBsplineToDisplacementField</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>displacement_field</strong> (<em>ANTs image</em>) – Input displacement field.  Either this and/or the points must be specified.</p></li>
+<li><p><strong>displacement_weight_image</strong> (<em>ANTs image</em>) – Input image defining weighting of the voxelwise displacements in the displacement_field.  I
+If None, defaults to identity weighting for each displacement.  Default = None.</p></li>
+<li><p><strong>displacement_origins</strong> (<em>2-D numpy array</em>) – Matrix (number_of_points x dimension) defining the origins of the input
+displacement points.  Default = None.</p></li>
+<li><p><strong>displacements</strong> (<em>2-D numpy array</em>) – Matrix (number_of_points x dimension) defining the displacements of the input
+displacement points.  Default = None.</p></li>
+<li><p><strong>displacement_weights</strong> (<em>1-D numpy array</em>) – Array defining the individual weighting of the corresponding scattered data value.
+Default = None meaning all values are weighted the same.</p></li>
+<li><p><strong>origin</strong> (<em>n-D tuple</em>) – Defines the physical origin of the B-spline object.</p></li>
+<li><p><strong>spacing</strong> (<em>n-D tuple</em>) – Defines the physical spacing of the B-spline object.</p></li>
+<li><p><strong>size</strong> (<em>n-D tuple</em>) – Defines the size (length) of the B-spline object.  Note that the length of the
+B-spline object in dimension d is defined as
+spacing[d] * size[d]-1.</p></li>
+<li><p><strong>direction</strong> (<em>2-D numpy array</em>) – Booleans defining whether or not the corresponding parametric dimension is
+closed (e.g., closed loop).  Default = None.</p></li>
+<li><p><strong>number_of_fitting_levels</strong> (<em>python:integer</em>) – Specifies the number of fitting levels.</p></li>
+<li><p><strong>mesh_size</strong> (<em>n-D tuple</em>) – Defines the mesh size at the initial fitting level.</p></li>
+<li><p><strong>spline_order</strong> (<em>python:integer</em>) – Spline order of the B-spline object.  Default = 3.</p></li>
+<li><p><strong>enforce_stationary_boundary</strong> (<em>boolean</em>) – Ensure no displacements on the image boundary.  Default = True.</p></li>
+<li><p><strong>estimate_inverse</strong> (<em>boolean</em>) – Estimate the inverse displacement field.  Default = False.</p></li>
+<li><p><strong>rasterize_points</strong> (<em>boolean</em>) – Use nearest neighbor rasterization of points for estimating the
+field (potential speed-up).  Default = False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Returns an ANTsImage.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Perform 2-D fitting</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span><span class="o">,</span> <span class="nn">numpy</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">points</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">50</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">deltas</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">]])</span>
+<span class="go">&gt;&gt;&gt;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bspline_field</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">fit_bspline_displacement_field</span><span class="p">(</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">displacement_origins</span><span class="o">=</span><span class="n">points</span><span class="p">,</span> <span class="n">displacements</span><span class="o">=</span><span class="n">deltas</span><span class="p">,</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">origin</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span> <span class="n">spacing</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">],</span> <span class="n">size</span><span class="o">=</span><span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">direction</span><span class="o">=</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]),</span>
+<span class="gp">&gt;&gt;&gt; </span>  <span class="n">number_of_fitting_levels</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">mesh_size</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.functional_lung_segmentation">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">functional_lung_segmentation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_atropos_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mrf_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'[0.7,2x2x2]'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_clusters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cluster_centers</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bias_correction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'n4'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/segmentation/functional_lung_segmentation.html#functional_lung_segmentation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.functional_lung_segmentation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Ventilation-based segmentation of hyperpolarized gas lung MRI.</p>
+<p>Lung segmentation into classes based on ventilation as described in
+this paper:</p>
+<blockquote>
+<div><p><a class="reference external" href="https://pubmed.ncbi.nlm.nih.gov/21837781/">https://pubmed.ncbi.nlm.nih.gov/21837781/</a></p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>ANTs image</em>) – Input proton-weighted MRI.</p></li>
+<li><p><strong>mask</strong> (<em>ANTs image</em>) – Mask image designating the region to segment.  0/1 = background/foreground.</p></li>
+<li><p><strong>number_of_iterations</strong> (<em>python:integer</em>) – Number of Atropos &lt;–&gt; bias correction iterations (outer loop).</p></li>
+<li><p><strong>number_of_atropos_iterations</strong> (<em>python:integer</em>) – Number of Atropos iterations (inner loop).  If number_of_atropos_iterations = 0,
+this is equivalent to K-means with no MRF priors.</p></li>
+<li><p><strong>mrf_parameters</strong> (<em>string</em>) – Parameters for MRF in Atropos.</p></li>
+<li><p><strong>number_of_clusters</strong> (<em>python:integer</em>) – Number of tissue classes.</p></li>
+<li><p><strong>cluster_centers</strong> (<em>array</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – Initialization centers for k-means.</p></li>
+<li><p><strong>bias_correction</strong> (<em>string</em>) – Apply “n3”, “n4”, or no bias correction (default = “n4”).</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – Print progress to the screen.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>Dictionary with segmentation image, probability images, and</em></p></li>
+<li><p><em>processed image.</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="s2">&quot;lung_image.nii.gz&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="s2">&quot;lung_mask.nii.gz&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">functional_lung_segmentation</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.get_ants_data">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">get_ants_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_id</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">antsx_cache_directory</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ants.get_ants_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get ANTsPy test data file</p>
+<p>ANTsR function: <cite>getANTsRData</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>name</strong> (<em>string</em>) – <p>name of test image tag to retrieve
+Options:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>’r16’</p></li>
+<li><p>’r27’</p></li>
+<li><p>’r30’</p></li>
+<li><p>’r62’</p></li>
+<li><p>’r64’</p></li>
+<li><p>’r85’</p></li>
+<li><p>’ch2’</p></li>
+<li><p>’mni’</p></li>
+<li><p>’surf’</p></li>
+</ul>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>filepath of test image</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>string</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mnipath</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.get_centroids">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">get_centroids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clustparam</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/get_centroids.html#get_centroids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.get_centroids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reduces a variate/statistical/network image to a set of centroids
+describing the center of each stand-alone non-zero component in the image</p>
+<p>ANTsR function: <cite>getCentroids</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image from which centroids will be calculated</p></li>
+<li><p><strong>clustparam</strong> (<em>python:integer</em>) – look at regions greater than or equal to this size</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span> <span class="s2">&quot;r16&quot;</span> <span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mi">120</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">label_clusters</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="mi">10</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cents</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_centroids</span><span class="p">(</span> <span class="n">image</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.get_mask">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">get_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/get_mask.html#get_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.get_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a binary mask image from the given image after thresholding</p>
+<p>ANTsR function: <cite>getMask</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image from which mask will be computed. Can be an antsImage of 2, 3 or 4 dimensions.</p></li>
+<li><p><strong>low_thresh</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – An inclusive lower threshold for voxels to be included in the mask.
+If not given, defaults to image mean.</p></li>
+<li><p><strong>high_thresh</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – An inclusive upper threshold for voxels to be included in the mask.
+If not given, defaults to image max</p></li>
+<li><p><strong>cleanup</strong> (<em>python:integer</em>) – <p>If &gt; 0, morphological operations will be applied to clean up the mask by eroding away small or weakly-connected areas, and closing holes.
+If cleanup is &gt;0, the following steps are applied</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Erosion with radius 2 voxels</p></li>
+<li><p>Retain largest component</p></li>
+<li><p>Dilation with radius 1 voxel</p></li>
+<li><p>Morphological closing</p></li>
+</ol>
+</div></blockquote>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_similarity">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixed_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moving_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MeanSquares'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moving_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/image_similarity.html#image_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.image_similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Measure similarity between two images.
+NOTE: Similarity is actually returned as distance (i.e. dissimilarity)
+per ITK/ANTs convention. E.g. using Correlation metric, the similarity
+of an image with itself returns -1.</p>
+<p>ANTsR function: <cite>imageSimilarity</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fixed</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – the fixed image</p></li>
+<li><p><strong>moving</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – the moving image</p></li>
+<li><p><strong>metric_type</strong> (<em>string</em>) – <dl class="simple">
+<dt>image metric to calculate</dt><dd><p>MeanSquares
+Correlation
+ANTsNeighborhoodCorrelation
+MattesMutualInformation
+JointHistogramMutualInformation
+Demons</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>fixed_mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – mask for the fixed image</p></li>
+<li><p><strong>moving_mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – mask for the moving image</p></li>
+<li><p><strong>sampling_strategy</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – <dl class="simple">
+<dt>sampling strategy, default is full sampling</dt><dd><p>None (Full sampling)
+random
+regular</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>sampling_percentage</strong> (<em>scalar</em>) – percentage of data to sample when calculating metric
+Must be between 0 and 1</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>scalar</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r30&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_similarity</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span><span class="n">metric_type</span><span class="o">=</span><span class="s1">&#39;MeanSquares&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_to_cluster_images">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_to_cluster_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cluster_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/image_to_cluster_images.html#image_to_cluster_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.image_to_cluster_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts an image to several independent images.</p>
+<p>Produces a unique image for each connected
+component 1 through N of size &gt; min_cluster_size</p>
+<p>ANTsR function: <cite>image2ClusterImages</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input image</p></li>
+<li><p><strong>min_cluster_size</strong> (<em>python:integer</em>) – throw away clusters smaller than this value</p></li>
+<li><p><strong>min_thresh</strong> (<em>scalar</em>) – threshold to a statistical map</p></li>
+<li><p><strong>max_thresh</strong> (<em>scalar</em>) – threshold to a statistical map</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a> of ANTsImage types</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1e15</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image_cluster_list</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_to_cluster_images</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.iMath">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">iMath</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/iMath.html#iMath"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.iMath" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform various (often mathematical) operations on the input image/s.
+Additional parameters should be specific for each operation.
+See the the full iMath in ANTs, on which this function is based.</p>
+<p>ANTsR function: <cite>iMath</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input object, usually antsImage</p></li>
+<li><p><strong>operation</strong> – a string e.g. “GetLargestComponent” … the special case of “GetOperations”
+or “GetOperationsFull” will return a list of operations and brief
+description. Some operations may not be valid (WIP), but most are.</p></li>
+<li><p><strong>*args</strong> (<em>non-keyword arguments</em>) – additional parameters specific to the operation</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">iMath</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="s1">&#39;Canny&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.impute">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">impute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nan_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">nan</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/impute.html#impute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.impute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Impute missing values on a numpy ndarray in a column-wise manner.</p>
+<p>ANTsR function: <cite>antsrimpute</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – data to impute</p></li>
+<li><p><strong>method</strong> (<em>string</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – <p>type of imputation method to use
+Options:</p>
+<blockquote>
+<div><p>mean
+median
+constant
+KNN
+BiScaler
+NuclearNormMinimization
+SoftImpute
+IterativeSVD</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>value</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – <p>optional arguments for different methods
+if method == ‘constant’</p>
+<blockquote>
+<div><p>constant value</p>
+</div></blockquote>
+<dl class="simple">
+<dt>if method == ‘KNN’</dt><dd><p>number of nearest neighbors to use</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>nan_value</strong> (<em>scalar</em>) – value which is interpreted as a missing value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>ndarray if ndarray was given</em></p></li>
+<li><p><em>OR</em></p></li>
+<li><p><em>pd.DataFrame if pd.DataFrame was given</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">10</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">data_imputed</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">impute</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s1">&#39;mean&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="details">
+<h2>Details<a class="headerlink" href="#details" title="Permalink to this heading">¶</a></h2>
+<dl class="simple">
+<dt>KNN: Nearest neighbor imputations which weights samples using the mean squared</dt><dd><p>difference on features for which two rows both have observed data.</p>
+</dd>
+<dt>SoftImpute: Matrix completion by iterative soft thresholding of SVD</dt><dd><p>decompositions. Inspired by the softImpute package for R, which
+is based on Spectral Regularization Algorithms for Learning
+Large Incomplete Matrices by Mazumder et. al.</p>
+</dd>
+<dt>IterativeSVD: Matrix completion by iterative low-rank SVD decomposition.</dt><dd><p>Should be similar to SVDimpute from Missing value estimation
+methods for DNA microarrays by Troyanskaya et. al.</p>
+</dd>
+</dl>
+<p>MICE: Reimplementation of Multiple Imputation by Chained Equations.</p>
+<dl class="simple">
+<dt>MatrixFactorization: Direct factorization of the incomplete matrix into</dt><dd><p>low-rank U and V, with an L1 sparsity penalty on the elements
+of U and an L2 penalty on the elements of V.
+Solved by gradient descent.</p>
+</dd>
+<dt>NuclearNormMinimization: Simple implementation of Exact Matrix Completion</dt><dd><p>via Convex Optimization by Emmanuel Candes and Benjamin
+Recht using cvxpy. Too slow for large matrices.</p>
+</dd>
+<dt>BiScaler: Iterative estimation of row/column means and standard deviations</dt><dd><p>to get doubly normalized matrix. Not guaranteed to converge but
+works well in practice. Taken from Matrix Completion and
+Low-Rank SVD via Fast Alternating Least Squares.</p>
+</dd>
+</dl>
+</section>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.invariant_image_similarity">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">invariant_image_similarity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">local_search_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MI'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thetas</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">90.,</span> <span class="pre">180.,</span> <span class="pre">270.,</span> <span class="pre">360.])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thetas2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">90.,</span> <span class="pre">180.,</span> <span class="pre">270.,</span> <span class="pre">360.])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thetas3</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">90.,</span> <span class="pre">180.,</span> <span class="pre">270.,</span> <span class="pre">360.])</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">do_reflection</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">txfn</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Affine'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/invariant_image_similarity.html#invariant_image_similarity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.invariant_image_similarity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Similarity metrics between two images as a function of geometry</p>
+<p>Compute similarity metric between two images as image is rotated about its
+center w/ or w/o optimization</p>
+<p>ANTsR function: <cite>invariantImageSimilarity</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image1</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – reference image</p></li>
+<li><p><strong>image2</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – moving image</p></li>
+<li><p><strong>local_search_iterations</strong> (<em>python:integer</em>) – integer controlling local search in multistart</p></li>
+<li><p><strong>metric</strong> (<em>string</em>) – <dl class="simple">
+<dt>which metric to use</dt><dd><p>MI
+GC</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>thetas</strong> (<em>1D-ndarray/list/tuple</em>) – numeric vector of search angles in degrees</p></li>
+<li><p><strong>thetas2</strong> (<em>1D-ndarray/list/tuple</em>) – numeric vector of search angles in degrees around principal axis 2 (3D)</p></li>
+<li><p><strong>thetas3</strong> (<em>1D-ndarray/list/tuple</em>) – numeric vector of search angles in degrees around principal axis 3 (3D)</p></li>
+<li><p><strong>scale_image</strong> (<em>scalar</em>) – global scale</p></li>
+<li><p><strong>do_reflection</strong> (<em>boolean</em>) – whether to reflect image about principal axis</p></li>
+<li><p><strong>txfn</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – if present, write optimal tx to .mat file</p></li>
+<li><p><strong>transform</strong> (<em>string</em>) – <dl class="simple">
+<dt>type of transform to use</dt><dd><p>Rigid
+Similarity
+Affine</p>
+</dd>
+</dl>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>dataframe with metric values and transformation parameters</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img1</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r64&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">invariant_image_similarity</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span><span class="n">img2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.convolve_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">convolve_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kernel_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/invariant_image_similarity.html#convolve_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.convolve_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convolve one image with another</p>
+<p>ANTsR function: <cite>convolveImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to convolve</p></li>
+<li><p><strong>kernel_image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image acting as kernel</p></li>
+<li><p><strong>crop</strong> (<em>boolean</em>) – whether to automatically crop kernel_image</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convimg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">make_image</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convout</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">convolve_image</span><span class="p">(</span> <span class="n">fi</span><span class="p">,</span> <span class="n">convimg</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convimg2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">make_image</span><span class="p">(</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">),</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">convout2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">convolve_image</span><span class="p">(</span> <span class="n">fi</span><span class="p">,</span> <span class="n">convimg2</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.label_clusters">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">label_clusters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_cluster_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-06</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fully_connected</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/label_clusters.html#label_clusters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.label_clusters" title="Permalink to this definition">¶</a></dt>
+<dd><p>This will give a unique ID to each connected
+component 1 through N of size &gt; min_cluster_size</p>
+<p>ANTsR function: <cite>labelClusters</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input image e.g. a statistical map</p></li>
+<li><p><strong>min_cluster_size</strong> (<em>python:integer</em>) – throw away clusters smaller than this value</p></li>
+<li><p><strong>min_thresh</strong> (<em>scalar</em>) – threshold to a statistical map</p></li>
+<li><p><strong>max_thresh</strong> (<em>scalar</em>) – threshold to a statistical map</p></li>
+<li><p><strong>fully_connected</strong> (<em>boolean</em>) – boolean sets neighborhood connectivity pattern</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timageFully</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">label_clusters</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="kc">True</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timageFace</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">label_clusters</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">150</span><span class="p">,</span> <span class="kc">False</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.label_image_centroids">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">label_image_centroids</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">physical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">convex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/label_image_centroids.html#label_image_centroids"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.label_image_centroids" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a label image to coordinates summarizing their positions</p>
+<p>ANTsR function: <cite>labelImageCentroids</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image of integer labels</p></li>
+<li><p><strong>physical</strong> (<em>boolean</em>) – whether you want physical space coordinates or not</p></li>
+<li><p><strong>convex</strong> (<em>boolean</em>) – if True, return centroid
+if False return point with min average distance to other points with same label</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt><cite>labels</cite><span class="classifier">1D-ndarray</span></dt><dd><p>array of label values</p>
+</dd>
+<dt><cite>vertices</cite><span class="classifier">pd.DataFrame</span></dt><dd><p>coordinates of label centroids</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dictionary w/ following key-value pairs</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[[</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="p">],[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">]],[[</span><span class="mi">4</span><span class="p">,</span><span class="mi">6</span><span class="p">],[</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">]]])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float32&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">labels</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">label_image_centroids</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.label_overlap_measures">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">label_overlap_measures</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/label_overlap_measures.html#label_overlap_measures"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.label_overlap_measures" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get overlap measures from two label images (e.g., Dice)</p>
+<p>ANTsR function: <cite>labelOverlapMeasures</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<em>source</em>) – Source image</p></li>
+<li><p><strong>target_image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Target image</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>data frame with measures for each label and all labels combined</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r16</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">r64</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r64&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s16</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">kmeans_segmentation</span><span class="p">(</span> <span class="n">r16</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)[</span><span class="s1">&#39;segmentation&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">s64</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">kmeans_segmentation</span><span class="p">(</span> <span class="n">r64</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)[</span><span class="s1">&#39;segmentation&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">stats</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">label_overlap_measures</span><span class="p">(</span><span class="n">s16</span><span class="p">,</span> <span class="n">s64</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.mask_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">mask_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binarize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/mask_image.html#mask_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.mask_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Mask an input image by a mask image.  If the mask image has multiple labels,
+it is possible to specify which label(s) to mask at.</p>
+<p>ANTsR function: <cite>maskImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Input image.</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Mask or label image.</p></li>
+<li><p><strong>level</strong> (<em>scalar</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> of </em><em>scalars</em>) – Level(s) at which to mask image. If vector or list of values, output image is non-zero at all locations where label image matches any of the levels specified.</p></li>
+<li><p><strong>binarize</strong> (<em>boolean</em>) – whether binarize the output image</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myimage</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span><span class="n">myimage</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myimage_mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">mask_image</span><span class="p">(</span><span class="n">myimage</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">kmeans_segmentation</span><span class="p">(</span><span class="n">myimage</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">myimage_mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">mask_image</span><span class="p">(</span><span class="n">myimage</span><span class="p">,</span> <span class="n">seg</span><span class="p">[</span><span class="s1">&#39;segmentation&#39;</span><span class="p">],</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.mni2tal">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">mni2tal</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">xin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/mni2tal.html#mni2tal"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.mni2tal" title="Permalink to this definition">¶</a></dt>
+<dd><p>mni2tal for converting from ch2/mni space to tal - very approximate.</p>
+<p>This is a standard approach but it’s not very accurate.</p>
+<p>ANTsR function: <cite>mni2tal</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>xin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a>) – point in mni152 space.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">mni2tal</span><span class="p">(</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">12</span><span class="p">,</span><span class="mi">14</span><span class="p">)</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p class="rubric">References</p>
+<p><a class="reference external" href="http://bioimagesuite.yale.edu/mni2tal/501_95733_More%20Accurate%20Talairach%20Coordinates%20SLIDES.pdf">http://bioimagesuite.yale.edu/mni2tal/501_95733_More%20Accurate%20Talairach%20Coordinates%20SLIDES.pdf</a>
+<a class="reference external" href="http://imaging.mrc-cbu.cam.ac.uk/imaging/MniTalairach">http://imaging.mrc-cbu.cam.ac.uk/imaging/MniTalairach</a></p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.morphology">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">morphology</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">operation</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mtype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'binary'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shape</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ball'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius_is_parametric</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thickness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/morphology.html#morphology"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.morphology" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply morphological operations to an image</p>
+<p>ANTsR function: <cite>morphology</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>input</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input image</p></li>
+<li><p><strong>operation</strong> (<em>string</em>) – <dl class="simple">
+<dt>operation to apply</dt><dd><p>”close” Morpholgical closing
+“dilate” Morpholgical dilation
+“erode” Morpholgical erosion
+“open” Morpholgical opening</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>radius</strong> (<em>scalar</em>) – radius of structuring element</p></li>
+<li><p><strong>mtype</strong> (<em>string</em>) – <dl class="simple">
+<dt>type of morphology</dt><dd><p>”binary” Binary operation on a single value
+“grayscale” Grayscale operations</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>value</strong> (<em>scalar</em>) – value to operation on (type=’binary’ only)</p></li>
+<li><p><strong>shape</strong> (<em>string</em>) – <dl class="simple">
+<dt>shape of the structuring element ( type=’binary’ only )</dt><dd><p>”ball” spherical structuring element
+“box” box shaped structuring element
+“cross” cross shaped structuring element
+“annulus” annulus shaped structuring element
+“polygon” polygon structuring element</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>radius_is_parametric</strong> (<em>boolean</em>) – used parametric radius boolean (shape=’ball’ and shape=’annulus’ only)</p></li>
+<li><p><strong>thickness</strong> (<em>scalar</em>) – thickness (shape=’annulus’ only)</p></li>
+<li><p><strong>lines</strong> (<em>python:integer</em>) – number of lines in polygon (shape=’polygon’ only)</p></li>
+<li><p><strong>include_center</strong> (<em>boolean</em>) – include center of annulus boolean (shape=’annulus’ only)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mask</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span> <span class="n">fi</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dilated_ball</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">morphology</span><span class="p">(</span> <span class="n">mask</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s1">&#39;dilate&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;ball&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">eroded_box</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">morphology</span><span class="p">(</span> <span class="n">mask</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s1">&#39;erode&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">opened_annulus</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">morphology</span><span class="p">(</span> <span class="n">mask</span><span class="p">,</span> <span class="n">operation</span><span class="o">=</span><span class="s1">&#39;open&#39;</span><span class="p">,</span> <span class="n">radius</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">mtype</span><span class="o">=</span><span class="s1">&#39;binary&#39;</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="s1">&#39;annulus&#39;</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.get_pointer_string">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">get_pointer_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/process_args.html#get_pointer_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.get_pointer_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.simulate_displacement_field">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">simulate_displacement_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain_image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">field_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'bspline'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_random_points</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd_noise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enforce_stationary_boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">number_of_fitting_levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mesh_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sd_smoothing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">4.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/simulate_displacement_field.html#simulate_displacement_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.simulate_displacement_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>simulate displacement field using either b-spline or exponential transform</p>
+<p>ANTsR function: <cite>simulateDisplacementField</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>domain_image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Domain image</p></li>
+<li><p><strong>field_type</strong> (<em>string</em>) – Either “bspline” or “exponential”.</p></li>
+<li><p><strong>number_of_random_points</strong> (<em>python:integer</em>) – Number of displacement points.</p></li>
+<li><p><strong>sd_noise</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Standard deviation of the displacement field noise.</p></li>
+<li><p><strong>enforce_stationary_boundary</strong> (<em>boolean</em>) – Determines fixed boundary conditions.</p></li>
+<li><p><strong>number_of_fitting_levels</strong> (<em>python:integer</em>) – Number of fitting levels (b-spline only).</p></li>
+<li><p><strong>mesh_size</strong> (<em>python:integer</em><em> or </em><em>n-D tuple</em>) – Determines fitting resolution at base level (b-spline only).</p></li>
+<li><p><strong>sd_smoothing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – Standard deviation of the Gaussian smoothing in mm (exponential only).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ANTs vector image.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">exp_field</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">simulate_displacement_field</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;exponential&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bsp_field</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">simulate_displacement_field</span><span class="p">(</span><span class="n">domain</span><span class="p">,</span> <span class="n">field_type</span><span class="o">=</span><span class="s2">&quot;bspline&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">bsp_xfrm</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">transform_from_displacement_field</span><span class="p">(</span><span class="n">bsp_field</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">domain_warped</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">apply_ants_transform_to_image</span><span class="p">(</span><span class="n">bsp_xfrm</span><span class="p">,</span> <span class="n">domain</span><span class="p">,</span> <span class="n">domain</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.smooth_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">smooth_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma_in_physical_coordinates</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">FWHM</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_kernel_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">32</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/smooth_image.html#smooth_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.smooth_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Smooth an image</p>
+<p>ANTsR function: <cite>smoothImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – Image to smooth</p></li>
+<li><p><strong>sigma</strong> – Smoothing factor. Can be scalar, in which case the same sigma is applied to each dimension, or a vector of length dim(inimage) to specify a unique smoothness for each dimension.</p></li>
+<li><p><strong>sigma_in_physical_coordinates</strong> (<em>boolean</em>) – If true, the smoothing factor is in millimeters; if false, it is in pixels.</p></li>
+<li><p><strong>FWHM</strong> (<em>boolean</em>) – If true, sigma is interpreted as the full-width-half-max (FWHM) of the filter, not the sigma of a Gaussian kernel.</p></li>
+<li><p><strong>max_kernel_width</strong> (<em>scalar</em>) – Maximum kernel width</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">simage</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="mf">1.2</span><span class="p">,</span><span class="mf">1.5</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.threshold_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">threshold_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">low_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">high_thresh</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">binary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/threshold_image.html#threshold_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.threshold_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a scalar image into a binary image by thresholding operations</p>
+<p>ANTsR function: <cite>thresholdImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Input image to operate on</p></li>
+<li><p><strong>low_thresh</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – Lower edge of threshold window</p></li>
+<li><p><strong>hight_thresh</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – Higher edge of threshold window</p></li>
+<li><p><strong>inval</strong> (<em>scalar</em>) – Output value for image voxels in between lothresh and hithresh</p></li>
+<li><p><strong>outval</strong> (<em>scalar</em>) – Output value for image voxels lower than lothresh or higher than hithresh</p></li>
+<li><p><strong>binary</strong> (<em>boolean</em>) – if true, returns binary thresholded image
+if false, return binary thresholded image multiplied by original image</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">timage</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1e15</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.weingarten_image_curvature">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">weingarten_image_curvature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mean'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/utils/weingarten_image_curvature.html#weingarten_image_curvature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.weingarten_image_curvature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Uses the weingarten map to estimate image mean or gaussian curvature</p>
+<p>ANTsR function: <cite>weingartenImageCurvature</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image from which curvature is calculated</p></li>
+<li><p><strong>sigma</strong> (<em>scalar</em>) – smoothing parameter</p></li>
+<li><p><strong>opt</strong> (<em>string</em>) – mean by default, otherwise <cite>gaussian</cite> or <cite>characterize</cite></p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">resample_image</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">imagecurv</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">weingarten_image_curvature</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learn.html">Statistical Learning</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="learn.html" title="previous chapter">Statistical Learning</a></li>
+      <li>Next: <a href="vis.html" title="next chapter">Visualization</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/utils.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

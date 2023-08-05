@@ -1,0 +1,1052 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>Core &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Registration" href="registration.html" />
+    <link rel="prev" title="ANTsPy documentation" href="index.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-ants">
+<span id="core"></span><h1>Core<a class="headerlink" href="#module-ants" title="Permalink to this heading">¶</a></h1>
+<section id="images">
+<h2>Images<a class="headerlink" href="#images" title="Permalink to this heading">¶</a></h2>
+<section id="antsimage">
+<h3>ANTsImage<a class="headerlink" href="#antsimage" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ants.core.ants_image.</span></span><span class="sig-name descname"><span class="pre">ANTsImage</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixeltype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_rgb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_image</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.abs">
+<span class="sig-name descname"><span class="pre">abs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.abs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.abs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return absolute value of image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply an arbitrary function to ANTsImage.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>fn</strong> (<em>python function</em><em> or </em><em>lambda</em>) – function to apply to ENTIRE image at once</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>image with function applied to it</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.argmax">
+<span class="sig-name descname"><span class="pre">argmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.argmax"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.argmax" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return argmax along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.argmin">
+<span class="sig-name descname"><span class="pre">argmin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.argmin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.argmin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return argmin along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.argrange">
+<span class="sig-name descname"><span class="pre">argrange</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.argrange"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.argrange" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return argrange along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.astype">
+<span class="sig-name descname"><span class="pre">astype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.astype"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.astype" title="Permalink to this definition">¶</a></dt>
+<dd><p>Cast &amp; clone an ANTsImage to a given numpy datatype.</p>
+<dl class="simple">
+<dt>Map:</dt><dd><p>uint8   : unsigned char
+uint32  : unsigned int
+float32 : float
+float64 : double</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.clone">
+<span class="sig-name descname"><span class="pre">clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixeltype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of the given ANTsImage with the same data and info, possibly with
+a different data type for the image data. Only supports casting to
+uint8 (unsigned char), uint32 (unsigned int), float32 (float), and float64 (double)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dtype</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – <p>if None, the dtype will be the same as the cloned ANTsImage. Otherwise,
+the data will be cast to this type. This can be a numpy type or an ITK
+type.
+Options:</p>
+<blockquote>
+<div><p>’unsigned char’ or ‘uint8’,
+‘unsigned int’ or ‘uint32’,
+‘float’ or ‘float32’,
+‘double’ or ‘float64’</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pixeltype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ants.core.ants_image.ANTsImage.copy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a copy of the given ANTsImage with the same data and info, possibly with
+a different data type for the image data. Only supports casting to
+uint8 (unsigned char), uint32 (unsigned int), float32 (float), and float64 (double)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dtype</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – <p>if None, the dtype will be the same as the cloned ANTsImage. Otherwise,
+the data will be cast to this type. This can be a numpy type or an ITK
+type.
+Options:</p>
+<blockquote>
+<div><p>’unsigned char’ or ‘uint8’,
+‘unsigned int’ or ‘uint32’,
+‘float’ or ‘float32’,
+‘double’ or ‘float64’</p>
+</div></blockquote>
+</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.direction">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">direction</span></span><a class="headerlink" href="#ants.core.ants_image.ANTsImage.direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get image direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.flatten">
+<span class="sig-name descname"><span class="pre">flatten</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.flatten"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.flatten" title="Permalink to this definition">¶</a></dt>
+<dd><p>Flatten image data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.max">
+<span class="sig-name descname"><span class="pre">max</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.max"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.max" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return max along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.mean">
+<span class="sig-name descname"><span class="pre">mean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.mean"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.mean" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return mean along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.median">
+<span class="sig-name descname"><span class="pre">median</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.median"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.median" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return median along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.min">
+<span class="sig-name descname"><span class="pre">min</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.min"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.min" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return min along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.new_image_like">
+<span class="sig-name descname"><span class="pre">new_image_like</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.new_image_like"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.new_image_like" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new ANTsImage with the same header information, but with
+a new image array.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>ndarray</em><em> or </em><em>py::capsule</em>) – New array or pointer for the image.
+It must have the same shape as the current
+image data.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.nonzero">
+<span class="sig-name descname"><span class="pre">nonzero</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.nonzero"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.nonzero" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return non-zero indices of image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.numpy">
+<span class="sig-name descname"><span class="pre">numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.numpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a numpy array copy representing the underlying image data. Altering
+this ndarray will have NO effect on the underlying image data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>single_components</strong> (<em>boolean</em><em> (</em><em>default is False</em><em>)</em>) – if True, keep the extra component dimension in returned array even
+if image only has one component (i.e. self.has_components == False)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.origin">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">origin</span></span><a class="headerlink" href="#ants.core.ants_image.ANTsImage.origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get image origin</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.range">
+<span class="sig-name descname"><span class="pre">range</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.range"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.range" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return range tuple along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.set_direction">
+<span class="sig-name descname"><span class="pre">set_direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_direction</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.set_direction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.set_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set image direction</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_direction</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – updated direction for the image.
+should have one value for each dimension</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.set_origin">
+<span class="sig-name descname"><span class="pre">set_origin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_origin</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.set_origin"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.set_origin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set image origin</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_origin</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – updated origin for the image.
+should have one value for each dimension</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.set_spacing">
+<span class="sig-name descname"><span class="pre">set_spacing</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_spacing</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.set_spacing"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.set_spacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set image spacing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>new_spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a>) – updated spacing for the image.
+should have one value for each dimension</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.spacing">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">spacing</span></span><a class="headerlink" href="#ants.core.ants_image.ANTsImage.spacing" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get image spacing</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)">tuple</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.std">
+<span class="sig-name descname"><span class="pre">std</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.std"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return std along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.sum">
+<span class="sig-name descname"><span class="pre">sum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keepdims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.sum"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.sum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return sum along specified axis</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.to_file">
+<span class="sig-name descname"><span class="pre">to_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.to_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.to_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the ANTsImage to file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – filepath to which the image will be written</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.to_filename">
+<span class="sig-name descname"><span class="pre">to_filename</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ants.core.ants_image.ANTsImage.to_filename" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write the ANTsImage to file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – filepath to which the image will be written</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.unique">
+<span class="sig-name descname"><span class="pre">unique</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">sort</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.unique"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.unique" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return unique set of values in image</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_image.ANTsImage.view">
+<span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">single_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image.html#ANTsImage.view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_image.ANTsImage.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Geet a numpy array providing direct, shared access to the image data.
+IMPORTANT: If you alter the view, then the underlying image data
+will also be altered.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>single_components</strong> (<em>boolean</em><em> (</em><em>default is False</em><em>)</em>) – if True, keep the extra component dimension in returned array even
+if image only has one component (i.e. self.has_components == False)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="antsimage-io">
+<h3>ANTsImage IO<a class="headerlink" href="#antsimage-io" title="Permalink to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_clone">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_clone</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixeltype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#image_clone"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.image_clone" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clone an ANTsImage</p>
+<p>ANTsR function: <cite>antsImageClone</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to clone</p></li>
+<li><p><strong>dtype</strong> (<em>string</em><em> (</em><em>optional</em><em>)</em>) – new datatype for image</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_header_info">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_header_info</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#image_header_info"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.image_header_info" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read file info from image header</p>
+<p>ANTsR function: <cite>antsImageHeaderInfo</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>filename</strong> (<em>string</em>) – name of image file from which info will be read</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.11)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_read">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_read</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixeltype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reorient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#image_read"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.image_read" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read an ANTsImage from file</p>
+<p>ANTsR function: <cite>antsImageRead</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – Name of the file to read the image from.</p></li>
+<li><p><strong>dimension</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.11)"><em>int</em></a>) – Number of dimensions of the image read. This need not be the same as
+the dimensions of the image in the file. Allowed values: 2, 3, 4.
+If not provided, the dimension is obtained from the image file</p></li>
+<li><p><strong>pixeltype</strong> (<em>string</em>) – C++ datatype to be used to represent the pixels read. This datatype
+need not be the same as the datatype used in the file.
+Options: unsigned char, unsigned int, float, double</p></li>
+<li><p><strong>reorient</strong> (<em>boolean</em><em> | </em><em>string</em>) – <p>if True, the image will be reoriented to RPI if it is 3D
+if False, nothing will happen
+if string, this should be the 3-letter orientation to which the</p>
+<blockquote>
+<div><p>input image will reoriented if 3D.</p>
+</div></blockquote>
+<p>if the image is 2D, this argument is ignored</p>
+</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_write">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_write</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ri</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#image_write"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.image_write" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write an ANTsImage to file</p>
+<p>ANTsR function: <cite>antsImageWrite</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to save to file</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – name of file to which image will be saved</p></li>
+<li><p><strong>ri</strong> (<em>boolean</em>) – <dl>
+<dt>if True, return image. This allows for using this function in a pipeline:</dt><dd><div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="mf">2.</span><span class="p">)</span><span class="o">.</span><span class="n">image_write</span><span class="p">(</span><span class="n">file1</span><span class="p">,</span> <span class="n">ri</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">image_write</span><span class="p">(</span><span class="n">file2</span><span class="p">,</span> <span class="n">ri</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd>
+</dl>
+<p>if False, do not return image</p>
+</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.make_image">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">make_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">imagesize</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voxval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pixeltype</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#make_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.make_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make an image with given size and voxel value or given a mask and vector</p>
+<p>ANTsR function: <cite>makeImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>shape</strong> (<em>tuple/ANTsImage</em>) – input image size or mask</p></li>
+<li><p><strong>voxval</strong> (<em>scalar</em>) – input image value or vector, size of mask</p></li>
+<li><p><strong>spacing</strong> (<em>tuple/list</em>) – image spatial resolution</p></li>
+<li><p><strong>origin</strong> (<em>tuple/list</em>) – image spatial origin</p></li>
+<li><p><strong>direction</strong> (<em>list/ndarray</em>) – direction matrix to convert from index to physical space</p></li>
+<li><p><strong>components</strong> (<em>boolean</em>) – whether there are components per pixel or not</p></li>
+<li><p><strong>pixeltype</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – data type of image values</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.from_numpy">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">from_numpy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">origin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">has_components</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_rgb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#from_numpy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.from_numpy" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create an ANTsImage object from a numpy array</p>
+<p>ANTsR function: <cite>as.antsImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>ndarray</em>) – image data array</p></li>
+<li><p><strong>origin</strong> (<em>tuple/list</em>) – image origin</p></li>
+<li><p><strong>spacing</strong> (<em>tuple/list</em>) – image spacing</p></li>
+<li><p><strong>direction</strong> (<em>list/ndarray</em>) – image direction</p></li>
+<li><p><strong>has_components</strong> (<em>boolean</em>) – whether the image has components</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>image with given data and any given information</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.matrix_to_images">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">matrix_to_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#matrix_to_images"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.matrix_to_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unmasks rows of a matrix and writes as images</p>
+<p>ANTsR function: <cite>matrixToImages</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_matrix</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – each row corresponds to an image
+array should have number of columns equal to non-zero voxels in the mask</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image containing a binary mask. Rows of the matrix are
+unmasked and written as images. The mask defines the output image space</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a> of ANTsImage types</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msk</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span> <span class="n">img</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_list_to_matrix</span><span class="p">([</span><span class="n">img</span><span class="p">,</span><span class="n">img2</span><span class="p">,</span><span class="n">img3</span><span class="p">],</span> <span class="n">msk</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ilist</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">matrix_to_images</span><span class="p">(</span> <span class="n">mat</span><span class="p">,</span> <span class="n">msk</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.images_from_matrix">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">images_from_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ants.images_from_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unmasks rows of a matrix and writes as images</p>
+<p>ANTsR function: <cite>matrixToImages</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_matrix</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.24)"><em>numpy.ndarray</em></a>) – each row corresponds to an image
+array should have number of columns equal to non-zero voxels in the mask</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image containing a binary mask. Rows of the matrix are
+unmasked and written as images. The mask defines the output image space</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a> of ANTsImage types</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">msk</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span> <span class="n">img</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_list_to_matrix</span><span class="p">([</span><span class="n">img</span><span class="p">,</span><span class="n">img2</span><span class="p">,</span><span class="n">img3</span><span class="p">],</span> <span class="n">msk</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ilist</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">matrix_to_images</span><span class="p">(</span> <span class="n">mat</span><span class="p">,</span> <span class="n">msk</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.image_list_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">image_list_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ants.image_list_to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read images into rows of a matrix, given a mask - much faster for
+large datasets as it is based on C++ implementations.</p>
+<p>ANTsR function: <cite>imagesToMatrix</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>ANTsImage python:types</em>) – images to convert to ndarray</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – image containing binary mask. voxels in the mask are placed in the matrix</p></li>
+<li><p><strong>sigma</strong> (<em>scaler</em><em> (</em><em>optional</em><em>)</em>) – smoothing factor</p></li>
+<li><p><strong>epsilon</strong> (<em>scalar</em>) – threshold for mask</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array with a row for each image
+shape = (N_IMAGES, N_VOXELS)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_list_to_matrix</span><span class="p">([</span><span class="n">img</span><span class="p">,</span><span class="n">img2</span><span class="p">,</span><span class="n">img3</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.images_to_matrix">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">images_to_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_image_io.html#images_to_matrix"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.images_to_matrix" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read images into rows of a matrix, given a mask - much faster for
+large datasets as it is based on C++ implementations.</p>
+<p>ANTsR function: <cite>imagesToMatrix</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>ANTsImage python:types</em>) – images to convert to ndarray</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – image containing binary mask. voxels in the mask are placed in the matrix</p></li>
+<li><p><strong>sigma</strong> (<em>scaler</em><em> (</em><em>optional</em><em>)</em>) – smoothing factor</p></li>
+<li><p><strong>epsilon</strong> (<em>scalar</em>) – threshold for mask</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array with a row for each image
+shape = (N_IMAGES, N_VOXELS)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_list_to_matrix</span><span class="p">([</span><span class="n">img</span><span class="p">,</span><span class="n">img2</span><span class="p">,</span><span class="n">img3</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.matrix_from_images">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">matrix_from_images</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ants.matrix_from_images" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read images into rows of a matrix, given a mask - much faster for
+large datasets as it is based on C++ implementations.</p>
+<p>ANTsR function: <cite>imagesToMatrix</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image_list</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>ANTsImage python:types</em>) – images to convert to ndarray</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a><em> (</em><em>optional</em><em>)</em>) – image containing binary mask. voxels in the mask are placed in the matrix</p></li>
+<li><p><strong>sigma</strong> (<em>scaler</em><em> (</em><em>optional</em><em>)</em>) – smoothing factor</p></li>
+<li><p><strong>epsilon</strong> (<em>scalar</em>) – threshold for mask</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>array with a row for each image
+shape = (N_IMAGES, N_VOXELS)</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img3</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mat</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_list_to_matrix</span><span class="p">([</span><span class="n">img</span><span class="p">,</span><span class="n">img2</span><span class="p">,</span><span class="n">img3</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="transforms">
+<h2>Transforms<a class="headerlink" href="#transforms" title="Permalink to this heading">¶</a></h2>
+<section id="antstransform">
+<h3>ANTsTransform<a class="headerlink" href="#antstransform" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ants.core.ants_transform.</span></span><span class="sig-name descname"><span class="pre">ANTsTransform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AffineTransform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pointer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'point'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.apply" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transform to data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.apply_to_image">
+<span class="sig-name descname"><span class="pre">apply_to_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reference</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">interpolation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'linear'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.apply_to_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.apply_to_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transform to an image</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to which the transform will be applied</p></li>
+<li><p><strong>reference</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – target space for transforming image</p></li>
+<li><p><strong>interpolation</strong> (<em>string</em>) – type of interpolation to use</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>transformed vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.apply_to_point">
+<span class="sig-name descname"><span class="pre">apply_to_point</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.apply_to_point"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.apply_to_point" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transform to a point</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>point</strong> (<em>list/tuple</em>) – point to which the transform will be applied</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>transformed point</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">new_ants_transform</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">params</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">parameters</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">params</span><span class="o">*</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">pt2</span> <span class="o">=</span> <span class="n">tx</span><span class="o">.</span><span class="n">apply_to_point</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">))</span> <span class="c1"># should be (2,4,6)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.apply_to_vector">
+<span class="sig-name descname"><span class="pre">apply_to_vector</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vector</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.apply_to_vector"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.apply_to_vector" title="Permalink to this definition">¶</a></dt>
+<dd><p>Apply transform to a vector</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>vector</strong> (<em>list/tuple</em>) – vector to which the transform will be applied</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>list</strong></p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>transformed vector</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.fixed_parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">fixed_parameters</span></span><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.fixed_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters of transform</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.invert">
+<span class="sig-name descname"><span class="pre">invert</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.invert"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.invert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Invert the transform</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.parameters">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">parameters</span></span><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get parameters of transform</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.set_fixed_parameters">
+<span class="sig-name descname"><span class="pre">set_fixed_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.set_fixed_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.set_fixed_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set parameters of transform</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_transform.ANTsTransform.set_parameters">
+<span class="sig-name descname"><span class="pre">set_parameters</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">parameters</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform.html#ANTsTransform.set_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_transform.ANTsTransform.set_parameters" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set parameters of transform</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="antstransform-io">
+<h3>ANTsTransform IO<a class="headerlink" href="#antstransform-io" title="Permalink to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.create_ants_transform">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">create_ants_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AffineTransform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">matrix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">center</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">translation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">displacement_field</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">supported_types</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform_io.html#create_ants_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.create_ants_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and initialize an ANTsTransform</p>
+<p>ANTsR function: <cite>createAntsrTransform</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transform_type</strong> (<em>string</em>) – type of transform(s)</p></li>
+<li><p><strong>precision</strong> (<em>string</em>) – numerical precision</p></li>
+<li><p><strong>dimension</strong> (<em>python:integer</em>) – spatial dimension of transform</p></li>
+<li><p><strong>matrix</strong> (<em>ndarray</em>) – matrix for linear transforms</p></li>
+<li><p><strong>offset</strong> (<em>tuple/list</em>) – offset for linear transforms</p></li>
+<li><p><strong>center</strong> (<em>tuple/list</em>) – center for linear transforms</p></li>
+<li><p><strong>translation</strong> (<em>tuple/list</em>) – translation for linear transforms</p></li>
+<li><p><strong>parameters</strong> (<em>ndarray/list</em>) – array of parameters</p></li>
+<li><p><strong>fixed_parameters</strong> (<em>ndarray/list</em>) – array of fixed parameters</p></li>
+<li><p><strong>displacement_field</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – multichannel ANTsImage for non-linear transform</p></li>
+<li><p><strong>supported_types</strong> (<em>boolean</em>) – flag that returns array of possible transforms types</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_transform.ANTsTransform" title="ants.core.ants_transform.ANTsTransform">ANTsTransform</a> or <a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)">list</a> of ANTsTransform types</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">translation</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">create_ants_transform</span><span class="p">(</span> <span class="nb">type</span><span class="o">=</span><span class="s1">&#39;Euler3DTransform&#39;</span><span class="p">,</span> <span class="n">translation</span><span class="o">=</span><span class="n">translation</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.new_ants_transform">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">new_ants_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transform_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'AffineTransform'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform_io.html#new_ants_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.new_ants_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new ANTsTransform</p>
+<p>ANTsR function: None</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">new_ants_transform</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.read_transform">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">read_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform_io.html#read_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.read_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read a transform from file</p>
+<p>ANTsR function: <cite>readAntsrTransform</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>filename</strong> (<em>string</em>) – filename of transform</p></li>
+<li><p><strong>precision</strong> (<em>string</em>) – numerical precision of transform</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_transform.ANTsTransform" title="ants.core.ants_transform.ANTsTransform">ANTsTransform</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">new_ants_transform</span><span class="p">(</span><span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">((</span><span class="mf">0.9</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">write_transform</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="s1">&#39;~/desktop/tx.mat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">read_transform</span><span class="p">(</span><span class="s1">&#39;~/desktop/tx.mat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.write_transform">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">write_transform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">transform</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform_io.html#write_transform"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.write_transform" title="Permalink to this definition">¶</a></dt>
+<dd><p>Write ANTsTransform to file</p>
+<p>ANTsR function: <cite>writeAntsrTransform</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>transform</strong> (<a class="reference internal" href="#ants.core.ants_transform.ANTsTransform" title="ants.core.ants_transform.ANTsTransform"><em>ANTsTransform</em></a>) – transform to save</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – filename of transform (file extension is “.mat” for affine transforms)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>N/A</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">new_ants_transform</span><span class="p">(</span><span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">((</span><span class="mf">0.9</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">1.1</span><span class="p">,</span><span class="mi">10</span><span class="p">,</span><span class="mi">11</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">write_transform</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="s1">&#39;~/desktop/tx.mat&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">tx2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">read_transform</span><span class="p">(</span><span class="s1">&#39;~/desktop/tx.mat&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.transform_from_displacement_field">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">transform_from_displacement_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">field</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_transform_io.html#transform_from_displacement_field"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.transform_from_displacement_field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert deformation field (multiChannel image) to ANTsTransform</p>
+<p>ANTsR function: <cite>antsrTransformFromDisplacementField</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>field</strong> (<a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – deformation field as multi-channel ANTsImage</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage">ANTsImage</a></p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r64&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">resample_image</span><span class="p">(</span><span class="n">fi</span><span class="p">,(</span><span class="mi">60</span><span class="p">,</span><span class="mi">60</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mi</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">resample_image</span><span class="p">(</span><span class="n">mi</span><span class="p">,(</span><span class="mi">60</span><span class="p">,</span><span class="mi">60</span><span class="p">),</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span> <span class="c1"># speed up</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mytx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">registration</span><span class="p">(</span><span class="n">fixed</span><span class="o">=</span><span class="n">fi</span><span class="p">,</span> <span class="n">moving</span><span class="o">=</span><span class="n">mi</span><span class="p">,</span> <span class="n">type_of_transform</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;SyN&#39;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vec</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">mytx</span><span class="p">[</span><span class="s1">&#39;fwdtransforms&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">atx</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">transform_from_displacement_field</span><span class="p">(</span> <span class="n">vec</span> <span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="metrics">
+<h2>Metrics<a class="headerlink" href="#metrics" title="Permalink to this heading">¶</a></h2>
+<section id="antsmetric">
+<h3>ANTsMetric<a class="headerlink" href="#antsmetric" title="Permalink to this heading">¶</a></h3>
+<dl class="py class">
+<dt class="sig sig-object py" id="ants.core.ants_metric.ANTsImageToImageMetric">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ants.core.ants_metric.</span></span><span class="sig-name descname"><span class="pre">ANTsImageToImageMetric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric.html#ANTsImageToImageMetric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_metric.ANTsImageToImageMetric" title="Permalink to this definition">¶</a></dt>
+<dd><p>ANTsImageToImageMetric class</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_metric.ANTsImageToImageMetric.set_fixed_image">
+<span class="sig-name descname"><span class="pre">set_fixed_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric.html#ANTsImageToImageMetric.set_fixed_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_metric.ANTsImageToImageMetric.set_fixed_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Fixed ANTsImage for metric</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_metric.ANTsImageToImageMetric.set_fixed_mask">
+<span class="sig-name descname"><span class="pre">set_fixed_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric.html#ANTsImageToImageMetric.set_fixed_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_metric.ANTsImageToImageMetric.set_fixed_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Fixed ANTsImage Mask for metric</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_metric.ANTsImageToImageMetric.set_moving_image">
+<span class="sig-name descname"><span class="pre">set_moving_image</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric.html#ANTsImageToImageMetric.set_moving_image"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_metric.ANTsImageToImageMetric.set_moving_image" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Moving ANTsImage for metric</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ants.core.ants_metric.ANTsImageToImageMetric.set_moving_mask">
+<span class="sig-name descname"><span class="pre">set_moving_mask</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric.html#ANTsImageToImageMetric.set_moving_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.core.ants_metric.ANTsImageToImageMetric.set_moving_mask" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set Fixed ANTsImage Mask for metric</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="antsmetric-io">
+<h3>ANTsMetric IO<a class="headerlink" href="#antsmetric-io" title="Permalink to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.new_ants_metric">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">new_ants_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dimension</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">precision</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'float'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MeanSquares'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric_io.html#new_ants_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.new_ants_metric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.create_ants_metric">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">create_ants_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fixed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moving</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metric_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'MeanSquares'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fixed_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">moving_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_strategy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'regular'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sampling_percentage</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric_io.html#create_ants_metric"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.create_ants_metric" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>metric_type</strong> (<em>string</em>) – <p>which metric to use
+options:</p>
+<blockquote>
+<div><p>MeanSquares
+MattesMutualInformation
+ANTsNeighborhoodCorrelation
+Correlation
+Demons
+JointHistogramMutualInformation</p>
+</div></blockquote>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fixed</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">moving</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;r64&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric_type</span> <span class="o">=</span> <span class="s1">&#39;Correlation&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metric</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">create_ants_metric</span><span class="p">(</span><span class="n">fixed</span><span class="p">,</span> <span class="n">moving</span><span class="p">,</span> <span class="n">metric_type</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.supported_metrics">
+<span class="sig-prename descclassname"><span class="pre">ants.</span></span><span class="sig-name descname"><span class="pre">supported_metrics</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/core/ants_metric_io.html#supported_metrics"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.supported_metrics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">ANTsPy documentation</a></li>
+      <li>Next: <a href="registration.html" title="next chapter">Registration</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/core.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

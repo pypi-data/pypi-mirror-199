@@ -1,0 +1,897 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+    <title>ants.viz package &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="ants-viz-package">
+<h1>ants.viz package<a class="headerlink" href="#ants-viz-package" title="Permalink to this heading">¶</a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-ants.viz.create_tiled_mosaic">
+<span id="ants-viz-create-tiled-mosaic-module"></span><h2>ants.viz.create_tiled_mosaic module<a class="headerlink" href="#module-ants.viz.create_tiled_mosaic" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.create_tiled_mosaic.create_tiled_mosaic">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.create_tiled_mosaic.</span></span><span class="sig-name descname"><span class="pre">create_tiled_mosaic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rgb</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">direction</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pad_or_crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip_slice</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">permute_axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/create_tiled_mosaic.html#create_tiled_mosaic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.create_tiled_mosaic.create_tiled_mosaic" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a tiled mosaic of 2D slice images from a 3D ANTsImage.</p>
+<p>ANTsR function : N/A
+ANTs function  : <cite>createTiledMosaic</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – base image to visualize</p></li>
+<li><p><strong>rgb</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – optional overlay image to display on top of base image</p></li>
+<li><p><strong>mask</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – optional mask image</p></li>
+<li><p><strong>alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – alpha value for rgb/overlay image</p></li>
+<li><p><strong>direction</strong> (<em>python:integer</em><em> or </em><em>string</em>) – which axis to visualize
+options: 0, 1, 2, ‘x’, ‘y’, ‘z’</p></li>
+<li><p><strong>pad_or_crop</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>2-tuples</em>) – <p>padding or cropping values for each dimension and each side.
+- to crop the X dimension, use the following:</p>
+<blockquote>
+<div><p>pad_or_crop = [(10,10), 0, 0]</p>
+</div></blockquote>
+<ul>
+<li><dl class="simple">
+<dt>to pad the X dimension, use the following:</dt><dd><p>pad_or_crop = [(-10,-10), 0, 0]</p>
+</dd>
+</dl>
+</li>
+</ul>
+</p></li>
+<li><p><strong>slices</strong> (<em>list/numpy.ndarray</em><em> or </em><em>python:integer</em><em> or </em><em>3-tuple</em>) – <dl class="simple">
+<dt>if list or numpy.ndarray:</dt><dd><p>slices to use</p>
+</dd>
+<dt>if integer:</dt><dd><p>number of slices to incremenet</p>
+</dd>
+<dt>if 3-tuple:</dt><dd><p>(# slices to increment, min slice, max slice)</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>flip_slice</strong> (<em>2-tuple</em><em> of </em><em>boolean</em>) – (whether to flip X direction, whether to flip Y direction)</p></li>
+<li><p><strong>permute_axes</strong> (<em>boolean</em>) – whether to permute axes</p></li>
+<li><p><strong>output</strong> (<em>string</em>) – output filename where mosaic image will be saved.
+If not given, this function will save to a temp file,
+then return the image as a PIL.Image object</p></li>
+<li><p><strong>ANTs</strong> – </p></li>
+<li><p><strong>----</strong> – <p>-i, –input-image inputImageFilename
+-r, –rgb-image rgbImageFilename
+-x, –mask-image maskImageFilename
+-a, –alpha value
+-e, –functional-overlay [rgbImageFileName,maskImageFileName,&lt;alpha=1&gt;]
+-o, –output tiledMosaicImage
+-t, –tile-geometry RxC
+-d, –direction 0/1/2/x/y/(z)
+-p, –pad-or-crop padVoxelWidth</p>
+<blockquote>
+<div><p>[padVoxelWidth,&lt;constantValue=0&gt;]
+[lowerPadding[0]xlowerPadding[1],upperPadding[0]xupperPadding[1],constantValue]</p>
+</div></blockquote>
+<dl class="simple">
+<dt>-s, –slices Slice1xSlice2xSlice3…</dt><dd><p>numberOfSlicesToIncrement
+[numberOfSlicesToIncrement,&lt;minSlice=0&gt;,&lt;maxSlice=lastSlice&gt;]</p>
+</dd>
+</dl>
+<p>-f, –flip-slice flipXxflipY
+-g, –permute-axes doPermute
+-h</p>
+</p></li>
+<li><p><strong>-50</strong> (<em>CreateTiledMosaic -i OAS1_0457_MR1_mpr_n3_anon_sbj_111BrainSegmentation0N4 . nii . gz     -r OAS1_0457_MR1_mpr_n3_anon_sbj_111CorticalThickness_hot . nii . gz     -x OAS1_0457_MR1_mpr_n3_anon_sbj_111CorticalThickness_mask . nii . gz     -o OAS1_0457_MR1_mpr_n3_anon_sbj_111_tiledMosaic . png     -a 1.0 -t -1 x8 -d 2 -p</em><em> [ </em><em>-15x</em>) – </p></li>
+<li><p><strong>-30</strong> (<em>-15x</em>) – </p></li>
+<li><p><strong>[2</strong> (<em>0</em><em>] </em><em>-s</em>) – </p></li>
+<li><p><strong>100</strong> – </p></li>
+<li><p><strong>160]</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">image</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;ch2&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">create_tiled_mosaic</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-ants.viz.plot">
+<span id="ants-viz-plot-module"></span><h2>ants.viz.plot module<a class="headerlink" href="#module-ants.viz.plot" title="Permalink to this heading">¶</a></h2>
+<p>Create a static 2D image of a 2D ANTsImage
+or a tile of slices from a 3D ANTsImage</p>
+<p>TODO:
+- add <cite>plot_multichannel</cite> function for plotting multi-channel images</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>support for quivers as well</p></li>
+</ul>
+</div></blockquote>
+<ul class="simple">
+<li><p>add <cite>plot_gif</cite> function for making a gif/video or 2D slices across a 3D image</p></li>
+</ul>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.movie">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">movie</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">writer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#movie"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.movie" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and save a movie - mp4, gif, etc - of the various
+2D slices of a 3D ants image</p>
+<dl class="simple">
+<dt>Try this:</dt><dd><p>conda install -c conda-forge ffmpeg</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">movie</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;~/desktop/movie.mp4&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Greys_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'turbo'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vminol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmaxol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_length</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cbar_vertical</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nslices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ncol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slice_buffer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_thresh_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_val_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_image_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reverse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reorient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot an ANTsImage.</p>
+<p>Use mask_image and/or threshold_image to preprocess images to be be
+overlaid and display the overlays in a given range. See the wiki examples.</p>
+<p>By default, images will be reoriented to ‘LAI’ orientation before plotting.
+So, if axis == 0, the images will be ordered from the
+left side of the brain to the right side of the brain. If axis == 1,
+the images will be ordered from the anterior (front) of the brain to
+the posterior (back) of the brain. And if axis == 2, the images will
+be ordered from the inferior (bottom) of the brain to the superior (top)
+of the brain.</p>
+<p>ANTsR function: <cite>plot.antsImage</cite></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to plot</p></li>
+<li><p><strong>overlay</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image to overlay on base image</p></li>
+<li><p><strong>cmap</strong> (<em>string</em>) – colormap to use for base image. See matplotlib.</p></li>
+<li><p><strong>overlay_cmap</strong> (<em>string</em>) – colormap to use for overlay images, if applicable. See matplotlib.</p></li>
+<li><p><strong>overlay_alpha</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – level of transparency for any overlays. Smaller value means
+the overlay is more transparent. See matplotlib.</p></li>
+<li><p><strong>axis</strong> (<em>python:integer</em>) – which axis to plot along if image is 3D</p></li>
+<li><p><strong>nslices</strong> (<em>python:integer</em>) – number of slices to plot if image is 3D</p></li>
+<li><p><strong>slices</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> of </em><em>python:integers</em>) – specific slice indices to plot if image is 3D.
+If given, this will override <cite>nslices</cite>.
+This can be absolute array indices (e.g. (80,100,120)), or
+this can be relative array indices (e.g. (0.4,0.5,0.6))</p></li>
+<li><p><strong>ncol</strong> (<em>python:integer</em>) – Number of columns to have on the plot if image is 3D.</p></li>
+<li><p><strong>slice_buffer</strong> (<em>python:integer</em>) – how many slices to buffer when finding the non-zero slices of
+a 3D images. So, if slice_buffer = 10, then the first slice
+in a 3D image will be the first non-zero slice index plus 10 more
+slices.</p></li>
+<li><p><strong>black_bg</strong> (<em>boolean</em>) – <p>if True, the background of the image(s) will be black.
+if False, the background of the image(s) will be determined by the</p>
+<blockquote>
+<div><p>values <cite>bg_thresh_quant</cite> and <cite>bg_val_quant</cite>.</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>bg_thresh_quant</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – <p>if white_bg=True, the background will be determined by thresholding
+the image at the <cite>bg_thresh</cite> quantile value and setting the background
+intensity to the <cite>bg_val</cite> quantile value.
+This value should be in [0, 1] - somewhere around 0.01 is recommended.</p>
+<blockquote>
+<div><ul>
+<li><p>equal to 1 will threshold the entire image</p></li>
+<li><p>equal to 0 will threshold none of the image</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>bg_val_quant</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – <p>if white_bg=True, the background will be determined by thresholding
+the image at the <cite>bg_thresh</cite> quantile value and setting the background
+intensity to the <cite>bg_val</cite> quantile value.
+This value should be in [0, 1]</p>
+<blockquote>
+<div><ul>
+<li><p>equal to 1 is pure white</p></li>
+<li><p>equal to 0 is pure black</p></li>
+<li><p>somewhere in between is gray</p></li>
+</ul>
+</div></blockquote>
+</p></li>
+<li><p><strong>domain_image_map</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – this input ANTsImage or list of ANTsImage types contains a reference image
+<cite>domain_image</cite> and optional reference mapping named <cite>domainMap</cite>.
+If supplied, the image(s) to be plotted will be mapped to the domain
+image space before plotting - useful for non-standard image orientations.</p></li>
+<li><p><strong>crop</strong> (<em>boolean</em>) – if true, the image(s) will be cropped to their bounding boxes, resulting
+in a potentially smaller image size.
+if false, the image(s) will not be cropped</p></li>
+<li><p><strong>scale</strong> (<em>boolean</em><em> or </em><em>2-tuple</em>) – if true, nothing will happen to intensities of image(s) and overlay(s)
+if false, dynamic range will be maximized when visualizing overlays
+if 2-tuple, the image will be dynamically scaled between these quantiles</p></li>
+<li><p><strong>reverse</strong> (<em>boolean</em>) – if true, the order in which the slices are plotted will be reversed.
+This is useful if you want to plot from the front of the brain first
+to the back of the brain, or vice-versa</p></li>
+<li><p><strong>title</strong> (<em>string</em>) – add a title to the plot</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – if given, the resulting image will be saved to this file</p></li>
+<li><p><strong>dpi</strong> (<em>python:integer</em>) – determines resolution of image if saved to file. Higher values
+result in higher resolution images, but at a cost of having a
+larger file size</p></li>
+<li><p><strong>resample</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.11)"><em>bool</em></a>) – if true, resample image if spacing is very unbalanced.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">img</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;r16&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segs</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">kmeans_segmentation</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="s1">&#39;segmentation&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">segs</span><span class="o">*</span><span class="p">(</span><span class="n">segs</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> <span class="n">crop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">segs</span><span class="o">*</span><span class="p">(</span><span class="n">segs</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">segs</span> <span class="o">=</span> <span class="n">mni</span><span class="o">.</span><span class="n">kmeans_segmentation</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)[</span><span class="s1">&#39;segmentation&#39;</span><span class="p">]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">segs</span><span class="o">*</span><span class="p">(</span><span class="n">segs</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> <span class="n">crop</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot_directory">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot_directory</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recursive</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">regex</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'*'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_prefix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_suffix</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axis</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot_directory"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot_directory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create and save an ANTsPy plot for every image matching a given regular
+expression in a directory, optionally recursively. This is a good function
+for quick visualize exploration of all of images in a directory</p>
+<p>ANTsR function: N/A</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>string</em>) – directory in which to search for images and plot them</p></li>
+<li><p><strong>recursive</strong> (<em>boolean</em>) – If true, this function will search through all directories under
+the given directory recursively to make plots.
+If false, this function will only create plots for images in the
+given directory</p></li>
+<li><p><strong>regex</strong> (<em>string</em>) – regular expression used to filter out certain filenames or suffixes</p></li>
+<li><p><strong>save_prefix</strong> (<em>string</em>) – sub-string that will be appended to the beginning of all saved plot filenames.
+Default is to add nothing.</p></li>
+<li><p><strong>save_suffix</strong> (<em>string</em>) – sub-string that will be appended to the end of all saved plot filenames.
+Default is add nothing.</p></li>
+<li><p><strong>kwargs</strong> (<em>keyword arguments</em>) – any additional arguments to pass onto the <cite>ants.plot</cite> function.
+e.g. overlay, alpha, cmap, etc. See <cite>ants.plot</cite> for more options.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_directory</span><span class="p">(</span><span class="n">directory</span><span class="o">=</span><span class="s1">&#39;~/desktop/testdir&#39;</span><span class="p">,</span>
+<span class="go">                        recursive=False, regex=&#39;*&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot_grid">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot_grid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rpad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cpad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Greys_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rlabels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rfontcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rfacecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clabels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">14</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfontcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cfacecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'black'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">400</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot_grid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a collection of images in an arbitrarily-defined grid</p>
+<p>Matplotlib named colors: <a class="reference external" href="https://matplotlib.org/examples/color/named_colors.html">https://matplotlib.org/examples/color/named_colors.html</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>images</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>ANTsImage python:types</em>) – image(s) to plot.
+if one image, this image will be used for all grid locations.
+if multiple images, they should be arrange in a list the same
+shape as the <cite>gridsize</cite> argument.</p></li>
+<li><p><strong>slices</strong> (<em>python:integer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>python:integers</em>) – slice indices to plot
+if one integer, this slice index will be used for all images
+if multiple integers, they should be arranged in a list the same
+shape as the <cite>gridsize</cite> argument</p></li>
+<li><p><strong>axes</strong> (<em>python:integer</em><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>python:integers</em>) – axis or axes along which to plot image slices
+if one integer, this axis will be used for all images
+if multiple integers, they should be arranged in a list the same
+shape as the <cite>gridsize</cite> argument</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni1</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni2</span> <span class="o">=</span> <span class="n">mni1</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="mf">1.</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni3</span> <span class="o">=</span> <span class="n">mni1</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="mf">2.</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni4</span> <span class="o">=</span> <span class="n">mni1</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span><span class="mf">3.</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="n">mni1</span><span class="p">,</span> <span class="n">mni2</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="n">mni3</span><span class="p">,</span> <span class="n">mni4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">slices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1">#axes = np.asarray([[2,2],[2,2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># standard plotting</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="o">=</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="o">=</span><span class="n">slices</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;2x2 Grid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">slices</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">4</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;1x4 Grid&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">slices</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span><span class="mi">1</span><span class="p">),</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;4x1 Grid&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Padding between rows and/or columns</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">cpad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Col Padding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">rpad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Row Padding&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">rpad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">cpad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Row and Col Padding&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Adding plain row and/or column labels</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adding Row Labels&#39;</span><span class="p">,</span> <span class="n">rlabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Row #1&#39;</span><span class="p">,</span> <span class="s1">&#39;Row #2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Adding Col Labels&#39;</span><span class="p">,</span> <span class="n">clabels</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;Col #1&#39;</span><span class="p">,</span> <span class="s1">&#39;Col #2&#39;</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Row and Col Labels&#39;</span><span class="p">,</span>
+<span class="go">                   rlabels=[&#39;Row 1&#39;, &#39;Row 2&#39;], clabels=[&#39;Col 1&#39;, &#39;Col 2&#39;])</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Making a publication-quality image</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">images</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="n">mni1</span><span class="p">,</span> <span class="n">mni2</span><span class="p">,</span> <span class="n">mni2</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="n">mni3</span><span class="p">,</span> <span class="n">mni4</span><span class="p">,</span> <span class="n">mni4</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">slices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span>
+<span class="gp">... </span>                     <span class="p">[</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">axes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+<span class="go">                       [0, 1, 2]])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_grid</span><span class="p">(</span><span class="n">images</span><span class="p">,</span> <span class="n">slices</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Publication Figures with ANTsPy&#39;</span><span class="p">,</span>
+<span class="go">                   tfontsize=20, title_dy=0.03, title_dx=-0.04,</span>
+<span class="go">                   rlabels=[&#39;Row 1&#39;, &#39;Row 2&#39;],</span>
+<span class="go">                   clabels=[&#39;Col 1&#39;, &#39;Col 2&#39;, &#39;Col 3&#39;],</span>
+<span class="go">                   rfontsize=16, cfontsize=16)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot_hist">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot_hist</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fit_line</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normfreq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ylabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">facecolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'green'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.75</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot_hist"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a histogram from an ANTsImage</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>image</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – image from which histogram will be created</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot_ortho">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot_ortho</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reorient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Greys_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_thresh_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_val_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_image_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titlefontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textfontcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">resample</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot_ortho"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot_ortho" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>Plot an orthographic view of a 3D image</p>
+<p>Use mask_image and/or threshold_image to preprocess images to be be
+overlaid and display the overlays in a given range. See the wiki examples.</p>
+<dl class="simple">
+<dt>TODO:</dt><dd><ul class="simple">
+<li><p>add colorbar option</p></li>
+</ul>
+</dd>
+</dl>
+<p>ANTsR function: N/A</p>
+<dl>
+<dt>image<span class="classifier">ANTsImage</span></dt><dd><p>image to plot</p>
+</dd>
+<dt>overlay<span class="classifier">ANTsImage</span></dt><dd><p>image to overlay on base image</p>
+</dd>
+<dt>slices<span class="classifier">list or tuple of 3 integers</span></dt><dd><p>slice indices along each axis to plot
+This can be absolute array indices (e.g. (80,100,120)), or
+this can be relative array indices (e.g. (0.4,0.5,0.6)).
+The default is to take the middle slice along each axis.</p>
+</dd>
+<dt>xyz<span class="classifier">list or tuple of 3 integers</span></dt><dd><p>if given, solid lines will be drawn to converge at this coordinate.
+This is useful for pinpointing a specific location in the image.</p>
+</dd>
+<dt>flat<span class="classifier">boolean</span></dt><dd><p>if true, the ortho image will be plot in one row
+if false, the ortho image will be a 2x2 grid with the bottom</p>
+<blockquote>
+<div><p>left corner blank</p>
+</div></blockquote>
+</dd>
+<dt>cmap<span class="classifier">string</span></dt><dd><p>colormap to use for base image. See matplotlib.</p>
+</dd>
+<dt>overlay_cmap<span class="classifier">string</span></dt><dd><p>colormap to use for overlay images, if applicable. See matplotlib.</p>
+</dd>
+<dt>overlay_alpha<span class="classifier">float</span></dt><dd><p>level of transparency for any overlays. Smaller value means
+the overlay is more transparent. See matplotlib.</p>
+</dd>
+<dt>axis<span class="classifier">integer</span></dt><dd><p>which axis to plot along if image is 3D</p>
+</dd>
+<dt>black_bg<span class="classifier">boolean</span></dt><dd><p>if True, the background of the image(s) will be black.
+if False, the background of the image(s) will be determined by the</p>
+<blockquote>
+<div><p>values <cite>bg_thresh_quant</cite> and <cite>bg_val_quant</cite>.</p>
+</div></blockquote>
+</dd>
+<dt>bg_thresh_quant<span class="classifier">float</span></dt><dd><p>if white_bg=True, the background will be determined by thresholding
+the image at the <cite>bg_thresh</cite> quantile value and setting the background
+intensity to the <cite>bg_val</cite> quantile value.
+This value should be in [0, 1] - somewhere around 0.01 is recommended.</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>equal to 1 will threshold the entire image</p></li>
+<li><p>equal to 0 will threshold none of the image</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>bg_val_quant<span class="classifier">float</span></dt><dd><p>if white_bg=True, the background will be determined by thresholding
+the image at the <cite>bg_thresh</cite> quantile value and setting the background
+intensity to the <cite>bg_val</cite> quantile value.
+This value should be in [0, 1]</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>equal to 1 is pure white</p></li>
+<li><p>equal to 0 is pure black</p></li>
+<li><p>somewhere in between is gray</p></li>
+</ul>
+</div></blockquote>
+</dd>
+<dt>domain_image_map<span class="classifier">ANTsImage</span></dt><dd><p>this input ANTsImage or list of ANTsImage types contains a reference image
+<cite>domain_image</cite> and optional reference mapping named <cite>domainMap</cite>.
+If supplied, the image(s) to be plotted will be mapped to the domain
+image space before plotting - useful for non-standard image orientations.</p>
+</dd>
+<dt>crop<span class="classifier">boolean</span></dt><dd><p>if true, the image(s) will be cropped to their bounding boxes, resulting
+in a potentially smaller image size.
+if false, the image(s) will not be cropped</p>
+</dd>
+<dt>scale<span class="classifier">boolean or 2-tuple</span></dt><dd><p>if true, nothing will happen to intensities of image(s) and overlay(s)
+if false, dynamic range will be maximized when visualizing overlays
+if 2-tuple, the image will be dynamically scaled between these quantiles</p>
+</dd>
+<dt>title<span class="classifier">string</span></dt><dd><p>add a title to the plot</p>
+</dd>
+<dt>filename<span class="classifier">string</span></dt><dd><p>if given, the resulting image will be saved to this file</p>
+</dd>
+<dt>dpi<span class="classifier">integer</span></dt><dd><p>determines resolution of image if saved to file. Higher values
+result in higher resolution images, but at a cost of having a
+larger file size</p>
+</dd>
+</dl>
+<p>resample : resample image in case of unbalanced spacing</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni2</span> <span class="o">=</span> <span class="n">mni</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="mi">7000</span><span class="p">,</span> <span class="n">mni</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">overlay</span><span class="o">=</span><span class="n">mni2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">overlay</span><span class="o">=</span><span class="n">mni2</span><span class="p">,</span> <span class="n">flat</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">overlay</span><span class="o">=</span><span class="n">mni2</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">(</span><span class="mi">110</span><span class="p">,</span><span class="mi">110</span><span class="p">,</span><span class="mi">110</span><span class="p">),</span> <span class="n">xyz_lines</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="go">                    text=&#39;Lines Turned Off&#39;, textfontsize=22)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">mni2</span><span class="p">,</span> <span class="n">xyz</span><span class="o">=</span><span class="p">(</span><span class="mi">120</span><span class="p">,</span><span class="mi">100</span><span class="p">,</span><span class="mi">100</span><span class="p">),</span>
+<span class="go">                    text=&#39; Example</span>
+</pre></div>
+</div>
+</div></blockquote>
+<dl class="simple">
+<dt>Ortho Text’, textfontsize=26,</dt><dd><p>title=’Example Ortho Title’, titlefontsize=26)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot_ortho_double">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot_ortho_double</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">image2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reorient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Greys_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Greys_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_thresh_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_val_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_image_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titlefontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textfontcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flat</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot_ortho_double"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot_ortho_double" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a pair of orthographic plots with overlays.</p>
+<p>Use mask_image and/or threshold_image to preprocess images to be be
+overlaid and display the overlays in a given range. See the wiki examples.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;ch2&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho_double</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">ch2</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.plot.plot_ortho_stack">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.plot.</span></span><span class="sig-name descname"><span class="pre">plot_ortho_stack</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">images</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reorient</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.6</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_linewidth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xyz_pad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Greys_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">black_bg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_thresh_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_val_quant</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.99</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">crop</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">domain_image_map</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">titlefontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textfontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">24</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">textfontcolor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'white'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_dx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_dy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dpi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">500</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colpad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rowpad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transpose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">transparent</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">orient_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/plot.html#plot_ortho_stack"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.plot.plot_ortho_stack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a stack of orthographic plots with optional overlays.</p>
+<p>Use mask_image and/or threshold_image to preprocess images to be be
+overlaid and display the overlays in a given range. See the wiki examples.</p>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;ch2&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">plot_ortho_stack</span><span class="p">([</span><span class="n">mni</span><span class="p">,</span><span class="n">mni</span><span class="p">,</span><span class="n">mni</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-ants.viz.render_surface_function">
+<span id="ants-viz-render-surface-function-module"></span><h2>ants.viz.render_surface_function module<a class="headerlink" href="#module-ants.viz.render_surface_function" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.render_surface_function.render_surface_function">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.render_surface_function.</span></span><span class="sig-name descname"><span class="pre">render_surface_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surfimg</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">funcimg</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphasurf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alphafunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isosurf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">isofunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothsurf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmapsurf</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'grey'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmapfunc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'red'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notebook</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_open</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/render_surface_function.html#render_surface_function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.render_surface_function.render_surface_function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an image as a base surface and an optional collection of other image.</p>
+<dl class="simple">
+<dt>ANTsR function: <cite>renderSurfaceFunction</cite></dt><dd><p>NOTE: The ANTsPy version of this function is actually completely different
+than the ANTsR version, although they should produce similar results.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surfimg</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Input image to use as rendering substrate.</p></li>
+<li><p><strong>funcimg</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – Input list of images to use as functional overlays.</p></li>
+<li><p><strong>alphasurf</strong> (<em>scalar</em>) – alpha for the surface contour</p></li>
+<li><p><strong>alphafunc</strong> (<em>scalar</em>) – alpha value for functional blobs</p></li>
+<li><p><strong>isosurf</strong> (<em>scalar</em>) – intensity level that defines lower threshold for surface image</p></li>
+<li><p><strong>isofunc</strong> (<em>scalar</em>) – intensity level that defines lower threshold for functional image</p></li>
+<li><p><strong>smoothsurf</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – smoothing for the surface image</p></li>
+<li><p><strong>smoothfunc</strong> (<em>scalar</em><em> (</em><em>optional</em><em>)</em>) – smoothing for the functional image</p></li>
+<li><p><strong>cmapsurf</strong> (<em>string</em>) – color map for surface image</p></li>
+<li><p><strong>cmapfunc</strong> (<em>string</em>) – color map for functional image</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – where to save rendering. if None, will plot interactively</p></li>
+<li><p><strong>notebook</strong> (<em>boolean</em>) – whether you’re in a jupyter notebook.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>N/A</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mnia</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s1">&#39;mnia&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">render_surface_function</span><span class="p">(</span><span class="n">mni</span><span class="p">,</span> <span class="n">mnia</span><span class="p">,</span> <span class="n">alphasurf</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;/users/ncullen/desktop/surffnc.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-ants.viz.surface">
+<span id="ants-viz-surface-module"></span><h2>ants.viz.surface module<a class="headerlink" href="#module-ants.viz.surface" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.surface.get_canonical_views">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.surface.</span></span><span class="sig-name descname"><span class="pre">get_canonical_views</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/surface.html#get_canonical_views"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.surface.get_canonical_views" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the canonical views used for surface and volume rendering. You can use
+this as a reference for slightly altering rotation parameters in ants.surf
+and ants.vol functions.</p>
+<p>Note that these views are for images that have ‘RPI’ orientation.
+Images are automatically reoriented to RPI in ANTs surface and volume rendering
+functions but you can reorient images yourself with <a href="#id1"><span class="problematic" id="id2">`</span></a>img.reorient_image2(‘RPI’)</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.surface.surf">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.surface.</span></span><span class="sig-name descname"><span class="pre">surf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantlimits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.1,</span> <span class="pre">0.9)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inflation_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tol</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.03</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(90,</span> <span class="pre">0,</span> <span class="pre">270)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/surface.html#surf"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.surface.surf" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render a function onto a surface.</p>
+<dl class="simple">
+<dt>ANTsR function: <cite>antsrSurf</cite></dt><dd><p>NOTE: the ANTsPy version of this function does NOT make a function call
+to ANTs, unlike the ANTsR version, so you don’t have to worry about paths.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input image defining the surface on which to render</p></li>
+<li><p><strong>y</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input image list defining the function to render on the surface.
+these image(s) should be in the same space as x.</p></li>
+<li><p><strong>z</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – input image list mask for each y function to render on the surface.
+these image(s) should be in the same space as y.</p></li>
+<li><p><strong>quantlimits</strong> (<em>tuple/list</em>) – lower and upper quantile limits for overlay</p></li>
+<li><p><strong>colormap</strong> (<em>string</em>) – one of: grey, red, green, blue, copper, jet, hsv, spring, summer,
+autumn, winter, hot, cool, overunder, custom</p></li>
+<li><p><strong>alpha</strong> (<em>scalar</em>) – transparency vector for underlay and each overlay, default zero</p></li>
+<li><p><strong>inflation_factor</strong> (<em>python:integer</em>) – number of inflation iterations to run</p></li>
+<li><p><strong>tol</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – error tolerance for surface reconstruction. Smaller values will
+lead to better surfaces, at the cost of taking longer.
+Try decreasing this value if your surfaces look very block-y.</p></li>
+<li><p><strong>smoothing_sigma</strong> (<em>scalar</em>) – gaussian smooth the overlay by this sigma</p></li>
+<li><p><strong>rotation_params</strong> (<em>tuple/list/ndarray</em>) – 3 Rotation angles expressed in degrees or a matrix of rotation
+parameters that will be applied in sequence.</p></li>
+<li><p><strong>overlay_limits</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> (</em><em>optional</em><em>)</em>) – absolute lower and upper limits for functional overlay. this parameter
+will override quantlimits. Currently, this will set levels above
+overlayLimits[2] to overlayLimits[1]. Can be a list of length of y.</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – prefix filename for output pngs</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – prints the command used to call antsSurf</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>N/A</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2i</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s2">&quot;ch2&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2seg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">ch2i</span><span class="p">,</span> <span class="s2">&quot;Otsu&quot;</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm</span>   <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">ch2seg</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm2</span> <span class="o">=</span> <span class="n">wm</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1e15</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kimg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">weingarten_image_curvature</span><span class="p">(</span> <span class="n">ch2i</span><span class="p">,</span> <span class="mf">1.5</span>  <span class="p">)</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wmz</span> <span class="o">=</span> <span class="n">wm2</span><span class="o">.</span><span class="n">iMath</span><span class="p">(</span><span class="s2">&quot;MD&quot;</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rp</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">90</span><span class="p">),</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">270</span><span class="p">),</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">surf</span><span class="p">(</span> <span class="n">x</span><span class="o">=</span><span class="n">wm2</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="p">[</span><span class="n">kimg</span><span class="p">],</span> <span class="n">z</span><span class="o">=</span><span class="p">[</span><span class="n">wmz</span><span class="p">],</span>
+<span class="go">            inflation_factor=255, overlay_limits=(-0.3,0.3), verbose = True,</span>
+<span class="go">            rotation_params = rp, filename=&#39;/users/ncullen/desktop/surface.png&#39;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.surface.surf_fold">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.surface.</span></span><span class="sig-name descname"><span class="pre">surf_fold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inflation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/surface.html#surf_fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.surface.surf_fold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a cortical folding surface of the gray matter of a brain image.</p>
+<dl>
+<dt>rotation<span class="classifier">3-tuple | string | 2-tuple of string &amp; 3-tuple</span></dt><dd><p>if 3-tuple, this will be the rotation from RPI about x-y-z axis
+if string, this should be a canonical view (see : ants.get_canonical_views())
+if 2-tuple, the first value should be a string canonical view, and the second</p>
+<blockquote>
+<div><p>value should be a 3-tuple representing a delta change in each
+axis from the canonical view (useful for apply slight changes
+to canonical views)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>NOTE:</dt><dd><dl class="simple">
+<dt>rotation=(0,0,0) will be a view of the top of the brain with the</dt><dd><p>front of the brain facing the bottom of the image</p>
+</dd>
+</dl>
+</dd>
+<dt>NOTE:</dt><dd><dl class="simple">
+<dt>1st value<span class="classifier">controls rotation about x axis (anterior/posterior tilt)</span></dt><dd><p>note : the x axis extends to the side of you</p>
+</dd>
+<dt>2nd value<span class="classifier">controls rotation about y axis (inferior/superior tilt)</span></dt><dd><p>note : the y axis extends in front and behind you</p>
+</dd>
+<dt>3rd value<span class="classifier">controls rotation about z axis (left/right tilt)</span></dt><dd><p>note : thte z axis extends up and down</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">mni</span><span class="o">.</span><span class="n">otsu_segmentation</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm_img</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">surf_fold</span><span class="p">(</span><span class="n">wm_img</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="s1">&#39;~/desktop/surf_fold.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># with overlay</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">overlay</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">weingarten_image_curvature</span><span class="p">(</span> <span class="n">mni</span><span class="p">,</span> <span class="mf">1.5</span>  <span class="p">)</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">surf_fold</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">wm_img</span><span class="p">,</span> <span class="n">overlay</span><span class="o">=</span><span class="n">overlay</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="s1">&#39;~/desktop/surf_fold2.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.surface.surf_smooth">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.surface.</span></span><span class="sig-name descname"><span class="pre">surf_smooth</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smooth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inflation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/surface.html#surf_smooth"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.surface.surf_smooth" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a cortical folding surface of the gray matter of a brain image.</p>
+<dl>
+<dt>rotation<span class="classifier">3-tuple | string | 2-tuple of string &amp; 3-tuple</span></dt><dd><p>if 3-tuple, this will be the rotation from RPI about x-y-z axis
+if string, this should be a canonical view (see : ants.get_canonical_views())
+if 2-tuple, the first value should be a string canonical view, and the second</p>
+<blockquote>
+<div><p>value should be a 3-tuple representing a delta change in each
+axis from the canonical view (useful for apply slight changes
+to canonical views)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>NOTE:</dt><dd><dl class="simple">
+<dt>rotation=(0,0,0) will be a view of the top of the brain with the</dt><dd><p>front of the brain facing the bottom of the image</p>
+</dd>
+</dl>
+</dd>
+<dt>NOTE:</dt><dd><dl class="simple">
+<dt>1st value<span class="classifier">controls rotation about x axis (anterior/posterior tilt)</span></dt><dd><p>note : the x axis extends to the side of you</p>
+</dd>
+<dt>2nd value<span class="classifier">controls rotation about y axis (inferior/superior tilt)</span></dt><dd><p>note : the y axis extends in front and behind you</p>
+</dd>
+<dt>3rd value<span class="classifier">controls rotation about z axis (left/right tilt)</span></dt><dd><p>note : thte z axis extends up and down</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">mni</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span><span class="n">ants</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="s1">&#39;mni&#39;</span><span class="p">))</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">seg</span> <span class="o">=</span> <span class="n">mni</span><span class="o">.</span><span class="n">otsu_segmentation</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm_img</span> <span class="o">=</span> <span class="n">seg</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">surf_fold</span><span class="p">(</span><span class="n">wm_img</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="s1">&#39;~/desktop/surf_fold.png&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="c1"># with overlay</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">overlay</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">weingarten_image_curvature</span><span class="p">(</span> <span class="n">mni</span><span class="p">,</span> <span class="mf">1.5</span>  <span class="p">)</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ants</span><span class="o">.</span><span class="n">surf_fold</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="n">wm_img</span><span class="p">,</span> <span class="n">overlay</span><span class="o">=</span><span class="n">overlay</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="s1">&#39;~/desktop/surf_fold2.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-ants.viz.volume">
+<span id="ants-viz-volume-module"></span><h2>ants.viz.volume module<a class="headerlink" href="#module-ants.viz.volume" title="Permalink to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.volume.vol">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.volume.</span></span><span class="sig-name descname"><span class="pre">vol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">volume</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlays</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">quantlimits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.1,</span> <span class="pre">0.9)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(90,</span> <span class="pre">0,</span> <span class="pre">270)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_limits</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnification_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">intensity_truncation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0.0,</span> <span class="pre">1.0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filename</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/volume.html#vol"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.volume.vol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Render an ANTsImage as a volume with optional ANTsImage functional overlay.
+This function is beautiful, and runs very fast. It requires VTK.</p>
+<dl class="simple">
+<dt>ANTsR function: <cite>antsrVol</cite></dt><dd><p>NOTE: the ANTsPy version of this function does NOT make a function call
+to ANTs, unlike the ANTsR version, so you don’t have to worry about paths.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>volume</strong> (<a class="reference internal" href="core.html#ants.core.ants_image.ANTsImage" title="ants.core.ants_image.ANTsImage"><em>ANTsImage</em></a>) – base volume to render</p></li>
+<li><p><strong>overlay</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.11)"><em>list</em></a><em> of </em><em>ANTsImages</em>) – functional overlay to render on the volume image.
+These images should be in the same space</p></li>
+<li><p><strong>colormap</strong> (<em>string</em>) – <dl class="simple">
+<dt>possible values:</dt><dd><p>grey, red, green, blue, copper, jet,
+hsv, spring, summer, autumn, winter,
+hot, cool, overunder, custom</p>
+</dd>
+</dl>
+</p></li>
+<li><p><strong>rotation_params</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.11)"><em>tuple</em></a><em> or </em><em>collection</em><em> of </em><em>tuples</em><em> or </em><em>np.ndarray w/ shape</em><em> (</em><em>N</em><em>,</em><em>3</em><em>)</em>) – <p>rotation parameters to render. The final image will be a stitch of each image
+from the given rotation params.
+e.g. if rotation_params = [(90,90,90),(180,180,180)], then the final</p>
+<blockquote>
+<div><p>stiched image will have 2 brain renderings at those angles</p>
+</div></blockquote>
+</p></li>
+<li><p><strong>overlay_limts</strong> – </p></li>
+<li><p><strong>magnification_factor</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – how much to zoom in on the image before rendering. If the stitched images
+are too far apart, try increasing this value. If the brain volume gets
+cut off in the image, try decreasing this value</p></li>
+<li><p><strong>intensity_truncation</strong> (<em>2-tuple</em><em> of </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.11)"><em>float</em></a>) – percentile to truncate intensity of overlay</p></li>
+<li><p><strong>filename</strong> (<em>string</em>) – final filename to which the final rendered volume stitch image will be saved
+this will always be a .png file</p></li>
+<li><p><strong>verbose</strong> (<em>boolean</em>) – whether to print updates during rendering</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>- a numpy array representing the final stitched image.</em></p></li>
+<li><p><em>Effects</em></p></li>
+<li><p><em>——-</em></p></li>
+<li><p><em>- saves a few png files to disk</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2i</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s2">&quot;mni&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2seg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">ch2i</span><span class="p">,</span> <span class="s2">&quot;Otsu&quot;</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm</span>   <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">ch2seg</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kimg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">weingarten_image_curvature</span><span class="p">(</span> <span class="n">ch2i</span><span class="p">,</span> <span class="mf">1.5</span>  <span class="p">)</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rp</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">90</span><span class="p">),</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">270</span><span class="p">),</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">vol</span><span class="p">(</span> <span class="n">wm</span><span class="p">,</span> <span class="p">[</span><span class="n">kimg</span><span class="p">],</span> <span class="n">quantlimits</span><span class="o">=</span><span class="p">(</span><span class="mf">0.01</span><span class="p">,</span><span class="mf">0.99</span><span class="p">),</span> <span class="n">filename</span><span class="o">=</span><span class="s1">&#39;/users/ncullen/desktop/voltest.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ants.viz.volume.vol_fold">
+<span class="sig-prename descclassname"><span class="pre">ants.viz.volume.</span></span><span class="sig-name descname"><span class="pre">vol_fold</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outfile</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">magnification</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dilation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">inflation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'jet'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overlay_alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_idx</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cut_side</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'left'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bg_grayscale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cleanup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ants/viz/volume.html#vol_fold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ants.viz.volume.vol_fold" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate a cortical folding volume of the gray matter of a brain image.</p>
+<dl>
+<dt>rotation<span class="classifier">3-tuple | string | 2-tuple of string &amp; 3-tuple</span></dt><dd><p>if 3-tuple, this will be the rotation from RPI about x-y-z axis
+if string, this should be a canonical view (see : ants.get_canonical_views())
+if 2-tuple, the first value should be a string canonical view, and the second</p>
+<blockquote>
+<div><p>value should be a 3-tuple representing a delta change in each
+axis from the canonical view (useful for apply slight changes
+to canonical views)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>NOTE:</dt><dd><dl class="simple">
+<dt>rotation=(0,0,0) will be a view of the top of the brain with the</dt><dd><p>front of the brain facing the bottom of the image</p>
+</dd>
+</dl>
+</dd>
+<dt>NOTE:</dt><dd><dl class="simple">
+<dt>1st value<span class="classifier">controls rotation about x axis (anterior/posterior tilt)</span></dt><dd><p>note : the x axis extends to the side of you</p>
+</dd>
+<dt>2nd value<span class="classifier">controls rotation about y axis (inferior/superior tilt)</span></dt><dd><p>note : the y axis extends in front and behind you</p>
+</dd>
+<dt>3rd value<span class="classifier">controls rotation about z axis (left/right tilt)</span></dt><dd><p>note : thte z axis extends up and down</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">ants</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2i</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">image_read</span><span class="p">(</span> <span class="n">ants</span><span class="o">.</span><span class="n">get_ants_data</span><span class="p">(</span><span class="s2">&quot;mni&quot;</span><span class="p">)</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">ch2seg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">ch2i</span><span class="p">,</span> <span class="s2">&quot;Otsu&quot;</span><span class="p">,</span> <span class="mi">3</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">wm</span>   <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">ch2seg</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">kimg</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">weingarten_image_curvature</span><span class="p">(</span> <span class="n">ch2i</span><span class="p">,</span> <span class="mf">1.5</span>  <span class="p">)</span><span class="o">.</span><span class="n">smooth_image</span><span class="p">(</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">rp</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">90</span><span class="p">),</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">270</span><span class="p">),</span> <span class="p">(</span><span class="mi">90</span><span class="p">,</span><span class="mi">180</span><span class="p">,</span><span class="mi">180</span><span class="p">)]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">result</span> <span class="o">=</span> <span class="n">ants</span><span class="o">.</span><span class="n">vol_fold</span><span class="p">(</span> <span class="n">wm</span><span class="p">,</span> <span class="n">overlay</span><span class="o">=</span><span class="n">kimg</span><span class="p">,</span> <span class="n">outfile</span><span class="o">=</span><span class="s1">&#39;/users/ncullen/desktop/voltest.png&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-ants.viz">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ants.viz" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/ants.viz.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

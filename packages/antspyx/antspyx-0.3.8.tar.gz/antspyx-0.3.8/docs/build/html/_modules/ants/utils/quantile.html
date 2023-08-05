@@ -1,0 +1,524 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.utils.quantile &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.utils.quantile</h1><div class="highlight"><pre>
+<span></span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ilr&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;rank_intensity&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;quantile&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;regress_poly&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;regress_components&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_average_of_timeseries&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;compcor&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;bandpass_filter_matrix&#39;</span> <span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">numpy.polynomial</span> <span class="kn">import</span> <span class="n">Legendre</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">linalg</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">rankdata</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pandas</span> <span class="kn">import</span> <span class="n">DataFrame</span>
+<span class="kn">from</span> <span class="nn">sklearn</span> <span class="kn">import</span> <span class="n">linear_model</span>
+<span class="kn">import</span> <span class="nn">statsmodels.api</span> <span class="k">as</span> <span class="nn">sm</span>
+<span class="kn">import</span> <span class="nn">statsmodels.formula.api</span> <span class="k">as</span> <span class="nn">smf</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">core</span>
+
+
+<div class="viewcode-block" id="rank_intensity"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.rank_intensity">[docs]</a><span class="k">def</span> <span class="nf">rank_intensity</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">get_mask</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span>  <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Rank transform the intensity of the input image with or without masking.</span>
+<span class="sd">    Intensities will transform from [0,1,2,55] to [0,1,2,3] so this may not be</span>
+<span class="sd">    appropriate for quantitative images - however, you never know.  rank</span>
+<span class="sd">    transformations generally improve robustness so it is an empirical question</span>
+<span class="sd">    that should be evaluated.</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    x : ANTsImage</span>
+<span class="sd">        input image</span>
+
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        optional mask</span>
+
+<span class="sd">    get_mask: boolean</span>
+<span class="sd">        will estimate a mask when none provided</span>
+
+<span class="sd">    method : a scipy rank method (max,min,average,dense)</span>
+
+
+<span class="sd">    return: transformed image</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; rank_intensity( some_image )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fir</span> <span class="o">=</span> <span class="n">rankdata</span><span class="p">(</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span> <span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">get_mask</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span> <span class="n">x</span> <span class="p">)</span>
+        <span class="n">fir</span> <span class="o">=</span> <span class="n">rankdata</span><span class="p">(</span> <span class="p">(</span><span class="n">x</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span> <span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">fir</span> <span class="o">=</span> <span class="n">rankdata</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">method</span><span class="o">=</span><span class="n">method</span> <span class="p">)</span>
+    <span class="n">fir</span> <span class="o">=</span> <span class="n">fir</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">fir</span> <span class="o">=</span> <span class="n">fir</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span> <span class="p">)</span>
+    <span class="n">rimg</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span> <span class="n">fir</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>  <span class="p">)</span>
+    <span class="n">rimg</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">iMath</span><span class="p">(</span><span class="n">rimg</span><span class="p">,</span><span class="s2">&quot;Normalize&quot;</span><span class="p">)</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">copy_image_info</span><span class="p">(</span> <span class="n">x</span><span class="p">,</span> <span class="n">rimg</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">rimg</span> <span class="o">=</span> <span class="n">rimg</span> <span class="o">*</span> <span class="n">mask</span>
+    <span class="k">return</span><span class="p">(</span> <span class="n">rimg</span> <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ilr"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.ilr">[docs]</a><span class="k">def</span> <span class="nf">ilr</span><span class="p">(</span> <span class="n">data_frame</span><span class="p">,</span> <span class="n">voxmats</span><span class="p">,</span> <span class="n">ilr_formula</span><span class="p">,</span> <span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Image-based linear regression.</span>
+
+<span class="sd">    This function simplifies calculating p-values from linear models</span>
+<span class="sd">    in which there is a similar formula that is applied many times</span>
+<span class="sd">    with a change in image-based predictors.  Image-based variables</span>
+<span class="sd">    are stored in the input matrix list. They should be named</span>
+<span class="sd">    consistently in the input formula and in the image list.  If they</span>
+<span class="sd">    are not, an error will be thrown.  All input matrices should have</span>
+<span class="sd">    the same number of rows and columns.</span>
+
+<span class="sd">    This function takes advantage of statsmodels R-style formulas.</span>
+
+<span class="sd">    ANTsR function: `ilr`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    data_frame: This data frame contains all relevant predictors except for</span>
+<span class="sd">        the matrices associated with the image variables.  One should convert</span>
+<span class="sd">        any categorical predictors ahead of time using `pd.get_dummies`.</span>
+
+<span class="sd">    voxmats: The named list of matrices that contains the changing</span>
+<span class="sd">        predictors.</span>
+
+<span class="sd">    ilr_formula: This is a character string that defines a valid regression</span>
+<span class="sd">        formula in the R-style.</span>
+
+<span class="sd">    verbose:  will print a little bit of diagnostic information that allows</span>
+<span class="sd">        a degree of model checking</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    A list of different matrices that contain names derived from the</span>
+<span class="sd">    formula and the coefficients of the regression model.  The size of</span>
+<span class="sd">    the output values ( p-values, t-values, parameter values ) will match</span>
+<span class="sd">    the input matrix and, as such, can be converted to an image via `make_image`</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &gt;&gt;&gt; nsub = 20</span>
+<span class="sd">    &gt;&gt;&gt; mu, sigma = 0, 1</span>
+<span class="sd">    &gt;&gt;&gt; outcome = np.random.normal( mu, sigma, nsub )</span>
+<span class="sd">    &gt;&gt;&gt; covar = np.random.normal( mu, sigma, nsub )</span>
+<span class="sd">    &gt;&gt;&gt; mat = np.random.normal( mu, sigma, (nsub, 500 ) )</span>
+<span class="sd">    &gt;&gt;&gt; mat2 = np.random.normal( mu, sigma, (nsub, 500 ) )</span>
+<span class="sd">    &gt;&gt;&gt; data = {&#39;covar&#39;:covar,&#39;outcome&#39;:outcome}</span>
+<span class="sd">    &gt;&gt;&gt; df = pd.DataFrame( data )</span>
+<span class="sd">    &gt;&gt;&gt; vlist = { &quot;mat1&quot;: mat, &quot;mat2&quot;: mat2 }</span>
+<span class="sd">    &gt;&gt;&gt; myform = &quot; outcome ~ covar * mat1 &quot;</span>
+<span class="sd">    &gt;&gt;&gt; result = ilr( df, vlist, myform)</span>
+<span class="sd">    &gt;&gt;&gt; myform = &quot; mat2 ~ covar + mat1 &quot;</span>
+<span class="sd">    &gt;&gt;&gt; result = ants.ilr( df, vlist, myform)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">nvoxmats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">voxmats</span> <span class="p">)</span>
+    <span class="k">if</span> <span class="n">nvoxmats</span> <span class="o">&lt;</span> <span class="mi">1</span> <span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pass at least one matrix to voxmats list&#39;</span><span class="p">)</span>
+    <span class="n">keylist</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">voxmats</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+    <span class="n">firstmat</span> <span class="o">=</span> <span class="n">keylist</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">voxshape</span> <span class="o">=</span> <span class="n">voxmats</span><span class="p">[</span><span class="n">firstmat</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">nvox</span> <span class="o">=</span> <span class="n">voxshape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">nmats</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">keylist</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">keylist</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">voxmats</span><span class="p">[</span><span class="n">firstmat</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">voxmats</span><span class="p">[</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Matrices must have same number of rows (samples)&#39;</span><span class="p">)</span>
+
+    <span class="c1"># test voxel</span>
+    <span class="n">vox</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">nrows</span> <span class="o">=</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">data_frame_vox</span> <span class="o">=</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">nmats</span> <span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">keylist</span><span class="p">[</span><span class="n">k</span><span class="p">]:</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">nrows</span><span class="p">)</span> <span class="p">}</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+        <span class="n">data_frame_vox</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_frame_vox</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span><span class="n">temp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="n">mod</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="n">ilr_formula</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_frame_vox</span> <span class="p">)</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+    <span class="n">modelNames</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">exog_names</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span> <span class="n">data_frame_vox</span> <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">res</span><span class="o">.</span><span class="n">summary</span><span class="p">())</span>
+    <span class="n">nOutcomes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span> <span class="n">modelNames</span> <span class="p">)</span>
+    <span class="n">tValsOut</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">pValsOut</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="n">bValsOut</span> <span class="o">=</span> <span class="nb">list</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span> <span class="n">modelNames</span> <span class="p">)</span> <span class="p">):</span>
+        <span class="n">bValsOut</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">nvox</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">pValsOut</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">nvox</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="n">tValsOut</span><span class="o">.</span><span class="n">append</span><span class="p">(</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span> <span class="n">nvox</span> <span class="p">)</span> <span class="p">)</span>
+
+    <span class="n">data_frame_vox</span> <span class="o">=</span> <span class="n">data_frame</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">nmats</span> <span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="n">keylist</span><span class="p">[</span><span class="n">v</span><span class="p">]:</span> <span class="n">voxmats</span><span class="p">[</span><span class="n">keylist</span><span class="p">[</span><span class="n">v</span><span class="p">]][:,</span><span class="n">k</span><span class="p">]</span> <span class="p">}</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span> <span class="n">data</span> <span class="p">)</span>
+        <span class="n">data_frame_vox</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">data_frame_vox</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span><span class="n">temp</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">nvox</span> <span class="p">):</span>
+        <span class="c1"># first get the correct data frame</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">nmats</span> <span class="p">):</span>
+            <span class="n">data_frame_vox</span><span class="p">[</span> <span class="n">keylist</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="n">voxmats</span><span class="p">[</span><span class="n">keylist</span><span class="p">[</span><span class="n">v</span><span class="p">]][:,</span><span class="n">k</span><span class="p">]</span>
+        <span class="c1"># then get the local model results</span>
+        <span class="n">mod</span> <span class="o">=</span> <span class="n">smf</span><span class="o">.</span><span class="n">ols</span><span class="p">(</span><span class="n">formula</span><span class="o">=</span><span class="n">ilr_formula</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">data_frame_vox</span> <span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">mod</span><span class="o">.</span><span class="n">fit</span><span class="p">()</span>
+        <span class="n">tvals</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">tvalues</span>
+        <span class="n">pvals</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">pvalues</span>
+        <span class="n">bvals</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">params</span>
+        <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span> <span class="n">modelNames</span> <span class="p">)</span> <span class="p">):</span>
+            <span class="n">bValsOut</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">bvals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="n">pValsOut</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">pvals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+            <span class="n">tValsOut</span><span class="p">[</span><span class="n">v</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">tvals</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+
+    <span class="n">bValsOutDict</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="n">tValsOutDict</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="n">pValsOutDict</span> <span class="o">=</span> <span class="p">{</span> <span class="p">}</span>
+    <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="nb">len</span><span class="p">(</span> <span class="n">modelNames</span> <span class="p">)</span> <span class="p">):</span>
+        <span class="n">bValsOutDict</span><span class="p">[</span> <span class="s1">&#39;coef_&#39;</span> <span class="o">+</span> <span class="n">modelNames</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="n">bValsOut</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="n">tValsOutDict</span><span class="p">[</span> <span class="s1">&#39;tval_&#39;</span> <span class="o">+</span> <span class="n">modelNames</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="n">tValsOut</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+        <span class="n">pValsOutDict</span><span class="p">[</span> <span class="s1">&#39;pval_&#39;</span> <span class="o">+</span> <span class="n">modelNames</span><span class="p">[</span><span class="n">v</span><span class="p">]</span> <span class="p">]</span> <span class="o">=</span> <span class="n">pValsOut</span><span class="p">[</span><span class="n">v</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s1">&#39;modelNames&#39;</span><span class="p">:</span> <span class="n">modelNames</span><span class="p">,</span>
+        <span class="s1">&#39;coefficientValues&#39;</span><span class="p">:</span> <span class="n">bValsOutDict</span><span class="p">,</span>
+        <span class="s1">&#39;pValues&#39;</span><span class="p">:</span> <span class="n">pValsOutDict</span><span class="p">,</span>
+        <span class="s1">&#39;tValues&#39;</span><span class="p">:</span> <span class="n">tValsOutDict</span> <span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="quantile"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.quantile">[docs]</a><span class="k">def</span> <span class="nf">quantile</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">nonzero</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get the quantile values from an ANTsImage</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">img_arr</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)):</span>
+        <span class="n">q</span> <span class="o">=</span> <span class="p">[</span><span class="n">qq</span><span class="o">*</span><span class="mf">100.</span> <span class="k">if</span> <span class="n">qq</span> <span class="o">&lt;=</span> <span class="mf">1.</span> <span class="k">else</span> <span class="n">qq</span> <span class="k">for</span> <span class="n">qq</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">nonzero</span><span class="p">:</span>
+            <span class="n">img_arr</span> <span class="o">=</span> <span class="n">img_arr</span><span class="p">[</span><span class="n">img_arr</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">img_arr</span><span class="p">,</span> <span class="n">qq</span><span class="p">)</span> <span class="k">for</span> <span class="n">qq</span> <span class="ow">in</span> <span class="n">q</span><span class="p">]</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">q</span><span class="p">,</span> <span class="p">(</span><span class="nb">float</span><span class="p">,</span><span class="nb">int</span><span class="p">)):</span>
+        <span class="k">if</span> <span class="n">q</span> <span class="o">&lt;=</span> <span class="mf">1.</span><span class="p">:</span>
+            <span class="n">q</span> <span class="o">=</span> <span class="n">q</span><span class="o">*</span><span class="mf">100.</span>
+        <span class="k">if</span> <span class="n">nonzero</span><span class="p">:</span>
+            <span class="n">img_arr</span> <span class="o">=</span> <span class="n">img_arr</span><span class="p">[</span><span class="n">img_arr</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">img_arr</span><span class="p">[</span><span class="n">img_arr</span><span class="o">&gt;</span><span class="mi">0</span><span class="p">],</span> <span class="n">q</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;q argument must be list/tuple or float/int&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="regress_poly"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.regress_poly">[docs]</a><span class="k">def</span> <span class="nf">regress_poly</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">remove_mean</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns data with degree polynomial regressed out.</span>
+<span class="sd">    :param bool remove_mean: whether or not demean data (i.e. degree 0),</span>
+<span class="sd">    :param int axis: numpy array axes along which regression is performed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timepoints</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="c1"># Generate design matrix</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">timepoints</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>  <span class="c1"># quick way to calc degree 0</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">degree</span><span class="p">):</span>
+        <span class="n">polynomial_func</span> <span class="o">=</span> <span class="n">Legendre</span><span class="o">.</span><span class="n">basis</span><span class="p">(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">value_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">timepoints</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">X</span><span class="p">,</span> <span class="n">polynomial_func</span><span class="p">(</span><span class="n">value_array</span><span class="p">)[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]))</span>
+    <span class="n">non_constant_regressors</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="k">if</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">X</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remove_mean</span><span class="p">:</span>
+        <span class="n">datahat</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">betas</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># disregard the first layer of X, which is degree 0</span>
+        <span class="n">datahat</span> <span class="o">=</span> <span class="n">X</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="o">...</span><span class="p">])</span>
+    <span class="n">regressed_data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">datahat</span>
+    <span class="k">return</span> <span class="n">regressed_data</span><span class="p">,</span> <span class="n">non_constant_regressors</span></div>
+
+<div class="viewcode-block" id="regress_components"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.regress_components">[docs]</a><span class="k">def</span> <span class="nf">regress_components</span><span class="p">(</span> <span class="n">data</span><span class="p">,</span> <span class="n">components</span><span class="p">,</span> <span class="n">remove_mean</span><span class="o">=</span><span class="kc">True</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Returns data with components regressed out.</span>
+<span class="sd">    :param bool remove_mean: whether or not demean data (i.e. degree 0),</span>
+<span class="sd">    :param int axis: numpy array axes along which regression is performed</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">timepoints</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">betas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">pinv</span><span class="p">(</span><span class="n">components</span><span class="p">)</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">remove_mean</span><span class="p">:</span>
+        <span class="n">datahat</span> <span class="o">=</span> <span class="n">components</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">betas</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>  <span class="c1"># disregard the first layer of X, which is degree 0</span>
+        <span class="n">datahat</span> <span class="o">=</span> <span class="n">components</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:]</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">betas</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="o">...</span><span class="p">])</span>
+    <span class="n">regressed_data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">-</span> <span class="n">datahat</span>
+    <span class="k">return</span> <span class="n">regressed_data</span></div>
+
+
+
+<div class="viewcode-block" id="get_average_of_timeseries"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.get_average_of_timeseries">[docs]</a><span class="k">def</span> <span class="nf">get_average_of_timeseries</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="kc">None</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Average the timeseries into a dimension-1 image.</span>
+<span class="sd">    image: input time series image</span>
+<span class="sd">    idx:  indices over which to average</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">imagedim</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="k">if</span> <span class="n">idx</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span> <span class="n">image</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span> <span class="n">imagedim</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">]</span> <span class="p">)</span>
+    <span class="n">i0</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">slice_image</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">idx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="p">)</span> <span class="o">*</span> <span class="mi">0</span>
+    <span class="n">wt</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span> <span class="n">idx</span> <span class="p">)</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">:</span>
+        <span class="n">i0</span> <span class="o">=</span> <span class="n">i0</span> <span class="o">+</span> <span class="n">utils</span><span class="o">.</span><span class="n">slice_image</span><span class="p">(</span> <span class="n">image</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="n">k</span> <span class="p">)</span> <span class="o">*</span> <span class="n">wt</span>
+    <span class="k">return</span><span class="p">(</span> <span class="n">i0</span> <span class="p">)</span></div>
+
+<div class="viewcode-block" id="bandpass_filter_matrix"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.bandpass_filter_matrix">[docs]</a><span class="k">def</span> <span class="nf">bandpass_filter_matrix</span><span class="p">(</span> <span class="n">matrix</span><span class="p">,</span>
+    <span class="n">tr</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">lowf</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">highf</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">order</span> <span class="o">=</span> <span class="mi">3</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Bandpass filter the input time series image</span>
+
+<span class="sd">    ANTsR function: `frequencyFilterfMRI`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    image: input time series image</span>
+
+<span class="sd">    tr:    sampling time interval (inverse of sampling rate)</span>
+
+<span class="sd">    lowf:  low frequency cutoff</span>
+
+<span class="sd">    highf: high frequency cutoff</span>
+
+<span class="sd">    order: order of the butterworth filter run using `filtfilt`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    filtered matrix</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; import matplotlib.pyplot as plt</span>
+<span class="sd">    &gt;&gt;&gt; brainSignal = np.random.randn( 400, 1000 )</span>
+<span class="sd">    &gt;&gt;&gt; tr = 1</span>
+<span class="sd">    &gt;&gt;&gt; filtered = ants.bandpass_filter_matrix( brainSignal, tr = tr )</span>
+<span class="sd">    &gt;&gt;&gt; nsamples = brainSignal.shape[0]</span>
+<span class="sd">    &gt;&gt;&gt; t = np.linspace(0, tr*nsamples, nsamples, endpoint=False)</span>
+<span class="sd">    &gt;&gt;&gt; k = 20</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(t, brainSignal[:,k], label=&#39;Noisy signal&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.plot(t, filtered[:,k], label=&#39;Filtered signal&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.xlabel(&#39;time (seconds)&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.grid(True)</span>
+<span class="sd">    &gt;&gt;&gt; plt.axis(&#39;tight&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.legend(loc=&#39;upper left&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; plt.show()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">scipy.signal</span> <span class="kn">import</span> <span class="n">butter</span><span class="p">,</span> <span class="n">filtfilt</span>
+
+    <span class="k">def</span> <span class="nf">butter_bandpass</span><span class="p">(</span><span class="n">lowcut</span><span class="p">,</span> <span class="n">highcut</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">order</span> <span class="p">):</span>
+        <span class="n">nyq</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">fs</span>
+        <span class="n">low</span> <span class="o">=</span> <span class="n">lowcut</span> <span class="o">/</span> <span class="n">nyq</span>
+        <span class="n">high</span> <span class="o">=</span> <span class="n">highcut</span> <span class="o">/</span> <span class="n">nyq</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">butter</span><span class="p">(</span><span class="n">order</span><span class="p">,</span> <span class="p">[</span><span class="n">low</span><span class="p">,</span> <span class="n">high</span><span class="p">],</span> <span class="n">btype</span><span class="o">=</span><span class="s1">&#39;band&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">b</span><span class="p">,</span> <span class="n">a</span>
+
+    <span class="k">def</span> <span class="nf">butter_bandpass_filter</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">lowcut</span><span class="p">,</span> <span class="n">highcut</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">order</span> <span class="p">):</span>
+        <span class="n">b</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="n">butter_bandpass</span><span class="p">(</span><span class="n">lowcut</span><span class="p">,</span> <span class="n">highcut</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span><span class="p">)</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">filtfilt</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">y</span>
+
+    <span class="n">fs</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">tr</span>   <span class="c1"># sampling rate based on tr</span>
+    <span class="n">nsamples</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ncolumns</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">matrixOut</span> <span class="o">=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span> <span class="n">ncolumns</span> <span class="p">):</span>
+        <span class="n">matrixOut</span><span class="p">[:,</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">butter_bandpass_filter</span><span class="p">(</span>
+            <span class="n">matrix</span><span class="p">[:,</span><span class="n">k</span><span class="p">],</span> <span class="n">lowf</span><span class="p">,</span> <span class="n">highf</span><span class="p">,</span> <span class="n">fs</span><span class="p">,</span> <span class="n">order</span><span class="o">=</span><span class="n">order</span> <span class="p">)</span>
+    <span class="k">return</span> <span class="n">matrixOut</span></div>
+
+
+<div class="viewcode-block" id="compcor"><a class="viewcode-back" href="../../../ants.utils.html#ants.utils.quantile.compcor">[docs]</a><span class="k">def</span> <span class="nf">compcor</span><span class="p">(</span> <span class="n">boldImage</span><span class="p">,</span> <span class="n">ncompcor</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">quantile</span><span class="o">=</span><span class="mf">0.975</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">filter_type</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">degree</span><span class="o">=</span><span class="mi">2</span> <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute noise components from the input image</span>
+
+<span class="sd">    ANTsR function: `compcor`</span>
+
+<span class="sd">    this is adapted from nipy code https://github.com/nipy/nipype/blob/e29ac95fc0fc00fedbcaa0adaf29d5878408ca7c/nipype/algorithms/confounds.py</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+
+<span class="sd">    boldImage: input time series image</span>
+
+<span class="sd">    ncompcor:  number of noise components to return</span>
+
+<span class="sd">    quantile:  quantile defining high-variance</span>
+
+<span class="sd">    mask:      mask defining brain or specific tissues</span>
+
+<span class="sd">    filter_type: type off filter to apply to time series before computing</span>
+<span class="sd">                 noise components.</span>
+
+<span class="sd">        &#39;polynomial&#39; - Legendre polynomial basis</span>
+<span class="sd">        False - None (mean-removal only)</span>
+
+<span class="sd">    degree: order of polynomial used to remove trends from the timeseries</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dictionary containing:</span>
+
+<span class="sd">        components: a numpy array</span>
+
+<span class="sd">        basis: a numpy array containing the (non-constant) filter regressors</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; cc = ants.compcor( ants.image_read(ants.get_ants_data(&quot;ch2&quot;)) )</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">compute_tSTD</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">quantile</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+        <span class="n">stdM</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="c1"># set bad values to x</span>
+        <span class="n">stdM</span><span class="p">[</span><span class="n">stdM</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">stdM</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">stdM</span><span class="p">)]</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="n">tt</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span> <span class="n">quantile</span><span class="o">*</span><span class="mi">100</span> <span class="p">)</span>
+        <span class="n">threshold_std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span> <span class="n">stdM</span><span class="p">,</span> <span class="n">tt</span> <span class="p">)</span>
+    <span class="c1">#    threshold_std = quantile( stdM, quantile )</span>
+        <span class="k">return</span> <span class="p">{</span> <span class="s1">&#39;tSTD&#39;</span><span class="p">:</span> <span class="n">stdM</span><span class="p">,</span> <span class="s1">&#39;threshold_std&#39;</span><span class="p">:</span> <span class="n">threshold_std</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">temp</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">slice_image</span><span class="p">(</span> <span class="n">boldImage</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">boldImage</span><span class="o">.</span><span class="n">dimension</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">idx</span><span class="o">=</span><span class="mi">0</span> <span class="p">)</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_mask</span><span class="p">(</span> <span class="n">temp</span> <span class="p">)</span>
+    <span class="n">imagematrix</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">timeseries_to_matrix</span><span class="p">(</span> <span class="n">boldImage</span><span class="p">,</span> <span class="n">mask</span> <span class="p">)</span>
+    <span class="n">temp</span> <span class="o">=</span> <span class="n">compute_tSTD</span><span class="p">(</span> <span class="n">imagematrix</span><span class="p">,</span> <span class="n">quantile</span><span class="p">,</span> <span class="mi">0</span> <span class="p">)</span>
+    <span class="n">tsnrmask</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">make_image</span><span class="p">(</span> <span class="n">mask</span><span class="p">,</span>  <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;tSTD&#39;</span><span class="p">]</span> <span class="p">)</span>
+    <span class="n">tsnrmask</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">threshold_image</span><span class="p">(</span> <span class="n">tsnrmask</span><span class="p">,</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;threshold_std&#39;</span><span class="p">],</span> <span class="n">temp</span><span class="p">[</span><span class="s1">&#39;tSTD&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="p">)</span>
+    <span class="n">M</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">timeseries_to_matrix</span><span class="p">(</span> <span class="n">boldImage</span><span class="p">,</span> <span class="n">tsnrmask</span> <span class="p">)</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">basis</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span>
+    <span class="k">if</span> <span class="n">filter_type</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;polynomial&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="n">M</span><span class="p">,</span> <span class="n">basis</span> <span class="o">=</span> <span class="n">regress_poly</span><span class="p">(</span><span class="n">degree</span><span class="p">,</span> <span class="n">M</span><span class="p">)</span>
+<span class="c1">#    M = M / compute_tSTD(M, 1.)[&#39;tSTD&#39;]</span>
+    <span class="c1"># &quot;The covariance matrix C = MMT was constructed and decomposed into its</span>
+    <span class="c1"># principal components using a singular value decomposition.&quot;</span>
+    <span class="n">u</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">M</span><span class="p">,</span> <span class="n">full_matrices</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">components</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">u</span><span class="p">[:,</span> <span class="p">:</span><span class="n">ncompcor</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">components</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">components</span><span class="p">,</span> <span class="n">u</span><span class="p">[:,</span> <span class="p">:</span><span class="n">ncompcor</span><span class="p">]))</span>
+    <span class="k">if</span> <span class="n">components</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">ncompcor</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No components found&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span> <span class="s1">&#39;components&#39;</span><span class="p">:</span> <span class="n">components</span><span class="p">,</span> <span class="s1">&#39;basis&#39;</span><span class="p">:</span> <span class="n">basis</span> <span class="p">}</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

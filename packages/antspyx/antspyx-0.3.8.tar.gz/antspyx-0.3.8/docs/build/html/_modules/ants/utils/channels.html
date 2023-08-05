@@ -1,0 +1,199 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.utils.channels &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.utils.channels</h1><div class="highlight"><pre>
+<span></span>
+ 
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;merge_channels&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;split_channels&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">..core</span> <span class="kn">import</span> <span class="n">ants_image</span> <span class="k">as</span> <span class="n">iio</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+
+
+<div class="viewcode-block" id="merge_channels"><a class="viewcode-back" href="../../../utils.html#ants.utils.channels.merge_channels">[docs]</a><span class="k">def</span> <span class="nf">merge_channels</span><span class="p">(</span><span class="n">image_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Merge channels of multiple scalar ANTsImage types into one </span>
+<span class="sd">    multi-channel ANTsImage</span>
+<span class="sd">    </span>
+<span class="sd">    ANTsR function: `mergeChannels`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image_list : list/tuple of ANTsImage types</span>
+<span class="sd">        scalar images to merge</span>
+<span class="sd">    </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read(ants.get_ants_data(&#39;r16&#39;), &#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; image2 = ants.image_read(ants.get_ants_data(&#39;r16&#39;), &#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; image3 = ants.merge_channels([image,image2])</span>
+<span class="sd">    &gt;&gt;&gt; image3.components == 2</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inpixeltype</span> <span class="o">=</span> <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">pixeltype</span>
+    <span class="n">dimension</span> <span class="o">=</span> <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">image_list</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;list may only contain ANTsImage objects&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span> <span class="o">!=</span> <span class="n">inpixeltype</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;all images must have the same pixeltype&#39;</span><span class="p">)</span>
+
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;mergeChannels</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">image_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+    <span class="n">image_ptr</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">([</span><span class="n">image</span><span class="o">.</span><span class="n">pointer</span> <span class="k">for</span> <span class="n">image</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">])</span>
+    
+    <span class="k">return</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span><span class="n">pixeltype</span><span class="o">=</span><span class="n">inpixeltype</span><span class="p">,</span>
+                         <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span>
+                         <span class="n">components</span><span class="o">=</span><span class="n">components</span><span class="p">,</span>
+                         <span class="n">pointer</span><span class="o">=</span><span class="n">image_ptr</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="split_channels"><a class="viewcode-back" href="../../../utils.html#ants.utils.channels.split_channels">[docs]</a><span class="k">def</span> <span class="nf">split_channels</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Split channels of a multi-channel ANTsImage into a collection</span>
+<span class="sd">    of scalar ANTsImage types</span>
+<span class="sd">    </span>
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        multi-channel image to split</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of ANTsImage types</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read(ants.get_ants_data(&#39;r16&#39;), &#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; image2 = ants.image_read(ants.get_ants_data(&#39;r16&#39;), &#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; imagemerge = ants.merge_channels([image,image2])</span>
+<span class="sd">    &gt;&gt;&gt; imagemerge.components == 2</span>
+<span class="sd">    &gt;&gt;&gt; images_unmerged = ants.split_channels(imagemerge)</span>
+<span class="sd">    &gt;&gt;&gt; len(images_unmerged) == 2</span>
+<span class="sd">    &gt;&gt;&gt; images_unmerged[0].components == 1</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inpixeltype</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span>
+    <span class="n">dimension</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="n">components</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;splitChannels</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">image</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+    <span class="n">itkimages</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+    <span class="n">antsimages</span> <span class="o">=</span> <span class="p">[</span><span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span><span class="n">pixeltype</span><span class="o">=</span><span class="n">inpixeltype</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span> 
+                              <span class="n">components</span><span class="o">=</span><span class="n">components</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="n">itkimage</span><span class="p">)</span> <span class="k">for</span> <span class="n">itkimage</span> <span class="ow">in</span> <span class="n">itkimages</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">antsimages</span></div>
+
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

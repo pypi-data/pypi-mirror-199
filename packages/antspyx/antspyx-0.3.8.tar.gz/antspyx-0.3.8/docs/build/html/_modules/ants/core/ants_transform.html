@@ -1,0 +1,602 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.core.ants_transform &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.core.ants_transform</h1><div class="highlight"><pre>
+<span></span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ANTsTransform&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;set_ants_transform_parameters&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_ants_transform_parameters&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_ants_transform_fixed_parameters&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;set_ants_transform_fixed_parameters&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;apply_ants_transform&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;apply_ants_transform_to_point&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;apply_ants_transform_to_vector&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;apply_ants_transform_to_image&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;invert_ants_transform&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;compose_ants_transforms&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;transform_index_to_physical_point&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;transform_physical_point_to_index&#39;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ants_image</span> <span class="k">as</span> <span class="n">iio</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+
+
+<div class="viewcode-block" id="ANTsTransform"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform">[docs]</a><span class="k">class</span> <span class="nc">ANTsTransform</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="s1">&#39;AffineTransform&#39;</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        NOTE: This class should never be initialized directly by the user.</span>
+
+<span class="sd">        Initialize an ANTsTransform object.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        pixeltype : string</span>
+
+<span class="sd">        dimension : integer</span>
+
+<span class="sd">        transform_type : stirng</span>
+
+<span class="sd">        pointer : py::capsule (optional)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">precision</span> <span class="o">=</span> <span class="n">precision</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform_type</span> <span class="o">=</span> <span class="n">transform_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">transform_type</span>
+
+        <span class="k">if</span> <span class="n">pointer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;newAntsTransform</span><span class="si">%s%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">precision</span><span class="p">),</span> <span class="n">dimension</span><span class="p">))</span>
+            <span class="n">pointer</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">transform_type</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">pointer</span>
+
+        <span class="c1"># suffix to append to all c++ library function calls</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get parameters of transform &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;getTransformParameters</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">),</span> <span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span><span class="c1">#.reshape((self.dimension, self.dimension+1), order=&#39;F&#39;)</span>
+
+<div class="viewcode-block" id="ANTsTransform.set_parameters"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.set_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set parameters of transform &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="c1"># if in two dimensions, flatten with fortran ordering</span>
+        <span class="k">if</span> <span class="n">parameters</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">parameters</span><span class="o">.</span><span class="n">flatten</span><span class="p">(</span><span class="n">order</span><span class="o">=</span><span class="s1">&#39;F&#39;</span><span class="p">)</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;setTransformParameters</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">fixed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Get parameters of transform &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;getTransformFixedParameters</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">))</span>
+
+<div class="viewcode-block" id="ANTsTransform.set_fixed_parameters"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.set_fixed_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">set_fixed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Set parameters of transform &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">parameters</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">parameters</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;setTransformFixedParameters</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">parameters</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="ANTsTransform.invert"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.invert">[docs]</a>    <span class="k">def</span> <span class="nf">invert</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Invert the transform &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;inverseTransform</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">))</span>
+        <span class="n">inv_tx_ptr</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+
+        <span class="n">new_tx</span> <span class="o">=</span> <span class="n">ANTsTransform</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+                                <span class="n">transform_type</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transform_type</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="n">inv_tx_ptr</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">new_tx</span></div>
+
+<div class="viewcode-block" id="ANTsTransform.apply"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s1">&#39;point&#39;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply transform to data</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;point&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_to_point</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_to_vector</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">data_type</span> <span class="o">==</span> <span class="s1">&#39;image&#39;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ANTsTransform.apply_to_point"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.apply_to_point">[docs]</a>    <span class="k">def</span> <span class="nf">apply_to_point</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply transform to a point</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        point : list/tuple</span>
+<span class="sd">            point to which the transform will be applied</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list : transformed point</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.new_ants_transform()</span>
+<span class="sd">        &gt;&gt;&gt; params = tx.parameters</span>
+<span class="sd">        &gt;&gt;&gt; tx.set_parameters(params*2)</span>
+<span class="sd">        &gt;&gt;&gt; pt2 = tx.apply_to_point((1,2,3)) # should be (2,4,6)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;transformPoint</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">point</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ANTsTransform.apply_to_vector"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.apply_to_vector">[docs]</a>    <span class="k">def</span> <span class="nf">apply_to_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply transform to a vector</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        vector : list/tuple</span>
+<span class="sd">            vector to which the transform will be applied</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list : transformed vector</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="n">vector</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;transformVector</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">vector</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="ANTsTransform.apply_to_image"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform.ANTsTransform.apply_to_image">[docs]</a>    <span class="k">def</span> <span class="nf">apply_to_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply transform to an image</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        image : ANTsImage</span>
+<span class="sd">            image to which the transform will be applied</span>
+
+<span class="sd">        reference : ANTsImage</span>
+<span class="sd">            target space for transforming image</span>
+
+<span class="sd">        interpolation : string</span>
+<span class="sd">            type of interpolation to use</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list : transformed vector</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">reference</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">reference</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">()</span>
+
+        <span class="n">tform_fn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;transformImage</span><span class="si">%s%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">))</span>
+        <span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">)</span>
+
+        <span class="n">img_ptr</span> <span class="o">=</span> <span class="n">tform_fn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">image</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">reference</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span><span class="n">pixeltype</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">,</span>
+                            <span class="n">dimension</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+                            <span class="n">components</span><span class="o">=</span><span class="n">image</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
+                            <span class="n">pointer</span><span class="o">=</span><span class="n">img_ptr</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s2">&quot;ANTsTransform</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Type&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">type</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Dimension&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Precision&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">precision</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<span class="c1"># verbose functions for ANTsR compatibility</span>
+<div class="viewcode-block" id="set_ants_transform_parameters"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.set_ants_transform_parameters">[docs]</a><span class="k">def</span> <span class="nf">set_ants_transform_parameters</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set parameters of an ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `setAntsrTransformParameters`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">transform</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_ants_transform_parameters"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.get_ants_transform_parameters">[docs]</a><span class="k">def</span> <span class="nf">get_ants_transform_parameters</span><span class="p">(</span><span class="n">transform</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get parameters of an ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `getAntsrTransformParameters`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">parameters</span></div>
+
+<div class="viewcode-block" id="set_ants_transform_fixed_parameters"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.set_ants_transform_fixed_parameters">[docs]</a><span class="k">def</span> <span class="nf">set_ants_transform_fixed_parameters</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">parameters</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set fixed parameters of an ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `setAntsrTransformFixedParameters`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">transform</span><span class="o">.</span><span class="n">set_fixed_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_ants_transform_fixed_parameters"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.get_ants_transform_fixed_parameters">[docs]</a><span class="k">def</span> <span class="nf">get_ants_transform_fixed_parameters</span><span class="p">(</span><span class="n">transform</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get fixed parameters of an ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `getAntsrTransformFixedParameters`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">fixed_parameters</span></div>
+
+
+<div class="viewcode-block" id="apply_ants_transform"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.apply_ants_transform">[docs]</a><span class="k">def</span> <span class="nf">apply_ants_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">data_type</span><span class="o">=</span><span class="s2">&quot;point&quot;</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply ANTsTransform to data</span>
+
+<span class="sd">    ANTsR function: `applyAntsrTransform`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    transform : ANTsTransform</span>
+<span class="sd">        transform to apply to image</span>
+
+<span class="sd">    data : ndarray/list/tuple</span>
+<span class="sd">        data to which transform will be applied</span>
+
+<span class="sd">    data_type : string</span>
+<span class="sd">        type of data</span>
+<span class="sd">        Options :</span>
+<span class="sd">            &#39;point&#39;</span>
+<span class="sd">            &#39;vector&#39;</span>
+<span class="sd">            &#39;image&#39;</span>
+
+<span class="sd">    reference : ANTsImage</span>
+<span class="sd">        target space for transforming image</span>
+
+<span class="sd">    kwargs : kwargs</span>
+<span class="sd">        additional options passed to `apply_ants_transform_to_image`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage if data_type == &#39;point&#39;</span>
+<span class="sd">    OR</span>
+<span class="sd">    tuple if data_type == &#39;point&#39; or data_type == &#39;vector&#39;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_type</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="apply_ants_transform_to_point"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.apply_ants_transform_to_point">[docs]</a><span class="k">def</span> <span class="nf">apply_ants_transform_to_point</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply transform to a point</span>
+
+<span class="sd">    ANTsR function: `applyAntsrTransformToPoint`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    point : list/tuple</span>
+<span class="sd">        point to which the transform will be applied</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple : transformed point</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform()</span>
+<span class="sd">    &gt;&gt;&gt; params = tx.parameters</span>
+<span class="sd">    &gt;&gt;&gt; tx.set_parameters(params*2)</span>
+<span class="sd">    &gt;&gt;&gt; pt2 = tx.apply_to_point((1,2,3)) # should be (2,4,6)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">apply_to_point</span><span class="p">(</span><span class="n">point</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="apply_ants_transform_to_vector"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.apply_ants_transform_to_vector">[docs]</a><span class="k">def</span> <span class="nf">apply_ants_transform_to_vector</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">vector</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply transform to a vector</span>
+
+<span class="sd">    ANTsR function: `applyAntsrTransformToVector`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    vector : list/tuple</span>
+<span class="sd">        vector to which the transform will be applied</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple : transformed vector</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">apply_to_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="apply_ants_transform_to_image"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.apply_ants_transform_to_image">[docs]</a><span class="k">def</span> <span class="nf">apply_ants_transform_to_image</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply transform to an image</span>
+
+<span class="sd">    ANTsR function: `applyAntsrTransformToImage`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to which the transform will be applied</span>
+
+<span class="sd">    reference : ANTsImage</span>
+<span class="sd">        reference image</span>
+
+<span class="sd">    interpolation : string</span>
+<span class="sd">        type of interpolation to use</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list : transformed vector</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.image_read(ants.get_ants_data(&quot;r16&quot;)).clone(&#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform(dimension=2)</span>
+<span class="sd">    &gt;&gt;&gt; tx.set_parameters((0.9,0,0,1.1,10,11))</span>
+<span class="sd">    &gt;&gt;&gt; img2 = tx.apply_to_image(img, img)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">reference</span><span class="p">,</span> <span class="n">interpolation</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="invert_ants_transform"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.invert_ants_transform">[docs]</a><span class="k">def</span> <span class="nf">invert_ants_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Invert ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `invertAntsrTransform`</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.image_read(ants.get_ants_data(&quot;r16&quot;)).clone(&#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform(dimension=2)</span>
+<span class="sd">    &gt;&gt;&gt; tx.set_parameters((0.9,0,0,1.1,10,11))</span>
+<span class="sd">    &gt;&gt;&gt; img_transformed = tx.apply_to_image(img, img)</span>
+<span class="sd">    &gt;&gt;&gt; inv_tx = tx.invert()</span>
+<span class="sd">    &gt;&gt;&gt; img_orig = inv_tx.apply_to_image(img_transformed, img_transformed)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">transform</span><span class="o">.</span><span class="n">invert</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="compose_ants_transforms"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.compose_ants_transforms">[docs]</a><span class="k">def</span> <span class="nf">compose_ants_transforms</span><span class="p">(</span><span class="n">transform_list</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compose multiple ANTsTransform&#39;s together</span>
+
+<span class="sd">    ANTsR function: `composeAntsrTransforms`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    transform_list : list/tuple of ANTsTransform object</span>
+<span class="sd">        list of transforms to compose together</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsTransform</span>
+<span class="sd">        one transform that contains all given transforms</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.image_read(ants.get_ants_data(&quot;r16&quot;)).clone(&#39;float&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform(dimension=2)</span>
+<span class="sd">    &gt;&gt;&gt; tx.set_parameters((0.9,0,0,1.1,10,11))</span>
+<span class="sd">    &gt;&gt;&gt; inv_tx = tx.invert()</span>
+<span class="sd">    &gt;&gt;&gt; single_tx = ants.compose_ants_transforms([tx, inv_tx])</span>
+<span class="sd">    &gt;&gt;&gt; img_orig = single_tx.apply_to_image(img, img)</span>
+<span class="sd">    &gt;&gt;&gt; rRotGenerator = ants.contrib.RandomRotate2D( ( 0, 40 ), reference=img )</span>
+<span class="sd">    &gt;&gt;&gt; rShearGenerator=ants.contrib.RandomShear2D( (0,50), reference=img )</span>
+<span class="sd">    &gt;&gt;&gt; tx1 = rRotGenerator.transform()</span>
+<span class="sd">    &gt;&gt;&gt; tx2 = rShearGenerator.transform()</span>
+<span class="sd">    &gt;&gt;&gt; rSrR = ants.compose_ants_transforms([tx1, tx2])</span>
+<span class="sd">    &gt;&gt;&gt; rSrR.apply_to_image( img )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">precision</span> <span class="o">=</span> <span class="n">transform_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">precision</span>
+    <span class="n">dimension</span> <span class="o">=</span> <span class="n">transform_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dimension</span>
+
+    <span class="k">for</span> <span class="n">tx</span> <span class="ow">in</span> <span class="n">transform_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">precision</span> <span class="o">!=</span> <span class="n">tx</span><span class="o">.</span><span class="n">precision</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All transforms must have the same precision&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">dimension</span> <span class="o">!=</span> <span class="n">tx</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;All transforms must have the same dimension&#39;</span><span class="p">)</span>
+
+    <span class="n">tx_ptr_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">([</span><span class="n">tf</span><span class="o">.</span><span class="n">pointer</span> <span class="k">for</span> <span class="n">tf</span> <span class="ow">in</span> <span class="n">transform_list</span><span class="p">]))</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;composeTransforms</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">transform_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">))</span>
+    <span class="n">itk_composed_tx</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">tx_ptr_list</span><span class="p">,</span> <span class="n">precision</span><span class="p">,</span> <span class="n">dimension</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ANTsTransform</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span>
+                        <span class="n">transform_type</span><span class="o">=</span><span class="s1">&#39;CompositeTransform&#39;</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="n">itk_composed_tx</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="transform_index_to_physical_point"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.transform_index_to_physical_point">[docs]</a><span class="k">def</span> <span class="nf">transform_index_to_physical_point</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">index</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get spatial point from index of an image.</span>
+
+<span class="sd">    ANTsR function: `antsTransformIndexToPhysicalPoint`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    img : ANTsImage</span>
+<span class="sd">        image to get values from</span>
+
+<span class="sd">    index : list or tuple or numpy.ndarray</span>
+<span class="sd">        location in image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.make_image((10,10),np.random.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; pt = ants.transform_index_to_physical_point(img, (2,2))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;image must be ANTsImage type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">index</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span><span class="nb">list</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;index must be tuple or list&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="o">!=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;len(index) != image.dimension&#39;</span><span class="p">)</span>
+
+    <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">]</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="n">ptype</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;TransformIndexToPhysicalPoint</span><span class="si">%s%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">ptype</span><span class="p">),</span> <span class="n">ndim</span><span class="p">))</span>
+    <span class="n">point</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">index</span><span class="p">)])</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">point</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+
+<div class="viewcode-block" id="transform_physical_point_to_index"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform.transform_physical_point_to_index">[docs]</a><span class="k">def</span> <span class="nf">transform_physical_point_to_index</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">point</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get index from spatial point of an image.</span>
+
+<span class="sd">    ANTsR function: `antsTransformPhysicalPointToIndex`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        image to get values from</span>
+
+<span class="sd">    point : list or tuple or numpy.ndarray</span>
+<span class="sd">        point in image</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; img = ants.make_image((10,10),np.random.randn(100))</span>
+<span class="sd">    &gt;&gt;&gt; idx = ants.transform_physical_point_to_index(img, (2,2))</span>
+<span class="sd">    &gt;&gt;&gt; img.set_spacing((2,2))</span>
+<span class="sd">    &gt;&gt;&gt; idx2 = ants.transform_physical_point_to_index(img, (4,4))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;image must be ANTsImage type&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+        <span class="n">point</span> <span class="o">=</span> <span class="n">point</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">point</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;point must be list, tuple, or np.ndarray&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">point</span><span class="p">)</span> <span class="o">!=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;len(index) != image.dimension&#39;</span><span class="p">)</span>
+
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+    <span class="n">ptype</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;TransformPhysicalPointToIndex</span><span class="si">%s%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">ptype</span><span class="p">),</span><span class="n">ndim</span><span class="p">))</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">image</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">point</span><span class="p">)])</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">-</span><span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">index</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

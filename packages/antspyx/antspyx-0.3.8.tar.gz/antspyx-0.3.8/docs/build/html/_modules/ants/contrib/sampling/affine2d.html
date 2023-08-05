@@ -1,0 +1,762 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.contrib.sampling.affine2d &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../../_static/alabaster.css" />
+    <script data-url_root="../../../../" id="documentation_options" src="../../../../_static/documentation_options.js"></script>
+    <script src="../../../../_static/doctools.js"></script>
+    <script src="../../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.contrib.sampling.affine2d</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Affine transforms</span>
+
+<span class="sd">See http://www.cs.cornell.edu/courses/cs4620/2010fa/lectures/03transforms3D.pdf</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Zoom2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RandomZoom2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Rotate2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RandomRotate2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Shear2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RandomShear2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;Translate2D&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;RandomTranslate2D&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">...core</span> <span class="kn">import</span> <span class="n">ants_transform</span> <span class="k">as</span> <span class="n">tio</span>
+
+
+<div class="viewcode-block" id="Translate2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Translate2D">[docs]</a><span class="k">class</span> <span class="nc">Translate2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an ANTs Affine Transform with a specified translation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Shear2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        translation : list or tuple</span>
+<span class="sd">            translation values for each axis, in degrees.</span>
+<span class="sd">            Negative values can be used for translation in the</span>
+<span class="sd">            other direction</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">translation</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;translation argument must be list/tuple with two values!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">translation</span> <span class="o">=</span> <span class="n">translation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span> <span class="o">=</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+            <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;AffineTransform&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_fixed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">get_center_of_mass</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Translate2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Translate2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with the given</span>
+<span class="sd">        translation parameters.  Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Translate2D(translation=(10,0))</span>
+<span class="sd">        &gt;&gt;&gt; img2_x = tx.transform(img)</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Translate2D(translation=(-10,0)) # other direction</span>
+<span class="sd">        &gt;&gt;&gt; img2_x = tx.transform(img)</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Translate2D(translation=(0,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2_z = tx.transform(img)</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Translate2D(translation=(10,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert to radians and unpack</span>
+        <span class="n">translation_x</span><span class="p">,</span> <span class="n">translation_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation</span>
+
+        <span class="n">translation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">translation_x</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">translation_y</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">translation_matrix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="ow">or</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RandomTranslate2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomTranslate2D">[docs]</a><span class="k">class</span> <span class="nc">RandomTranslate2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply a Translate2D transform to an image, but with the</span>
+<span class="sd">    parameters randomly generated from a user-specified range.</span>
+<span class="sd">    The range is determined by a mean (first parameter) and standard deviation</span>
+<span class="sd">    (second parameter) via calls to random.gauss.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">translation_range</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a RandomTranslate2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        translation_range : list or tuple</span>
+<span class="sd">            Lower and Upper bounds on rotation parameter, in degrees.</span>
+<span class="sd">            e.g. translation_range = (-10,10) will result in a random</span>
+<span class="sd">            draw of the rotation parameters between -10 and 10 degrees</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">translation_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">translation_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;shear_range argument must be list/tuple with two values!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">translation_range</span> <span class="o">=</span> <span class="n">translation_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+
+<div class="viewcode-block" id="RandomTranslate2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomTranslate2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with</span>
+<span class="sd">        translation parameters randomly generated from the user-specified</span>
+<span class="sd">        range.   Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.RandomShear2D(translation_range=(-10,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># random draw in translation range</span>
+        <span class="n">translation_x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">translation_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="n">translation_y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">translation_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">translation_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">translation_x</span><span class="p">,</span> <span class="n">translation_y</span><span class="p">)</span>
+
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">Translate2D</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">translation_x</span><span class="p">,</span> <span class="n">translation_y</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lazy</span>
+        <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tx</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Shear2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Shear2D">[docs]</a><span class="k">class</span> <span class="nc">Shear2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an ANTs Affine Transform with a specified shear.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Shear2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        shear : list or tuple</span>
+<span class="sd">            shear values for each axis, in degrees.</span>
+<span class="sd">            Negative values can be used for shear in the</span>
+<span class="sd">            other direction</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shear</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shear</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;shear argument must be list/tuple with two values!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shear</span> <span class="o">=</span> <span class="n">shear</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span> <span class="o">=</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+            <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;AffineTransform&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_fixed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">get_center_of_mass</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Shear2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Shear2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with the given</span>
+<span class="sd">        shear parameters.   Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Shear2D(shear=(10,0,0))</span>
+<span class="sd">        &gt;&gt;&gt; img2_x = tx.transform(img)# x axis stays same</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Shear2D(shear=(-10,0,0)) # other direction</span>
+<span class="sd">        &gt;&gt;&gt; img2_x = tx.transform(img)# x axis stays same</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Shear2D(shear=(0,10,0))</span>
+<span class="sd">        &gt;&gt;&gt; img2_y = tx.transform(img) # y axis stays same</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Shear2D(shear=(0,0,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2_z = tx.transform(img) # z axis stays same</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Shear2D(shear=(10,10,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># convert to radians and unpack</span>
+        <span class="n">shear</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">shear</span><span class="p">]</span>
+        <span class="n">shear_x</span><span class="p">,</span> <span class="n">shear_y</span> <span class="o">=</span> <span class="n">shear</span>
+
+        <span class="n">shear_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="n">shear_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">shear_y</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">shear_matrix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="ow">or</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RandomShear2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomShear2D">[docs]</a><span class="k">class</span> <span class="nc">RandomShear2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply a Shear2D transform to an image, but with the shear</span>
+<span class="sd">    parameters randomly generated from a user-specified range.</span>
+<span class="sd">    The range is determined by a mean (first parameter) and standard deviation</span>
+<span class="sd">    (second parameter) via calls to random.gauss.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shear_range</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a RandomRotate2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        shear_range : list or tuple</span>
+<span class="sd">            Lower and Upper bounds on rotation parameter, in degrees.</span>
+<span class="sd">            e.g. shear_range = (-10,10) will result in a random</span>
+<span class="sd">            draw of the rotation parameters between -10 and 10 degrees</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">shear_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">shear_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;shear_range argument must be list/tuple with two values!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shear_range</span> <span class="o">=</span> <span class="n">shear_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+
+<div class="viewcode-block" id="RandomShear2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomShear2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with</span>
+<span class="sd">        shear parameters randomly generated from the user-specified</span>
+<span class="sd">        range.   Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.RandomShear2D(shear_range=(-10,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># random draw in shear range</span>
+        <span class="n">shear_x</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shear_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">shear_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">shear_y</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shear_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">shear_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">shear_x</span><span class="p">,</span> <span class="n">shear_y</span><span class="p">)</span>
+
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">Shear2D</span><span class="p">((</span><span class="n">shear_x</span><span class="p">,</span> <span class="n">shear_y</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tx</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Rotate2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Rotate2D">[docs]</a><span class="k">class</span> <span class="nc">Rotate2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an ANTs Affine Transform with a specified level</span>
+<span class="sd">    of rotation.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Rotate2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        rotation : scalar</span>
+<span class="sd">            rotation value in degrees.</span>
+<span class="sd">            Negative values can be used for rotation in the</span>
+<span class="sd">            other direction</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span> <span class="o">=</span> <span class="n">rotation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span> <span class="o">=</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+            <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;AffineTransform&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_fixed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">get_center_of_mass</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Rotate2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Rotate2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with the given</span>
+<span class="sd">        rotation parameters.   Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Rotate2D(rotation=(10,-5,12))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># unpack zoom range</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation</span>
+
+        <span class="c1"># Rotation about X axis</span>
+        <span class="n">theta</span> <span class="o">=</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">180</span> <span class="o">*</span> <span class="n">rotation</span>
+        <span class="n">rotation_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+            <span class="p">[[</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="mi">0</span><span class="p">]]</span>
+        <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">rotation_matrix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="ow">or</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RandomRotate2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomRotate2D">[docs]</a><span class="k">class</span> <span class="nc">RandomRotate2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply a Rotated2D transform to an image, but with the zoom</span>
+<span class="sd">    parameters randomly generated from a user-specified range.</span>
+<span class="sd">    The range is determined by a mean (first parameter) and standard deviation</span>
+<span class="sd">    (second parameter) via calls to random.gauss.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rotation_range</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a RandomRotate2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        rotation_range : list or tuple</span>
+<span class="sd">            Lower and Upper bounds on rotation parameter, in degrees.</span>
+<span class="sd">            e.g. rotation_range = (-10,10) will result in a random</span>
+<span class="sd">            draw of the rotation parameters between -10 and 10 degrees</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">rotation_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">rotation_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span>
+        <span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;rotation_range argument must be list/tuple with two values!&quot;</span>
+            <span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rotation_range</span> <span class="o">=</span> <span class="n">rotation_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+
+<div class="viewcode-block" id="RandomRotate2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomRotate2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with</span>
+<span class="sd">        rotation parameters randomly generated from the user-specified</span>
+<span class="sd">        range.   Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.RandomRotate2D(rotation_range=(-10,10))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># random draw in rotation range</span>
+        <span class="n">rotation</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rotation_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">rotation_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="n">rotation</span>
+
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">Rotate2D</span><span class="p">(</span><span class="n">rotation</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tx</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="Zoom2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Zoom2D">[docs]</a><span class="k">class</span> <span class="nc">Zoom2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create an ANTs Affine Transform with a specified level</span>
+<span class="sd">    of zoom. Any value greater than 1 implies a &quot;zoom-out&quot; and anything</span>
+<span class="sd">    less than 1 implies a &quot;zoom-in&quot;.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoom</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Zoom2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        zoom_range : list or tuple</span>
+<span class="sd">            Lower and Upper bounds on zoom parameter.</span>
+<span class="sd">            e.g. zoom_range = (0.7,0.9) will result in a random</span>
+<span class="sd">            draw of the zoom parameters between 0.7 and 0.9</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">zoom</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zoom</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;zoom_range argument must be list/tuple with two values!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span> <span class="o">=</span> <span class="n">zoom</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span> <span class="o">=</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+            <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;AffineTransform&quot;</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_fixed_parameters</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="o">.</span><span class="n">get_center_of_mass</span><span class="p">())</span>
+
+<div class="viewcode-block" id="Zoom2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.Zoom2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with the given</span>
+<span class="sd">        zoom parameters.   Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.Zoom2D(zoom=(0.8,0.8,0.8))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># unpack zoom range</span>
+        <span class="n">zoom_x</span><span class="p">,</span> <span class="n">zoom_y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">zoom</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">zoom_x</span><span class="p">,</span> <span class="n">zoom_y</span><span class="p">)</span>
+        <span class="n">zoom_matrix</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">zoom_x</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">zoom_y</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">zoom_matrix</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="ow">or</span> <span class="n">X</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">y</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">tx</span><span class="o">.</span><span class="n">apply_to_image</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">),</span>
+                <span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="RandomZoom2D"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomZoom2D">[docs]</a><span class="k">class</span> <span class="nc">RandomZoom2D</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Apply a Zoom2D transform to an image, but with the zoom</span>
+<span class="sd">    parameters randomly generated from a user-specified range.</span>
+<span class="sd">    The range is determined by a mean (first parameter) and standard deviation</span>
+<span class="sd">    (second parameter) via calls to random.gauss.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zoom_range</span><span class="p">,</span> <span class="n">reference</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a RandomZoom2D object</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        zoom_range : list or tuple</span>
+<span class="sd">            Lower and Upper bounds on zoom parameter.</span>
+<span class="sd">            e.g. zoom_range = (0.7,0.9) will result in a random</span>
+<span class="sd">            draw of the zoom parameters between 0.7 and 0.9</span>
+
+<span class="sd">        reference : ANTsImage (optional but recommended)</span>
+<span class="sd">            image providing the reference space for the transform.</span>
+<span class="sd">            this will also set the transform fixed parameters.</span>
+
+<span class="sd">        lazy : boolean (default = False)</span>
+<span class="sd">            if True, calling the `transform` method only returns</span>
+<span class="sd">            the randomly generated transform and does not actually</span>
+<span class="sd">            transform the image</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">zoom_range</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)))</span> <span class="ow">or</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">zoom_range</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;zoom_range argument must be list/tuple with two values!&quot;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">zoom_range</span> <span class="o">=</span> <span class="n">zoom_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reference</span> <span class="o">=</span> <span class="n">reference</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lazy</span> <span class="o">=</span> <span class="n">lazy</span>
+
+<div class="viewcode-block" id="RandomZoom2D.transform"><a class="viewcode-back" href="../../../../ants.contrib.sampling.html#ants.contrib.sampling.affine2d.RandomZoom2D.transform">[docs]</a>    <span class="k">def</span> <span class="nf">transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">X</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Transform an image using an Affine transform with</span>
+<span class="sd">        zoom parameters randomly generated from the user-specified</span>
+<span class="sd">        range.  Return the transform if X=None.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        X : ANTsImage</span>
+<span class="sd">            Image to transform</span>
+
+<span class="sd">        y : ANTsImage (optional)</span>
+<span class="sd">            Another image to transform</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage if y is None, else a tuple of ANTsImage types</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.image_read(ants.get_data(&#39;r16&#39;))</span>
+<span class="sd">        &gt;&gt;&gt; tx = ants.contrib.RandomZoom2D(zoom_range=(0.8,0.9))</span>
+<span class="sd">        &gt;&gt;&gt; img2 = tx.transform(img)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># random draw in zoom range</span>
+        <span class="n">zoom_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoom_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoom_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="p">)</span>
+        <span class="n">zoom_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span>
+            <span class="n">random</span><span class="o">.</span><span class="n">gauss</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoom_range</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">zoom_range</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">params</span> <span class="o">=</span> <span class="p">(</span><span class="n">zoom_x</span><span class="p">,</span> <span class="n">zoom_y</span><span class="p">)</span>
+
+        <span class="n">tx</span> <span class="o">=</span> <span class="n">Zoom2D</span><span class="p">((</span><span class="n">zoom_x</span><span class="p">,</span> <span class="n">zoom_y</span><span class="p">),</span> <span class="n">reference</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">reference</span><span class="p">,</span> <span class="n">lazy</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lazy</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">tx</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../../index.html">
+              <img class="logo" src="../../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

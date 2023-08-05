@@ -1,0 +1,1105 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.core.ants_image &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.core.ants_image</h1><div class="highlight"><pre>
+<span></span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;ANTsImage&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;LabelImage&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;copy_image_info&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;set_origin&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_origin&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;set_direction&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_direction&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;set_spacing&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;get_spacing&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;image_physical_space_consistency&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;image_type_cast&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;allclose&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partialmethod</span>
+    <span class="n">HAS_PY3</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">HAS_PY3</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="kn">import</span> <span class="nn">inspect</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">registration</span><span class="p">,</span> <span class="n">segmentation</span><span class="p">,</span> <span class="n">utils</span><span class="p">,</span> <span class="n">viz</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ants_image_io</span> <span class="k">as</span> <span class="n">iio2</span>
+
+<span class="n">_supported_ptypes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;unsigned char&#39;</span><span class="p">,</span> <span class="s1">&#39;unsigned int&#39;</span><span class="p">,</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="s1">&#39;double&#39;</span><span class="p">}</span>
+<span class="n">_supported_dtypes</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;uint8&#39;</span><span class="p">,</span> <span class="s1">&#39;uint32&#39;</span><span class="p">,</span> <span class="s1">&#39;float32&#39;</span><span class="p">,</span> <span class="s1">&#39;float64&#39;</span><span class="p">}</span>
+<span class="n">_itk_to_npy_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;unsigned char&#39;</span><span class="p">:</span> <span class="s1">&#39;uint8&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;unsigned int&#39;</span><span class="p">:</span> <span class="s1">&#39;uint32&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;float&#39;</span><span class="p">:</span> <span class="s1">&#39;float32&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;double&#39;</span><span class="p">:</span> <span class="s1">&#39;float64&#39;</span><span class="p">}</span>
+<span class="n">_npy_to_itk_map</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;uint8&#39;</span><span class="p">:</span> <span class="s1">&#39;unsigned char&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;uint32&#39;</span><span class="p">:</span><span class="s1">&#39;unsigned int&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;float32&#39;</span><span class="p">:</span> <span class="s1">&#39;float&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;float64&#39;</span><span class="p">:</span> <span class="s1">&#39;double&#39;</span><span class="p">}</span>
+
+
+<div class="viewcode-block" id="ANTsImage"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage">[docs]</a><span class="k">class</span> <span class="nc">ANTsImage</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="s1">&#39;float&#39;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">components</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">is_rgb</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label_image</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize an ANTsImage</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        pixeltype : string</span>
+<span class="sd">            ITK pixeltype of image</span>
+
+<span class="sd">        dimension : integer</span>
+<span class="sd">            number of image dimension. Does NOT include components dimension</span>
+
+<span class="sd">        components : integer</span>
+<span class="sd">            number of pixel components in the image</span>
+
+<span class="sd">        pointer : py::capsule (optional)</span>
+<span class="sd">            pybind11 capsule holding the pointer to the underlying ITK image object</span>
+
+<span class="sd">        label_image : LabelImage</span>
+<span class="sd">            a discrete label image for mapping locations to atlas regions</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1">## Attributes which cant change without creating a new ANTsImage object</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pointer</span> <span class="o">=</span> <span class="n">pointer</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span> <span class="o">=</span> <span class="n">pixeltype</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">=</span> <span class="n">dimension</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">=</span> <span class="n">components</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">has_components</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span> <span class="o">&gt;</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">_itk_to_npy_map</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">is_rgb</span> <span class="o">=</span> <span class="n">is_rgb</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_pixelclass</span> <span class="o">=</span> <span class="s1">&#39;vector&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_components</span> <span class="k">else</span> <span class="s1">&#39;scalar&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_shortpclass</span> <span class="o">=</span> <span class="s1">&#39;V&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pixelclass</span> <span class="o">==</span> <span class="s1">&#39;vector&#39;</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">if</span> <span class="n">is_rgb</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_pixelclass</span> <span class="o">=</span> <span class="s1">&#39;rgb&#39;</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_shortpclass</span> <span class="o">=</span> <span class="s1">&#39;RGB&#39;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%s%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_shortpclass</span><span class="p">,</span> <span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shape</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;getShape</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">physical_shape</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">sh</span><span class="o">*</span><span class="n">sp</span><span class="p">,</span><span class="mi">3</span><span class="p">)</span> <span class="k">for</span> <span class="n">sh</span><span class="p">,</span><span class="n">sp</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">)])</span>
+
+        <span class="k">if</span> <span class="n">label_image</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_image</span><span class="p">,</span> <span class="n">LabelImage</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;label_image argument must be a LabelImage type&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_image</span> <span class="o">=</span> <span class="n">label_image</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_array</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get image spacing</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;getSpacing</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ANTsImage.set_spacing"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.set_spacing">[docs]</a>    <span class="k">def</span> <span class="nf">set_spacing</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set image spacing</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        new_spacing : tuple or list</span>
+<span class="sd">            updated spacing for the image.</span>
+<span class="sd">            should have one value for each dimension</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arg must be tuple or list&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_spacing</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;must give a spacing value for each dimension (</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;setSpacing</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">new_spacing</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">origin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get image origin</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;getOrigin</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ANTsImage.set_origin"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.set_origin">[docs]</a>    <span class="k">def</span> <span class="nf">set_origin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_origin</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set image origin</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        new_origin : tuple or list</span>
+<span class="sd">            updated origin for the image.</span>
+<span class="sd">            should have one value for each dimension</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_origin</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arg must be tuple or list&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_origin</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;must give a origin value for each dimension (</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;setOrigin</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">new_origin</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">direction</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get image direction</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        tuple</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;getDirection</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+
+<div class="viewcode-block" id="ANTsImage.set_direction"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.set_direction">[docs]</a>    <span class="k">def</span> <span class="nf">set_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_direction</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Set image direction</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        new_direction : numpy.ndarray or tuple or list</span>
+<span class="sd">            updated direction for the image.</span>
+<span class="sd">            should have one value for each dimension</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        None</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_direction</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span><span class="nb">list</span><span class="p">)):</span>
+            <span class="n">new_direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">new_direction</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">new_direction</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;arg must be np.ndarray or tuple or list&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">new_direction</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;must give a origin value for each dimension (</span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;setDirection</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">new_direction</span><span class="p">)</span></div>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">orientation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_orientation</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ANTsImage.view"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.view">[docs]</a>    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">single_components</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Geet a numpy array providing direct, shared access to the image data.</span>
+<span class="sd">        IMPORTANT: If you alter the view, then the underlying image data</span>
+<span class="sd">        will also be altered.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        single_components : boolean (default is False)</span>
+<span class="sd">            if True, keep the extra component dimension in returned array even</span>
+<span class="sd">            if image only has one component (i.e. self.has_components == False)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rgb</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rgb_to_vector</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="n">dtype</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">dtype</span>
+        <span class="n">shape</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">has_components</span> <span class="ow">or</span> <span class="p">(</span><span class="n">single_components</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="n">shape</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">img</span><span class="o">.</span><span class="n">components</span><span class="p">]</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;toNumpy</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">img</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">memview</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">memview</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">dtype</span> <span class="o">=</span> <span class="n">dtype</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">shape</span><span class="p">)</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span><span class="o">.</span><span class="n">T</span></div>
+
+<div class="viewcode-block" id="ANTsImage.numpy"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.numpy">[docs]</a>    <span class="k">def</span> <span class="nf">numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">single_components</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get a numpy array copy representing the underlying image data. Altering</span>
+<span class="sd">        this ndarray will have NO effect on the underlying image data.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        single_components : boolean (default is False)</span>
+<span class="sd">            if True, keep the extra component dimension in returned array even</span>
+<span class="sd">            if image only has one component (i.e. self.has_components == False)</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ndarray</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">single_components</span><span class="o">=</span><span class="n">single_components</span><span class="p">),</span> <span class="n">copy</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_components</span> <span class="ow">or</span> <span class="p">(</span><span class="n">single_components</span> <span class="o">==</span> <span class="kc">True</span><span class="p">):</span>
+            <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">rollaxis</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">array</span></div>
+
+<div class="viewcode-block" id="ANTsImage.clone"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.clone">[docs]</a>    <span class="k">def</span> <span class="nf">clone</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a copy of the given ANTsImage with the same data and info, possibly with</span>
+<span class="sd">        a different data type for the image data. Only supports casting to</span>
+<span class="sd">        uint8 (unsigned char), uint32 (unsigned int), float32 (float), and float64 (double)</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        dtype: string (optional)</span>
+<span class="sd">            if None, the dtype will be the same as the cloned ANTsImage. Otherwise,</span>
+<span class="sd">            the data will be cast to this type. This can be a numpy type or an ITK</span>
+<span class="sd">            type.</span>
+<span class="sd">            Options:</span>
+<span class="sd">                &#39;unsigned char&#39; or &#39;uint8&#39;,</span>
+<span class="sd">                &#39;unsigned int&#39; or &#39;uint32&#39;,</span>
+<span class="sd">                &#39;float&#39; or &#39;float32&#39;,</span>
+<span class="sd">                &#39;double&#39; or &#39;float64&#39;</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">pixeltype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">pixeltype</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span>
+
+        <span class="k">if</span> <span class="n">pixeltype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_supported_ptypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pixeltype </span><span class="si">%s</span><span class="s1"> not supported. Supported types are </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">pixeltype</span><span class="p">,</span> <span class="n">_supported_ptypes</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_components</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_rgb</span><span class="p">):</span>
+            <span class="n">comp_imgs</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_channels</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+            <span class="n">comp_imgs_cloned</span> <span class="o">=</span> <span class="p">[</span><span class="n">comp_img</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">)</span> <span class="k">for</span> <span class="n">comp_img</span> <span class="ow">in</span> <span class="n">comp_imgs</span><span class="p">]</span>
+            <span class="k">return</span> <span class="n">utils</span><span class="o">.</span><span class="n">merge_channels</span><span class="p">(</span><span class="n">comp_imgs_cloned</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">p1_short</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">)</span>
+            <span class="n">p2_short</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">)</span>
+            <span class="n">ndim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span>
+            <span class="n">fn_suffix</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s%i%s%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">p1_short</span><span class="p">,</span><span class="n">ndim</span><span class="p">,</span><span class="n">p2_short</span><span class="p">,</span><span class="n">ndim</span><span class="p">)</span>
+            <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;antsImageClone</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">fn_suffix</span><span class="p">)</span>
+            <span class="n">pointer_cloned</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">ANTsImage</span><span class="p">(</span><span class="n">pixeltype</span><span class="o">=</span><span class="n">pixeltype</span><span class="p">,</span>
+                            <span class="n">dimension</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+                            <span class="n">components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">,</span>
+                            <span class="n">is_rgb</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_rgb</span><span class="p">,</span>
+                            <span class="n">pointer</span><span class="o">=</span><span class="n">pointer_cloned</span><span class="p">)</span></div>
+
+    <span class="c1"># pythonic alias for `clone` is `copy`</span>
+    <span class="n">copy</span> <span class="o">=</span> <span class="n">clone</span>
+
+<div class="viewcode-block" id="ANTsImage.astype"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.astype">[docs]</a>    <span class="k">def</span> <span class="nf">astype</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Cast &amp; clone an ANTsImage to a given numpy datatype.</span>
+
+<span class="sd">        Map:</span>
+<span class="sd">            uint8   : unsigned char</span>
+<span class="sd">            uint32  : unsigned int</span>
+<span class="sd">            float32 : float</span>
+<span class="sd">            float64 : double</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">dtype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_supported_dtypes</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Datatype </span><span class="si">%s</span><span class="s1"> not supported. Supported types are </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dtype</span><span class="p">,</span> <span class="n">_supported_dtypes</span><span class="p">))</span>
+
+        <span class="n">pixeltype</span> <span class="o">=</span> <span class="n">_npy_to_itk_map</span><span class="p">[</span><span class="n">dtype</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ANTsImage.new_image_like"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.new_image_like">[docs]</a>    <span class="k">def</span> <span class="nf">new_image_like</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Create a new ANTsImage with the same header information, but with</span>
+<span class="sd">        a new image array.</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        data : ndarray or py::capsule</span>
+<span class="sd">            New array or pointer for the image.</span>
+<span class="sd">            It must have the same shape as the current</span>
+<span class="sd">            image data.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;data must be a numpy array&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_components</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">data</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;given array shape (</span><span class="si">%s</span><span class="s1">) and image array shape (</span><span class="si">%s</span><span class="s1">) do not match&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;given array shape (</span><span class="si">%s</span><span class="s1">) and image array shape (</span><span class="si">%s</span><span class="s1">) do not match&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">iio2</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">origin</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span>
+            <span class="n">spacing</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span>
+            <span class="n">has_components</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">has_components</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ANTsImage.to_file"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.to_file">[docs]</a>    <span class="k">def</span> <span class="nf">to_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Write the ANTsImage to file</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        filename : string</span>
+<span class="sd">            filepath to which the image will be written</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s1">&#39;toFile</span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">)</span>
+        <span class="n">libfn</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+    <span class="n">to_filename</span> <span class="o">=</span> <span class="n">to_file</span>
+
+<div class="viewcode-block" id="ANTsImage.apply"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.apply">[docs]</a>    <span class="k">def</span> <span class="nf">apply</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fn</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Apply an arbitrary function to ANTsImage.</span>
+
+<span class="sd">        Args</span>
+<span class="sd">        ----</span>
+<span class="sd">        fn : python function or lambda</span>
+<span class="sd">            function to apply to ENTIRE image at once</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        ANTsImage</span>
+<span class="sd">            image with function applied to it</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">fn</span><span class="p">(</span><span class="n">this_array</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ANTsImage.as_label_image"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.ANTsImage.as_label_image">[docs]</a>    <span class="k">def</span> <span class="nf">as_label_image</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_info</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">LabelImage</span><span class="p">(</span><span class="n">image</span><span class="o">=</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_info</span><span class="o">=</span><span class="n">label_info</span><span class="p">)</span></div>
+
+    <span class="c1">## NUMPY FUNCTIONS ##</span>
+<div class="viewcode-block" id="ANTsImage.abs"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.abs">[docs]</a>    <span class="k">def</span> <span class="nf">abs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return absolute value of image &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span></div>
+<div class="viewcode-block" id="ANTsImage.mean"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.mean">[docs]</a>    <span class="k">def</span> <span class="nf">mean</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return mean along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.median"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.median">[docs]</a>    <span class="k">def</span> <span class="nf">median</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return median along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.std"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.std">[docs]</a>    <span class="k">def</span> <span class="nf">std</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return std along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.sum"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.sum">[docs]</a>    <span class="k">def</span> <span class="nf">sum</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return sum along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">keepdims</span><span class="o">=</span><span class="n">keepdims</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.min"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.min">[docs]</a>    <span class="k">def</span> <span class="nf">min</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return min along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.max"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.max">[docs]</a>    <span class="k">def</span> <span class="nf">max</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return max along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.range"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.range">[docs]</a>    <span class="k">def</span> <span class="nf">range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return range tuple along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">))</span></div>
+<div class="viewcode-block" id="ANTsImage.argmin"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.argmin">[docs]</a>    <span class="k">def</span> <span class="nf">argmin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return argmin along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.argmax"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.argmax">[docs]</a>    <span class="k">def</span> <span class="nf">argmax</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return argmax along specified axis &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+<div class="viewcode-block" id="ANTsImage.argrange"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.argrange">[docs]</a>    <span class="k">def</span> <span class="nf">argrange</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return argrange along specified axis &quot;&quot;&quot;</span>
+        <span class="n">amin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">amax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">axis</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">(</span><span class="n">amin</span><span class="p">,</span> <span class="n">amax</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">amin</span><span class="p">,</span> <span class="n">amax</span><span class="p">])</span><span class="o">.</span><span class="n">T</span></div>
+<div class="viewcode-block" id="ANTsImage.flatten"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.flatten">[docs]</a>    <span class="k">def</span> <span class="nf">flatten</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Flatten image data &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span></div>
+<div class="viewcode-block" id="ANTsImage.nonzero"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.nonzero">[docs]</a>    <span class="k">def</span> <span class="nf">nonzero</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return non-zero indices of image &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">nonzero</span><span class="p">()</span></div>
+<div class="viewcode-block" id="ANTsImage.unique"><a class="viewcode-back" href="../../../core.html#ants.core.ants_image.ANTsImage.unique">[docs]</a>    <span class="k">def</span> <span class="nf">unique</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sort</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Return unique set of values in image &quot;&quot;&quot;</span>
+        <span class="n">unique_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">sort</span><span class="p">:</span>
+            <span class="n">unique_vals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">unique_vals</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">unique_vals</span></div>
+
+    <span class="c1">## OVERLOADED OPERATORS ##</span>
+    <span class="k">def</span> <span class="fm">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">+</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__sub__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">-</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__mul__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">*</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__truediv__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">/</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__pow__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">**</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__gt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">&gt;</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__ge__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">&gt;=</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__lt__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">&lt;</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__le__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">&lt;=</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">==</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="n">this_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="n">new_array</span> <span class="o">=</span> <span class="n">this_array</span> <span class="o">!=</span> <span class="n">other</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">new_image_like</span><span class="p">(</span><span class="n">new_array</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">idx</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_array</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">idx</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">()</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">image_physical_space_consistency</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;images do not occupy same physical space&#39;</span><span class="p">)</span>
+            <span class="n">arr</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">idx</span><span class="o">.</span><span class="n">numpy</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;bool&#39;</span><span class="p">),</span> <span class="n">value</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">arr</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">idx</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dimension</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;ANTsImage (</span><span class="si">{}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">orientation</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;ANTsImage</span><span class="se">\n</span><span class="s1">&#39;</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="n">s</span> <span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Pixel Type&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Components&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">,</span> <span class="s1">&#39; (RGB)&#39;</span> <span class="k">if</span> <span class="s1">&#39;RGB&#39;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_libsuffix</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Dimensions&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Spacing&#39;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">s</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">]))</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Origin&#39;</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">([</span><span class="nb">round</span><span class="p">(</span><span class="n">o</span><span class="p">,</span><span class="mi">4</span><span class="p">)</span> <span class="k">for</span> <span class="n">o</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">]))</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Direction&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span><span class="mi">4</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+<span class="k">if</span> <span class="n">HAS_PY3</span><span class="p">:</span>
+    <span class="c1"># Set partial class methods for any functions which take an ANTsImage as the first argument</span>
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">utils</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">utils</span><span class="p">,</span><span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">args</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;img&#39;</span><span class="p">,</span><span class="s1">&#39;image&#39;</span><span class="p">}):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">ANTsImage</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">partialmethod</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">registration</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">registration</span><span class="p">,</span><span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">args</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;img&#39;</span><span class="p">,</span><span class="s1">&#39;image&#39;</span><span class="p">}):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">ANTsImage</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">partialmethod</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">segmentation</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">segmentation</span><span class="p">,</span><span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">args</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;img&#39;</span><span class="p">,</span><span class="s1">&#39;image&#39;</span><span class="p">}):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">ANTsImage</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">partialmethod</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+    <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">viz</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">callable</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="n">inspect</span><span class="o">.</span><span class="n">getfullargspec</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">viz</span><span class="p">,</span><span class="n">k</span><span class="p">))</span><span class="o">.</span><span class="n">args</span>
+            <span class="k">if</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;img&#39;</span><span class="p">,</span><span class="s1">&#39;image&#39;</span><span class="p">}):</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">ANTsImage</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">partialmethod</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
+
+
+<span class="k">class</span> <span class="nc">Dictlist</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">Dictlist</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__setitem__</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="p">[])</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LabelImage"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage">[docs]</a><span class="k">class</span> <span class="nc">LabelImage</span><span class="p">(</span><span class="n">ANTsImage</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A LabelImage is a special class of ANTsImage which has discrete values</span>
+<span class="sd">    and string labels or other metadata (e.g. another string label such as the</span>
+<span class="sd">    &quot;lobe&quot; of the region) associated with each of the discrete values.</span>
+<span class="sd">    A canonical example of a LabelImage is a brain label_image or parcellation.</span>
+
+<span class="sd">    This class provides convenient functionality for manipulating and visualizing</span>
+<span class="sd">    images where you have real values associated with aggregated image regions (e.g.</span>
+<span class="sd">    if you have cortical thickness values associated with brain regions)</span>
+
+<span class="sd">    Commonly-used functionality for LabelImage types:</span>
+<span class="sd">        - create publication-quality figures of an label_image</span>
+
+<span class="sd">    Nomenclature</span>
+<span class="sd">    ------------</span>
+<span class="sd">    - key : a string representing the name of the associated index in the atlas image</span>
+<span class="sd">        - e.g. if the index is 1001 and the key may be InferiorTemporalGyrus`</span>
+<span class="sd">    - value : an integer value in the atlas image</span>
+<span class="sd">    - metakey : a string representing one of the possible sets of label key</span>
+<span class="sd">        - e.g. &#39;Lobes&#39; or &#39;Regions&#39;</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    - indexing works by creating a separate dict for each metakey, where</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_image</span><span class="p">,</span> <span class="n">label_info</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">template</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a LabelImage</span>
+
+<span class="sd">        ANTsR function: N/A</span>
+
+<span class="sd">        Arguments</span>
+<span class="sd">        ---------</span>
+<span class="sd">        label_image : ANTsImage</span>
+<span class="sd">            discrete (integer) image as label_image</span>
+
+<span class="sd">        label_info : dict or pandas.DataFrame</span>
+<span class="sd">            mapping between discrete values in `image` and string names</span>
+<span class="sd">            - if dict, the keys should be the discrete integer label values</span>
+<span class="sd">              and the values should be the label names or another dict with</span>
+<span class="sd">              any metadata</span>
+<span class="sd">            - if pd.DataFrame, the index (df.index) should be the discrete integer</span>
+<span class="sd">              label values and the other column(s) should be the label names and</span>
+<span class="sd">              any metadata</span>
+
+<span class="sd">        template : ANTsImage</span>
+<span class="sd">            default real-valued image to use for plotting or creating new images.</span>
+<span class="sd">            This image should be in the same space as the `label_image` image and the</span>
+<span class="sd">            two should be aligned.</span>
+
+<span class="sd">        Example</span>
+<span class="sd">        -------</span>
+<span class="sd">        &gt;&gt;&gt; import ants</span>
+<span class="sd">        &gt;&gt;&gt; square = np.zeros((20,20))</span>
+<span class="sd">        &gt;&gt;&gt; square[:10,:10] = 0</span>
+<span class="sd">        &gt;&gt;&gt; square[:10,10:] = 1</span>
+<span class="sd">        &gt;&gt;&gt; square[10:,:10] = 2</span>
+<span class="sd">        &gt;&gt;&gt; square[10:,10:] = 3</span>
+<span class="sd">        &gt;&gt;&gt; img = ants.from_numpy(square).astype(&#39;uint8&#39;)</span>
+<span class="sd">        &gt;&gt;&gt; label_image = ants.LabelImage(label_image=img, label_info=label_dict)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">label_image</span><span class="o">.</span><span class="n">pixeltype</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;unsigned char&#39;</span><span class="p">,</span> <span class="s1">&#39;unsigned int&#39;</span><span class="p">}:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Label images must have discrete pixeltype - got </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">label_image</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">label_image</span><span class="o">.</span><span class="n">components</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Label images must have only one component - got </span><span class="si">%i</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">label_image</span><span class="o">.</span><span class="n">components</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">label_info</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">label_info</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span><span class="s1">&#39;Label</span><span class="si">%i</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">label_image</span><span class="o">.</span><span class="n">unique</span><span class="p">()))}</span>
+
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_info</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_info</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_info</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">label_info</span><span class="o">.</span><span class="n">keys</span><span class="p">())[</span><span class="mi">0</span><span class="p">]],</span> <span class="nb">dict</span><span class="p">):</span>
+                <span class="n">label_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">label_info</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">label_info</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">label_info</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">label_info</span><span class="p">)))</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;label_label_info argument must be pd.DataFrame&#39;</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_info</span> <span class="o">=</span> <span class="n">label_info</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">label_image</span> <span class="o">=</span> <span class="n">label_image</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">template</span> <span class="o">=</span> <span class="n">template</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">generate_data</span><span class="p">()</span>
+
+        <span class="nb">super</span><span class="p">(</span><span class="n">LabelImage</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">pixeltype</span><span class="o">=</span><span class="n">label_image</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="n">label_image</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+            <span class="n">components</span><span class="o">=</span><span class="n">label_image</span><span class="o">.</span><span class="n">components</span><span class="p">,</span> <span class="n">pointer</span><span class="o">=</span><span class="n">label_image</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+
+<div class="viewcode-block" id="LabelImage.generate_data"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.generate_data">[docs]</a>    <span class="k">def</span> <span class="nf">generate_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_metakeys</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_info</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_uniquekeys</span> <span class="o">=</span> <span class="p">{</span><span class="n">mk</span><span class="p">:</span><span class="nb">list</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_info</span><span class="p">[</span><span class="n">mk</span><span class="p">]))</span> <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metakeys</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span> <span class="o">=</span> <span class="p">{</span><span class="n">mk</span><span class="p">:</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_info</span><span class="p">[</span><span class="n">mk</span><span class="p">])</span> <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metakeys</span><span class="p">}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_values</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label_info</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_values</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_values</span><span class="p">)</span>
+
+        <span class="n">items</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metakeys</span><span class="p">:</span>
+            <span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">mk</span><span class="p">),</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">]:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">][</span><span class="n">k</span><span class="p">],</span> <span class="nb">list</span><span class="p">):</span>
+                        <span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">][</span><span class="n">k</span><span class="p">]]</span> <span class="o">+</span> <span class="p">[</span><span class="n">v</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">items</span><span class="p">[</span><span class="n">mk</span><span class="p">][</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_items</span> <span class="o">=</span> <span class="n">items</span></div>
+
+<div class="viewcode-block" id="LabelImage.uniquekeys"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.uniquekeys">[docs]</a>    <span class="k">def</span> <span class="nf">uniquekeys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metakey</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get keys for a given metakey</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">metakey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uniquekeys</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">metakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metakeys</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;metakey </span><span class="si">%s</span><span class="s1"> does not exist&#39;</span> <span class="o">%</span> <span class="n">metakey</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_uniquekeys</span><span class="p">[</span><span class="n">metakey</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="LabelImage.keys"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.keys">[docs]</a>    <span class="k">def</span> <span class="nf">keys</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metakey</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">metakey</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">metakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metakeys</span><span class="p">():</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;metakey </span><span class="si">%s</span><span class="s1"> does not exist&#39;</span> <span class="o">%</span> <span class="n">metakey</span><span class="p">)</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_keys</span><span class="p">[</span><span class="n">metakey</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="LabelImage.metakeys"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.metakeys">[docs]</a>    <span class="k">def</span> <span class="nf">metakeys</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_metakeys</span></div>
+
+<div class="viewcode-block" id="LabelImage.parentkey"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.parentkey">[docs]</a>    <span class="k">def</span> <span class="nf">parentkey</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="n">parent</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">mk</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metakeys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">keys</span><span class="p">(</span><span class="n">mk</span><span class="p">):</span>
+                <span class="n">parent</span> <span class="o">=</span> <span class="n">mk</span>
+        <span class="k">if</span> <span class="n">parent</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;key does not have a parent&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">parent</span></div>
+
+<div class="viewcode-block" id="LabelImage.values"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.values">[docs]</a>    <span class="k">def</span> <span class="nf">values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_values</span></div>
+
+<div class="viewcode-block" id="LabelImage.items"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.items">[docs]</a>    <span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">metakey</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">metakey</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">metakeys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;metakey </span><span class="si">%s</span><span class="s1"> does not exist&#39;</span> <span class="o">%</span> <span class="n">metakey</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_items</span><span class="p">[</span><span class="n">metakey</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="LabelImage.n_values"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.LabelImage.n_values">[docs]</a>    <span class="k">def</span> <span class="nf">n_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_values</span></div>
+
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="c1"># get metakey of key</span>
+        <span class="n">metakey</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parentkey</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="c1"># get key,value pairs for metakey</span>
+        <span class="n">items</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">(</span><span class="n">metakey</span><span class="p">)</span>
+        <span class="c1"># return value at the given key</span>
+        <span class="k">return</span> <span class="n">items</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__setitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="n">label_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getitem__</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_value</span><span class="p">):</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;must give either single value or one value &#39;</span><span class="o">+</span>\
+                                     <span class="s1">&#39;for each index (got </span><span class="si">%i</span><span class="s1">, expected </span><span class="si">%i</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">label_value</span><span class="p">)))</span>
+                    <span class="k">for</span> <span class="n">old_val</span><span class="p">,</span> <span class="n">new_val</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">label_value</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">label_image</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label_image</span><span class="o">==</span><span class="n">old_val</span><span class="p">]</span> <span class="o">=</span> <span class="n">new_val</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">for</span> <span class="n">lv</span> <span class="ow">in</span> <span class="n">label_value</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">label_image</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label_image</span><span class="o">==</span><span class="n">lv</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label_image</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">label_image</span><span class="o">==</span><span class="n">label_value</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="s1">&#39;LabelImage</span><span class="se">\n</span><span class="s1">&#39;</span> <span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="s1"> (</span><span class="si">{}</span><span class="s1">)</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Pixel Type&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Components&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">components</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Dimensions&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Spacing&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Origin&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Direction&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span><span class="o">+</span>\
+            <span class="s1">&#39;</span><span class="se">\t</span><span class="s1"> </span><span class="si">{:&lt;10}</span><span class="s1"> : </span><span class="si">{}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="s1">&#39;Num Values&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_values</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">s</span></div>
+
+
+<div class="viewcode-block" id="copy_image_info"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.copy_image_info">[docs]</a><span class="k">def</span> <span class="nf">copy_image_info</span><span class="p">(</span><span class="n">reference</span><span class="p">,</span> <span class="n">target</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Copy origin, direction, and spacing from one antsImage to another</span>
+
+<span class="sd">    ANTsR function: `antsCopyImageInfo`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    reference : ANTsImage</span>
+<span class="sd">        Image to get values from.</span>
+<span class="sd">    target  : ANTsImAGE</span>
+<span class="sd">        Image to copy values to</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+<span class="sd">        Target image with reference header information</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">reference</span><span class="o">.</span><span class="n">origin</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">set_direction</span><span class="p">(</span><span class="n">reference</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+    <span class="n">target</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">(</span><span class="n">reference</span><span class="o">.</span><span class="n">spacing</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">target</span></div>
+
+<div class="viewcode-block" id="set_origin"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.set_origin">[docs]</a><span class="k">def</span> <span class="nf">set_origin</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">origin</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set origin of ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsSetOrigin`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">set_origin</span><span class="p">(</span><span class="n">origin</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_origin"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.get_origin">[docs]</a><span class="k">def</span> <span class="nf">get_origin</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get origin of ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsGetOrigin`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">origin</span></div>
+
+<div class="viewcode-block" id="set_direction"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.set_direction">[docs]</a><span class="k">def</span> <span class="nf">set_direction</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">direction</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set direction of ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsSetDirection`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">set_direction</span><span class="p">(</span><span class="n">direction</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_direction"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.get_direction">[docs]</a><span class="k">def</span> <span class="nf">get_direction</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get direction of ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsGetDirection`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">direction</span></div>
+
+<div class="viewcode-block" id="set_spacing"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.set_spacing">[docs]</a><span class="k">def</span> <span class="nf">set_spacing</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">spacing</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set spacing of ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsSetSpacing`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">image</span><span class="o">.</span><span class="n">set_spacing</span><span class="p">(</span><span class="n">spacing</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="get_spacing"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.get_spacing">[docs]</a><span class="k">def</span> <span class="nf">get_spacing</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Get spacing of ANTsImage</span>
+
+<span class="sd">    ANTsR function: `antsGetSpacing`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">image</span><span class="o">.</span><span class="n">spacing</span></div>
+
+
+<div class="viewcode-block" id="image_physical_space_consistency"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.image_physical_space_consistency">[docs]</a><span class="k">def</span> <span class="nf">image_physical_space_consistency</span><span class="p">(</span><span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">,</span> <span class="n">tolerance</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">,</span> <span class="n">datatype</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if two or more ANTsImage objects occupy the same physical space</span>
+
+<span class="sd">    ANTsR function: `antsImagePhysicalSpaceConsistency`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    *images : ANTsImages</span>
+<span class="sd">        images to compare</span>
+
+<span class="sd">    tolerance : float</span>
+<span class="sd">        tolerance when checking origin and spacing</span>
+
+<span class="sd">    data_type : boolean</span>
+<span class="sd">        If true, also check that the image data types are the same</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    boolean</span>
+<span class="sd">        true if images share same physical space, false otherwise</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">images</span> <span class="o">=</span> <span class="p">[</span><span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">]</span>
+
+    <span class="n">img1</span> <span class="o">=</span> <span class="n">images</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">img2</span> <span class="ow">in</span> <span class="n">images</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img1</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">img2</span><span class="p">,</span> <span class="n">ANTsImage</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Both images must be of class `AntsImage`&#39;</span><span class="p">)</span>
+
+        <span class="c1"># image dimension check</span>
+        <span class="k">if</span> <span class="n">img1</span><span class="o">.</span><span class="n">dimension</span> <span class="o">!=</span> <span class="n">img2</span><span class="o">.</span><span class="n">dimension</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># image spacing check</span>
+        <span class="n">space_diffs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">s1</span><span class="o">-</span><span class="n">s2</span><span class="p">)</span><span class="o">&gt;</span><span class="n">tolerance</span> <span class="k">for</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">img1</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">img2</span><span class="o">.</span><span class="n">spacing</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">space_diffs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># image origin check</span>
+        <span class="n">origin_diffs</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="nb">abs</span><span class="p">(</span><span class="n">s1</span><span class="o">-</span><span class="n">s2</span><span class="p">)</span><span class="o">&gt;</span><span class="n">tolerance</span> <span class="k">for</span> <span class="n">s1</span><span class="p">,</span> <span class="n">s2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">img1</span><span class="o">.</span><span class="n">origin</span><span class="p">,</span> <span class="n">img2</span><span class="o">.</span><span class="n">origin</span><span class="p">)])</span>
+        <span class="k">if</span> <span class="n">origin_diffs</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># image direction check</span>
+        <span class="n">origin_diff</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">img1</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">img2</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span> <span class="n">atol</span><span class="o">=</span><span class="n">tolerance</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">origin_diff</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="c1"># data type</span>
+        <span class="k">if</span> <span class="n">datatype</span> <span class="o">==</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">img1</span><span class="o">.</span><span class="n">pixeltype</span> <span class="o">!=</span> <span class="n">img2</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="k">if</span> <span class="n">img1</span><span class="o">.</span><span class="n">components</span> <span class="o">!=</span> <span class="n">img2</span><span class="o">.</span><span class="n">components</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+    <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="image_type_cast"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.image_type_cast">[docs]</a><span class="k">def</span> <span class="nf">image_type_cast</span><span class="p">(</span><span class="n">image_list</span><span class="p">,</span> <span class="n">pixeltype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Cast a list of images to the highest pixeltype present in the list</span>
+<span class="sd">    or all to a specified type</span>
+
+<span class="sd">    ANTsR function: `antsImageTypeCast`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image_list : list/tuple</span>
+<span class="sd">        images to cast</span>
+
+<span class="sd">    pixeltype : string (optional)</span>
+<span class="sd">        pixeltype to cast to. If None, images will be cast to the highest</span>
+<span class="sd">        precision pixeltype found in image_list</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    list of ANTsImages</span>
+<span class="sd">        given images casted to new type</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image_list</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span><span class="nb">tuple</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;image_list must be list of ANTsImage types&#39;</span><span class="p">)</span>
+
+    <span class="n">pixtypes</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">:</span>
+        <span class="n">pixtypes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">pixeltype</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pixeltype</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pixeltype</span> <span class="o">=</span> <span class="s1">&#39;unsigned char&#39;</span>
+        <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pixtypes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">p</span> <span class="o">==</span> <span class="s1">&#39;double&#39;</span><span class="p">:</span>
+                <span class="n">pixeltype</span> <span class="o">=</span> <span class="s1">&#39;double&#39;</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">p</span><span class="o">==</span><span class="s1">&#39;float&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pixeltype</span><span class="o">!=</span><span class="s1">&#39;double&#39;</span><span class="p">):</span>
+                <span class="n">pixeltype</span> <span class="o">=</span> <span class="s1">&#39;float&#39;</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="n">p</span><span class="o">==</span><span class="s1">&#39;unsigned int&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pixeltype</span><span class="o">!=</span><span class="s1">&#39;float&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">pixeltype</span><span class="o">!=</span><span class="s1">&#39;double&#39;</span><span class="p">):</span>
+                <span class="n">pixeltype</span> <span class="o">=</span> <span class="s1">&#39;unsigned int&#39;</span>
+
+    <span class="n">out_images</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">img</span> <span class="ow">in</span> <span class="n">image_list</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">img</span><span class="o">.</span><span class="n">pixeltype</span> <span class="o">==</span> <span class="n">pixeltype</span><span class="p">:</span>
+            <span class="n">out_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_images</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">pixeltype</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">out_images</span></div>
+
+
+<div class="viewcode-block" id="allclose"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_image.allclose">[docs]</a><span class="k">def</span> <span class="nf">allclose</span><span class="p">(</span><span class="n">image1</span><span class="p">,</span> <span class="n">image2</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Check if two images have the same array values</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">image1</span><span class="o">.</span><span class="n">numpy</span><span class="p">(),</span> <span class="n">image2</span><span class="o">.</span><span class="n">numpy</span><span class="p">())</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

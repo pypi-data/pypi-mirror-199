@@ -1,0 +1,484 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.core.ants_transform_io &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.core.ants_transform_io</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;create_ants_transform&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;new_ants_transform&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;read_transform&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;write_transform&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;transform_from_displacement_field&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;transform_to_displacement_field&quot;</span>
+<span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ants_image</span> <span class="k">as</span> <span class="n">iio</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">ants_transform</span> <span class="k">as</span> <span class="n">tio</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+
+
+<div class="viewcode-block" id="new_ants_transform"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform_io.new_ants_transform">[docs]</a><span class="k">def</span> <span class="nf">new_ants_transform</span><span class="p">(</span>
+    <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="n">dimension</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;AffineTransform&quot;</span><span class="p">,</span> <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a new ANTsTransform</span>
+
+<span class="sd">    ANTsR function: None</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform()</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span>
+        <span class="s2">&quot;newAntsTransform</span><span class="si">%s%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">precision</span><span class="p">),</span> <span class="n">dimension</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">itk_tx</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">precision</span><span class="p">,</span> <span class="n">dimension</span><span class="p">,</span> <span class="n">transform_type</span><span class="p">)</span>
+    <span class="n">ants_tx</span> <span class="o">=</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+        <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span>
+        <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span>
+        <span class="n">transform_type</span><span class="o">=</span><span class="n">transform_type</span><span class="p">,</span>
+        <span class="n">pointer</span><span class="o">=</span><span class="n">itk_tx</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">parameters</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ants_tx</span><span class="o">.</span><span class="n">set_parameters</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ants_tx</span></div>
+
+
+<div class="viewcode-block" id="create_ants_transform"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform_io.create_ants_transform">[docs]</a><span class="k">def</span> <span class="nf">create_ants_transform</span><span class="p">(</span>
+    <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;AffineTransform&quot;</span><span class="p">,</span>
+    <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+    <span class="n">dimension</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span>
+    <span class="n">matrix</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">offset</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">center</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">translation</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">fixed_parameters</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">displacement_field</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="n">supported_types</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create and initialize an ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `createAntsrTransform`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    transform_type : string</span>
+<span class="sd">        type of transform(s)</span>
+
+<span class="sd">    precision : string</span>
+<span class="sd">        numerical precision</span>
+
+<span class="sd">    dimension : integer</span>
+<span class="sd">        spatial dimension of transform</span>
+
+<span class="sd">    matrix : ndarray</span>
+<span class="sd">        matrix for linear transforms</span>
+
+<span class="sd">    offset : tuple/list</span>
+<span class="sd">        offset for linear transforms</span>
+
+<span class="sd">    center : tuple/list</span>
+<span class="sd">        center for linear transforms</span>
+
+<span class="sd">    translation : tuple/list</span>
+<span class="sd">        translation for linear transforms</span>
+
+<span class="sd">    parameters : ndarray/list</span>
+<span class="sd">        array of parameters</span>
+
+<span class="sd">    fixed_parameters : ndarray/list</span>
+<span class="sd">        array of fixed parameters</span>
+
+<span class="sd">    displacement_field : ANTsImage</span>
+<span class="sd">        multichannel ANTsImage for non-linear transform</span>
+
+<span class="sd">    supported_types : boolean</span>
+<span class="sd">        flag that returns array of possible transforms types</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsTransform or list of ANTsTransform types</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; translation = (3,4,5)</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.create_ants_transform( type=&#39;Euler3DTransform&#39;, translation=translation )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_check_arg</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[]</span>
+            <span class="k">elif</span> <span class="n">dim</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[[]]</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">arg</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+            <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Incompatible input argument&quot;</span><span class="p">)</span>
+
+    <span class="n">matrix</span> <span class="o">=</span> <span class="n">_check_arg</span><span class="p">(</span><span class="n">matrix</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">offset</span> <span class="o">=</span> <span class="n">_check_arg</span><span class="p">(</span><span class="n">offset</span><span class="p">)</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="n">_check_arg</span><span class="p">(</span><span class="n">center</span><span class="p">)</span>
+    <span class="n">translation</span> <span class="o">=</span> <span class="n">_check_arg</span><span class="p">(</span><span class="n">translation</span><span class="p">)</span>
+    <span class="n">parameters</span> <span class="o">=</span> <span class="n">_check_arg</span><span class="p">(</span><span class="n">parameters</span><span class="p">)</span>
+    <span class="n">fixed_parameters</span> <span class="o">=</span> <span class="n">_check_arg</span><span class="p">(</span><span class="n">fixed_parameters</span><span class="p">)</span>
+
+    <span class="n">matrix_offset_types</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;AffineTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CenteredAffineTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Euler2DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Euler3DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Rigid3DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Rigid2DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;QuaternionRigidTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Similarity2DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CenteredSimilarity2DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;Similarity3DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CenteredRigid2DTransform&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;CenteredEuler3DTransform&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="c1"># user_matrix_types = {&#39;Affine&#39;,&#39;CenteredAffine&#39;,</span>
+    <span class="c1">#                     &#39;Euler&#39;, &#39;CenteredEuler&#39;,</span>
+    <span class="c1">#                     &#39;Rigid&#39;, &#39;CenteredRigid&#39;, &#39;QuaternionRigid&#39;,</span>
+    <span class="c1">#                     &#39;Similarity&#39;, &#39;CenteredSimilarity&#39;}</span>
+
+    <span class="k">if</span> <span class="n">supported_types</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">matrix_offset_types</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="s2">&quot;DisplacementFieldTransform&quot;</span><span class="p">])</span>
+
+    <span class="c1"># Check for valid dimension</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">dimension</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">dimension</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported dimension: </span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">dimension</span><span class="p">)</span>
+
+    <span class="c1"># Check for valid precision</span>
+    <span class="n">precision_types</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">,</span> <span class="s2">&quot;double&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">precision</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">precision_types</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported Precision </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">precision</span><span class="p">))</span>
+
+    <span class="c1"># Check for supported transform type</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">transform_type</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">matrix_offset_types</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span>
+        <span class="n">transform_type</span> <span class="o">!=</span> <span class="s2">&quot;DisplacementFieldTransform&quot;</span>
+    <span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported type </span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">transform_type</span><span class="p">))</span>
+
+    <span class="c1"># Check parameters with type</span>
+    <span class="k">if</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;Euler3DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;Euler2DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;Rigid3DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;QuaternionRigidTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;Rigid2DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;CenteredRigid2DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;CenteredEuler3DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;Similarity3DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">3</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;Similarity2DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">elif</span> <span class="n">transform_type</span> <span class="o">==</span> <span class="s2">&quot;CenteredSimilarity2DTransform&quot;</span><span class="p">:</span>
+        <span class="n">dimension</span> <span class="o">=</span> <span class="mi">2</span>
+
+    <span class="c1"># If displacement field</span>
+    <span class="k">if</span> <span class="n">displacement_field</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># raise ValueError(&#39;Displacement field transform not currently supported&#39;)</span>
+        <span class="n">itk_tx</span> <span class="o">=</span> <span class="n">transform_from_displacement_field</span><span class="p">(</span><span class="n">displacement_field</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">tio</span><span class="o">.</span><span class="n">ants_transform</span><span class="p">(</span><span class="n">itk_tx</span><span class="p">)</span>
+
+    <span class="c1"># Transforms that derive from itk::MatrixOffsetTransformBase</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span>
+        <span class="s2">&quot;matrixOffset</span><span class="si">%s%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">precision</span><span class="p">),</span> <span class="n">dimension</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">itk_tx</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span>
+        <span class="n">transform_type</span><span class="p">,</span>
+        <span class="n">precision</span><span class="p">,</span>
+        <span class="n">dimension</span><span class="p">,</span>
+        <span class="n">matrix</span><span class="p">,</span>
+        <span class="n">offset</span><span class="p">,</span>
+        <span class="n">center</span><span class="p">,</span>
+        <span class="n">translation</span><span class="p">,</span>
+        <span class="n">parameters</span><span class="p">,</span>
+        <span class="n">fixed_parameters</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+        <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span>
+        <span class="n">dimension</span><span class="o">=</span><span class="n">dimension</span><span class="p">,</span>
+        <span class="n">transform_type</span><span class="o">=</span><span class="n">transform_type</span><span class="p">,</span>
+        <span class="n">pointer</span><span class="o">=</span><span class="n">itk_tx</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="transform_from_displacement_field"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform_io.transform_from_displacement_field">[docs]</a><span class="k">def</span> <span class="nf">transform_from_displacement_field</span><span class="p">(</span><span class="n">field</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert deformation field (multiChannel image) to ANTsTransform</span>
+
+<span class="sd">    ANTsR function: `antsrTransformFromDisplacementField`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    field : ANTsImage</span>
+<span class="sd">        deformation field as multi-channel ANTsImage</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; fi = ants.image_read(ants.get_ants_data(&#39;r16&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; mi = ants.image_read(ants.get_ants_data(&#39;r64&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; fi = ants.resample_image(fi,(60,60),1,0)</span>
+<span class="sd">    &gt;&gt;&gt; mi = ants.resample_image(mi,(60,60),1,0) # speed up</span>
+<span class="sd">    &gt;&gt;&gt; mytx = ants.registration(fixed=fi, moving=mi, type_of_transform = (&#39;SyN&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; vec = ants.image_read( mytx[&#39;fwdtransforms&#39;][0] )</span>
+<span class="sd">    &gt;&gt;&gt; atx = ants.transform_from_displacement_field( vec )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">field</span><span class="p">,</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;field must be ANTsImage type&quot;</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;antsTransformFromDisplacementFieldF</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">field</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+    <span class="n">field</span> <span class="o">=</span> <span class="n">field</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+    <span class="n">txptr</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">field</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+        <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">,</span>
+        <span class="n">dimension</span><span class="o">=</span><span class="n">field</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+        <span class="n">transform_type</span><span class="o">=</span><span class="s2">&quot;DisplacementFieldTransform&quot;</span><span class="p">,</span>
+        <span class="n">pointer</span><span class="o">=</span><span class="n">txptr</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+<div class="viewcode-block" id="transform_to_displacement_field"><a class="viewcode-back" href="../../../ants.core.html#ants.core.ants_transform_io.transform_to_displacement_field">[docs]</a><span class="k">def</span> <span class="nf">transform_to_displacement_field</span><span class="p">(</span><span class="n">xfrm</span><span class="p">,</span> <span class="n">ref</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Convert displacement field ANTsTransform to displacement field</span>
+
+<span class="sd">    ANTsR function: `antsrTransformToDisplacementField`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    xfrm : displacement field ANTsTransform</span>
+<span class="sd">        displacement field ANTsTransform</span>
+
+<span class="sd">    ref : ANTs Image</span>
+<span class="sd">         </span>
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsVectorImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; fi = ants.image_read(ants.get_ants_data(&#39;r16&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; mi = ants.image_read(ants.get_ants_data(&#39;r64&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; fi = ants.resample_image(fi,(60,60),1,0)</span>
+<span class="sd">    &gt;&gt;&gt; mi = ants.resample_image(mi,(60,60),1,0) # speed up</span>
+<span class="sd">    &gt;&gt;&gt; mytx = ants.registration(fixed=fi, moving=mi, type_of_transform = (&#39;SyN&#39;) )</span>
+<span class="sd">    &gt;&gt;&gt; vec = ants.image_read( mytx[&#39;fwdtransforms&#39;][0] )</span>
+<span class="sd">    &gt;&gt;&gt; atx = ants.transform_from_displacement_field( vec )</span>
+<span class="sd">    &gt;&gt;&gt; field = ants.transform_to_displacement_field( atx, fi )</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">xfrm</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s1">&#39;DisplacementFieldTransform&#39;</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Transform must be of DisplacementFieldTransform type&quot;</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;antsTransformToDisplacementFieldF</span><span class="si">%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">xfrm</span><span class="o">.</span><span class="n">dimension</span><span class="p">)</span>
+    <span class="n">field_ptr</span> <span class="o">=</span> <span class="n">libfn</span><span class="p">(</span><span class="n">xfrm</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">ref</span><span class="o">.</span><span class="n">pointer</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">iio</span><span class="o">.</span><span class="n">ANTsImage</span><span class="p">(</span> <span class="n">pixeltype</span><span class="o">=</span><span class="n">xfrm</span><span class="o">.</span><span class="n">precision</span><span class="p">,</span>
+                          <span class="n">dimension</span><span class="o">=</span><span class="n">xfrm</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+                          <span class="n">components</span><span class="o">=</span><span class="n">xfrm</span><span class="o">.</span><span class="n">dimension</span><span class="p">,</span>
+                          <span class="n">pointer</span><span class="o">=</span><span class="n">field_ptr</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="read_transform"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform_io.read_transform">[docs]</a><span class="k">def</span> <span class="nf">read_transform</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="s2">&quot;float&quot;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Read a transform from file</span>
+
+<span class="sd">    ANTsR function: `readAntsrTransform`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    filename : string</span>
+<span class="sd">        filename of transform</span>
+
+<span class="sd">    precision : string</span>
+<span class="sd">        numerical precision of transform</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsTransform</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform(dimension=2)</span>
+<span class="sd">    &gt;&gt;&gt; tx.set_parameters((0.9,0,0,1.1,10,11))</span>
+<span class="sd">    &gt;&gt;&gt; ants.write_transform(tx, &#39;~/desktop/tx.mat&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; tx2 = ants.read_transform(&#39;~/desktop/tx.mat&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;filename does not exist!&quot;</span><span class="p">)</span>
+
+    <span class="c1"># intentionally ignore dimension</span>
+    <span class="n">libfn1</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;getTransformDimensionFromFile&quot;</span><span class="p">)</span>
+    <span class="n">dimensionUse</span> <span class="o">=</span> <span class="n">libfn1</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">libfn2</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;getTransformNameFromFile&quot;</span><span class="p">)</span>
+    <span class="n">transform_type</span> <span class="o">=</span> <span class="n">libfn2</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+
+    <span class="n">libfn3</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span>
+        <span class="s2">&quot;readTransform</span><span class="si">%s%i</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">utils</span><span class="o">.</span><span class="n">short_ptype</span><span class="p">(</span><span class="n">precision</span><span class="p">),</span> <span class="n">dimensionUse</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">itk_tx</span> <span class="o">=</span> <span class="n">libfn3</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">dimensionUse</span><span class="p">,</span> <span class="n">precision</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">tio</span><span class="o">.</span><span class="n">ANTsTransform</span><span class="p">(</span>
+        <span class="n">precision</span><span class="o">=</span><span class="n">precision</span><span class="p">,</span>
+        <span class="n">dimension</span><span class="o">=</span><span class="n">dimensionUse</span><span class="p">,</span>
+        <span class="n">transform_type</span><span class="o">=</span><span class="n">transform_type</span><span class="p">,</span>
+        <span class="n">pointer</span><span class="o">=</span><span class="n">itk_tx</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="write_transform"><a class="viewcode-back" href="../../../core.html#ants.core.ants_transform_io.write_transform">[docs]</a><span class="k">def</span> <span class="nf">write_transform</span><span class="p">(</span><span class="n">transform</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write ANTsTransform to file</span>
+
+<span class="sd">    ANTsR function: `writeAntsrTransform`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    transform : ANTsTransform</span>
+<span class="sd">        transform to save</span>
+
+<span class="sd">    filename : string</span>
+<span class="sd">        filename of transform (file extension is &quot;.mat&quot; for affine transforms)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    N/A</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; tx = ants.new_ants_transform(dimension=2)</span>
+<span class="sd">    &gt;&gt;&gt; tx.set_parameters((0.9,0,0,1.1,10,11))</span>
+<span class="sd">    &gt;&gt;&gt; ants.write_transform(tx, &#39;~/desktop/tx.mat&#39;)</span>
+<span class="sd">    &gt;&gt;&gt; tx2 = ants.read_transform(&#39;~/desktop/tx.mat&#39;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">expanduser</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;writeTransform</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">_libsuffix</span><span class="p">))</span>
+    <span class="n">libfn</span><span class="p">(</span><span class="n">transform</span><span class="o">.</span><span class="n">pointer</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

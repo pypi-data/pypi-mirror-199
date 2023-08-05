@@ -1,0 +1,192 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.utils.denoise_image &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.utils.denoise_image</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;denoise_image&quot;</span><span class="p">]</span>
+
+<span class="kn">from</span> <span class="nn">..</span> <span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span> <span class="nn">.</span> <span class="kn">import</span> <span class="n">process_args</span> <span class="k">as</span> <span class="n">pargs</span>
+<span class="kn">from</span> <span class="nn">.get_mask</span> <span class="kn">import</span> <span class="n">get_mask</span>
+
+
+<div class="viewcode-block" id="denoise_image"><a class="viewcode-back" href="../../../utils.html#ants.utils.denoise_image.denoise_image">[docs]</a><span class="k">def</span> <span class="nf">denoise_image</span><span class="p">(</span>
+    <span class="n">image</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">shrink_factor</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">noise_model</span><span class="o">=</span><span class="s2">&quot;Rician&quot;</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="mi">0</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Denoise an image using a spatially adaptive filter originally described in</span>
+<span class="sd">    J. V. Manjon, P. Coupe, Luis Marti-Bonmati, D. L. Collins, and M. Robles.</span>
+<span class="sd">    Adaptive Non-Local Means Denoising of MR Images With Spatially Varying</span>
+<span class="sd">    Noise Levels, Journal of Magnetic Resonance Imaging, 31:192-203, June 2010.</span>
+
+<span class="sd">    ANTsR function: `denoiseImage`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    image : ANTsImage</span>
+<span class="sd">        scalar image to denoise.</span>
+
+<span class="sd">    mask : ANTsImage</span>
+<span class="sd">        to limit the denoise region.</span>
+
+<span class="sd">    shrink_factor : scalar</span>
+<span class="sd">        downsampling level performed within the algorithm.</span>
+
+<span class="sd">    p : integer or character of format &#39;2x2&#39; where the x separates vector entries</span>
+<span class="sd">        patch radius for local sample.</span>
+
+<span class="sd">    r : integer or character of format &#39;2x2&#39; where the x separates vector entries</span>
+<span class="sd">        search radius from which to choose extra local samples.</span>
+
+<span class="sd">    noise_model : string</span>
+<span class="sd">        &#39;Rician&#39; or &#39;Gaussian&#39;</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ANTsImage</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; image = ants.image_read(ants.get_ants_data(&#39;r16&#39;))</span>
+<span class="sd">    &gt;&gt;&gt; # add fairly large salt and pepper noise</span>
+<span class="sd">    &gt;&gt;&gt; imagenoise = image + np.random.randn(*image.shape).astype(&#39;float32&#39;)*5</span>
+<span class="sd">    &gt;&gt;&gt; imagedenoise = ants.denoise_image(imagenoise, ants.get_mask(image))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">inpixeltype</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">pixeltype</span>
+    <span class="n">outimage</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;float&quot;</span><span class="p">)</span>
+
+    <span class="n">mydim</span> <span class="o">=</span> <span class="n">image</span><span class="o">.</span><span class="n">dimension</span>
+
+    <span class="k">if</span> <span class="n">mask</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">myargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">mydim</span><span class="p">,</span>
+            <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">image</span><span class="p">,</span>
+            <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">noise_model</span><span class="p">,</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">shrink_factor</span><span class="p">),</span>
+            <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
+            <span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">,</span>
+            <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="n">outimage</span><span class="p">,</span>
+            <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
+        <span class="p">}</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">myargs</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="n">mydim</span><span class="p">,</span>
+            <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="n">image</span><span class="p">,</span>
+            <span class="s2">&quot;n&quot;</span><span class="p">:</span> <span class="n">noise_model</span><span class="p">,</span>
+            <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="n">mask</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="s2">&quot;unsigned char&quot;</span><span class="p">),</span>
+            <span class="s2">&quot;s&quot;</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">shrink_factor</span><span class="p">),</span>
+            <span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="n">p</span><span class="p">,</span>
+            <span class="s2">&quot;r&quot;</span><span class="p">:</span> <span class="n">r</span><span class="p">,</span>
+            <span class="s2">&quot;o&quot;</span><span class="p">:</span> <span class="n">outimage</span><span class="p">,</span>
+            <span class="s2">&quot;v&quot;</span><span class="p">:</span> <span class="n">v</span><span class="p">,</span>
+        <span class="p">}</span>
+
+    <span class="n">processed_args</span> <span class="o">=</span> <span class="n">pargs</span><span class="o">.</span><span class="n">_int_antsProcessArguments</span><span class="p">(</span><span class="n">myargs</span><span class="p">)</span>
+    <span class="n">libfn</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">get_lib_fn</span><span class="p">(</span><span class="s2">&quot;DenoiseImage&quot;</span><span class="p">)</span>
+    <span class="n">libfn</span><span class="p">(</span><span class="n">processed_args</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">outimage</span><span class="o">.</span><span class="n">clone</span><span class="p">(</span><span class="n">inpixeltype</span><span class="p">)</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

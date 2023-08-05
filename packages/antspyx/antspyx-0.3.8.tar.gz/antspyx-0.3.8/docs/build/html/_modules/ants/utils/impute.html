@@ -1,0 +1,252 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ants.utils.impute &#8212; ANTsPy master documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ants.utils.impute</h1><div class="highlight"><pre>
+<span></span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;impute&#39;</span><span class="p">]</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">fancyimpute</span> <span class="kn">import</span> <span class="n">BiScaler</span><span class="p">,</span> <span class="n">KNN</span><span class="p">,</span> <span class="n">NuclearNormMinimization</span><span class="p">,</span> <span class="n">SoftImpute</span><span class="p">,</span> <span class="n">IterativeSVD</span>
+    <span class="n">has_fancyimpute</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="n">has_fancyimpute</span> <span class="o">=</span> <span class="kc">False</span>
+
+
+<div class="viewcode-block" id="impute"><a class="viewcode-back" href="../../../utils.html#ants.utils.impute.impute">[docs]</a><span class="k">def</span> <span class="nf">impute</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">nan_value</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Impute missing values on a numpy ndarray in a column-wise manner.</span>
+<span class="sd">    </span>
+<span class="sd">    ANTsR function: `antsrimpute`</span>
+
+<span class="sd">    Arguments</span>
+<span class="sd">    ---------</span>
+<span class="sd">    data : numpy.ndarray</span>
+<span class="sd">        data to impute</span>
+
+<span class="sd">    method : string or float</span>
+<span class="sd">        type of imputation method to use</span>
+<span class="sd">        Options:</span>
+<span class="sd">            mean</span>
+<span class="sd">            median</span>
+<span class="sd">            constant</span>
+<span class="sd">            KNN</span>
+<span class="sd">            BiScaler</span>
+<span class="sd">            NuclearNormMinimization</span>
+<span class="sd">            SoftImpute</span>
+<span class="sd">            IterativeSVD</span>
+
+<span class="sd">    value : scalar (optional)</span>
+<span class="sd">        optional arguments for different methods</span>
+<span class="sd">        if method == &#39;constant&#39;</span>
+<span class="sd">            constant value</span>
+<span class="sd">        if method == &#39;KNN&#39;</span>
+<span class="sd">            number of nearest neighbors to use</span>
+
+<span class="sd">    nan_value : scalar</span>
+<span class="sd">        value which is interpreted as a missing value</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    ndarray if ndarray was given</span>
+<span class="sd">    OR</span>
+<span class="sd">    pd.DataFrame if pd.DataFrame was given</span>
+
+<span class="sd">    Example</span>
+<span class="sd">    -------</span>
+<span class="sd">    &gt;&gt;&gt; import ants</span>
+<span class="sd">    &gt;&gt;&gt; import numpy as np</span>
+<span class="sd">    &gt;&gt;&gt; data = np.random.randn(4,10)</span>
+<span class="sd">    &gt;&gt;&gt; data[2,3] = np.nan</span>
+<span class="sd">    &gt;&gt;&gt; data[3,5] = np.nan</span>
+<span class="sd">    &gt;&gt;&gt; data_imputed = ants.impute(data, &#39;mean&#39;)</span>
+
+<span class="sd">    Details</span>
+<span class="sd">    -------</span>
+<span class="sd">    KNN: Nearest neighbor imputations which weights samples using the mean squared </span>
+<span class="sd">            difference on features for which two rows both have observed data.</span>
+
+<span class="sd">    SoftImpute: Matrix completion by iterative soft thresholding of SVD </span>
+<span class="sd">                decompositions. Inspired by the softImpute package for R, which </span>
+<span class="sd">                is based on Spectral Regularization Algorithms for Learning </span>
+<span class="sd">                Large Incomplete Matrices by Mazumder et. al.</span>
+
+<span class="sd">    IterativeSVD: Matrix completion by iterative low-rank SVD decomposition.</span>
+<span class="sd">                    Should be similar to SVDimpute from Missing value estimation </span>
+<span class="sd">                    methods for DNA microarrays by Troyanskaya et. al.</span>
+
+<span class="sd">    MICE: Reimplementation of Multiple Imputation by Chained Equations.</span>
+
+<span class="sd">    MatrixFactorization: Direct factorization of the incomplete matrix into </span>
+<span class="sd">                        low-rank U and V, with an L1 sparsity penalty on the elements </span>
+<span class="sd">                        of U and an L2 penalty on the elements of V. </span>
+<span class="sd">                        Solved by gradient descent.</span>
+
+<span class="sd">    NuclearNormMinimization: Simple implementation of Exact Matrix Completion </span>
+<span class="sd">                            via Convex Optimization by Emmanuel Candes and Benjamin </span>
+<span class="sd">                            Recht using cvxpy. Too slow for large matrices.</span>
+
+<span class="sd">    BiScaler: Iterative estimation of row/column means and standard deviations </span>
+<span class="sd">                to get doubly normalized matrix. Not guaranteed to converge but </span>
+<span class="sd">                works well in practice. Taken from Matrix Completion and </span>
+<span class="sd">                Low-Rank SVD via Fast Alternating Least Squares.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_fancyimpute_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;KNN&#39;</span><span class="p">,</span> <span class="s1">&#39;BiScaler&#39;</span><span class="p">,</span> <span class="s1">&#39;NuclearNormMinimization&#39;</span><span class="p">,</span> <span class="s1">&#39;SoftImpute&#39;</span><span class="p">,</span> <span class="s1">&#39;IterativeSVD&#39;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">has_fancyimpute</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">method</span> <span class="ow">in</span> <span class="n">_fancyimpute_options</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;You must install `fancyimpute` (pip install fancyimpute) to use this method&#39;</span><span class="p">)</span>
+
+    <span class="n">_base_options</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;mean&#39;</span><span class="p">,</span> <span class="s1">&#39;median&#39;</span><span class="p">,</span> <span class="s1">&#39;constant&#39;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_base_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_fancyimpute_options</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span><span class="nb">float</span><span class="p">))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;method not understood.. Use `mean`, `median`, a scalar, or an option from `fancyimpute`&#39;</span><span class="p">)</span>
+
+    <span class="n">X_incomplete</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;KNN&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">value</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">KNN</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="n">value</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;BiScaler&#39;</span><span class="p">:</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">BiScaler</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">fit_transform</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;SoftImpute&#39;</span><span class="p">:</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">SoftImpute</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;IterativeSVD&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="n">X_incomplete</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">rank</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">IterativeSVD</span><span class="p">(</span><span class="n">rank</span><span class="o">=</span><span class="n">rank</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span><span class="n">complete</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;mean&#39;</span><span class="p">:</span>
+        <span class="n">col_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_incomplete</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">X_incomplete</span><span class="p">[:,</span><span class="n">i</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">[:,</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">col_means</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">X_incomplete</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;median&#39;</span><span class="p">:</span>
+        <span class="n">col_means</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmean</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">X_incomplete</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">X_incomplete</span><span class="p">[:,</span><span class="n">i</span><span class="p">][</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">[:,</span><span class="n">i</span><span class="p">])]</span> <span class="o">=</span> <span class="n">col_means</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">X_incomplete</span>
+
+    <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;constant&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must give `value` argument if method == constant&#39;</span><span class="p">)</span>
+        <span class="n">X_incomplete</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">X_incomplete</span><span class="p">)]</span> <span class="o">=</span> <span class="n">value</span>
+        <span class="n">X_filled</span> <span class="o">=</span> <span class="n">X_incomplete</span>
+
+    <span class="k">return</span> <span class="n">X_filled</span></div>
+
+
+
+
+
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../../index.html">
+              <img class="logo" src="../../../_static/antspy-logo.png" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../../index.html">ANTsPy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption" role="heading"><span class="caption-text">Package Reference</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../core.html">Core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../registration.html">Registration</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../segmentation.html">Segmentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../learn.html">Statistical Learning</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../utils.html">Utilities</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../vis.html">Visualization</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2017, ANTs Contributors.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
