@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: uwcip-sharedutils
+Version: 0.1.0
+Summary: 
+Author: Lia Bozarth
+Author-email: liafan@uw.edu
+Requires-Python: >=3.9
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pyyaml (>=6.0,<7.0)
+Description-Content-Type: text/markdown
+
+# sharedutils
+Code under **sharedutils** are a collection of common functions shared by all projects
+
