@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "fastapi-commons-exceptions"
+version = "0.1.0"
+description = ""
+authors = ["ventura94 <arianventura94@gmail.com>"]
+readme = "README.md"
+packages = [{include = "fastapi_commons_exceptions"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.95.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
