@@ -1,0 +1,5 @@
+[console_scripts]
+drip_feed = drip_feed:main
+
+[drip.dropper]
+file_drip = drip:FileDropper
