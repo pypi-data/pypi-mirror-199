@@ -1,0 +1,51 @@
+[project]
+name = "stricter"
+version = "0.1.1"
+description = ""
+authors = [
+    { name = "levch", email = "levchenko.d.a1998@gmail.com" },
+]
+dependencies = [
+    "ruff>=0.0.259",
+    "mypy>=1.1.1",
+    "black[d]>=23.1.0",
+    "typer[all]>=0.7.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+
+[project.license]
+text = "MIT"
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
+
+[tool.ruff]
+select = [
+    "ALL",
+]
+ignore = [
+    "ANN101",
+    "ANN102",
+    "D",
+]
+src = [
+    "stricter",
+]
+fix = true
+show-fixes = true
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+quiet = true
+
+[tool.mypy]
+strict = true
+
+[tool.pdm.scripts]
+start = "python -m stricter"
