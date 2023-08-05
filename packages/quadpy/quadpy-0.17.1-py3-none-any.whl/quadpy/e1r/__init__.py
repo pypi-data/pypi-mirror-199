@@ -1,0 +1,1 @@
+from .._agg import _cU6Ov as gauss_laguerre
