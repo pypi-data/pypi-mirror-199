@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: langchain-contrib
+Version: 0.0.4
+Summary: 
+Author: Amos Jun-yeung Ng
+Author-email: me@amos.ng
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: fvalues (>=0.0.3,<0.0.4)
+Requires-Dist: langchain (>=0.0.119,<0.0.120)
+Requires-Dist: pexpect (>=4.8.0,<5.0.0)
+Requires-Dist: simple-term-menu (>=1.6.1,<2.0.0)
+Description-Content-Type: text/markdown
+
+# langchain-contrib
+
+A collection of utilities that are too experimental for [langchain proper](https://github.com/hwchase17/langchain), but are nonetheless generic enough to potentially be useful for multiple projects. Currently consists of code dumped from [ZAMM](https://github.com/amosjyng/zamm), but is of course open to contributions with lax procedures.
+
+## Quickstart
+
+```bash
+pip install langchain-contrib
+```
+
+To add interop with [`vcr-langchain`](https://github.com/amosjyng/vcr-langchain), simply install it as well:
+
+```bash
+pip install vcr-langchain
+```
+
