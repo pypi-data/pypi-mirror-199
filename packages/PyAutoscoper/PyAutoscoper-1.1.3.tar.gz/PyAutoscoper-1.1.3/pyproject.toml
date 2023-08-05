@@ -1,0 +1,44 @@
+[project]
+name = "PyAutoscoper"
+dynamic = ["version"]
+description = "A Python client library for the Autoscoper API"
+readme = "README.md"
+authors = [
+    {name = "Anthony J. Lombardi", email = "anthony.lombardi@kitware.com" }
+]
+license = { text = "Autoscoper License" }
+requires-python = ">=3.6"
+keywords = []
+classifiers = []
+dependencies = []
+
+
+[project.urls]
+homepage = "https://autoscoperm.slicer.org/"
+repository = "https://github.com/BrownBiomechanics/Autoscoper/tree/main/scripts/python"
+
+[build-system]
+requires = ["setuptools>=65", "setuptools_scm[toml]>=7"]
+build-backend = "setuptools.build_meta"
+
+[project.optional-dependencies]
+dev = [
+    "black>=22.3.0",
+]
+
+[tool.black]
+line-length = 88
+target_version = ['py36']
+include = '\.pyi?$'
+
+[tool.setuptools_scm]
+root = "../.."
+git_describe_command = [
+    'git',
+    'describe',
+    '--dirty',
+    '--tags',
+    '--long',
+    '--match',
+    'python-client-v*'
+]
