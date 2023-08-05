@@ -1,0 +1,67 @@
+Metadata-Version: 2.1
+Name: provision-ai
+Version: 23.3.24
+Summary: AI experiment provisioner
+Author-email: "Karol J. Piczak" <karol@piczak.com>
+License: MIT
+Project-URL: Homepage, https://github.com/provision-ai/provision
+Project-URL: Bug Tracker, https://github.com/provision-ai/provision/issues
+Keywords: neural networks,experiment,template,provisioning
+Platform: any
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Typing :: Typed
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Requires-Dist: coolname
+Requires-Dist: copier (>=7.0)
+Requires-Dist: GitPython
+Requires-Dist: hydra-core (>=1.3.0)
+Requires-Dist: lightning (>=2.0)
+Requires-Dist: lovely-tensors
+Requires-Dist: pip (>=21.3)
+Requires-Dist: pytest
+Requires-Dist: python-dotenv
+Requires-Dist: rich
+Requires-Dist: setproctitle
+Requires-Dist: torch (>=2.0)
+Requires-Dist: torch-tb-profiler (>=0.4)
+Requires-Dist: torchaudio (>=2.0)
+Requires-Dist: torchinfo (>=1.7)
+Requires-Dist: torchmetrics (>=0.11)
+Requires-Dist: torchstat
+Requires-Dist: torchsummary
+Requires-Dist: torchvision (>=0.15.1)
+Requires-Dist: tqdm
+Requires-Dist: typer
+Requires-Dist: wandb (>=0.14)
+Provides-Extra: dev
+Requires-Dist: black[jupyter] ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: flake8-annotations-complexity ; extra == 'dev'
+Requires-Dist: flake8-cognitive-complexity ; extra == 'dev'
+Requires-Dist: flake8-docstrings ; extra == 'dev'
+Requires-Dist: flake8-pyproject ; extra == 'dev'
+Requires-Dist: flake8-simplify ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: isort[colors] ; extra == 'dev'
+Requires-Dist: mypy (>=1.0) ; extra == 'dev'
+Requires-Dist: pydocstyle ; extra == 'dev'
+Requires-Dist: pylint ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: setuptools (>=67.2) ; extra == 'dev'
+Requires-Dist: setuptools-scm[toml] (>=7.1) ; extra == 'dev'
+Requires-Dist: wheel ; extra == 'dev'
+
+Provision AI
+========================================
+
+AI experiment provisioner. Work in progress.
+
+
+For development install:
+
+    pip install --editable ".[dev]"
