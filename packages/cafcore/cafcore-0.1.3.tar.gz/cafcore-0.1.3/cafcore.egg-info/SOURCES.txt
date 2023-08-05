@@ -1,0 +1,14 @@
+MANIFEST.in
+README.md
+setup.py
+cafcore/__init__.py
+cafcore/cook_transform.py
+cafcore/file_io.py
+cafcore/qc.py
+cafcore.egg-info/PKG-INFO
+cafcore.egg-info/SOURCES.txt
+cafcore.egg-info/dependency_links.txt
+cafcore.egg-info/requires.txt
+cafcore.egg-info/top_level.txt
+cafcore/data/cookeast_georeferencepoint_20190924.geojson
+cafcore/data/cookwest_georeferencepoint_20190924.geojson
