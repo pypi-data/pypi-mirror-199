@@ -1,0 +1,29 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pdfharvester"
+version = "0.2.0"
+license = {file = "LICENSE"}
+authors = [
+  { name="Hashim Puthiyakath", email="hashputhiyakath@gmail.com" },
+]
+description = "A package for extracting tables and images from PDFs"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "pandas",
+  "PyPDF2",
+  "yake",
+  "textract",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/hashimputhiyakath/pdfharvester"
+"Bug Tracker" = "https://github.com/hashimputhiyakath/pdfharvester/issues"
