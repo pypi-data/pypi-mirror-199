@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: pyiota
+Version: 1.2.1
+Summary: Simple Go lang iota pattern implementation
+Author: @jedi2light
+Author-email: jedi2light@jedi2light.moe
+Maintainer: @jedi2light
+Maintainer-email: jedi2light@jedi2light.moe
+License: WTFPL
+Project-URL: Documentation, https://gitlab.com/jedi2light/pyiota.git
+Project-URL: Bug Tracker, https://gitlab.com/jedi2light/pyiota/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# PyIota - Simple Go lang iota pattern implementation
+
+## Simple Usage
+
+```python3
+from pyiota import iota
+
+with iota.start():
+  A = iota()
+  B = iota()
+  C = iota()
+with iota.start(10):
+  D = iota()
+  E = iota()
+  F = iota()
+print(A, B, C, D, E, F) #=> '0 1 2 10 11 12'
+```
+
+## How it works?
+
+0. Default `iota._counter` value equals to `-1`.
+1. `A = iota()` - `iota.__new__()` increments `iota._counter` and returns it.
+2. It is possible to reset `iota._counter` calling `iota()` within `with iota.start(): ...` block.  
+    2.1. You can also provide a number to start from. For example: `D`, `E` and `F` from example above will be equal to `10`, `11`, and `12` accrordingly.
