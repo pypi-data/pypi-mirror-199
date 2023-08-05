@@ -1,0 +1,11 @@
+pudb
+loguru
+pftag
+pftel-client
+pytest-mock
+
+[dev]
+pytest~=7.1
+pytest-mock~=3.8
+
+[none]
