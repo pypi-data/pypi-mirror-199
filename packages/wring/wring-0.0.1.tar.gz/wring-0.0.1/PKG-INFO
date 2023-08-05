@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: wring
+Version: 0.0.1
+Summary: A tool to compress multiple CSV data files into parquet
+Project-URL: Documentation, https://jpn--.github.io/wring
+Project-URL: Issues, https://github.com/jpn--/wring/issues
+Project-URL: Source, https://github.com/jpn--/wring
+Author: Jeff Newman
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.10
+Requires-Dist: pyarrow
+Provides-Extra: docs
+Requires-Dist: mkdocs-click; extra == 'docs'
+Requires-Dist: mkdocs-git-revision-date-localized-plugin~=1.1.0; extra == 'docs'
+Requires-Dist: mkdocs-material~=8.5.4; extra == 'docs'
+Requires-Dist: mkdocstrings[python]~=0.19.0; extra == 'docs'
+Requires-Dist: mkdocs~=1.4.0; extra == 'docs'
+Provides-Extra: quality
+Requires-Dist: black~=22.10.0; extra == 'quality'
+Requires-Dist: pre-commit~=2.20.0; extra == 'quality'
+Requires-Dist: ruff; extra == 'quality'
+Provides-Extra: tests
+Requires-Dist: pytest~=7.1.2; extra == 'tests'
+Description-Content-Type: text/markdown
+
+# WRING
+
+A tool to compress multiple CSV files into parquet.
+
+The default uses zstd compression level 9, which is more than average.

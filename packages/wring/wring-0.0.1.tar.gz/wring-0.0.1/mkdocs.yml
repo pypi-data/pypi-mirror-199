@@ -1,0 +1,53 @@
+site_name: wring
+site_url: https://github.com/jpn--/wring
+site_author: Jeff Newman
+site_description: A tool to compress multiple CSV data files into parquet
+
+repo_name: jpn--/wring
+repo_url: https://github.com/jpn--/wring
+
+copyright: Copyright (c) 2023-present Jeff Newman <jeff@newman.me>
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  font:
+    text: Roboto
+    code: Roboto Mono
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - mkdocs-click
+
+plugins:
+  - search:
+  - git-revision-date-localized:
+      type: timeago
+      enable_creation_date: true
+  - mkdocstrings:
+
+extra:
+  social:
+    - icon: fontawesome/brands/python
+      link: https://pypi.org/project/wring/
+    - icon: fontawesome/brands/github
+      link: https://github.com/jpn--
+    - icon: fontawesome/brands/twitter
+      link: https://twitter.com/jpn
+    - icon: fontawesome/brands/linkedin
+      link: https://www.linkedin.com/in/wirepaladin/
+
+nav:
+  - Home: index.md
+  - Usage: usage.md
+  - License: license.md
