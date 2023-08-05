@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sysnet-shopping"
+version = "1.0.6"
+authors = [
+  { name="Data Miner", email="info@sysnet.cz" },
+]
+description = "Data mining shopping portals"
+readme = "README.md"
+license = { file="LICENSE.md" }
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: Free For Home Use",
+    "Operating System :: OS Independent",
+    "Topic :: Database :: Front-Ends",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/SYSNET-CZ/mining/tree/main/shopping"
