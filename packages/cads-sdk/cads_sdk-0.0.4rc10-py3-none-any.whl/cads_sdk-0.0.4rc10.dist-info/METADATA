@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: cads-sdk
+Version: 0.0.4rc10
+Summary: Function to help Data Scientist work more effectively with DWH
+Home-page: http://git.bigdata.local/data-engineers/sdk/utilities
+Author: duyvnc
+Author-email: duyvnc@fpt.com.vn
+License: duyvnc
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: pyspark (>=3.0.2)
+Requires-Dist: pyarrow (>=8.0.0)
+Requires-Dist: pycryptodome
+Requires-Dist: pandas (>=1.0.5)
+Requires-Dist: thrift
+Requires-Dist: hmsclient
+Requires-Dist: sqlglot
+Requires-Dist: findspark
+Requires-Dist: opencv-python
+Requires-Dist: Pillow
+Requires-Dist: scipy
+Requires-Dist: pydub
+Requires-Dist: ipywidgets
+
+# Install package
+```bash
+pip install cads-sdk --upgrade
+```
+
