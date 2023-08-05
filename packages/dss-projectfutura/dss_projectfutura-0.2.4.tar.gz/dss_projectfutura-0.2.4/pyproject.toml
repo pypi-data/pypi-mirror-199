@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0", "tqdm>=4.65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "dss_projectfutura"
+version = "0.2.4"
+authors = [
+  { name="Jan Garcia", email="jancraft888@jdevstudios.es" },
+  { name="Saula Sanz", email="sourcepaint@jdevstudios.es" },
+]
+description = "Content Generation based on Caches"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://gitlab.com/project-futura/dss"
+"Bug Tracker" = "https://gitlab.com/project-futura/dss/-/issues"
