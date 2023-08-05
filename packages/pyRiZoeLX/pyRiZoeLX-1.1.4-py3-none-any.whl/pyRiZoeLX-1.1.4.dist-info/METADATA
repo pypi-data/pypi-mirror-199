@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: pyRiZoeLX
+Version: 1.1.4
+Summary: A Pyrogram based functional module.
+Home-page: https://github.com/RiZoeLX/pyRiZoeLX
+Author: MrRiZoeL
+Author-email: xrizoel@gmail.com
+License: GNU General Public License v3.0
+Keywords: telegram,pyRiZoeLX,RiZoeLX,pyrogram,functions,py-RiZoeLX
+Platform: UNKNOWN
+Classifier: Framework :: AsyncIO
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Build Tools
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PhoenixScanner
+Requires-Dist: pyrogram
+Requires-Dist: telethon
+
+<p align="center">
+   <a href="https://github.com/RiZoeLX">
+      <img src="RiZoeLX/data/RiZoeLX.png" alt="RiZoeLX" width="300" aligne='centre'>
+   </a>
+</p>
+<h1 align="center">
+   <b> pyRiZoeLX </b> <br>  
+
+</h1>
+
+ * [![PyPI - Version](https://img.shields.io/pypi/v/pyRiZoeLX?style=round)](https://pypi.org/project/pyRiZoeLX) 
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/pyRiZoeLX?label=DOWNLOADS&style=round)](https://pypi.org/project/pyRiZoeLX) 
+
+----
+
+<b>About:</b> pyRiZoeLX have many useful functions, that you can use in your repos/repostory. It'll make you code/bot smooth and fast!
+
+<h4> Installation </h4>
+
+```python 
+pip3 install pyRiZoeLX
+```
+
+<h4> Import functions </h4>
+
+``` python
+from RiZoeLX.functions import <functions name>
+```
+
+<h4> Functions available: </h4>
+
+ > [Click Here](https://github.com/RiZoeLX/pyRiZoeLX/tree/main/RiZoeLX/functions#-functions-available-) </b> 
+
+<h3> Example. </h3>
+
+``` python
+from RiZoeLX.functions import ban_user
+from pyrogram import Client, filters 
+from pyrogram.types import Message
+
+
+@Client.on_message(filters.command("ban"))
+async def ban_(client, message):
+   await ban_user(client, message)
+```
+
+
