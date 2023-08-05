@@ -1,0 +1,42 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "pybites_search"
+version = "0.0.8"
+authors = [
+  { name="Pybites", email="info@pybit.es" },
+]
+description = "A search engine for Pybites content"
+readme = "README.md"
+requires-python = ">=3.11"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+  "requests",
+  "typer[all]",
+]
+
+[project.optional-dependencies]
+test = [
+  "pytest",
+  "pytest-cov",
+]
+lint = [
+  "flake8",
+  "black",
+  "isort",
+  "pyupgrade",
+  "mypy",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/pybites/search"
+"Bug Tracker" = "https://github.com/pybites/search/issues"
+
+[project.scripts]
+search = "pybites_search.cli:app"
