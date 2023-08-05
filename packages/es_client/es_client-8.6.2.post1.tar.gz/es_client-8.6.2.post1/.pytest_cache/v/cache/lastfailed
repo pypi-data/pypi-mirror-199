@@ -1,0 +1,9 @@
+{
+  "test_builder.py": true,
+  "nose_tests/integration/test_builder.py": true,
+  "nose_tests/unit/test_builder.py": true,
+  "nose_tests/unit/test_helpers_schemacheck.py": true,
+  "nose_tests/unit/test_helpers_utils.py": true,
+  "tests/unit/test_helpers_utils.py::test_read_file_present": true,
+  "tests/unit/test_builder.py::TestInit::test_non_dict_passed": true
+}
