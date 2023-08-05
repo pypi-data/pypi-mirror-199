@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: jobsworthy
+Version: 0.7.9
+Summary: 
+Home-page: https://github.com/wildfauve/jobsworth
+Author: Col Perks
+Author-email: wild.fauve@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: PyMonad (>=2.4.0,<3.0.0)
+Requires-Dist: azure-identity (>=1.11.0,<2.0.0)
+Requires-Dist: azure-storage-file-datalake (>=12.9.1,<13.0.0)
+Requires-Dist: delta-spark (>=2.1.1,<3.0.0)
+Requires-Dist: dependency-injector (>=4.40.0,<5.0.0)
+Requires-Dist: pino (>=0.6.0,<0.7.0)
+Requires-Dist: pyspark (>=3.3.0,<4.0.0)
+Requires-Dist: rdflib (>=6.2.0,<7.0.0)
+Requires-Dist: validators (>=0.20.0,<0.21.0)
+Project-URL: Repository, https://github.com/wildfauve/jobsworth
+Description-Content-Type: text/markdown
+
+# Jobsworth
+
+
+A set of utility functions and classes to aid in build Spark jobs on the Azure Databricks Platform.
+
+## Spark Job
+
++ [Spark Job](docs/job/spark-job.md)
++ Job Configuration
+
+## Util Module
+
++ [Secrets](docs/util/secrets.md)
++ Spark Session
+
+## Model Module
+
++ [The Model Module](docs/model/model.md)
+
+## Repository Module
+
++ [Database and Table](docs/repo/repository.md)
+
+## Structure Module
+
+The Structure module provides functions for building a more abstract definition of a Hive table schema and abstractions
+for creating table, column and cell data which can be provided as the data argument when creating a dataframe.
+
++ [Generating Table Schemas from PUML Models Model Generation](docs/structure/puml-to-table-dsl.md)
++ [Turning the output of a dataframe printSchema command into a PUML class diagram](docs/structure/hive-print-schema-to-puml-class-model.md)
++ [Table Schema Definition](docs/structure/table-schema.md)
+
+
+
