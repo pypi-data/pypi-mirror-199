@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: anqa-db
+Version: 0.0.1
+Summary: 
+Requires-Python: >=3.8.1,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: aiosqlite (>=0.18.0,<0.19.0)
+Requires-Dist: alembic (>=1.10.2,<2.0.0)
+Requires-Dist: anqa-core (==0.0.1)
+Requires-Dist: asyncpg (>=0.27.0,<0.28.0)
+Requires-Dist: sqlalchemy (>=2.0.6,<3.0.0)
+Description-Content-Type: text/markdown
+
+# anqa-db

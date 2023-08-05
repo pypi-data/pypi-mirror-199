@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "anqa-db"
+version = "0.0.1"
+description = ""
+authors = []
+readme = "README.md"
+packages = [
+    { include = "anqa" }
+]
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+anqa-core = "==0.0.1"
+sqlalchemy = "^2.0.6"
+alembic = "^1.10.2"
+asyncpg = "^0.27.0"
+aiosqlite = "^0.18.0"
+
+[tool.poetry.group.dev.dependencies]
+anqa-core = { path = "../anqa-core", develop = true}
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
