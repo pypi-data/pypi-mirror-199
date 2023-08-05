@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: dk_analyzer
+Version: 0.0.0
+Summary: Dk Analyzer
+Home-page: https://github.com/nymann/dk-analyzer
+Maintainer: Kristian Nymann Jakobsen
+Maintainer-email: kristian@nymann.dev
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Provides-Extra: all
+Provides-Extra: dev
+Provides-Extra: tests
+Provides-Extra: package
+
+# Dk Analyzer
+
+## How do I install it?
+
+`pip install dk_analyzer`
+
+## How do I use it?
+
+See `dk_analyzer --help`
+
+### How do I obtain CLIENT_ID and CLIENT_SECRET?
+
+Head over to <https://www.warcraftlogs.com/api/clients> and click `Create Client`.
+You can leave the redirect URL as `https://google.com`.
+Leave Public Client unchecked.
+
+## Development
+
+For help getting started developing check [DEVELOPMENT.md](DEVELOPMENT.md)
