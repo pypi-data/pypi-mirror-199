@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "microvenv"
+version = "2023.2.0"
+description = "A minimal re-implementation of Python's venv module"
+keywords = ["virtual environments", "venv"]
+readme = "README.md"
+license = { file = "LICENSE" }
+maintainers = [{ name = "Brett Cannon", email = "brett@python.org" }]
+authors = [{ name = "Brett Cannon", email = "brett@python.org" }]
+requires-python = ">=3.7"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "License :: OSI Approved :: MIT License",
+  "Intended Audience :: Developers",
+  "Topic :: Software Development",
+  "Topic :: Utilities",
+  "Natural Language :: English",
+  "Operating System :: MacOS :: MacOS X",
+  "Operating System :: POSIX",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+
+[project.optional-dependencies]
+test = ["pytest"]
+lint = ["black", "ruff"]
+
+[project.urls]
+source = "https://github.com/brettcannon/microvenv"
+changelog = "https://github.com/brettcannon/microvenv/releases"
