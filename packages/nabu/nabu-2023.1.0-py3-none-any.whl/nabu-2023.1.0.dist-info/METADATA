@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: nabu
+Version: 2023.1.0
+Summary: Nabu - Tomography software
+Author: Pierre Paleo
+Author-email: pierre.paleo@esrf.fr
+Maintainer: Pierre Paleo
+Maintainer-email: pierre.paleo@esrf.fr
+License-File: LICENSE
+Requires-Dist: psutil
+Requires-Dist: pytest
+Requires-Dist: numpy (>1.9.0)
+Requires-Dist: scipy
+Requires-Dist: silx (>=0.15.0)
+Requires-Dist: h5py (>=3.0)
+Requires-Dist: tomoscan (>=1.2.1)
+Requires-Dist: tifffile
+Provides-Extra: doc
+Requires-Dist: sphinx ; extra == 'doc'
+Requires-Dist: cloud-sptheme ; extra == 'doc'
+Requires-Dist: myst-parser ; extra == 'doc'
+Requires-Dist: nbsphinx ; extra == 'doc'
+Provides-Extra: full
+Requires-Dist: pyfftw ; extra == 'full'
+Requires-Dist: scikit-image ; extra == 'full'
+Requires-Dist: PyWavelets ; extra == 'full'
+Requires-Dist: glymur ; extra == 'full'
+Requires-Dist: pycuda ; extra == 'full'
+Requires-Dist: scikit-cuda ; extra == 'full'
+Requires-Dist: pycudwt ; extra == 'full'
+
