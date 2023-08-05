@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: metadeco
+Version: 0.2.1
+Summary: Metadeco allows you to set metadata to decorated objects.
+License: MIT
+Author: Predeactor
+Author-email: pro.julien.mauroy@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: typing-extensions (>=4.5.0,<5.0.0)
+Description-Content-Type: text/markdown
+
+# Metadeco
+
+Metadata reflections for functions/methods. Inspired by NPM's [`reflect-metadata`](https://www.npmjs.com/package/reflect-metadata) package.
+
+## How to use:
+
+### To decorate a function:
+
+```py
+import metadeco
+
+# Define a function with the "__has_print__" metadata set to "True"
+# You can set anything has the value of the metadata.
+@metadeco.metadata("__has_print__", True)
+def my_function():
+    print("Hello world!")
+
+metadeco.has_metadata(my_function)
+# We would get "True"
+
+metadeco.get_metadata(my_function, "__has_print__")
+# We obtain the value set by the function, in here, "True
+metadeco.get_metadata(my_function, "__not_set__")
+# "NoMetadataError" is raised here.
+
+metadeco.delete_metadata(my_function, "__has_print__")
+# Delete the metadata.
+```
+
+## To decorate a property:
+
+```py
+import metadeco
+
+
+class MySettings:
+    
+    @metadeco.decorate("__output__", "Hey there!")
+    def test():
+        return "Hey there!"
+
+# Getting the metadata of "test" property in object MySettings
+metadeco.get_metadata(MySettings, "__output__", "test")
+# We get "Hey there"
+```
+
