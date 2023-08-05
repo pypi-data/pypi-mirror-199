@@ -1,0 +1,13 @@
+{
+    "config":{
+        "steamCMDPath": "/opt/storm-agent/steamcmd",
+        "csgoServerPath": "/opt/storm-agent/csgoserver",
+        "tmpFolderPath": "/tmp/storm-agent/",
+        "patchNotification": {
+            "email": null
+        },
+        "ServerToken": "",
+        "public": false,
+        "port": "27015"
+    }
+}
