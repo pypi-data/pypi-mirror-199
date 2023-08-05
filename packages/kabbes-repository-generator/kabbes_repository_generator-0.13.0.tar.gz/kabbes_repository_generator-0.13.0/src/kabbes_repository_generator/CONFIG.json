@@ -1,0 +1,73 @@
+{
+    "folders_to_skip":["__pycache__",".git"],
+    "overwrite": false,
+    "template":{
+        "name": "default",
+        "!Dir":{
+            "$ref": "{R{templates.Dir}R}",
+            "method":{
+                "name": "join_Dir",
+                "kwargs":{
+                    "path": "{R{template.name}R}"
+                }
+            }
+        }
+    },
+    "templates":{
+        "!Dir":{
+            "$ref": "{R{_Dir}R}",
+            "method":{
+                "name": "join_Dir",
+                "kwargs":{
+                    "path": "Templates"
+                }
+            }
+        }
+    },
+    "user_template":{
+        "!Dir":{
+            "$ref": "{R{user_templates.Dir}R}",
+            "method":{
+                "name": "join_Dir",
+                "kwargs":{
+                    "path": "{R{template.name}R}"
+                }
+            }
+        }
+    },
+    "user_templates":{
+        "!Dir":{
+            "$ref": "{R{package.config.cache.Dir}R}",
+            "method":{
+                "name": "join_Dir",
+                "kwargs":{
+                    "path": "user_templates"
+                }
+            }
+        }
+    },
+
+
+    "repo":{
+        "Dir": "{{cwd.Dir}}",
+        "!name": {
+            "$ref": "{R{repo.Dir}R}",
+            "method":{
+                "name": "lowest"
+            }
+        },
+        "version": "{R{repo.eval_version}R}",
+        "!eval_version":{
+            "$ref": "{R{_self}R}",
+            "method":{
+                "name": "get_version",
+                "kwargs": {
+                    "path": "{R{repo.Dir}R}/{{setup_config_filename}}"
+                }
+            }
+        }
+
+    },
+    "author": "{{user_profile.profile.name}}",
+    "github_pages_url": "https://{{user_profile.profile.github.username}}.github.io/{R{repo.name}R}"
+}
