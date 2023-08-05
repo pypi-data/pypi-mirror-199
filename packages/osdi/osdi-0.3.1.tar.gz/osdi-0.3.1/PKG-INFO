@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: osdi
+Version: 0.3.1
+Summary: A library for interacting with OSDI-descended services, namely ActionNetwork and ActionBuilder
+License: MIT
+Author: Tal L
+Author-email: tal42levy@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: flake8 (==5.0.4)
+Requires-Dist: isort (>=5.11.4,<6.0.0)
+Requires-Dist: requests (>=2.20.0,<3.0.0)
