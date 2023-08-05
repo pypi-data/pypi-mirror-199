@@ -1,0 +1,204 @@
+/* useful link: https://www.w3schools.com/colors/colors_picker.asp */
+
+Screen {
+    background: $panel;
+    align: center top;
+    layout: vertical;
+}
+
+Button, .results, Input {
+  border: blank $accent;
+}
+
+*:focus {
+    border: round $accent;
+}
+
+#lb_intro, #lb_intro_hint {
+    content-align: center middle;
+    height: 1;
+    width: 100%;
+}
+
+.cntn_input_fields {
+    align: center middle;
+    width: 100w;
+    height: 3;
+/*     offset: 3w 0; */
+
+}
+
+#cntn_outer_intro {
+    height: 6;
+    align: center middle;
+}
+
+#cntn_intro {
+    align: center middle;
+    box-sizing: content-box;
+    width: 100w;
+    height: 4;
+    margin: 0 2;
+    text-style: bold;
+    background: $secondary-background;
+}
+
+
+#cntn_buttons {
+
+    align: center middle;
+    height: 5;
+    width: 100w;
+
+/*  outline is helpful for debugging    */
+/*     outline: solid red; */
+
+}
+
+
+.input_field {
+
+    width: 40;
+    margin: 0 3 0 3;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+Button {
+    width: 40;
+    /* top right bottom left  */
+    margin: 0 3 0 3;
+    box-sizing: border-box;
+    text-align: center;
+}
+
+#btn_menu {
+    background: $primary-lighten-3 40%;
+}
+
+#in_files {
+    background: $primary-lighten-2 40%;
+}
+#in_search {
+
+    background: $primary-lighten-3;
+}
+
+#in_replace {
+    background: $warning-lighten-3;
+}
+
+
+#cntn_results {
+
+    align: center middle;
+/*     offset: 3w 0; */
+    width: 100w;
+
+/*  outline is helpful for debugging    */
+/*     outline: solid red; */
+    height: 1fr;
+    overflow-y: auto;
+
+}
+
+
+.vspace1fr {
+    height: 1fr;
+}
+
+.warning {
+
+    margin: 1 5;
+    padding: 2;
+    background: $warning;
+    color: $text;
+    text-style: bold;
+}
+.results {
+    width: 48%;
+    margin-left: 1;
+    overflow-x: auto;
+    overflow-y: auto;
+
+}
+
+
+#statusbar, #workdirbar, #modebar {
+    width: 100%;
+    height: 1;
+    margin: 0 2 0 2;
+    padding: 0 0;
+}
+
+#statusbar {
+    background: $background-lighten-3;
+}
+
+#workdirbar, #modebar {
+    background: $background-lighten-2;
+    color: $text-muted;
+}
+
+#statusbar.sb_active {
+    background: $accent-darken-3;
+}
+
+#statusbar.sb_warning {
+    background: $warning-darken-3;
+}
+
+#statusbar.sb_success {
+    background: $success-darken-3;
+}
+#workdirbar, #modebar {
+
+    align: center bottom;
+}
+
+/* for help screen */
+#dialog {
+    grid-size: 2;
+    grid-gutter: 1 2;
+    padding: 1 2;
+}
+
+#screen-heading {
+    content-align: center middle;
+    width: 100%;
+    margin-top: 8;
+}
+
+/* for settings screen */
+
+
+#ctn-footer{
+
+    height: 50vh;
+    align: center bottom;
+
+/*  dock: bottom; */
+
+}
+
+#ctn-menu {
+
+    align: center middle;
+    width: 100%;
+    margin: 3;
+    height: 8;
+
+}
+
+#mode-selector {
+
+    content-align: center middle;
+    height: 5;
+    border: blank $accent;
+
+}
+
+#mode-selector:focus {
+    border: round $accent;
+
+}
