@@ -1,0 +1,11 @@
+
+        [ckan.plugins]
+        ids=ckanext.ids.plugin:IdsPlugin
+        ids_job=ckanext.ids.plugin:IdsDummyJobPlugin
+        ids_resources=ckanext.ids.plugin:IdsResourcesPlugin
+        trusts_harvester=ckanext.ids.harvester:TrustsHarvester
+        trusts_recommender=ckanext.ids.plugin:TrustsRecommenderPlugin
+        trusts_blockchain=ckanext.ids.plugin:TrustsBlockchainPlugin
+        [babel.extractors]
+        ckan = ckan.lib.extract:extract_ckan
+    
