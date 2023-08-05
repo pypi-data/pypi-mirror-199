@@ -1,0 +1,27 @@
+name: xradar-dev
+channels:
+  - conda-forge
+  - nodefaults
+dependencies:
+  - python>=3.9
+  - pydata-sphinx-theme
+  - pip
+  - myst-parser
+  - sphinx
+  - sphinx-copybutton
+  - nbsphinx
+  - ipykernel
+  - h5netcdf
+  - h5py
+  - lat_lon_parser
+  - netCDF4
+  - pyproj
+  - xarray
+  - xarray-datatree>=0.0.10
+  - xmltodict
+  - cartopy
+  - dask
+  - matplotlib-base
+  - scipy
+  - pip:
+    - git+https://github.com/openradar/open-radar-data.git
