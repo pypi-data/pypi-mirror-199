@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "anqa-cli"
+version = "0.0.2"
+description = ""
+authors = []
+readme = "README.md"
+packages = [
+    { include = "anqa" }
+]
+include =[
+    "anqa/cli/templates"
+]
+
+[tool.poetry.scripts]
+anqa = "anqa.cli.app:cli"
+
+[tool.poetry.dependencies]
+python = ">=3.8.1,<4.0"
+cookiecutter = "^2.1.1"
+questionary = "^1.10.0"
+typer = "^0.7.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
