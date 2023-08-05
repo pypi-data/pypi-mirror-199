@@ -1,0 +1,8 @@
+{
+    "src_name": "src",
+    "package_name": "{{user_profile.profile.pypi.username}}_{R{repo.name}R}",
+    "author_email":"{{user_profile.profile.email}}",
+    "pypi_url":"https://pypi.org/project/{R{package_name}R}",
+    "github_url":"https://github.com/{{user_profile.profile.github.username}}/{R{repo.name}R}",
+    "documentation_url":"https://{{user_profile.profile.github.username}}.github.io/{R{repo.name}R}"
+}
