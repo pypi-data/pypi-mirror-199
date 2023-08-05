@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: tsukasa-credit-card-gag-scam
+Version: 1.0.1
+Summary: A joke program based on a popular credit card scam meme
+Home-page: https://github.com/Bleeplo/Tsukasa-credit-card-gag-scam
+License: MIT
+Author: Bleeplo
+Author-email: bleeplo@users.noreply.github.com
+Maintainer: Lari Liuhamo
+Maintainer-email: lari.liuhamo+github@gmail.com
+Requires-Python: >=3.8.1,<4.0.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: Pillow (>=9.4.0,<10.0.0)
+Project-URL: Documentation, https://github.com/Diapolo10/iplib3/tree/main/docs
+Project-URL: Repository, https://github.com/Diapolo10/iplib3
+Project-URL: Windows executable, https://drive.google.com/file/d/1gVKI089Y7Ub7MrqNmRwsvOGZYS3msnIu/view?usp=sharing
+Description-Content-Type: text/markdown
+
+# Tsukasa credit card gag scam
+
+NOTE: This is a joke program, it has zero malicious intent and is simply
+designed to have fun with an old Internet joke.
+
+This is a fork of Bleeplo's version with a more standardised project
+structure, and built-in releases.
+
+## Example
+
+![A GIF animation of the program running][example-gif]
+
+## Special thanks
+
+* @Bleeplo, for creating the original program.
+
+<!-- Exe version here: https://drive.google.com/file/d/1gVKI089Y7Ub7MrqNmRwsvOGZYS3msnIu/view?usp=sharing
+If you're gonna be running the .py file, please have all the pictures in the same folder as script.py
+Along w/ the the pictures having the same name as the script.py requires.
+
+This script took around 11 hours to make. Do not edit the script to have malicious code & then distribute it.
+Thank you, God bless -->
+
+[example-gif]: ./docs/assets/example.gif
+
