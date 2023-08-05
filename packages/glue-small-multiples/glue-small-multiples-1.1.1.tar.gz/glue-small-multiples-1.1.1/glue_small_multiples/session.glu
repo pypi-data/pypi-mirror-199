@@ -1,0 +1,1485 @@
+{
+  "CT": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "CT"
+  },
+  "CallbackList": {
+    "_type": "echo.containers.CallbackList",
+    "values": [
+      "ScatterLayerState",
+      "ScatterLayerState_0",
+      "ScatterLayerState_1",
+      "ScatterLayerState_2"
+    ]
+  },
+  "CallbackList_0": {
+    "_type": "echo.containers.CallbackList",
+    "values": [
+      "ScatterLayerState_3",
+      "ScatterLayerState_4",
+      "ScatterLayerState_5",
+      "ScatterLayerState_6"
+    ]
+  },
+  "CategoricalComponent": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 9
+  },
+  "CategoricalComponent_0": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 11
+  },
+  "CategoricalComponent_1": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 14
+  },
+  "CategoricalComponent_2": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 22
+  },
+  "CategoricalComponent_3": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 23
+  },
+  "CategoricalComponent_4": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 24
+  },
+  "CategoricalComponent_5": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 25
+  },
+  "CategoricalComponent_6": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 26
+  },
+  "CategoricalComponent_7": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 27
+  },
+  "CategoricalComponent_8": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 29
+  },
+  "CategoricalComponent_9": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 30
+  },
+  "Cells": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Cells"
+  },
+  "Cluster": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Cluster"
+  },
+  "Component": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 2
+  },
+  "Component_0": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 4
+  },
+  "Component_1": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 5
+  },
+  "Component_10": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 18
+  },
+  "Component_11": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 19
+  },
+  "Component_12": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 20
+  },
+  "Component_13": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 21
+  },
+  "Component_14": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 28
+  },
+  "Component_15": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 31
+  },
+  "Component_16": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 32
+  },
+  "Component_2": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 6
+  },
+  "Component_3": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 7
+  },
+  "Component_4": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 8
+  },
+  "Component_5": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 12
+  },
+  "Component_6": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 13
+  },
+  "Component_7": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 15
+  },
+  "Component_8": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 16
+  },
+  "Component_9": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 17
+  },
+  "CoordinateComponent": {
+    "_type": "glue.core.component.CoordinateComponent",
+    "axis": 0,
+    "world": false
+  },
+  "CoordinateComponent_0": {
+    "_type": "glue.core.component.CoordinateComponent",
+    "axis": 1,
+    "world": false
+  },
+  "CoordinateComponent_1": {
+    "_type": "glue.core.component.CoordinateComponent",
+    "axis": 0,
+    "world": false
+  },
+  "CoordinateComponent_2": {
+    "_type": "glue.core.component.CoordinateComponent",
+    "axis": 0,
+    "world": false
+  },
+  "Cube_Mouse_Islets_20220701_X": {
+    "_key_joins": [
+      [
+        "Cube_Mouse_Islets_20220701_obs",
+        [
+          "Pixel Axis 0 [y]"
+        ],
+        [
+          "Pixel Axis 0 [x]_0"
+        ]
+      ],
+      [
+        "Cube_Mouse_Islets_20220701_vars",
+        [
+          "Pixel Axis 1 [x]"
+        ],
+        [
+          "Pixel Axis 0 [x]"
+        ]
+      ]
+    ],
+    "_type": "glue_single_cell.data.DataAnnData",
+    "components": [
+      [
+        "Pixel Axis 0 [y]",
+        "CoordinateComponent"
+      ],
+      [
+        "Pixel Axis 1 [x]",
+        "CoordinateComponent_0"
+      ],
+      [
+        "Xarray",
+        "Component"
+      ]
+    ],
+    "label": "Cube_Mouse_Islets_20220701_X",
+    "listeners": [],
+    "meta": {
+      "_type": "collections.OrderedDict",
+      "contents": {
+        "st__Xdata": "st__55e52d74-d4ad-400a-8670-5bf9baa72906",
+        "st__anndatatype": "st__X Array",
+        "st__join_on_obs": true,
+        "st__join_on_var": true,
+        "st__loadlog_skip_components": [
+          "X_harmony",
+          "X_pca",
+          "HARMONY",
+          "PCs"
+        ],
+        "st__loadlog_skip_dialog": true,
+        "st__loadlog_subsample": false,
+        "st__loadlog_subsample_factor": 0.1,
+        "st__loadlog_try_backed": null,
+        "st__obs_data": "Cube_Mouse_Islets_20220701_obs",
+        "st__orig_filename": "st__Cube_Mouse_Islets_20220701",
+        "st__var_data": "Cube_Mouse_Islets_20220701_vars"
+      }
+    },
+    "primary_owner": [
+      "Pixel Axis 0 [y]",
+      "Pixel Axis 1 [x]",
+      "Xarray"
+    ],
+    "sparse": false,
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.8,
+      "color": "#595959",
+      "linestyle": "solid",
+      "linewidth": 1,
+      "marker": "o",
+      "markersize": 3,
+      "preferred_cmap": null
+    },
+    "subsets": [
+      "Subset 1_2",
+      "Subset 2_2",
+      "DGE between Subset 1 and Subset 2_2"
+    ],
+    "uuid": "55e52d74-d4ad-400a-8670-5bf9baa72906"
+  },
+  "Cube_Mouse_Islets_20220701_obs": {
+    "_key_joins": [
+      [
+        "Cube_Mouse_Islets_20220701_X",
+        [
+          "Pixel Axis 0 [x]_0"
+        ],
+        [
+          "Pixel Axis 0 [y]"
+        ]
+      ]
+    ],
+    "_protocol": 5,
+    "_type": "glue.core.data.Data",
+    "components": [
+      [
+        "Pixel Axis 0 [x]_0",
+        "CoordinateComponent_2"
+      ],
+      [
+        "orig.ident",
+        "CategoricalComponent_0"
+      ],
+      [
+        "nCount_RNA",
+        "Component_5"
+      ],
+      [
+        "nFeature_RNA",
+        "Component_6"
+      ],
+      [
+        "Cells",
+        "CategoricalComponent_1"
+      ],
+      [
+        "percent.mt",
+        "Component_7"
+      ],
+      [
+        "percent.rb",
+        "Component_8"
+      ],
+      [
+        "SequencedCells",
+        "Component_9"
+      ],
+      [
+        "QCpass",
+        "Component_10"
+      ],
+      [
+        "PassPercent",
+        "Component_11"
+      ],
+      [
+        "S.Score",
+        "Component_12"
+      ],
+      [
+        "G2M.Score",
+        "Component_13"
+      ],
+      [
+        "Phase",
+        "CategoricalComponent_2"
+      ],
+      [
+        "Strain",
+        "CategoricalComponent_3"
+      ],
+      [
+        "Diet",
+        "CategoricalComponent_4"
+      ],
+      [
+        "Sex",
+        "CategoricalComponent_5"
+      ],
+      [
+        "Sample",
+        "CategoricalComponent_6"
+      ],
+      [
+        "SampleLibrary",
+        "CategoricalComponent_7"
+      ],
+      [
+        "Cluster",
+        "Component_14"
+      ],
+      [
+        "CT",
+        "CategoricalComponent_8"
+      ],
+      [
+        "obs_names",
+        "CategoricalComponent_9"
+      ],
+      [
+        "X_umap_0",
+        "Component_15"
+      ],
+      [
+        "X_umap_1",
+        "Component_16"
+      ]
+    ],
+    "label": "Cube_Mouse_Islets_20220701_obs",
+    "meta": {
+      "_type": "collections.OrderedDict",
+      "contents": {
+        "st__Xdata": "st__55e52d74-d4ad-400a-8670-5bf9baa72906",
+        "st__anndatatype": "st__obs Array",
+        "st__join_on_obs": true,
+        "st__join_on_var": false
+      }
+    },
+    "primary_owner": [
+      "Pixel Axis 0 [x]_0",
+      "orig.ident",
+      "nCount_RNA",
+      "nFeature_RNA",
+      "Cells",
+      "percent.mt",
+      "percent.rb",
+      "SequencedCells",
+      "QCpass",
+      "PassPercent",
+      "S.Score",
+      "G2M.Score",
+      "Phase",
+      "Strain",
+      "Diet",
+      "Sex",
+      "Sample",
+      "SampleLibrary",
+      "Cluster",
+      "CT",
+      "obs_names",
+      "X_umap_0",
+      "X_umap_1"
+    ],
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.8,
+      "color": "#595959",
+      "linestyle": "solid",
+      "linewidth": 1,
+      "marker": "o",
+      "markersize": 3,
+      "preferred_cmap": null
+    },
+    "subsets": [
+      "Subset 1_0",
+      "Subset 2_0",
+      "DGE between Subset 1 and Subset 2_0"
+    ],
+    "uuid": "8b6aedba-73be-4fa1-af25-c800b5875729"
+  },
+  "Cube_Mouse_Islets_20220701_vars": {
+    "_key_joins": [
+      [
+        "Cube_Mouse_Islets_20220701_X",
+        [
+          "Pixel Axis 0 [x]"
+        ],
+        [
+          "Pixel Axis 1 [x]"
+        ]
+      ]
+    ],
+    "_protocol": 5,
+    "_type": "glue.core.data.Data",
+    "components": [
+      [
+        "Pixel Axis 0 [x]",
+        "CoordinateComponent_1"
+      ],
+      [
+        "vst.mean",
+        "Component_0"
+      ],
+      [
+        "vst.variance",
+        "Component_1"
+      ],
+      [
+        "vst.variance.expected",
+        "Component_2"
+      ],
+      [
+        "vst.variance.standardized",
+        "Component_3"
+      ],
+      [
+        "vst.variable",
+        "Component_4"
+      ],
+      [
+        "var_names",
+        "CategoricalComponent"
+      ]
+    ],
+    "label": "Cube_Mouse_Islets_20220701_vars",
+    "meta": {
+      "_type": "collections.OrderedDict",
+      "contents": {
+        "st__Xdata": "st__55e52d74-d4ad-400a-8670-5bf9baa72906",
+        "st__anndatatype": "st__var Array",
+        "st__join_on_obs": false,
+        "st__join_on_var": true
+      }
+    },
+    "primary_owner": [
+      "Pixel Axis 0 [x]",
+      "vst.mean",
+      "vst.variance",
+      "vst.variance.expected",
+      "vst.variance.standardized",
+      "vst.variable",
+      "var_names"
+    ],
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.8,
+      "color": "#595959",
+      "linestyle": "solid",
+      "linewidth": 1,
+      "marker": "o",
+      "markersize": 3,
+      "preferred_cmap": null
+    },
+    "subsets": [
+      "Subset 1_1",
+      "Subset 2_1",
+      "DGE between Subset 1 and Subset 2_1"
+    ],
+    "uuid": "34161ddc-6d25-40f4-8073-eaabbf37ebc0"
+  },
+  "DGE between Subset 1 and Subset 2": {
+    "_type": "glue.core.subset_group.SubsetGroup",
+    "label": "DGE between Subset 1 and Subset 2",
+    "state": "MultiOrState",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#1f78b4",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    },
+    "subsets": [
+      "DGE between Subset 1 and Subset 2_2",
+      "DGE between Subset 1 and Subset 2_1",
+      "DGE between Subset 1 and Subset 2_0"
+    ]
+  },
+  "DGE between Subset 1 and Subset 2_0": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "DGE between Subset 1 and Subset 2",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#1f78b4",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "DGE between Subset 1 and Subset 2_1": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "DGE between Subset 1 and Subset 2",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#1f78b4",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "DGE between Subset 1 and Subset 2_2": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "DGE between Subset 1 and Subset 2",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#1f78b4",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "DataCollection": {
+    "_protocol": 5,
+    "_type": "glue.core.data_collection.DataCollection",
+    "cids": [
+      "Pixel Axis 0 [y]",
+      "Pixel Axis 1 [x]",
+      "Xarray",
+      "Pixel Axis 0 [x]",
+      "vst.mean",
+      "vst.variance",
+      "vst.variance.expected",
+      "vst.variance.standardized",
+      "vst.variable",
+      "var_names",
+      "Pixel Axis 0 [x]_0",
+      "orig.ident",
+      "nCount_RNA",
+      "nFeature_RNA",
+      "Cells",
+      "percent.mt",
+      "percent.rb",
+      "SequencedCells",
+      "QCpass",
+      "PassPercent",
+      "S.Score",
+      "G2M.Score",
+      "Phase",
+      "Strain",
+      "Diet",
+      "Sex",
+      "Sample",
+      "SampleLibrary",
+      "Cluster",
+      "CT",
+      "obs_names",
+      "X_umap_0",
+      "X_umap_1"
+    ],
+    "components": [
+      "CoordinateComponent",
+      "CoordinateComponent_0",
+      "Component",
+      "CoordinateComponent_1",
+      "Component_0",
+      "Component_1",
+      "Component_2",
+      "Component_3",
+      "Component_4",
+      "CategoricalComponent",
+      "CoordinateComponent_2",
+      "CategoricalComponent_0",
+      "Component_5",
+      "Component_6",
+      "CategoricalComponent_1",
+      "Component_7",
+      "Component_8",
+      "Component_9",
+      "Component_10",
+      "Component_11",
+      "Component_12",
+      "Component_13",
+      "CategoricalComponent_2",
+      "CategoricalComponent_3",
+      "CategoricalComponent_4",
+      "CategoricalComponent_5",
+      "CategoricalComponent_6",
+      "CategoricalComponent_7",
+      "Component_14",
+      "CategoricalComponent_8",
+      "CategoricalComponent_9",
+      "Component_15",
+      "Component_16"
+    ],
+    "data": [
+      "Cube_Mouse_Islets_20220701_X",
+      "Cube_Mouse_Islets_20220701_vars",
+      "Cube_Mouse_Islets_20220701_obs"
+    ],
+    "groups": [
+      "Subset 1",
+      "Subset 2",
+      "DGE between Subset 1 and Subset 2"
+    ],
+    "links": [
+      "JoinLink",
+      "JoinLink_0"
+    ],
+    "subset_group_count": 3
+  },
+  "Diet": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Diet"
+  },
+  "G2M.Score": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "G2M.Score"
+  },
+  "JoinLink": {
+    "_type": "glue.core.link_helpers.JoinLink",
+    "cids1": "list",
+    "cids2": "list_0",
+    "data1": "Cube_Mouse_Islets_20220701_X",
+    "data2": "Cube_Mouse_Islets_20220701_obs"
+  },
+  "JoinLink_0": {
+    "_type": "glue.core.link_helpers.JoinLink",
+    "cids1": "list_1",
+    "cids2": "list_2",
+    "data1": "Cube_Mouse_Islets_20220701_X",
+    "data2": "Cube_Mouse_Islets_20220701_vars"
+  },
+  "LinearSegmentedColormap": {
+    "_type": "matplotlib.colors.LinearSegmentedColormap",
+    "cmap": "gray"
+  },
+  "LoadLog": {
+    "_protocol": 2,
+    "_type": "glue.core.data_factories.helpers.LoadLog",
+    "factory": {
+      "_type": "types.FunctionType",
+      "function": "glue.core.data_factories.helpers.auto_data"
+    },
+    "force_coords": true,
+    "kwargs": [
+      []
+    ],
+    "path": "../../glue-single-cell/notebooks/Cube_Mouse_Islets_20220701.h5ad"
+  },
+  "MultiOrState": {
+    "_type": "glue.core.subset.MultiOrState"
+  },
+  "PassPercent": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "PassPercent"
+  },
+  "Phase": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Phase"
+  },
+  "Pixel Axis 0 [x]": {
+    "_type": "glue.core.component_id.PixelComponentID",
+    "axis": 0,
+    "label": "Pixel Axis 0 [x]"
+  },
+  "Pixel Axis 0 [x]_0": {
+    "_type": "glue.core.component_id.PixelComponentID",
+    "axis": 0,
+    "label": "Pixel Axis 0 [x]"
+  },
+  "Pixel Axis 0 [y]": {
+    "_type": "glue.core.component_id.PixelComponentID",
+    "axis": 0,
+    "label": "Pixel Axis 0 [y]"
+  },
+  "Pixel Axis 1 [x]": {
+    "_type": "glue.core.component_id.PixelComponentID",
+    "axis": 1,
+    "label": "Pixel Axis 1 [x]"
+  },
+  "QCpass": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "QCpass"
+  },
+  "RectangularROI": {
+    "_type": "glue.core.roi.RectangularROI",
+    "theta": 0,
+    "xmax": -1.9786578966669737,
+    "xmin": -5.1826205018647755,
+    "ymax": 18.118767622491504,
+    "ymin": 13.324514910786704
+  },
+  "RectangularROI_0": {
+    "_type": "glue.core.roi.RectangularROI",
+    "theta": 0,
+    "xmax": -8.580762658892745,
+    "xmin": -12.367263919581054,
+    "ymax": 8.248247333687502,
+    "ymin": 3.5950020546799024
+  },
+  "RoiSubsetState": {
+    "_type": "glue.core.subset.RoiSubsetState",
+    "pretransform": null,
+    "roi": "RectangularROI",
+    "xatt": "X_umap_0",
+    "yatt": "X_umap_1"
+  },
+  "RoiSubsetState_0": {
+    "_type": "glue.core.subset.RoiSubsetState",
+    "pretransform": null,
+    "roi": "RectangularROI_0",
+    "xatt": "X_umap_0",
+    "yatt": "X_umap_1"
+  },
+  "S.Score": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "S.Score"
+  },
+  "Sample": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Sample"
+  },
+  "SampleLibrary": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "SampleLibrary"
+  },
+  "ScatterLayerState": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.8,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "nCount_RNA",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 208393.0,
+      "cmap_vmin": 713.0,
+      "color": "st__#595959",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "Cube_Mouse_Islets_20220701_obs",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 3,
+      "size_att": "nCount_RNA",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 208393.0,
+      "size_vmin": 713.0,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "nCount_RNA",
+      "vy_att": "nCount_RNA",
+      "xerr_att": "nCount_RNA",
+      "xerr_visible": false,
+      "yerr_att": "nCount_RNA",
+      "yerr_visible": false,
+      "zorder": 1
+    }
+  },
+  "ScatterLayerState_0": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.5,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "nCount_RNA",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 208393.0,
+      "cmap_vmin": 713.0,
+      "color": "st__#e31a1c",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "Subset 1_0",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 7,
+      "size_att": "nCount_RNA",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 208393.0,
+      "size_vmin": 713.0,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "nCount_RNA",
+      "vy_att": "nCount_RNA",
+      "xerr_att": "nCount_RNA",
+      "xerr_visible": false,
+      "yerr_att": "nCount_RNA",
+      "yerr_visible": false,
+      "zorder": 2
+    }
+  },
+  "ScatterLayerState_1": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.5,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "nCount_RNA",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 208393.0,
+      "cmap_vmin": 713.0,
+      "color": "st__#33a02c",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "Subset 2_0",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 7,
+      "size_att": "nCount_RNA",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 208393.0,
+      "size_vmin": 713.0,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "nCount_RNA",
+      "vy_att": "nCount_RNA",
+      "xerr_att": "nCount_RNA",
+      "xerr_visible": false,
+      "yerr_att": "nCount_RNA",
+      "yerr_visible": false,
+      "zorder": 3
+    }
+  },
+  "ScatterLayerState_2": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.5,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "nCount_RNA",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 208393.0,
+      "cmap_vmin": 713.0,
+      "color": "st__#1f78b4",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "DGE between Subset 1 and Subset 2_0",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 7,
+      "size_att": "nCount_RNA",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 208393.0,
+      "size_vmin": 713.0,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "nCount_RNA",
+      "vy_att": "nCount_RNA",
+      "xerr_att": "nCount_RNA",
+      "xerr_visible": false,
+      "yerr_att": "nCount_RNA",
+      "yerr_visible": false,
+      "zorder": 4
+    }
+  },
+  "ScatterLayerState_3": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.8,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "vst.mean",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 688.8423990383951,
+      "cmap_vmin": 6.908081073239476e-05,
+      "color": "st__#595959",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "Cube_Mouse_Islets_20220701_vars",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 3,
+      "size_att": "vst.mean",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 688.8423990383951,
+      "size_vmin": 6.908081073239476e-05,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "vst.mean",
+      "vy_att": "vst.mean",
+      "xerr_att": "vst.mean",
+      "xerr_visible": false,
+      "yerr_att": "vst.mean",
+      "yerr_visible": false,
+      "zorder": 1
+    }
+  },
+  "ScatterLayerState_4": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.5,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "vst.mean",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 688.8423990383951,
+      "cmap_vmin": 6.908081073239476e-05,
+      "color": "st__#e31a1c",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "Subset 1_1",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 7,
+      "size_att": "vst.mean",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 688.8423990383951,
+      "size_vmin": 6.908081073239476e-05,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "vst.mean",
+      "vy_att": "vst.mean",
+      "xerr_att": "vst.mean",
+      "xerr_visible": false,
+      "yerr_att": "vst.mean",
+      "yerr_visible": false,
+      "zorder": 2
+    }
+  },
+  "ScatterLayerState_5": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.5,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "vst.mean",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 688.8423990383951,
+      "cmap_vmin": 6.908081073239476e-05,
+      "color": "st__#33a02c",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "Subset 2_1",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 7,
+      "size_att": "vst.mean",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 688.8423990383951,
+      "size_vmin": 6.908081073239476e-05,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "vst.mean",
+      "vy_att": "vst.mean",
+      "xerr_att": "vst.mean",
+      "xerr_visible": false,
+      "yerr_att": "vst.mean",
+      "yerr_visible": false,
+      "zorder": 3
+    }
+  },
+  "ScatterLayerState_6": {
+    "_type": "glue.viewers.scatter.state.ScatterLayerState",
+    "values": {
+      "alpha": 0.5,
+      "cmap": "LinearSegmentedColormap",
+      "cmap_att": "vst.mean",
+      "cmap_mode": "st__Fixed",
+      "cmap_vmax": 688.8423990383951,
+      "cmap_vmin": 6.908081073239476e-05,
+      "color": "st__#1f78b4",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "DGE between Subset 1 and Subset 2_1",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 7,
+      "size_att": "vst.mean",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 688.8423990383951,
+      "size_vmin": 6.908081073239476e-05,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "vst.mean",
+      "vy_att": "vst.mean",
+      "xerr_att": "vst.mean",
+      "xerr_visible": false,
+      "yerr_att": "vst.mean",
+      "yerr_visible": false,
+      "zorder": 4
+    }
+  },
+  "ScatterViewer": {
+    "_protocol": 1,
+    "_type": "glue.viewers.scatter.qt.data_viewer.ScatterViewer",
+    "layers": [
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState"
+      },
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_0"
+      },
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_1"
+      },
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_2"
+      }
+    ],
+    "pos": [
+      0,
+      0
+    ],
+    "session": "Session",
+    "size": [
+      600,
+      400
+    ],
+    "state": {
+      "values": {
+        "angle_unit": "st__radians",
+        "aspect": "st__auto",
+        "dpi": 71.30820648960312,
+        "layers": "CallbackList",
+        "plot_mode": "st__rectilinear",
+        "show_axes": true,
+        "x_att": "X_umap_0",
+        "x_axislabel": "st__X_umap_0",
+        "x_axislabel_size": 10,
+        "x_axislabel_weight": "st__normal",
+        "x_log": false,
+        "x_max": 9.041031669695158,
+        "x_min": -13.726520782392242,
+        "x_ticklabel_size": 8,
+        "y_att": "X_umap_1",
+        "y_axislabel": "st__X_umap_1",
+        "y_axislabel_size": 10,
+        "y_axislabel_weight": "st__normal",
+        "y_log": false,
+        "y_max": 18.682797353280296,
+        "y_min": -14.876971628653298,
+        "y_ticklabel_size": 8
+      }
+    }
+  },
+  "ScatterViewer_0": {
+    "_protocol": 1,
+    "_type": "glue.viewers.scatter.qt.data_viewer.ScatterViewer",
+    "layers": [
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_3"
+      },
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_4"
+      },
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_5"
+      },
+      {
+        "_type": "glue.viewers.scatter.layer_artist.ScatterLayerArtist",
+        "state": "ScatterLayerState_6"
+      }
+    ],
+    "pos": [
+      0,
+      400
+    ],
+    "session": "Session",
+    "size": [
+      600,
+      400
+    ],
+    "state": {
+      "values": {
+        "angle_unit": "st__radians",
+        "aspect": "st__auto",
+        "dpi": 71.30820648960312,
+        "layers": "CallbackList_0",
+        "plot_mode": "st__rectilinear",
+        "show_axes": true,
+        "x_att": "vst.mean",
+        "x_axislabel": "st__vst.mean",
+        "x_axislabel_size": 10,
+        "x_axislabel_weight": "st__normal",
+        "x_log": false,
+        "x_max": 716.3960922366985,
+        "x_min": -27.553624117492646,
+        "x_ticklabel_size": 8,
+        "y_att": "vst.variance",
+        "y_axislabel": "st__vst.variance",
+        "y_axislabel_size": 10,
+        "y_axislabel_weight": "st__normal",
+        "y_log": false,
+        "y_max": 4267503.335638896,
+        "y_min": -164134.74354929425,
+        "y_ticklabel_size": 8
+      }
+    }
+  },
+  "SequencedCells": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "SequencedCells"
+  },
+  "Session": {
+    "_type": "glue.core.session.Session"
+  },
+  "Sex": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Sex"
+  },
+  "Strain": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Strain"
+  },
+  "Subset 1": {
+    "_type": "glue.core.subset_group.SubsetGroup",
+    "label": "Subset 1",
+    "state": "RoiSubsetState",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#e31a1c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    },
+    "subsets": [
+      "Subset 1_2",
+      "Subset 1_1",
+      "Subset 1_0"
+    ]
+  },
+  "Subset 1_0": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "Subset 1",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#e31a1c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "Subset 1_1": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "Subset 1",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#e31a1c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "Subset 1_2": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "Subset 1",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#e31a1c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "Subset 2": {
+    "_type": "glue.core.subset_group.SubsetGroup",
+    "label": "Subset 2",
+    "state": "RoiSubsetState_0",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#33a02c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    },
+    "subsets": [
+      "Subset 2_2",
+      "Subset 2_1",
+      "Subset 2_0"
+    ]
+  },
+  "Subset 2_0": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "Subset 2",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#33a02c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "Subset 2_1": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "Subset 2",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#33a02c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "Subset 2_2": {
+    "_type": "glue.core.subset_group.GroupedSubset",
+    "group": "Subset 2",
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.5,
+      "color": "#33a02c",
+      "linestyle": "solid",
+      "linewidth": 2.5,
+      "marker": "o",
+      "markersize": 7,
+      "preferred_cmap": null
+    }
+  },
+  "X_umap_0": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "X_umap_0"
+  },
+  "X_umap_1": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "X_umap_1"
+  },
+  "Xarray": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "Xarray"
+  },
+  "__main__": {
+    "_type": "glue.app.qt.application.GlueApplication",
+    "data": "DataCollection",
+    "plugins": [
+      "glue.viewers.table.qt",
+      "glue.plugins.tools",
+      "glue_vispy_viewers.scatter",
+      "glue.io.qt.directory_importer",
+      "glue.io.formats.fits",
+      "glue.viewers.histogram.qt",
+      "glue.plugins.wcs_autolinking",
+      "glue_small_multiples",
+      "glue_vispy_viewers.volume",
+      "glue.viewers.image.qt",
+      "glue.plugins.export_d3po",
+      "glue.viewers.scatter.qt",
+      "glue.viewers.profile.qt",
+      "glue.plugins.tools.pv_slicer.qt",
+      "glue.plugins.coordinate_helpers",
+      "glue.core.data_exporters",
+      "glue_single_cell"
+    ],
+    "session": "Session",
+    "tab_names": [
+      "Tab 1"
+    ],
+    "viewers": [
+      [
+        "ScatterViewer",
+        "ScatterViewer_0"
+      ]
+    ]
+  },
+  "list": {
+    "_type": "builtins.list",
+    "contents": [
+      "Pixel Axis 0 [y]"
+    ]
+  },
+  "list_0": {
+    "_type": "builtins.list",
+    "contents": [
+      "Pixel Axis 0 [x]_0"
+    ]
+  },
+  "list_1": {
+    "_type": "builtins.list",
+    "contents": [
+      "Pixel Axis 1 [x]"
+    ]
+  },
+  "list_2": {
+    "_type": "builtins.list",
+    "contents": [
+      "Pixel Axis 0 [x]"
+    ]
+  },
+  "nCount_RNA": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "nCount_RNA"
+  },
+  "nFeature_RNA": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "nFeature_RNA"
+  },
+  "obs_names": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "obs_names"
+  },
+  "orig.ident": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "orig.ident"
+  },
+  "percent.mt": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "percent.mt"
+  },
+  "percent.rb": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "percent.rb"
+  },
+  "var_names": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "var_names"
+  },
+  "vst.mean": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "vst.mean"
+  },
+  "vst.variable": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "vst.variable"
+  },
+  "vst.variance": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "vst.variance"
+  },
+  "vst.variance.expected": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "vst.variance.expected"
+  },
+  "vst.variance.standardized": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "vst.variance.standardized"
+  }
+}

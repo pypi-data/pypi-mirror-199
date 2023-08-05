@@ -1,0 +1,449 @@
+{
+  "CallbackList": {
+    "_type": "echo.containers.CallbackList",
+    "values": [
+      "SmallMultiplesLayerState",
+      "FacetScatterLayerState",
+      "FacetScatterLayerState_0",
+      "FacetScatterLayerState_1"
+    ]
+  },
+  "CategoricalComponent": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 1
+  },
+  "CategoricalComponent_0": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 2
+  },
+  "CategoricalComponent_1": {
+    "_type": "glue.core.component.CategoricalComponent",
+    "log": "LoadLog",
+    "log_item": 7
+  },
+  "Component": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 3
+  },
+  "Component_0": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 4
+  },
+  "Component_1": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 5
+  },
+  "Component_2": {
+    "_type": "glue.core.component.Component",
+    "log": "LoadLog",
+    "log_item": 6
+  },
+  "CoordinateComponent": {
+    "_type": "glue.core.component.CoordinateComponent",
+    "axis": 0,
+    "world": false
+  },
+  "DataCollection": {
+    "_protocol": 5,
+    "_type": "glue.core.data_collection.DataCollection",
+    "cids": [
+      "Pixel Axis 0 [x]",
+      "species",
+      "island",
+      "bill_length_mm",
+      "bill_depth_mm",
+      "flipper_length_mm",
+      "body_mass_g",
+      "sex"
+    ],
+    "components": [
+      "CoordinateComponent",
+      "CategoricalComponent",
+      "CategoricalComponent_0",
+      "Component",
+      "Component_0",
+      "Component_1",
+      "Component_2",
+      "CategoricalComponent_1"
+    ],
+    "data": [
+      "penguins"
+    ],
+    "groups": [],
+    "links": [],
+    "subset_group_count": 0
+  },
+  "FacetScatterLayerState": {
+    "_type": "glue_small_multiples.state.FacetScatterLayerState",
+    "values": {
+      "alpha": 0.8,
+      "cmap": "ListedColormap",
+      "cmap_att": "body_mass_g",
+      "cmap_mode": "st__Linear",
+      "cmap_vmax": 6300,
+      "cmap_vmin": -1,
+      "color": "st__#595959",
+      "density_contrast": 1,
+      "density_map": false,
+      "fill": true,
+      "layer": "penguins",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 3,
+      "size_att": "bill_length_mm",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 59.6,
+      "size_vmin": 32.1,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 1,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "bill_length_mm",
+      "vy_att": "bill_length_mm",
+      "xerr_att": "bill_length_mm",
+      "xerr_visible": false,
+      "yerr_att": "bill_length_mm",
+      "yerr_visible": false,
+      "zorder": 1
+    }
+  },
+  "FacetScatterLayerState_0": {
+    "_type": "glue_small_multiples.state.FacetScatterLayerState",
+    "values": {
+      "alpha": 0.8,
+      "cmap": "ListedColormap",
+      "cmap_att": "body_mass_g",
+      "cmap_mode": "st__Linear",
+      "cmap_vmax": 6300,
+      "cmap_vmin": -1,
+      "color": "st__#595959",
+      "density_contrast": 1,
+      "density_map": false,
+      "fill": true,
+      "layer": "penguins",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 3,
+      "size_att": "bill_length_mm",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 59.6,
+      "size_vmin": 32.1,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 1,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "bill_length_mm",
+      "vy_att": "bill_length_mm",
+      "xerr_att": "bill_length_mm",
+      "xerr_visible": false,
+      "yerr_att": "bill_length_mm",
+      "yerr_visible": false,
+      "zorder": 1
+    }
+  },
+  "FacetScatterLayerState_1": {
+    "_type": "glue_small_multiples.state.FacetScatterLayerState",
+    "values": {
+      "alpha": 0.8,
+      "cmap": "ListedColormap",
+      "cmap_att": "body_mass_g",
+      "cmap_mode": "st__Linear",
+      "cmap_vmax": 6300,
+      "cmap_vmin": -1,
+      "color": "st__#595959",
+      "density_contrast": 1,
+      "density_map": false,
+      "fill": true,
+      "layer": "penguins",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 3,
+      "size_att": "bill_length_mm",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 59.6,
+      "size_vmin": 32.1,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 1,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "bill_length_mm",
+      "vy_att": "bill_length_mm",
+      "xerr_att": "bill_length_mm",
+      "xerr_visible": false,
+      "yerr_att": "bill_length_mm",
+      "yerr_visible": false,
+      "zorder": 1
+    }
+  },
+  "ListedColormap": {
+    "_type": "matplotlib.colors.ListedColormap",
+    "cmap": "viridis"
+  },
+  "LoadLog": {
+    "_protocol": 2,
+    "_type": "glue.core.data_factories.helpers.LoadLog",
+    "factory": {
+      "_type": "types.FunctionType",
+      "function": "glue.core.data_factories.helpers.auto_data"
+    },
+    "force_coords": false,
+    "kwargs": [
+      []
+    ],
+    "path": "../penguins.csv"
+  },
+  "Pixel Axis 0 [x]": {
+    "_type": "glue.core.component_id.PixelComponentID",
+    "axis": 0,
+    "label": "Pixel Axis 0 [x]"
+  },
+  "Session": {
+    "_type": "glue.core.session.Session"
+  },
+  "SmallMultiplesLayerState": {
+    "_type": "glue_small_multiples.state.SmallMultiplesLayerState",
+    "values": {
+      "alpha": 0.8,
+      "cmap": "ListedColormap",
+      "cmap_att": "body_mass_g",
+      "cmap_mode": "st__Linear",
+      "cmap_vmax": 6300,
+      "cmap_vmin": -1,
+      "color": "st__#595959",
+      "density_contrast": 1.0,
+      "density_map": false,
+      "fill": true,
+      "layer": "penguins",
+      "line_visible": false,
+      "linestyle": "st__solid",
+      "linewidth": 1,
+      "markers_visible": true,
+      "points_mode": "st__auto",
+      "size": 3,
+      "size_att": "bill_length_mm",
+      "size_mode": "st__Fixed",
+      "size_scaling": 1,
+      "size_vmax": 59.6,
+      "size_vmin": 32.1,
+      "stretch": "st__log",
+      "vector_arrowhead": false,
+      "vector_mode": "st__Cartesian",
+      "vector_origin": "st__middle",
+      "vector_scaling": 0.9770099572992254,
+      "vector_visible": false,
+      "visible": true,
+      "vx_att": "bill_length_mm",
+      "vy_att": "bill_length_mm",
+      "xerr_att": "bill_length_mm",
+      "xerr_visible": false,
+      "yerr_att": "bill_length_mm",
+      "yerr_visible": false,
+      "zorder": 1
+    }
+  },
+  "SmallMultiplesViewer": {
+    "_protocol": 1,
+    "_type": "glue_small_multiples.qt.viewer.SmallMultiplesViewer",
+    "layers": [
+      {
+        "_type": "glue_small_multiples.layer_artist.SmallMultiplesLayerArtist",
+        "state": "SmallMultiplesLayerState"
+      }
+    ],
+    "pos": [
+      0,
+      0
+    ],
+    "session": "Session",
+    "size": [
+      716,
+      501
+    ],
+    "state": {
+      "values": {
+        "angle_unit": "st__radians",
+        "aspect": "st__auto",
+        "col_facet_att": "species",
+        "dpi": 71.30820648960312,
+        "layers": "CallbackList",
+        "max_num_cols": 5,
+        "max_num_rows": 5,
+        "num_cols": 3,
+        "num_rows": 1,
+        "plot_mode": "st__rectilinear",
+        "reference_data": "penguins",
+        "row_facet_att": null,
+        "show_axes": true,
+        "x_att": "bill_depth_mm",
+        "x_axislabel": "st__bill_depth_mm",
+        "x_axislabel_size": 10,
+        "x_axislabel_weight": "st__normal",
+        "x_log": false,
+        "x_max": 21.836,
+        "x_min": 12.764,
+        "x_ticklabel_size": 8,
+        "y_att": "bill_length_mm",
+        "y_axislabel": "st__bill_length_mm",
+        "y_axislabel_size": 10,
+        "y_axislabel_weight": "st__normal",
+        "y_log": false,
+        "y_max": 60.7,
+        "y_min": 31.0,
+        "y_ticklabel_size": 8
+      }
+    }
+  },
+  "__main__": {
+    "_type": "glue.app.qt.application.GlueApplication",
+    "data": "DataCollection",
+    "plugins": [
+      "glue.plugins.tools.pv_slicer.qt",
+      "glue_small_multiples",
+      "glue_vispy_viewers.volume",
+      "glue_single_cell",
+      "glue_heatmap.qt",
+      "glue.viewers.scatter.qt",
+      "glue.io.qt.directory_importer",
+      "glue.io.formats.fits",
+      "glue.viewers.image.qt",
+      "glue.plugins.wcs_autolinking",
+      "glue.viewers.table.qt",
+      "glue_vispy_viewers.scatter",
+      "glue.viewers.profile.qt",
+      "glue.plugins.coordinate_helpers",
+      "glue.plugins.export_d3po",
+      "glue.plugins.tools",
+      "glue.viewers.histogram.qt",
+      "glue.core.data_exporters"
+    ],
+    "session": "Session",
+    "tab_names": [
+      "Tab 1"
+    ],
+    "viewers": [
+      [
+        "SmallMultiplesViewer"
+      ]
+    ]
+  },
+  "bill_depth_mm": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "bill_depth_mm"
+  },
+  "bill_length_mm": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "bill_length_mm"
+  },
+  "body_mass_g": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "body_mass_g"
+  },
+  "flipper_length_mm": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "flipper_length_mm"
+  },
+  "island": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "island"
+  },
+  "penguins": {
+    "_key_joins": [],
+    "_protocol": 5,
+    "_type": "glue.core.data.Data",
+    "components": [
+      [
+        "Pixel Axis 0 [x]",
+        "CoordinateComponent"
+      ],
+      [
+        "species",
+        "CategoricalComponent"
+      ],
+      [
+        "island",
+        "CategoricalComponent_0"
+      ],
+      [
+        "bill_length_mm",
+        "Component"
+      ],
+      [
+        "bill_depth_mm",
+        "Component_0"
+      ],
+      [
+        "flipper_length_mm",
+        "Component_1"
+      ],
+      [
+        "body_mass_g",
+        "Component_2"
+      ],
+      [
+        "sex",
+        "CategoricalComponent_1"
+      ]
+    ],
+    "label": "penguins",
+    "meta": {
+      "_type": "collections.OrderedDict",
+      "contents": {}
+    },
+    "primary_owner": [
+      "Pixel Axis 0 [x]",
+      "species",
+      "island",
+      "bill_length_mm",
+      "bill_depth_mm",
+      "flipper_length_mm",
+      "body_mass_g",
+      "sex"
+    ],
+    "style": {
+      "_type": "glue.core.visual.VisualAttributes",
+      "alpha": 0.8,
+      "color": "#595959",
+      "linestyle": "solid",
+      "linewidth": 1,
+      "marker": "o",
+      "markersize": 3,
+      "preferred_cmap": null
+    },
+    "subsets": [],
+    "uuid": "9f71e01a-5e3a-45fb-81c4-5a6e7862686e"
+  },
+  "sex": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "sex"
+  },
+  "species": {
+    "_type": "glue.core.component_id.ComponentID",
+    "label": "species"
+  }
+}

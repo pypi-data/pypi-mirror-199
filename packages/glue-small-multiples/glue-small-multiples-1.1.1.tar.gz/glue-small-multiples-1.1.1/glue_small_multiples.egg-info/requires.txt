@@ -1,0 +1,7 @@
+glue-core>=1.6
+
+[qt]
+PyQt5>=5.9
+
+[test]
+pytest
