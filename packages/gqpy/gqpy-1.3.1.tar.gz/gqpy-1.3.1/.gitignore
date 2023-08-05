@@ -1,0 +1,31 @@
+**/__pycache__
+.DS_Store
+node_modules
+dist
+
+# local env files
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+https://trial-6463513.okta.com
+006DENH_G5V8kLLrLW1cBFH9yPK29WwmEuAlEHvH7r
+
+**/target/
+**/.azure-pipelines/*
+.azure-pipelines/
+**/yarn.lock
+**/yarn-error.log
+.azure-pipelines/testing.yml

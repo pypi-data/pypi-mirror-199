@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: gqpy
+Version: 1.3.1
+Summary: This package allows users to get lightnight fast crypto market data using Python functions.
+Project-URL: GoQuant's Website, https://goquant.io/
+Author-email: Benjamin Chamberland <benjamin.chamberland@goquant.io>
+License-File: LICENCE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: pymongo
+Requires-Dist: requests
+Requires-Dist: websocket
