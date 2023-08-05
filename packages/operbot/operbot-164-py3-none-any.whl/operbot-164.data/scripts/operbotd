@@ -1,0 +1,29 @@
+#!python
+# This file is placed in the Public Domain.
+
+
+"operator bot daemon"
+
+
+from operbot.command import scan
+from operbot.modules import cmd, irc, log, rss, tdo
+from operbot.storage import Storage
+from operbot.utility import wait
+
+
+Storage.workdir = "/var/lib/operbot/"
+
+
+scan(cmd)
+scan(log)
+scan(rss)
+scan(tdo)
+
+
+def main():
+    irc.start()
+    rss.start()
+    wait()
+
+
+main()
