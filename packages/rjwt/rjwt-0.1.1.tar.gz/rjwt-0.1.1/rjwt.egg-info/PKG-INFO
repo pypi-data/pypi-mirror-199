@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: rjwt
+Version: 0.1.1
+Summary: Recursive JavaScript Web Token
+Home-page: https://github.com/haydnv/rjwt
+Author: The TinyChain Contributors
+Author-email: haydn@tinychain.net
+Keywords: 'jwt cryptography signing recursive distributed'
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Financial and Insurance Industry
+Classifier: Intended Audience :: Information Technology
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet
+Classifier: Topic :: Security :: Cryptography
+Classifier: Topic :: Software Development
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+[![Documentation Status](https://readthedocs.org/projects/rjwt/badge/?version=latest)](https://rjwt.readthedocs.io/en/latest/?badge=latest)  
+
+
+A Python library for constructing, signing, and validating recursive Javascript Web Tokens.
+This is a specialized application of [Javascript Web Tokens](https://jwt.io/) for highly distributed systems.
+
+documentation: https://rjwt.readthedocs.io/en/latest/
