@@ -1,0 +1,15 @@
+form {
+	display: flex;
+	flex-direction: column;
+	max-width: 200px;
+}
+
+label {
+	display: inline-block;
+	margin-top: 5px;
+	margin-bottom: 2px;
+}
+
+input[type=submit] {
+	margin: 10px;
+}
