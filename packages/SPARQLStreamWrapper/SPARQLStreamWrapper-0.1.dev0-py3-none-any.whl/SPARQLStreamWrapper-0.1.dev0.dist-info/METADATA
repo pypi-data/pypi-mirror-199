@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: SPARQLStreamWrapper
+Version: 0.1.dev0
+Summary: SPARQL Endpoint interface to permit streaming queries from Python
+Home-page: https://github.com/chimera-suite
+Download-URL: https://github.com/RDFLib/sparqlwrapper/releases
+Author: Matteo Belcao
+License: W3C SOFTWARE NOTICE AND LICENSE
+Project-URL: Home, https://rdflib.github.io/sparqlwrapper/
+Project-URL: Documentation, https://sparqlwrapper.readthedocs.io
+Project-URL: Source, https://github.com/RDFLib/sparqlwrapper
+Project-URL: Tracker, https://github.com/RDFLib/sparqlwrapper/issues
+Keywords: python,sparql,rdf,rdflib
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: W3C License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.5
+License-File: LICENSE.txt
+Requires-Dist: rdflib (>=4.0)
+Provides-Extra: keepalive
+Requires-Dist: keepalive (>=0.5) ; extra == 'keepalive'
+
+This is a wrapper around a SPARQL service and supports RSP-QL queries. It helps in creating the query URI and, possibly, convert the result into a more manageable format.
