@@ -1,0 +1,1 @@
+DEDICATED_DATA_STORE = dict()

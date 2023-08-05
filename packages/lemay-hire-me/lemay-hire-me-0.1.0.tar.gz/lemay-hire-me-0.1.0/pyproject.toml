@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "lemay-hire-me"
+version = "0.1.0"
+description = ""
+authors = ["Alexey Belochenko <alexey@lemay.ai>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+lemay-hire-me = "lemay_hire_me.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+typer = {extras = ["all"], version = "^0.7.0"}
+PyInquirer = "^1.0.3"
+termcolor = "^2.2.0"
+pyfiglet = "^0.8.post1"
+GitPython = "^3.1.31"
+pydantic = "^1.10.5"
+requests = "^2.28.2"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
