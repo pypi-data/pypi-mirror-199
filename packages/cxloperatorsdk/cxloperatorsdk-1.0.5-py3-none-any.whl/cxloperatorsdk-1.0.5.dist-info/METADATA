@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: cxloperatorsdk
+Version: 1.0.5
+Summary: CXL pipeline operator SDK
+Author: Tongguo Pang
+Author-email: tongguo.pang@contextlabs.com
+License: MIT
+Provides-Extra: tests
+Requires-Dist: pytest (~=7.2) ; extra == 'tests'
+
