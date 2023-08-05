@@ -1,0 +1,6 @@
+[console_scripts]
+pipeline_exit = pipeline_exit:main
+
+[drip.dropper]
+salt_arrival = lz_drip:SaltArrival
+spade_reception = lz_drip:SpadeReception
