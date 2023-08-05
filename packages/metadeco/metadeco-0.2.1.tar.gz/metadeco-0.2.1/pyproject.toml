@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "metadeco"
+version = "0.2.1"
+description = "Metadeco allows you to set metadata to decorated objects."
+authors = ["Predeactor <pro.julien.mauroy@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+include = ["README.md", "LICENSE"]
+
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typing-extensions = "^4.5.0"
+
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^1.1.1"
+black = "^23.1.0"
+isort = "^5.12.0"
+tox = "^4.4.7"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
