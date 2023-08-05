@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+src/edamame/__init__.py
+src/edamame.egg-info/PKG-INFO
+src/edamame.egg-info/SOURCES.txt
+src/edamame.egg-info/dependency_links.txt
+src/edamame.egg-info/requires.txt
+src/edamame.egg-info/top_level.txt
+src/edamame/classifier/__init__.py
+src/edamame/classifier/classification.py
+src/edamame/eda/__init__.py
+src/edamame/eda/eda.py
+src/edamame/eda/tools.py
+src/edamame/regressor/__init__.py
+src/edamame/regressor/diagnose.py
+src/edamame/regressor/regression.py
