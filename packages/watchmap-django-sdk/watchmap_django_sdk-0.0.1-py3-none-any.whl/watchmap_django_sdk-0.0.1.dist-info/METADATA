@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: watchmap-django-sdk
+Version: 0.0.1
+Summary: A SDK to connect to watchmap server
+Author: sudip-mondal-2002
+License: MIT
+Requires-Dist: django
+Requires-Dist: requests
+Requires-Dist: django-environ
+
