@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "simpley"
+version = "0.0.1"
+description = "Simpley is a Python package designed to make coding in Python just a little bit easier"
+authors = ["The Open Project <opendylan@proton.me>"]
+readme = "README.md"
+[tool.poetry.dependencies]
+python = "^3"
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
