@@ -1,0 +1,48 @@
+[build-system]
+requires = [
+  "setuptools",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqlfmt"
+description = "An uncompromising SQL query formatter."
+readme = "README.md"
+requires-python = ">=3.7"
+keywords = []
+authors = [
+  { name = "HH-MWB", email = "h.hong@mail.com" },
+]
+classifiers = [
+  "Development Status :: 1 - Planning",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Environment :: Console",
+  "Operating System :: OS Independent",
+]
+dependencies = [
+  "sqlfluff~=2.0",
+  "typer~=0.7",
+]
+dynamic = [
+  "version",
+]
+
+[project.urls]
+homepage = "https://pypi.org/project/sqlfmt/"
+repository = "https://github.com/HH-MWB/sqlfmt"
+
+[project.scripts]
+sqlfmt = "sqlfmt.__main__:app"
+
+[tool.setuptools.dynamic]
+version = {attr = "sqlfmt.__version__"}
+
+[tool.setuptools.package-data]
+sqlfmt = [
+  "sqlfluff.cfg",
+]
