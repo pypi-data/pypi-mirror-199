@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: Edulib
+Version: 0.0.1
+Summary: Toolbox with helpers.
+Author: xwr4p
+Author-email: Aleksa Lukic <aleksalukic92@web.de>
+Project-URL: Homepage, https://github.com/Aleksa-Lukic/Edulib
+Project-URL: Bug Tracker, https://github.com/Aleksa-Lukic/Edulib/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pandas (>=1.5.3)
+Requires-Dist: matplotlib (>=3.7.1)
+Requires-Dist: pydantic (>=1.10.7)
+Requires-Dist: numpy (>=1.24.2)
+Requires-Dist: pendulum (>=2.1.2)
+Provides-Extra: dev
+Requires-Dist: autoflake ; extra == 'dev'
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: build ; extra == 'dev'
+Requires-Dist: coverage ; extra == 'dev'
+Requires-Dist: flake8 ; extra == 'dev'
+Requires-Dist: isort ; extra == 'dev'
+Requires-Dist: mypy ; extra == 'dev'
+Requires-Dist: pre-commit ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+Requires-Dist: toml ; extra == 'dev'
+Requires-Dist: tox ; extra == 'dev'
+Requires-Dist: twine ; extra == 'dev'
+
+# Getting Started
+## Setting Up a Virtual Environment
+### Create a virtual environment using the following command:
+
+```bash
+python -m venv .venv
+```
+Activate the virtual environment:
+
+On Unix/macOS:
+```bash
+source .venv/bin/activate
+```bash
+
+On Windows:
+```bash
+.venv\Scripts\activate
+```
+## Installing 
+
+
+```bash
+pip install edulib
+```
+
