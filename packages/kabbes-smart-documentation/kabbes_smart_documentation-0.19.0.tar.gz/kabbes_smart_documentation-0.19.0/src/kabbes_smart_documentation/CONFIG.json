@@ -1,0 +1,20 @@
+{
+
+    "!sphinx_script_Path":{
+        "$ref": "{R{_Dir}R}",
+        "method":{
+            "name": "join_Path",
+            "kwargs":{
+                "path": "sphinx_script.sh"
+            }
+        }
+    },
+    "html_theme": "sphinx_rtd_theme",
+    "release": "{{kabbes_repository_generator.repo.version}}",
+    "email": "{{user_profile.profile.email}}",
+    "name":"{{user_profile.profile.name}}",
+    "first_name":"{{user_profile.profile.first_name}}",
+    "last_name":"{{user_profile.profile.last_name}}",
+    "pypi_username":"{{user_profile.profile.pypi.username}}",
+    "github_username":"{{user_profile.profile.github.username}}"
+}
