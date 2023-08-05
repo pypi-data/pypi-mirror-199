@@ -1,0 +1,43 @@
+[tool.poetry]
+name = "libecalc"
+version = "0.0.1"
+description = "eCalc™ - energy and emission Calculator - is a calculator for energy usage and emissions related to reservoir drainage."
+keywords = ["energy", "emission", "scientific", "engineering"]
+authors = ["eCalc Team <ecalc-no-reply@equinor.com>"]
+
+license = "GPL-3.0-only"
+readme = "README.md"
+homepage = "https://github.com/equinor/ecalc-pypi-setup"
+repository = "https://github.com/equinor/ecalc-pypi-setup"
+classifiers=[
+    "Development Status :: 4 - Beta",
+    "Topic :: Scientific/Engineering",
+    "Intended Audience :: Science/Research",
+    "Natural Language :: English",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Utilities",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Natural Language :: English",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+]
+
+packages = [
+    { include = "libecalc", from = "src" },
+]
+
+[tool.poetry.scripts]
+ecalc = 'libecalc.main:app'
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+
+[build-system]
+requires = ["poetry-core>=1.4.0"]
+build-backend = "poetry.core.masonry.api"
