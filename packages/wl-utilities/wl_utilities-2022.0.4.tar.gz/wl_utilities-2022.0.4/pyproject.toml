@@ -1,0 +1,8 @@
+[tool.black]
+line-length = 110
+include = '\.pyi?$'
+
+[tool.pydocstyle]
+inherit = false
+select = "D101,D102,D103,D106,D201,D204,D206,D207,D208,D300,D301"
+match = '((?!test_).)*\.py'
