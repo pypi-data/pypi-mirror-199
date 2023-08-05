@@ -1,0 +1,17 @@
+watchdog
+
+[:python_version < "3.7"]
+importlib_resources
+
+[babel]
+babel
+babelgladeextractor
+
+[build_sphinx]
+Sphinx
+myst-parser
+sphinxcontrib-napoleon
+sphinx-rtd-theme
+
+[vlc_video]
+python-vlc
