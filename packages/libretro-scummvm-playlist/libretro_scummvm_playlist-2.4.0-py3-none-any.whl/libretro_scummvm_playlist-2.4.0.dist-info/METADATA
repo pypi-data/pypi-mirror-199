@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: libretro-scummvm-playlist
+Version: 2.4.0
+Summary: libretro scummvm playlist builder
+Author: i30817
+Author-email: i30817@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: typer[all] (>=0.5.0,<0.6.0)
+Project-URL: Bug Tracker, https://github.com/i30817/libretro-mkscumm/issues
+Project-URL: documentation, https://github.com/i30817/libretro-mkscumm#readme
+Project-URL: homepage, https://github.com/i30817/libretro-mkscumm
