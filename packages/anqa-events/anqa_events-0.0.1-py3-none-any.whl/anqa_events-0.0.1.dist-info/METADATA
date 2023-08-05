@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: anqa-events
+Version: 0.0.1
+Summary: 
+Requires-Python: >=3.8.1,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Provides-Extra: all
+Provides-Extra: cli
+Provides-Extra: kafka
+Provides-Extra: msgpack
+Provides-Extra: nats
+Provides-Extra: pubsub
+Provides-Extra: rabbitmq
+Provides-Extra: redis
+Requires-Dist: aio-pika (>=9.0.4) ; extra == "all" or extra == "rabbitmq"
+Requires-Dist: aiokafka (>=0.8,<1.0) ; extra == "all" or extra == "kafka"
+Requires-Dist: aioredis (>=2.0.1,<3.0.0) ; extra == "all" or extra == "redis"
+Requires-Dist: aiorun (>=2022.11.1,<2023.0.0) ; extra == "all" or extra == "cli"
+Requires-Dist: anqa-core (==0.0.1)
+Requires-Dist: async-timeout (>=4.0)
+Requires-Dist: gcloud-aio-pubsub (>=5.2.0,<6.0.0) ; extra == "all" or extra == "pubsub"
+Requires-Dist: nats-py (>=2.2,<3.0) ; extra == "all" or extra == "nats"
+Requires-Dist: ormsgpack (>=1.2.5,<2.0.0) ; extra == "all" or extra == "msgpack"
+Requires-Dist: typer (>=0.7.0,<0.8.0) ; extra == "all" or extra == "cli"
+Description-Content-Type: text/markdown
+
+# anqa-events
