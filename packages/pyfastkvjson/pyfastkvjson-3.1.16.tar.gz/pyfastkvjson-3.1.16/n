@@ -1,0 +1,74 @@
+#!/bin/sh
+
+gitpush() {
+  git add .
+  git remote add origin https://github.com/ONode/pyfastkvjson.git
+  git commit -m "quick acme bug fix"
+  git push
+}
+normal_version_bump(){
+  VERSION=$(cat version)
+  increment_version $VERSION > version
+  VERSION=$(cat version)
+}
+# Accepts a version string and prints it incremented by one.
+# Usage: increment_version <version> [<position>] [<leftmost>]
+increment_version() {
+  declare -a part=(${1//\./ })
+  declare new
+  declare -i carry=1
+
+  for ((CNTR = ${#part[@]} - 1; CNTR >= 0; CNTR -= 1)); do
+    len=${#part[CNTR]}
+    new=$((part[CNTR] + carry))
+    [ ${#new} -gt $len ] && carry=1 || carry=0
+    [ $CNTR -gt 0 ] && part[CNTR]=${new: -len} || part[CNTR]=${new}
+  done
+  
+  new="${part[*]}"
+
+  if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+    echo -e "${new// /.}"
+  elif [[ "$OSTYPE" == "darwin"* ]]; then
+    echo "${new// /.}"
+  elif [[ "$OSTYPE" == "cygwin" ]]; then
+    echo "not correct system - cygwin detected"
+    exit
+  fi
+}
+
+
+pub_repo() {
+  VERSION=$(cat version)
+  increment_version $VERSION >version
+  VERSION=$(cat version)
+
+  sudo rm -rf build
+  sudo rm -rf src/binancepy.egg-info
+  sudo rm -rf dist
+  rm -rf html
+  rm -rf doc
+  python3.9 -m pdoc --html src/plotman
+  mv html/plotman docs/plotman
+  rm html
+
+  python3.9 -m pip install --user --upgrade setuptools wheel
+  # python3 -m pip install --upgrade setuptools wheel
+  sudo python3.9 setup.py clean sdist bdist_wheel
+  # python3 -m pip install --user --upgrade twine
+  # python3 -m twine upload --repository testpypi dist/*
+  python3.9 -m twine upload dist/* --verbose
+  echo "please update the package by using this command"
+  echo "python3 -m pip install pyfastkvjson==$VERSION"
+  echo "pi pyfastkvjson==$VERSION"
+  echo "pc pyfastkvjson==$VERSION"
+  echo "wait 30 seconds until it gets uploaded online..."
+  echo "also read from https://pypi.org/project/pyfastkvjson/"
+  # echo "ready and install it again.."
+}
+
+testup() {
+  # python3 -m pytest
+  python3.9 test_jsonstore_secure.py
+  python3.9 test_jsonstore.py
+}
