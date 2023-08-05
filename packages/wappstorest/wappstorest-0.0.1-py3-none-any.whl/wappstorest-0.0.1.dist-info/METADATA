@@ -1,0 +1,153 @@
+Metadata-Version: 2.1
+Name: wappstorest
+Version: 0.0.1
+Summary: Simple Wappsto Python user-interface to Wappsto Rest
+Home-page: https://github.com/Wappsto/python-wappsto-rest
+Author: Seluxit A/S
+Author-email: support@seluxit.com
+License: Apache-2.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic (>=1.10.5)
+Requires-Dist: httpx (>=0.23.0)
+Requires-Dist: websocket-client (>=0.59.0)
+Requires-Dist: rich (>=12.0.0)
+
+python-wappsto-rest
+===============================================================================
+
+
+
+
+
+
+Usecase Examples:
+-------------------------------------------------------------------------------
+
+```python
+import uuid
+from wappstorest import WappstoRest
+from wappstorest import WappstoService
+
+service = WappstoRest()
+service.login(
+    username='the_user',
+    password='SuperSecurePasswordThatYouDoNotRemember'
+)
+
+
+the_network = service(WappstoService.NETWORK).service_id(
+    uuid.uuid4()
+).get()
+
+print(the_network.name)
+print(the_network.meta.id)
+
+
+service.logout()
+```
+
+```python
+from wappstorest import WappstoRest
+from wappstorest import WappstoService
+from wappstorest import WappstoPath
+from wappstorest import WappstoSchema
+
+service = WappstoRest()
+service.login(
+    username='the_user',
+    password='SuperSecurePasswordThatYouDoNotRemember'
+)
+
+
+# Is this even possible?
+device_list: WappstoSchema.response.IdList = service(
+    WappstoService.DEVICE
+).filter(
+    WappstoPath.Device.meta.parent.name == "Production"
+).get()
+
+the_device: WappstoSchema.response.Device = service(
+    WappstoService.DEVICE
+).service_id(device_list.id[0]).post(
+    WappstoSchema.create.Device(
+        name='button'
+    )
+)
+
+service.logout()
+```
+
+
+```python
+import datetime
+
+from wappstorest import WappstoRest
+from wappstorest import WappstoService
+from wappstorest import WappstoPath
+from wappstorest import WappstoSchema
+
+service = WappstoRest()
+service.login(
+    username='the_user',
+    password='SuperSecurePasswordThatYouDoNotRemember',
+    admin=True,
+)
+
+user_list: list[WappstoSchema.response.User] = service(
+    WappstoService.USER
+).filter(
+    WappstoPath.User.meta.created < datetime.datetime.now()
+).filter(
+    "this.user.name~=test_"
+).option(
+    fullsearch=True,
+).admin().get(expand=3)
+
+
+service.logout()
+```
+
+License
+===============================================================================
+
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+
+
+Notes:
+===============================================================================
+ * update schema -> patch
+ * create schema -> post
+ * output schema -> response on anything.
+ * query schema -> Options
+
+
+Known Bugs
+===============================================================================
+ ...
+
+
+TODO List
+===============================================================================
+**Schema**
+ * [ ] Fix `constr`, `conint` ... to Field: [Pydantic Schema](https://docs.pydantic.dev/usage/schema/).
+ * [x] There need to be a Create Schema & response schema (output).
+
+**Code base**
+ * [ ] Add more/better logging logs.
+ * [ ] Push to pip.
+
+**Tests**
+ * [ ] Add more test to get a 100%-ish testing coverage.
+
+
+
+v0.0.1 (Febuary 21, 2023)
+===============================================================================
+
+## Added
+
+ * First Release.
