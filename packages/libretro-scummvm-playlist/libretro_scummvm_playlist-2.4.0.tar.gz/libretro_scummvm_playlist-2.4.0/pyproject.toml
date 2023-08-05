@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "libretro_scummvm_playlist"
+version = "2.4.0"
+description = "libretro scummvm playlist builder"
+authors = ["i30817 <i30817@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = {extras = ["all"], version = "^0.5.0"}
+
+[tool.poetry.scripts]
+libretro-scummvm-playlist = 'libretro_scummvm_playlist.__main__:main'
+
+[tool.poetry.urls]
+"homepage" = 'https://github.com/i30817/libretro-mkscumm'
+"documentation" = 'https://github.com/i30817/libretro-mkscumm#readme'
+"Bug Tracker" = 'https://github.com/i30817/libretro-mkscumm/issues'
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
