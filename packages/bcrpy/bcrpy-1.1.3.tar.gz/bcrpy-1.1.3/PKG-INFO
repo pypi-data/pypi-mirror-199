@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: bcrpy
+Version: 1.1.3
+Summary: Un cliente API para la extraccion, consulta y analisis de la base de datos BCRPData del Banco Central de Reserva del Peru (BCRP)
+License: MIT
+Author: andrewrgarcia
+Author-email: garcia.gtr@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: iteration-utilities (>=0.11.0,<0.12.0)
+Requires-Dist: matplotlib (>=3.7.1,<4.0.0)
+Requires-Dist: numpy (>=1.24.2,<2.0.0)
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Requires-Dist: requests (>=2.28.2,<3.0.0)
+Requires-Dist: sphinx (>=6.1.3,<7.0.0)
+Requires-Dist: tqdm (>=4.65.0,<5.0.0)
+Description-Content-Type: text/markdown
+
+# bcrpy
+
+[![](docs/img/bcrpy.png)](https://bcrpy.readthedocs.io/en/latest/)
+
+
+Un cliente API para la extraccion, consulta y analisis de la base de datos [BCRPData](https://estadisticas.bcrp.gob.pe/estadisticas/series/) del [Banco Central de Reserva del Peru (BCRP)](https://www.bcrp.gob.pe/) escrito para Python. Este cliente es un _wrapper_ de la [API para Desarrolladores](https://estadisticas.bcrp.gob.pe/estadisticas/series/ayuda/api) del BCRP.
+
+![](docs/img/bcrp.png)
+
+## Vinculos 
+
+[Documentación en linea (readthedocs)](https://bcrpy.readthedocs.io/en/latest/) 
+
+[Manual bcrpy (pdf)](https://raw.githubusercontent.com/andrewrgarcia/bcrpy/main/bcrpy.pdf)
+
+[pip package index](https://pypi.org/project/bcrpy/) 
+
+# Instalacion
+
+En su sistema local (laptop o computadora) bcrpy puede ser instalada con el comando pip install bcrpy. Aun asi, se
+recomienda instalar bcrpy dentro de un ambiente virtual virtualenv. El protocolo para aquel seria el siguiente:
+
+
+```ruby
+virtualenv venv
+source venv/bin/activate
+pip install bcrpy
+```
+
+bcrpy ha sido desarrollado con un protocolo de programación orientada a objetos (tambien conocido como *Object
+Oriented Programming (OOP)*) lo cual se reduce a que objetos pueden ser usados a almacenar metodos (funciones),
+datos, y su manejo de aquellos.
+
+
+[![](docs/img/colaboratory.svg)](https://colab.research.google.com/drive/1YdyCYeU0S98428WgBg4n9Ad9auKrurQZ?usp=sharing)
+
