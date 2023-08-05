@@ -1,0 +1,28 @@
+{
+  "jupyter.lab.shortcuts": [
+    {
+      "command": "voicepilot:toggle-button",
+      "keys": ["Ctrl Shift V"],
+      "selector": ".jp-Notebook:focus"
+    }
+  ],
+  "title": "Voice Pilot",
+  "description": "Voice Pilot settings.",
+  "type": "object",
+  "properties": {
+    "open_api_key": {
+      "type": "string",
+      "title": "Open API Key",
+      "description": "Your Open API Key",
+      "default": "banana"
+    },
+    "max_tokens": {
+      "type": "integer",
+      "title": "Max Tokens",
+      "description": "The maximum number of tokens to generate",
+      "default": 256,
+      "minimum": 1
+    }
+  },
+  "additionalProperties": false
+}
