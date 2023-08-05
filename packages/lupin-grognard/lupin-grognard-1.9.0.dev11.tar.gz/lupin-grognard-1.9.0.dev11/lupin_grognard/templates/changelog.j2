@@ -1,0 +1,53 @@
+# Changelog for {{ project_name }}
+Project location : {{ project_url }}
+
+{% for item in tree %}
+## [{{ item.version }}]{% if item.date %} ({{ item.date }}){% endif %}
+
+{% for type in item.commits %}
+    
+{% if type == 'feature' %}
+### {{ type|capitalize }}
+
+{% for scope in item.commits.feature %}
+#### {{ scope|capitalize }}
+
+{% for commit in item.commits.feature[scope] -%}
+{%- if commit.gitlab_issue_id %}
+- {{ commit.title }} [#{{ commit.gitlab_issue_id }}]({{ commit.gitlab_issue_url }})
+{% else %}
+- {{ commit.title }}
+{% endif %}
+{% if commit.description %}
+{% for line in commit.description %}
+    - {{ line }}
+{% endfor %}
+{% endif %}
+{% endfor %}
+{% endfor %}
+{% endif %}
+{% if type == 'fix' %}
+### {{ type|capitalize }}
+
+{% for commit in item.commits.fix %}
+{%- if commit.gitlab_issue_id %}
+- {{ commit.title }} [#{{ commit.gitlab_issue_id }}]({{ commit.gitlab_issue_url }})
+{% else %}
+- {{ commit.title }}
+{% endif %}
+{% endfor %}
+{% endif %}
+{% if type == 'other' %}
+### {{ type|capitalize }}
+
+{% for commit in item.commits.other %}
+{%- if commit.gitlab_issue_id %}
+- {{ commit.title }} [#{{ commit.gitlab_issue_id }}]({{ commit.gitlab_issue_url }})
+{% else %}
+- {{ commit.title }}
+{% endif %}
+{% endfor %}
+
+{% endif %}
+{% endfor %}
+{% endfor %}
