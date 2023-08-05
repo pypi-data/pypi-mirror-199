@@ -1,0 +1,8 @@
+[alpaca-lora-7B]
+    [alpaca-lora-7B.metadata]
+        owned_by    = 'Meta / Stanford'
+        permission  = []
+        description = ''
+    [alpaca-lora-7B.network]
+        type = 'gRPC'
+        url = 'localhost:50051'
