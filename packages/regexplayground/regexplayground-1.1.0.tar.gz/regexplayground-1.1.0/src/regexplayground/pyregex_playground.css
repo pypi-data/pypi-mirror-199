@@ -1,0 +1,70 @@
+.header {
+    dock: top;
+    text-align: center;
+    color: black;
+    background: orange;
+    width: 100%;
+}
+
+.container {
+    height: auto;
+    align: center middle;
+}
+
+.code_container {
+    height: auto;
+    border: solid brown;
+}
+
+.examples_ip {
+    padding: 0 1 0 1;
+    margin: 0 1 0 1;
+    border: none;
+    background: silver;
+}
+
+.examples_op {
+    padding: 0 1 1 1;
+    margin: 0 1 0 1;
+    border: none;
+    background: lightgray;
+    width: 100%;
+}
+
+.examples_md {
+    margin: 1 2 0 2;
+    border: none;
+}
+
+.playground_name {
+    min-height: 1;
+    padding: 0 1 0 1;
+    text-style: bold;
+    text-align: right;
+    width: 9;
+}
+
+.playground_ip {
+    padding: 0 1 0 1;
+    border: none;
+}
+
+.playground_error {
+    min-height: 0;
+    height: auto;
+    width: 100%;
+    color: red;
+}
+
+.playground_ip_op {
+    width: 100%;
+}
+
+Button:focus {
+    text-style: bold;
+}
+
+.buttons {
+    margin: 1 0 1 0;
+    width: 30%;
+}
