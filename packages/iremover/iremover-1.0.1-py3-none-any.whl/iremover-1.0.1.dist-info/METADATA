@@ -1,0 +1,151 @@
+Metadata-Version: 2.1
+Name: iremover
+Version: 1.0.1
+Summary: Python 3 library. Image background remover.
+Home-page: https://github.com/pchchv/iremover
+Author: Evgenii Pochechuev
+Author-email: ipchchv@gmail.com
+License: Apache-2.0 license
+Project-URL: Bug Reports, https://github.com/pchchv/iremover/issues
+Project-URL: Read the Docs, https://github.com/pchchv/iremover/docs
+Keywords: remove,background
+Classifier: Environment :: Console
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Mathematics
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: aiohttp (~=3.8.4)
+Requires-Dist: asyncer (~=0.0.2)
+Requires-Dist: click (~=8.1.3)
+Requires-Dist: fastapi (~=0.95.0)
+Requires-Dist: filetype (~=1.2.0)
+Requires-Dist: imagehash (~=4.3.1)
+Requires-Dist: numpy (~=1.24.2)
+Requires-Dist: onnxruntime (~=1.14.1)
+Requires-Dist: opencv-python-headless (~=4.6.0.66)
+Requires-Dist: pillow (~=9.3.0)
+Requires-Dist: pooch (~=1.6.0)
+Requires-Dist: pymatting (~=1.1.8)
+Requires-Dist: python-multipart (~=0.0.5)
+Requires-Dist: scikit-image (~=0.19.3)
+Requires-Dist: scipy (~=1.9.3)
+Requires-Dist: tqdm (~=4.65.0)
+Requires-Dist: uvicorn (~=0.21.1)
+Requires-Dist: watchdog (~=3.0.0)
+Provides-Extra: gpu
+Requires-Dist: onnxruntime-gpu (~=1.13.1) ; extra == 'gpu'
+
+
+# iremover [![GitHub license](https://img.shields.io/github/license/pchchv/iremover.svg)](https://github.com/pchchv/iremover/blob/master/LICENSE) [![PyPi](https://img.shields.io/pypi/v/iremover?style=flat-square)](https://pypi.org/project/iremover/)
+Image background remover
+
+## Requirements 
+
+```
+python: >3.7
+```
+
+## Installation
+
+```bash
+pip install iremover
+```
+
+## Usage as a cli
+
+After installation, iiremover can be used simply by typing `iremover` in the terminal window.
+
+The `iremover` command has 3 subcommands, one for each input type:
+- `i` for files 
+    * ```iremover i path/to/input.png path/to/output.png```
+- `p` for folders
+    * ```iremover p path/to/input path/to/output```
+- `s` for http server
+    * ```curl -s "http://localhost:5000/?url=http://input.png" -o output.png```
+
+A reference about the main team can be obtained by using:
+
+```bash
+iremover --help
+```
+
+And also about all the subcommands used:
+
+```bash
+iremover <COMMAND> --help
+```
+
+## Usage as a library
+
+Input and output as bytes
+
+```python
+from iremover import remove
+
+input_path = 'input.png'
+output_path = 'output.png'
+
+with open(input_path, 'rb') as i:
+    with open(output_path, 'wb') as o:
+        input = i.read()
+        output = remove(input)
+        o.write(output)
+```
+
+Input and output as a PIL image
+
+```python
+from iremover import remove
+from PIL import Image
+
+input_path = 'input.png'
+output_path = 'output.png'
+
+input = Image.open(input_path)
+output = remove(input)
+output.save(output_path)
+```
+
+Input and output as a numpy array
+
+```python
+from iremover import remove
+import cv2
+
+input_path = 'input.png'
+output_path = 'output.png'
+
+input = cv2.imread(input_path)
+output = remove(input)
+cv2.imwrite(output_path, output)
+```
+
+How to iterate over files in a performatic way
+
+```python
+from pathlib import Path
+from iremover import remove, new_session
+
+session = new_session()
+
+for file in Path('path/to/folder').glob('*.png'):
+    input_path = str(file)
+    output_path = str(file.parent / (file.stem + ".out.png"))
+
+    with open(input_path, 'rb') as i:
+        with open(output_path, 'wb') as o:
+            input = i.read()
+            output = remove(input, session=session)
+            o.write(output)
+```
