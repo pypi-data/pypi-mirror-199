@@ -1,0 +1,55 @@
+version: "3.8"
+
+x-env: &env
+  TERM: "xterm-256color"
+  ENV: DEV
+  DATABASE_URL: "postgresql+asyncpg://postgres:postgres@postgres:5432/postgres"
+  BROKER_URL: "nats://nats:4222"
+
+services:
+  # ---- storage & brokers -----
+  nats:
+    hostname: nats
+    image: nats:latest
+    command: "-js"
+    ports:
+      - "4222:4222"
+      - "8222:8222"
+    volumes:
+      - nats:/tmp/nats/jetstream
+      - nats:/data
+
+  postgres:
+    hostname: postgres
+    image: postgres:12
+    volumes:
+      - pg:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: postgres
+    ports:
+      - "5432:5432"
+  api:
+    tty: true
+    build:
+      context: .
+      dockerfile: ./.docker/images/dev/Dockerfile
+    command: uvicorn {{cookiecutter.name}}.api.asgi:app --host=0.0.0.0 --port 8000 --reload --http h11 --loop uvloop --log-level info
+    restart: unless-stopped
+    environment:
+      <<: *env
+    volumes:
+      - ./{{cookiecutter.name}}:/app/{{cookiecutter.name}}
+      - ./tests:/app/tests
+    ports:
+      - "8000:8000"
+    depends_on:
+      - postgres
+      - nats
+
+volumes:
+  nats: {}
+  pg: {}
