@@ -1,0 +1,71 @@
+{
+    "!_src_Dir":{
+        "$ref": "{R{_Dir}R}",
+        "method":{
+            "name": "ascend"
+        }
+    },
+    "!_repo_Dir":{
+        "$ref": "{R{_src_Dir}R}",
+        "method":{
+            "name": "ascend"
+        }
+    },
+    "setup_config":{
+        "!Path":{
+            "$ref": "{R{_repo_Dir}R}",
+            "method":{
+                "name": "join_Path",
+                "kwargs":{
+                    "path": "{{setup_config_filename}}"
+                }
+            }
+        }
+    },
+    "package":{
+        "version":"{R{package.eval_version}R}",
+        "!eval_version":{
+            "$ref": "{R{_self}R}",
+            "method":{
+                "name": "get_version"
+            }
+        },
+        "!name":{
+            "$ref": "{R{_Dir}R}",
+            "method":{
+                "name": "lowest"
+            }
+        },
+        "config":{
+            "cache":{
+                "!Dir":{
+                    "$ref": "{{config.Dir}}",
+                    "method":{
+                        "name": "join_Dir",
+                        "kwargs":{
+                            "path": "{R{package.name}R}"
+                        }
+                    }
+                },
+                "!Path":{
+                    "$ref": "{R{package.config.cache.Dir}R}",
+                    "method":{
+                        "name": "join_Path",
+                        "kwargs":{
+                            "path": "config_cache.json"
+                        }
+                    }
+                }
+            },
+            "!Path":{
+                "$ref": "{R{_Dir}R}",
+                "method":{
+                    "name": "join_Path",
+                    "kwargs":{
+                        "path": "CONFIG.json"
+                    }
+                }
+            }
+        }
+    }
+}

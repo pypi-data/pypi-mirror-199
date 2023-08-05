@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: kabbes-client
+Version: 0.5.0
+Summary: Unnamed repository; edit this file 'description' to name the repository.
+Home-page: https://pypi.org/project/kabbes-client
+Author: James Kabbes
+Author-email: james.kabbes@gmail.com
+Project-URL: GitHub, https://github.com/jameskabbes/config
+Project-URL: Documentation, https://jameskabbes.github.io/config
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: kabbes-parent-class
+Requires-Dist: kabbes-config
+Requires-Dist: kabbes-dir-ops
+Requires-Dist: kabbes-py-starter
+Requires-Dist: xdg
+
+# client
+
+
+# pecking order, lowest to highest
+
+* Root -> _config_dict
+* Root -> _config_json_Path
+* Root -> _config_cache_Path
+* Root -> cwd_config
+* Root -> sys_kwargs
+* Root -> user.config.path
+
+* Package -> _config_dict
+* Package -> _Dir
+* Package -> _config_json_Path
+* Package -> package.config.cache.Path
+* Package -> Root.cfg_cwd[ 'package.name' ]
+* Package -> Root.cfg_user[ 'package.name' ]
+* Package -> overwrite dict
+* Package -> Root.cfg_sys[ 'package.name' ]
