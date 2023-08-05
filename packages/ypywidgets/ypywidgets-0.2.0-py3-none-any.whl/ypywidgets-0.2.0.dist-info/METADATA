@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: ypywidgets
+Version: 0.2.0
+Summary: Y-based Jupyter widgets for Python
+Project-URL: Homepage, https://github.com/davidbrochart/ypywidgets
+Author-email: David Brochart <david.brochart@gmail.com>
+License-Expression: MIT
+Keywords: jupyter,widgets,yjs,ypy
+Requires-Python: >=3.7
+Requires-Dist: comm>=0.1.2
+Requires-Dist: y-py>=0.5.5
+Provides-Extra: dev
+Requires-Dist: pytest; extra == 'dev'
+Description-Content-Type: text/markdown
+
+[![Build Status](https://github.com/davidbrochart/ypywidgets/workflows/CI/badge.svg)](https://github.com/davidbrochart/ypywidgets/actions)
+
+# ypywidgets
+
+Y-based Jupyter widgets for Python.
