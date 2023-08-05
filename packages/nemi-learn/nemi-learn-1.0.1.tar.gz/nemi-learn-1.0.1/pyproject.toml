@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nemi-learn"
+authors = [
+    {name = "Maike Sonnewald", email = "maikes@princeton.edu"}]
+description = "Code to accompany paper"
+readme = "README.rst"
+version = "1.0.1"
+requires-python = ">=3.7"
+dependencies = [
+    "umap-learn",
+    "scikit-learn",
+    "matplotlib",
+    "tqdm"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Science/Research",
+]
+
+[tool.setuptools]
+packages = ["nemi"]
