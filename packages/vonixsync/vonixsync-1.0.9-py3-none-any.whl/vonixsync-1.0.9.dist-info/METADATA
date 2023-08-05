@@ -1,0 +1,131 @@
+Metadata-Version: 2.1
+Name: vonixsync
+Version: 1.0.9
+Summary: Database syncronizer
+Author-email: Victor Leone <victor@vonix.com>
+Maintainer-email: Luiz <luiz@vonix.com.br>, Vonix <contato@vonix.com.br>
+Project-URL: repository, https://github.com/vonix/vonix-py-sync
+Keywords: syncronizer,vonix
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: MacOS X
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENCE
+Requires-Dist: requests (>=2.28.2)
+Requires-Dist: SQLAlchemy (>=2.0.6)
+Requires-Dist: asyncpg (>=0.27.0)
+Requires-Dist: psycopg2-binary (>=2.9.5)
+Requires-Dist: aiohttp (>=3.8.4)
+Requires-Dist: PyJWT (>=2.6.0)
+Requires-Dist: mysql-connector-python (>=8.0.32)
+
+# vonixsync
+
+vonixsync is a python library for syncronization/database mirroring of the vonix database
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install vonixsync.
+
+```bash
+pip install vonixsync
+```
+
+## Usage
+
+```python
+import vonixsync
+from vonixsync import DBConfigs
+from vonixsync import Syncronizer
+
+#Import the DBConfigs class. Provide the parameters used to construct the string used to connect to the database, according to its singular dialect.
+connection_configs = DBConfigs(
+    database_manager="postgres",
+    user="postgres",
+    password="postgres",
+    hostname="localhost",
+    database="postgres",
+    port=5432,
+)
+
+connection = connection_configs.connect
+
+# Declare your token as a string type
+token = "token_provided_by_vonix_support"
+
+#Import the Syncronizer Class to effectively syncronize the data to your database and name all tables 
+Syncronizer(
+    
+    token=token,
+    
+    connection=connection,
+
+    agent="agents_table_name",
+    agent_event = "agent_event_table_name"
+    agent_pause="agent_pause_table_name",
+    agent_summary="agent_summary_table_name",
+    
+    calls="call_table_name",
+    call_rating="call_rating_table_name",
+    
+    chat="chat_table_name",
+    chat_message="chat_message_table_name",
+    
+    profilers="profiler_table_name",
+    trees="trees_table_name",
+    
+    queue="queue_table_name",
+    queue_summary= "queue_summary_table_name",
+    
+    fromPeriod=1678449585,
+    
+    agent_event_id=74450,
+    
+    echo=True
+
+).syncronize()
+
+```
+Now run the code.
+#
+## Syncronizer Options
+
+Besides the obligatory token, database_string parameters and names of the tables to be syncronized, the Syncronizer has other options:
+#
+### fromPeriod
+#
+The timestamp parameter must be declared in timestamp format. It is an obligatory filter for the summary tables.
+
+- the syncronizer will look for the most recent inserted row in the mirrored database and mirror from this row's date on. 
+
+- If no data is found in the mirrored database the syncronizer will mirror data using the fromPeriod timestamp value provided to the Syncronizer.
+
+- If no timestamp parameter was provided, the Syncronizer will use the timestamp from the day before the current date.
+
+```python
+Syncronizer(token, database, agent= "agents_table_name", fromPeriod = 1679067723 ).syncronize()
+```
+#
+### echo
+#
+The echo parameter by default is False. But if declared as True, it will enable the logging of all SQL commands during the active phase of the syncronizer.
+This a feature provided by the SQLAlchemy library. It can be set with or without other optional parameters.
+
+```python
+Syncronizer(token, database, queue = "queue_table_name", echo = True ).syncronize()
+```
+#
+### agent_event_id
+#
+The agent_event_id parameter must be declared in number format. It is a filter for the agent event history. 
+
+- the syncronizer will look for the most recent agent_event_id (max value) in the mirrored database and mirror from this id on.
+
+- If no data is found in mirrored database, the syncronizer will use the agent_event_id parameter declared in the Syncronizer
+
+- If no agent_event_id parameter was declared to the Syncronizer, it will set the filter to 0 and syncronize the information from the smallest agent_event_id found in the vonix database 
+
+```python
+Syncronizer(token, database, agent_event = "agent_event_history_table_name" ,agent_event_id = 74636)syncronize()
+```
