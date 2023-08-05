@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: nemi-learn
+Version: 1.0.0
+Summary: Code to accompany paper
+Author-email: Maike Sonnewald <maikes@princeton.edu>
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: umap-learn
+Requires-Dist: scikit-learn
+Requires-Dist: matplotlib
+Requires-Dist: tqdm
+
