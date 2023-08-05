@@ -1,0 +1,3 @@
+[console_scripts]
+reasoningchain = reasoningchain._run:cli
+reasoningchainui = reasoningchain.webui.webui:main
