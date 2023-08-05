@@ -1,0 +1,42 @@
+[build-system]
+requires = ['setuptools>=42', 'wheel']
+build-backend = 'setuptools.build_meta'
+
+[project]
+name = "autoinit"
+version = "1.1.1"
+authors = [
+  { name="Constantine Kosmachevski", email="oversider.kosma@gmail.com" },
+]
+description = "Python decorator for automatic initialization instance attributes"
+readme = "README.md"
+license = { file = "LICENSE.md" }
+requires-python = ">=2.7"
+keywords = ["__init__","construcor", "OOP", "sugar"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 2.7",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.5",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: Implementation :: Jython",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Utilities",
+    "Operating System :: OS Independent"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/oversider-kosma/autoinit"
+"Bug Tracker" = "https://github.com/oversider-kosma/autoinit/issues"
+
+[tool.distutils.bdist_wheel]
+universal = true

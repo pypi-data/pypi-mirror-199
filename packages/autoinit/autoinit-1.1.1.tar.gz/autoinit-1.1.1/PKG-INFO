@@ -1,0 +1,137 @@
+Metadata-Version: 2.1
+Name: autoinit
+Version: 1.1.1
+Summary: Python decorator for automatic initialization instance attributes
+Author-email: Constantine Kosmachevski <oversider.kosma@gmail.com>
+License: The MIT License (MIT)
+        =====================
+        
+        Copyright (c) 2020-2023, Constantine Kosmachevski
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of
+        this software and associated documentation files (the "Software"), to deal in
+        the Software without restriction, including without limitation the rights to
+        use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+        of the Software, and to permit persons to whom the Software is furnished to do
+        so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://github.com/oversider-kosma/autoinit
+Project-URL: Bug Tracker, https://github.com/oversider-kosma/autoinit/issues
+Keywords: __init__,construcor,OOP,sugar
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: Implementation :: Jython
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Classifier: Operating System :: OS Independent
+Requires-Python: >=2.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+
+![Tests Pypy](https://github.com/oversider-kosma/autoinit/actions/workflows/pylint.yml/badge.svg?branch=master)
+![Tests CPython](https://github.com/oversider-kosma/autoinit/actions/workflows/test_cpython.yml/badge.svg?branch=master)
+![Tests Pypy](https://github.com/oversider-kosma/autoinit/actions/workflows/test_pypy.yml/badge.svg?branch=master)
+
+# autoinit
+> Python decorator for automatic initialization instance attributes
+
+### What
+```python3
+import autoinit  # same as `from autoinit import autoinit`
+
+@autoinit
+class X:
+    def __init__(self, a, b, c, d:int, e=99.99, f='some_default_value'):
+	    print("__init__ do some another things")
+
+x = X(42, 100, 500, None)
+#  Output: "__init__ do some another things"
+
+print(x.__dict__)
+# Output: {'a': 42, 'b': 100, 'c': 500, 'd': None, 'e': 99.99, 'f': 'some_default_value'}
+```
+
+### How
+$ ```pip install autoinit```
+### Where
+Tested in:
+* CPython: 2.7, 3.5-3.11
+* Pypy: 2.7, 3.5-3.9
+* Jython: 2.7
+
+
+...but with a high probability will work with other implementations as well.
+
+### Why
+A lot of elementary assignments inside `__init__` are a fairly frequent and rather dull case.
+
+```python3
+class FiveDimensionRecord:
+    def __init__(self, x:int, y:int, z:int, u:int,
+                 v:int, dt:typing.Optional[datetime]=None, description:str=''):
+        self.x = x
+        self.y = y
+        self.z = z
+        self.u = u
+        self.v = v
+        self.dt = dt or datetime.now()
+        self.description = description
+```
+
+Dataclasses do not make it much more fun, mainly because you still cannot declare attributes in one line
+```python3
+@dataclass
+class FiveDimensionRecord:
+    x: int
+    y: int
+    z: int
+    u: int
+    v: int
+    dt: 'typing.Any' = None
+    description: str = ''
+
+    def __post_init__(self):
+        self.dt = self.dt or datetime.now()
+```
+
+With `autoinit` it looks much more compact and minimalistic
+
+```python3
+class FiveDimensionRecord:
+    @autoinit
+    def __init__(self, x:int, y:int, z:int,
+                 u:int, v:int, dt=None, description:str=''):
+        self.dt = self.dt or datetime.now()
+```
+
+### Options
+* `@autoinit(exclude='attr')` or `@autoinit(exclude=['attr1', 'attr2]')`: skip specified attributes. Default: `[]`
+
+* `@autoinit(no_warn=True)`: do not throw warning if decorator applied to non-`__init__` method. Default: `False`.
+
+* `@autoinit(reverse=True)`: invert the order of actions - first call the wrapped method (which is usually `__init__`), and then do assignment. Default: `False`.
+
+The decorator itself can be equally applied to both the `__init__` method and the entire class.
