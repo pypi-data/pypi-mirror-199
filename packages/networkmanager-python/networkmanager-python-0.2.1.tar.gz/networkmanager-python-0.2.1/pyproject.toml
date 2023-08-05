@@ -1,0 +1,101 @@
+[build-system]
+requires = ["setuptools>=67", "setuptools_scm[toml]>=6.2"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "networkmanager-python"
+description = "NetworkManager python API using dbus"
+authors = [{ name = "Jakub Kozłowicz", email = "ja.kozlowicz@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+dependencies = ["pydantic ~= 1.10.0", "dbus-python ~= 1.3.0"]
+dynamic = ["version"]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+repository = "https://gitlab.com/jakub.kozlowicz/python-networkmanager"
+documentation = "https://gitlab.com/jakub.kozlowicz/python-networkmanager"
+
+[project.optional-dependencies]
+dev = [
+  "pylint ~= 2.16.0",
+  "pylint-pydantic ~= 0.1.0",
+  "flake8 ~= 6.0.0",
+  "Flake8-pyproject ~= 1.2.0",
+  "flake8-comprehensions ~= 3.10.0",
+  "flake8-isort ~= 6.0.0",
+  "mypy ~= 1.0.0",
+  "black ~= 23.1.0",
+  "isort ~= 5.12.0",
+  "taskipy ~= 1.10.0",
+  "pytest ~= 7.2.0",
+  "pytest-asyncio ~= 0.20.0",
+  "pytest-cov ~= 4.0.0",
+  "pytest-stub ~= 1.1.0",
+]
+
+
+[tool.setuptools_scm]
+write_to = "src/networkmanager/_version.py"
+
+
+[tool.isort]
+profile = "black"
+src_paths = ["src", "tests"]
+skip = [".gitignore"]
+extend_skip = [".md", ".rst", ".json", ".txt"]
+skip_glob = ["docs/*"]
+line_length = 100
+lines_after_imports = 2
+lines_between_types = 1
+force_alphabetical_sort_within_sections = true
+force_sort_within_sections = true
+
+
+[tool.mypy]
+ignore_missing_imports = true
+
+
+[tool.black]
+line-length = 100
+
+
+[tool.pylint.basic]
+ignore-patterns = "_version.py"         # File auto generated so ignore this
+extension-pkg-allow-list = ["pydantic"]
+load-plugins = ["pylint_pydantic"]
+
+[tool.pylint.format]
+max-line-length = 100
+
+[tool.pylint.similarities]
+min-similarity-lines = 10
+
+
+[tool.flake8]
+exclude = ".venv"
+max-line-length = 100
+
+
+[tool.taskipy.tasks]
+test = "pytest tests/"
+format = "isort ./src/networkmanager ./tests && black ./src/networkmanager ./tests"
+lint = "black --check ./src/networkmanager && pylint ./src/networkmanager && flake8 ./src/networkmanager && mypy ./src/networkmanager"
+
+
+[tool.coverage.run]
+omit = ["*/_version.py"]
+
+
+[tool.pytest.ini_options]
+addopts = "--cov=networkmanager --cov-branch --cov-report term-missing --junitxml=report.xml"
+asyncio_mode = "auto"
+filterwarnings = "ignore::DeprecationWarning"
