@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: pdfharvester
+Version: 0.2.4
+Summary: A package for extracting tables and images from PDFs
+Project-URL: Homepage, https://github.com/hashimputhiyakath/pdfharvester
+Project-URL: Bug Tracker, https://github.com/hashimputhiyakath/pdfharvester/issues
+Author-email: Hashim Puthiyakath <hashputhiyakath@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023 Hashim Puthiyakath
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in
+        all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+        THE SOFTWARE.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Requires-Dist: pandas
+Requires-Dist: pypdf2
+Requires-Dist: textract
+Requires-Dist: yake
+Description-Content-Type: text/markdown
+
+# PDFHarvester
+
+PDFHarvester is a Python package for extracting tables, images, and keywords from PDF documents.
+
+## Installation
+
+You can install PDFHarvester using pip:
+
+```sh
+pip install PDFHarvester
+```
+
+# Usage
+
+To extract tables, images, and keywords from a PDF document using PDFHarvester, you can use the following functions:
+
+```
+import pdfharvest as ph
+
+tables = ph.extract_table('path/to/pdf')
+images = ph.extract_images('path/to/pdf')
+keywords = ph.extract_keywords('path/to/pdf')
+```
+
+`extract_table` returns a list of pandas dataframes, one for each table in the PDF. `extract_images` returns a list of images as numpy arrays, and `extract_keywords` returns a list of keywords as strings.
+
+#Contributing
+Bug reports and pull requests are welcome on GitHub at <https://github.com/yourusername/PDFHarvester>. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](https://www.contributor-covenant.org/) code of conduct.
+
+#License
+The package is available as open source under the terms of the [MIT License](https://github.com/yourusername/PDFHarvester/blob/main/LICENSE.md), © 2023 Hashim Puthiyakath.
+
+Please let me know if you have any further questions or concerns.
