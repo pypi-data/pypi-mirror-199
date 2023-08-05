@@ -1,0 +1,266 @@
+[
+  {
+    "name": "get_crop_residue_terms",
+    "query": {
+      "termType": "cropResidue"
+    },
+    "results": [
+      "discardedCropBurnt",
+      "discardedCropLeftOnField",
+      "discardedCropTotal",
+      "discardedCropIncorporated",
+      "aboveGroundCropResidueRemoved",
+      "aboveGroundCropResidueIncorporated",
+      "discardedCropRemoved",
+      "aboveGroundCropResidueTotal",
+      "belowGroundCropResidue",
+      "aboveGroundCropResidueLeftOnField",
+      "aboveGroundCropResidueBurnt"
+    ]
+  },
+  {
+    "name": "get_forage_terms",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match": {
+              "@type": "Term"
+            }
+          }
+        ],
+        "should": [
+          {
+            "match": {
+              "termType.keyword": "crop"
+            }
+          },
+          {
+            "match": {
+              "termType.keyword": "forage"
+            }
+          },
+          {
+            "match": {
+              "name": "forage"
+            }
+          }
+        ],
+        "minimum_should_match": 2
+      }
+    },
+    "results": [
+      "teosinteFreshForage",
+      "ryegrassFreshForage",
+      "sesbanFreshForage",
+      "panicFreshForage",
+      "mnesitheaSelloanaFreshForage",
+      "trachypogonVestitusFreshForage",
+      "slenderBluestemFreshForage",
+      "sporobolusMarginatusFreshForage",
+      "ubaCaneFreshForage",
+      "spearGrassFreshForage",
+      "molassesGrassFreshForage",
+      "bungomaGrassFreshForage",
+      "paspalidiumDesertorumFreshForage",
+      "leptochloaOptusifloraFreshForage",
+      "rhodesGrassFreshForage",
+      "liverseedGrassFreshForage",
+      "dubiGrassFreshForage",
+      "slenderGramaFreshForage",
+      "pennisetumSquamulatumFreshForage",
+      "blanketGrassFreshForage",
+      "pennisetumStramineumFreshForage",
+      "chrysopogonFallaxFreshForage",
+      "pangolaGrassFreshForage",
+      "slenderChlorisFreshForage",
+      "natalGrassFreshForage",
+      "chlorisRoxburghianaFreshForage",
+      "desertGrassFreshForage",
+      "ravennaGrassFreshForage",
+      "birdwoodGrassFreshForage",
+      "sorghumFreshForage",
+      "quinoaFreshForage",
+      "cottonFreshForage",
+      "alfalfaFreshForage",
+      "triticaleFreshForage",
+      "tomatoFreshForage",
+      "burguFreshForage",
+      "redtopFreshForage",
+      "bluegrassFreshForage",
+      "lanillaFreshForage",
+      "sainfoinFreshForage",
+      "poroFreshForage",
+      "lespedezaFreshForage",
+      "tagasasteFreshForage",
+      "hyparrheniaFreshForage",
+      "jaraguaFreshForage",
+      "horoFreshForage",
+      "agatiFreshForage",
+      "cockatooFreshForage",
+      "mulgaFreshForage",
+      "kikuyuFreshForage",
+      "cocksfootFreshForage",
+      "itchgrassFreshForage",
+      "babulFreshForage",
+      "trefoilFreshForage",
+      "lehmannLoveGrassFreshForage",
+      "redRhodesGrassFreshForage",
+      "weepingLoveGrassFreshForage",
+      "stylosanthesCampoGrandeFreshForage",
+      "largeLeafFlemingiaFreshForage",
+      "calliandraFreshForage",
+      "cloverFreshForage",
+      "lebbekFreshForage",
+      "jerusalemArtichokeFreshForage",
+      "bigLeafBristleGrassFreshForage",
+      "sugarcaneFreshForage",
+      "oatFreshForage",
+      "soybeanFreshForage",
+      "barleyFreshForage",
+      "mustardFreshForage",
+      "breadGrassFreshForage",
+      "polypogonSchimperianusFreshForage",
+      "cockspurGrassFreshForage",
+      "donkeyGrassFreshForage",
+      "nigeriaGrassFreshForage",
+      "coelachyrumYemenicumFreshForage",
+      "missionGrassFreshForage",
+      "giantReedFreshForage",
+      "carpetGrassFreshForage",
+      "sudanGrassFreshForage",
+      "chineseAlbiziaFreshForage",
+      "spottedBrachiariaFreshForage",
+      "pennisetumOrientaleFreshForage",
+      "eriochloaNubicaFreshForage",
+      "timothyGrassFreshForage",
+      "sporobolusNervosusFreshForage",
+      "swaziGrassFreshForage",
+      "sporobolusHelvolusFreshForage",
+      "blackOatFreshForage",
+      "umbrellaThornFreshForage",
+      "genericGrassFreshForage",
+      "rainTreeFreshForage",
+      "guatemalaGrassFreshForage",
+      "paraGrassFreshForage",
+      "redCloverFreshForage",
+      "chlorisPrieuriiFreshForage",
+      "tripsacumLatifoliumFreshForage",
+      "andropogonCanaliculatusFreshForage",
+      "bahiaGrassFreshForage",
+      "torpedoGrassFreshForage",
+      "nileGrassFreshForage"
+    ]
+  },
+  {
+    "name": "get_fuel_terms",
+    "query": {
+      "bool": {
+        "must": [
+          {
+            "match": {
+              "@type": "Term"
+            }
+          },
+          {
+            "match": {
+              "termType.keyword": "fuel"
+            }
+          }
+        ],
+        "should": [
+          {
+            "regexp": {
+              "name": "*gasoline*"
+            }
+          },
+          {
+            "regexp": {
+              "name": "*diesel*"
+            }
+          }
+        ],
+        "minimum_should_match": 1
+      }
+    },
+    "results": []
+  },
+  {
+    "name": "get_methodModels",
+    "query": {
+      "termType": "model"
+    },
+    "results": [
+      "ipcc1995",
+      "deRuijterEtAl2010",
+      "pooreNemecek2018",
+      "emissionNotRelevant",
+      "salca",
+      "lanca",
+      "blonkConsultants2016",
+      "koble2014",
+      "ipcc2019CountryAverageFertiliserMix",
+      "recipe2016Individualist",
+      "poschEtAl2008",
+      "papatryphonEtAl2004",
+      "recipe2016Hierarchist",
+      "europeanEnvironmentAgency2016",
+      "pribyl2010",
+      "haversineFormula",
+      "sqcb",
+      "chaudharyBrooks2018",
+      "emeaEea2019",
+      "usetoxV2",
+      "lcImpactCertainEffects100Years",
+      "ipcc2013ExcludingFeedbacks",
+      "ecoinventV3",
+      "lcImpactCertainEffectsInfinite",
+      "recipe2008Hierarchist",
+      "aggregatedModels",
+      "akagiEtAl2011AndIpcc2006",
+      "recipe2008Egalitarian",
+      "rainsModel",
+      "europeanEnvironmentAgency2013",
+      "faostat2018",
+      "ecoinventV2",
+      "lcImpactAllEffectsInfinite",
+      "ipcc2001",
+      "cml2001Baseline",
+      "ipcc2006",
+      "recipe2016Egalitarian",
+      "otherModel",
+      "webbEtAl2012AndSintermannEtAl2012",
+      "ipcc1996",
+      "harmonizedWorldSoilDatabaseV12",
+      "spatial",
+      "ipcc2007",
+      "epa2014",
+      "edip2003",
+      "lcImpactAllEffects100Years",
+      "aware",
+      "hestiaAggregatedData",
+      "ipcc2019",
+      "agribalyse2016",
+      "environmentalFootprintV3",
+      "recipe2008Individualist",
+      "sqcbFaistEmmeneggerEtAl2009",
+      "allenEtAl2018",
+      "hyde32",
+      "cml2001NonBaseline",
+      "globalCropWaterModel2008",
+      "ipcc2021",
+      "chaudharyEtAl2015",
+      "stehfestBouwman2006GisImplementation",
+      "royEtAl2014",
+      "dammgen2009",
+      "stehfestBouwman2006",
+      "emeaEea2019CountryAverageFertiliserMix",
+      "cumulativeEnergyDemandCedMethod",
+      "ecoIndicator95",
+      "ipcc2013IncludingFeedbacks",
+      "linkedImpactAssessment",
+      "milaICanalsEtAl2007",
+      "schererPfister2015"
+    ]
+  }
+]
