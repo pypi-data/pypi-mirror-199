@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: phloemfinder
+Version: 0.4.3
+Summary: Find plant metabolites related to whitefly pest resistance
+Home-page: https://github.com/BleekerLab/phloemfinder
+License: Apache-2.0
+Author: Marc Galland
+Author-email: m.galland@uva.nl
+Requires-Python: >=3.9
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: TPOT (>=0.11.7)
+Requires-Dist: numpy (<1.24.0)
+Requires-Dist: pandas (>=1.5.1)
+Requires-Dist: scikit-learn (>=0.24.1)
+Requires-Dist: seaborn (>=0.12.1)
+Project-URL: Repository, https://github.com/BleekerLab/phloemfinder
+Description-Content-Type: text/markdown
+
+# phloemfinder
+
+Find plant metabolites related to whitefly pest resistance
+
+## Installation
+
+```bash
+$ pip install phloemfinder
+```
+
+## Usage
+
+- TODO
+
+## Contributing
+
+Interested in contributing? Check out the contributing guidelines. Please note that this project is released with a Code of Conduct. By contributing to this project, you agree to abide by its terms.
+
+## License
+
+`phloemfinder` was created by Lissy-Anne Denkers and Marc Galland. It is licensed under the terms of the Apache License 2.0 license.
+
+## Credits
+
+`phloemfinder` was created with [`cookiecutter`](https://cookiecutter.readthedocs.io/en/latest/) and the `py-pkgs-cookiecutter` [template](https://github.com/py-pkgs/py-pkgs-cookiecutter).
+
+## Useful reading
+
+- [Autosklearn talks](https://github.com/automl/auto-sklearn-talks)
+- [Numpy docstring examples](https://sphinxcontrib-napoleon.readthedocs.io/en/latest/example_numpy.html#example-numpy)
