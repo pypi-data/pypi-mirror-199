@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: kabbes-config
+Version: 0.2.0
+Summary: Unnamed repository; edit this file 'description' to name the repository.
+Home-page: https://pypi.org/project/kabbes-config
+Author: James Kabbes
+Author-email: james.kabbes@gmail.com
+Project-URL: GitHub, https://github.com/jameskabbes/config
+Project-URL: Documentation, https://jameskabbes.github.io/config
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: kabbes-parent-class
+Requires-Dist: kabbes-py-starter
+Requires-Dist: kabbes-dir-ops
+
+# config
+
+
+# Rules
+
+## Nodes
+* Each node has a key and value (value can be None)
+
+
+## Key
+* The Node key is a regular string, nothing special
+
+## Value 
+* The Node Value is an object, and has special attributes
+
+## Node
