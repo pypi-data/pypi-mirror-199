@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: getpathfromreg
+Version: 0.12
+Summary: Get path from regedit
+Home-page: https://github.com/hansalemaos/getpathfromreg
+Author: Johannes Fischer
+Author-email: <aulasparticularesdealemaosp@gmail.com>
+License: MIT
+Keywords: REGEDIT,path
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Editors :: Text Processing
+Classifier: Topic :: Text Processing :: General
+Classifier: Topic :: Text Processing :: Indexing
+Classifier: Topic :: Text Processing :: Filters
+Classifier: Topic :: Utilities
+Description-Content-Type: text/markdown
+License-File: LICENSE.rst
+
+
+# Get path from regedit
+
+### pip install getpathfromreg
+
+#### A collection of regedit requests (more soon)
+```python
+
+from getpathfromreg import get_tesseract_exe,get_bluestacks_user_folder,get_bluestacks_config_file
+print(get_bluestacks_user_folder())
+print(get_bluestacks_config_file())
+print(get_tesseract_exe())
+print(get_hd_player_bluestacks())
+
+C:\ProgramData\BlueStacks_nxt
+C:\ProgramData\BlueStacks_nxt\bluestacks.conf
+C:\Program Files\Tesseract-OCR\tesseract.exe
+...
+
+```
