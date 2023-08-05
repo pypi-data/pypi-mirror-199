@@ -1,0 +1,171 @@
+0.9.1
+
+  * fixes Vue2/Vue3 compatibility
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 23 Mar 2023 15:55:00 -0700
+
+0.9.0
+
+  * adds compare API
+  * adds ACCESSIBLE_ACCOUNTS_CALLABLE
+  * uses comma to separate multiple terms in search
+  * moves update_context_urls from survey.utils to survey.helpers
+  * defines URL_PATH_SEP and DB_PATH_SEP in settings.py instead of mixins
+  * moves get_collected_by from survey.queries to survey.models
+  * replaces queries.get_frozen_answers by Answer.objects.get_frozen_answers
+  * replaces queries.get_completed_assessments_at_by by Sample.objects.get_completed_assessments_at_by
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 22 Mar 2023 14:45:00 -0700
+
+0.8.1
+
+  * adds respondents API
+  * adds portfolio requests metadata API
+  * adds time_spent model field to Sample
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 10 Mar 2023 10:20:00 -0700
+
+0.8.0
+
+  * adds extra field to portfolio and optins
+  * adds construct_*_periods helpers
+  * matches TableSerializer and ListSerializer results field (breaking API)
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Tue, 21 Feb 2023 16:42:00 -0700
+
+0.7.8
+
+  * fixes recording first relative measurement
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 27 Jan 2023 12:15:00 -0700
+
+0.7.7
+
+  * adds autoreload flag to decide how to handle change to query params
+  * removes verification_key on grant/request accepted
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 6 Dec 2022 22:17:00 -0700
+
+0.7.6
+
+  * fixes initiated requests must have a verification_key
+  * adds campaign filter to `PortfolioDoubleOptInQuerySet.by_grantee`
+  * removes a request that hasn't completed its lifecycle yet
+  * updates to testsite to reflect latest APIs
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 25 Nov 2022 07:50:00 -0700
+
+0.7.5
+
+  * fixes ORM returns multiple objects in presence of Portfolio
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri,  7 Oct 2022 07:50:00 -0700
+
+0.7.4
+
+  * adds message in portfolio grants/requests
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Tue,  4 Oct 2022 15:00:00 -0700
+
+0.7.3
+
+  * retires grant/request before they were accepted/denied
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Sat,  1 Oct 2022 13:55:00 -0700
+
+0.7.2
+
+  * fixes reset API with no path (regression)
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Thu, 27 Sep 2022 07:10:00 -0700
+
+0.7.1
+
+  * accepts grant/request through redirects
+  * cleans up filters API
+  * handles Django and DRF request objects
+  * uses path() URL construct regularly
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Thu, 26 Sep 2022 21:15:00 -0700
+
+0.7.0
+
+  * filter portfolio double opt-in by creation date
+  * fixes missing timezone when parsing a date instead of a datetime
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Thu, 8 Sep 2022 22:15:00 -0700
+
+0.6.3
+
+  * fixes bogus super() call when deleting from set
+  * defaults space-separated search terms to `or` instead of `and`
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 19 Aug 2022 12:30:00 -0700
+
+0.6.2
+
+  * insures answers appear only once in final output
+  * stores data points with baseline when necessary
+  * adds aggregate filter values APIs
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Wed, 28 Jul 2022 13:26:00 -0700
+
+0.5.0
+
+  * separates accounts and questions filters
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Wed, 25 May 2022 16:20:00 -0700
+
+0.4.4
+
+  * shows only answered questions on frozen samples
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Thu, 12 May 2022 14:05:00 -0700
+
+0.4.3
+
+  * compatibles with Django4.0
+  * fixes Vue component to display matrices
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Wed, 11 May 2022 10:15:00 -0700
+
+0.4.2
+
+  * filters out questions in get_answers/get_candidates
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Sun,  1 May 2022 14:14:00 -0700
+
+0.4.1
+
+  * enables stable queries when Question model is swapped
+  * fixes refactoring errors
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Thu, 25 Apr 2022 14:55:00 -0700
+
+0.4.0
+
+  * makes djaodjin-resources-vue a UMB module
+  * filters portfolios
+  * adds get_latest_completed_by_accounts
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Thu, 21 Apr 2022 21:51:00 -0700
+
+0.2.7
+
+  * adds API to retrieve an assessment answers
+  * upgrades minimum Django requirements to 2.2
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Fri, 17 Jul 2020 15:55:00 -0700
+
+0.1.2
+
+  * fixes truncate long slugs before saving in db
+  * upgrades vendor d3js to version 3.4.9
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Sat, 9 Aug 2014 17:39:15 -0700
+
+0.1.1
+
+  * initial Release.
+
+ -- Sebastien Mirolo <smirolo@djaodjin.com>  Sun, 25 May 2014 23:45:17 -0700
