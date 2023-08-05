@@ -1,0 +1,11 @@
+<div class="form-wrapper" style="display: grid; place-self:center; width:20%; margin:auto;">
+    <form action="{% url 'phone' %}" method="post" style="display:flex; flex-direction:column;">
+        {% csrf_token %}
+        {{form}}
+        <button type="submit">submit</button>
+    </form>
+
+</div>
+
+
+
