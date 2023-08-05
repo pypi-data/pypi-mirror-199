@@ -1,0 +1,8 @@
+click
+toml
+
+[:platform_system == "Windows"]
+colorama
+
+[lint]
+pre-commit>=3.2
