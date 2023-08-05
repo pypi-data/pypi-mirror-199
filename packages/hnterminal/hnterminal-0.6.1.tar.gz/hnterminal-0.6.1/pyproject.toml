@@ -1,0 +1,25 @@
+[project]
+name = "hnterminal"
+version = "0.6.1"
+description = "An terminal CLI env for Hacker News"
+readme = "README.md"
+license = {text = "MIT"}
+keywords = ["hacker news", "cli", "repl"]
+authors = [
+  {name = "Rocky Li", email = "aperocky@gmail.com" }
+]
+dependencies = [
+    "replbuilder >= 1.1.0",
+    "bs4"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Aperocky/hnterminal"
+"Source" = "https://github.com/Aperocky/hnterminal"
+
+[project.scripts]
+hnterminal = "cli:main"
+
+[build-system]
+requires = ["setuptools>=43.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
