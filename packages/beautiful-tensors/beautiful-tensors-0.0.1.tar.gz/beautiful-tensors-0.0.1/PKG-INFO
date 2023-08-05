@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: beautiful-tensors
+Version: 0.0.1
+Summary: Turn tensor operations into aesthetic diagrams. Currently supports PyTorch (Keras/TensorFlow coming soon).
+Home-page: https://github.com/dinglab/beautiful-tensors
+Author: Erik Storrs
+Author-email: estorrs@wustl.edu
+Keywords: tensors beautiful diagram pytorch tensorflow matrix operations pictures keras
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# beautiful-tensors
+Turn tensor operations into aesthetic diagrams.
