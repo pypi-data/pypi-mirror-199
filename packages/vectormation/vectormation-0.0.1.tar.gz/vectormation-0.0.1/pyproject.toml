@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "vectormation"
+version = "0.0.1"
+authors = [
+  { name="Joris Perrenet", email="joris.perrenet@gmail.com" },
+]
+description = "Create SVG-based math animations"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jorisperrenet/VectorMation"
+"Bug Tracker" = "https://github.com/jorisperrenet/VectorMation/issues"
