@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "generic-collections"
+version = "0.1.1"
+description = ""
+authors = ["ventura94 <arianventura94@gmail.com>"]
+readme = "README.md"
+packages = [{include = "generic_collections"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^1.10.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
