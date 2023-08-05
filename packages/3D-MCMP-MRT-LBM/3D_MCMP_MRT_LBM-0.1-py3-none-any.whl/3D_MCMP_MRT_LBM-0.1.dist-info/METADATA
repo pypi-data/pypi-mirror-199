@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: 3D-MCMP-MRT-LBM
+Version: 0.1
+Summary: A 3D multicomponent multiphase lattice Boltzmann solver with a Multi-Relaxation-Time collision scheme and a sparse storage structure
+Home-page: https://github.com/Amber1995/3D_MCMP_MRT_LBM
+Author: Qiuyu Wang
+Author-email: wangqiuyu@utexas.edu
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: taichi
+Requires-Dist: vtk
+Requires-Dist: json
+
+UNKNOWN
+
