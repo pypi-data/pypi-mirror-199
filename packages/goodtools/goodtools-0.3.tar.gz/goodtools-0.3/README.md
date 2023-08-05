@@ -1,0 +1,59 @@
+The file contains two classes: "tools" and "GUI". The "tools" class contains various functions that serve general purposes, such as checking if a string is a palindrome, filtering floating point numbers from a list, and so on. The "GUI" class contains functions for creating and managing graphical user interfaces with tkinter.
+
+[Tools]
+
+delay(sec): A function that pauses the execution of the program for the specified number of seconds.
+
+start_thread(target, args=(), delay=None): A function that starts a thread that executes the specified function with the specified arguments. If a delay parameter is passed, the delay function is called before starting the thread.
+
+isPalindrome(data): A function that checks whether a string is a palindrome.
+
+multiply(num1, num2): A function that multiplies two numbers and returns the result as a string.
+
+divide(num1, num2): A function that divides two numbers and returns the result as a string.
+
+plus(num1, num2): A function that adds two numbers and returns the result as a string.
+
+minus(num1, num2): A function that subtracts two numbers and returns the result as a string.
+
+is_valid_parentheses(s): A function that checks whether the parentheses in a given string are valid.
+
+merge_sorted_lists(list1, list2): A function that merges two sorted lists and returns a new sorted list.
+
+evaluate(expression): A function that evaluates a mathematical expression as a string and returns the result. If the expression is invalid, the message "Invalid expression" is returned.
+
+is_valid_number(data): A function that checks whether a string is a valid number.
+filter_real_numbers(data): A function that filters out all floating point numbers from a list of elements.
+
+all_real_numbers(numbers): A function that checks whether all elements in a given list are floating point numbers.
+
+[GUI]
+Constructor
+GUI(title="GUI", icon=None, width=500, height=500)
+
+Creates a GUI with a window whose title is set to "title" (default is "GUI"), a size of "width" x "height" (default is 500 x 500). If "icon" is specified, the icon of the window is placed on the corresponding image.
+
+[Methods]
+add_label(text, font_size=12): Creates a label element in the GUI with the text "text" and a font size of "font_size" (default is 12).
+
+add_button(text, command=None, font_size=12, width=10, height=2): Creates a button element in the GUI with the text "text", which is executed when the button is clicked. The font size is "font_size" (default is 12), the width is "width" (default is 10) and the height is "height" (default is 2).
+
+add_entry(font_size=12, width=20): Creates an entry element in the GUI with a font size of "font_size" (default is 12) and a width of "width" (default is 20).
+
+add_textbox(font_size=12, width=50, height=10): Creates a text element in the GUI with a font size of "font_size" (default is 12), a width of "width" (default is 50), and a height of "height" (default is 10).
+
+get_elements(): Returns a list of all elements in the GUI.
+
+change_element(element, **kwargs): Changes the properties of an element. "element" is the element to change, and "kwargs" is a dictionary that contains the properties to change and their values.
+
+show(): Shows the GUI.
+
+msg_box(title, message): Displays a MessageBox with the title "title" and the message "message".
+
+reset_screen(): Removes all elements from the GUI.
+
+set_size(width, height): Resizes the GUI to "width" x "height".
+
+set_title(title): Change the title of the GUI to "title".
+
+set_icon(icon): Changes the GUI icon to the image specified in "icon".
