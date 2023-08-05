@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: dj-active-campaign
+Version: 0.0.8
+Summary: A Django Implementation of the Active Campaign Python SDK
+Author-email: Roberto Himmelbauer <robertoh89@gmail.com>
+Project-URL: Homepage, https://github.com/rhimmelbauer/django-active-campaign
+Project-URL: Bug Tracker, https://github.com/rhimmelbauer/django-active-campaign/issues
+Keywords: django,app
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+Provides-Extra: docs
+License-File: LICENSE
+
+# dj-active-campaign
+
+## Overview
+
+This project is intened to help django developers integrate ActiveCampaing's API endpoints to their django solution.
+
+This project is still under development and currently only supports adding Custom Fields and Contacts.
+

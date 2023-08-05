@@ -1,0 +1,54 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.distutils.bdist_wheel]
+universal = true
+
+[project]
+name = "dj-active-campaign"
+version = "0.0.8"
+
+authors = [
+  { name="Roberto Himmelbauer", email="robertoh89@gmail.com" }
+]
+description = "A Django Implementation of the Active Campaign Python SDK"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+keywords = ["django", "app"]
+dependencies = [
+    "Django>=3,<4.0",
+    "django-autoslug",
+    "django-site-configs",
+    "django-integrations"
+]
+
+[project.optional-dependencies]
+dev = [
+    'dj-database-url',
+    'psycopg2-binary',
+    'django-allauth',
+    'django-crispy-forms',
+    "toml",
+]
+docs= [
+    "recommonmark",
+    "m2r",
+    "django_extensions",
+    "coverage",
+    "Sphinx",
+    "rstcheck",
+    "sphinx-rtd-theme",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/rhimmelbauer/django-active-campaign"
+"Bug Tracker" = "https://github.com/rhimmelbauer/django-active-campaign/issues"
+
+[tool.setuptools.package-data]
+dj_active_campaign = ['templates/dj_active_campaign/*.html', 'templates/dj_active_campaign/*/*.html']

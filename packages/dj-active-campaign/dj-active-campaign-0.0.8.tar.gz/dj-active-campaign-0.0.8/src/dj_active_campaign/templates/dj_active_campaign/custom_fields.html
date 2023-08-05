@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block head_title %}Custom Fields{% endblock %}
+{% block title %}Custom Fields List{% endblock %}
+
+
+{% block content %}
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>AC ID</th>
+                <th>Title</th>
+                <th>Type</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for custom_field in object_list %}
+            <tr>
+                <td>{{custom_field.pk}}</td>
+                <td>{{custom_field.ac_id}}</td>
+                <td>{{custom_field.ac_title}}</td>
+                <td>{{custom_field.ac_type}}</td>
+                <td>
+                    <form action="{% url 'dj_active_campaign_api:ac-custom-field-create' custom_field.uuid %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-sm btn-primary" type="submit">AC-Create</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
