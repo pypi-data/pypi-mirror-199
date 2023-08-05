@@ -1,0 +1,61 @@
+{
+  "marshmallow": {
+    "base-classes": [
+      "InvenioBaseRecordSchema"
+    ]
+  },
+  "properties": {
+    "id": {
+      "type": "keyword",
+      "sample": {
+        "skip": true
+      },
+      "marshmallow": {
+        "read": false,
+        "write": false
+      },
+      "facets" : {
+        "searchable": true
+      }
+    },
+    "created": {
+      "type": "date",
+      "sample": {
+        "skip": true
+      },
+      "marshmallow": {
+        "write": false,
+        "read": true
+      },
+      "facets" : {
+        "searchable": true
+      }
+    },
+    "updated": {
+      "type": "date",
+      "sample": {
+        "skip": true
+      },
+      "marshmallow": {
+        "write": false,
+        "read": true
+      },
+      "facets" : {
+        "searchable": true
+      }
+    },
+    "$schema": {
+      "type": "keyword",
+      "marshmallow": {
+        "read": false,
+        "write": false
+      },
+      "sample": {
+        "skip": true
+      },
+      "facets" : {
+        "searchable": true
+      }
+    }
+  }
+}
