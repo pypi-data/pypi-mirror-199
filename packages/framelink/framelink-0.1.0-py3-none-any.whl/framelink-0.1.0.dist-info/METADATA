@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: framelink
+Version: 0.1.0
+Author-email: Toby Devlin <toby@tobydevlin.com>
+Project-URL: github, https://github.com/GitToby/framelink
+Requires-Python: <4.0,>=3.9
+Description-Content-Type: text/markdown
+Requires-Dist: pandas (<2.0.0,>=1.5.3)
+Requires-Dist: polars (<1.0.0,>=0.16.7)
+Requires-Dist: networkx (<4.0,>=3.0)
+Requires-Dist: openlineage-python (>=0.21.1)
+Requires-Dist: setuptools-scm (>=7.1.0)
+Requires-Dist: pytest-cov (>=4.0.0)
+Provides-Extra: dev
+Requires-Dist: mypy (>=1.1.1) ; extra == 'dev'
+Requires-Dist: pytest (>=7.2.2) ; extra == 'dev'
+Requires-Dist: pre-commit (>=3.2.0) ; extra == 'dev'
+Requires-Dist: ruff (>=0.0.258) ; extra == 'dev'
+Requires-Dist: build (>=0.10.0) ; extra == 'dev'
+Requires-Dist: black (>=23.1.0) ; extra == 'dev'
+
+Pypelines is a simple wrapper that will provide context into pandas, polars and other Dataframe engines.
