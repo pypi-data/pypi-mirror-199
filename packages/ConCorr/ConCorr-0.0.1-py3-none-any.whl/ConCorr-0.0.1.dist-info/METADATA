@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: ConCorr
+Version: 0.0.1
+Summary: A small fMRI functional connectivity toolbox
+Home-page: https://github.com/jenburrell/ConCorr
+Author: Jen Burrell
+Author-email: jenbur@psych.ubc.ca
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+Requires-Dist: numpy (>=1)
+Requires-Dist: scipy (>=1.9.3)
+Requires-Dist: pandas (>=1.5.0)
+Requires-Dist: seaborn (>=0.12.1)
+Requires-Dist: matplotlib (>=3.6.0)
+Requires-Dist: pingouin (>=0.5.3)
+Requires-Dist: scikit-learn (>=1.0.2)
+Requires-Dist: fastcluster (>=1.2.6)
+Provides-Extra: dev
+Requires-Dist: pytest (>=3.7) ; extra == 'dev'
+
+ConCorr
+===========
+
+The ``ConCorr`` project is a toolbox to analyze functional connectivity
+of fMRI data written in Python. 
+
+Installation
+------------
+Install ``ConCorr`` and its core dependencies via pip::
+
+    pip install ConCorr
+
+Install ``ConCorr`` by cloning GitHub, then move to where the toolbox is
+housed in terminal ::
+
+	cd path/to/ConCorr
+
+Then run ``setup.py`` to install dependencies ::
+
+	Python3 setup.py install
+	
+
+Dependencies
+------------
+All of the core dependencies of ``ConCorr`` are listed in the
+`requirements.txt <requirements.txt>`_ file and will be installed by ``pip``.
+
+To install ``ConCorr``, along with all the tools you need to develop
+and run tests run the following in your virtualenv ::
+
+	pip install -e .[dev] 
