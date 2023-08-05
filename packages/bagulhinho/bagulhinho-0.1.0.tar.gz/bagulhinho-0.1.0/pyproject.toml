@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "bagulhinho"
+version = "0.1.0"
+description = ""
+authors = ["leonardo <leo-alves14@hotmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+httpx = "^0.23.3"
+
+[tool.poetry.scripts]
+bagulhinho-cli = "bagulhinho.cli:cli"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
