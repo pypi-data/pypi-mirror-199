@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: hydrobotdbc
+Version: 0.0.14
+Summary: A custom Pyodbc wrapper
+Author: Daniel Ferrer
+Author-email: ferrdan2506@hotmail.com
+Description-Content-Type: text/markdown
+Requires-Dist: pyodbc
+Requires-Dist: python-dotenv
+Requires-Dist: flask-login
+Requires-Dist: twine
+
+hydrobotdbc
+========
+A Pyodbc wrapper used for the HydroBot discord bot and it's cloud.
+
+This library uses custom objects to query data as needed by the features implemented in the discord server.
