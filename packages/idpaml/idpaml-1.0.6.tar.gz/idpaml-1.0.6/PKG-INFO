@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: idpaml
+Version: 1.0.6
+Summary: AzureML wrapper for disease modeling.
+Home-page: https://github.com/uhg-internal/idp-aml
+Author: cpaulis2
+Author-email: cullen.paulisick@optum.com
+License: MIT
+Keywords: azureml,idp,aml
+Platform: any
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6, <4
+Provides-Extra: test
+
+This is a longer description for the project
