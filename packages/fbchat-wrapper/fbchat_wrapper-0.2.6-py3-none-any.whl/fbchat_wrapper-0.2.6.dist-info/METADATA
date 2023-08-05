@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: fbchat-wrapper
+Version: 0.2.6
+Summary: Wrapper for fbchat
+Author: SneznyKocur
+Author-email: kocursnezny@gmail.com
+Keywords: python,messaging,wrapper
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+Requires-Dist: py-fbchat
+Requires-Dist: validators
+Requires-Dist: pillow
+Requires-Dist: ffmpeg-python
+Requires-Dist: wget
+Requires-Dist: pytube
+
+Simple Wrapper Package to make Programming with fbchat easier and simpler to read.
