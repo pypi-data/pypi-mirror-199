@@ -1,0 +1,24 @@
+[project]
+name = "hauntedhouse"
+description = "Client for hauntedhouse yara search engine."
+readme = "readme.md"
+requires-python = ">=3.9"
+license = {text = "MIT Licence"}
+version = "0.0.9"
+dependencies = [
+    "aiohttp",
+    "assemblyline",
+    "assemblyline_client",
+    "pydantic",
+    "mquery_query_lib",
+    "arrow",
+    "requests",
+]
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["hauntedhouse"]
+
