@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kasperdb"
+version = "1.7.2"
+authors = [
+  { name="KASPERENOK", email="dimakukic1@gmail.com" },
+  { name="MaseZev", email="csgomanagement1@gmail.com" },
+]
+description = "Simple database for your project. Local database!!!"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/KaSpEr-tv123/kasperdb"
+"Bug Tracker" = "https://github.com/KaSpEr-tv123/kasperdb/issues"
+"docs" = "https://kasper-tv123.github.io/kasperdb-docs"
