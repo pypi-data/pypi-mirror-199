@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "zetops"
+version = "0.1.8"
+description = "A NetDevOps package aiming to improve NetDevOps(network automation) development efficiency for network development engineer!"
+authors = ["feifeiflight <feifeiflight@126.com>"]
+license = " LGPL"
+readme = "readme.md"
+homepage = "https://github.com/jiujing/zetops"
+repository = "https://github.com/jiujing/zetops"
+keywords = ["NetDevOps", "nornir", "netmiko", "network", "sre","automation","devops"]
+classifiers = [
+  "License :: OSI Approved :: Apache Software License",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Topic :: System :: Networking",
+]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
