@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: french-bins
+Version: 0.2.0
+Summary: A library for Bins from French banks
+Home-page: https://github.com/toomanylog/french-bins
+Author: Abysse
+Author-email: pypi@abysseyes.com
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+
+# French Bins
+
+`french-bins` est une bibliothÃ¨que Python qui fournit des informations sur les Bins (Bank Identification Numbers) des principales banques franÃ§aises, telles que BNP Paribas, SociÃ©tÃ© GÃ©nÃ©rale, LCL, AXA, CrÃ©dit Mutuel et CrÃ©dit Agricole.
+
+## Installation
+
+Vous pouvez installer `french-bins` en utilisant `pip` :
+
+```bash
+pip install french-bins
+```
+
+## Utilisation
+
+Pour utiliser french-bins dans votre projet, importez simplement la variable FRENCH_BANK_BINS :
+
+```python
+from french_bins import FRENCH_BANK_BINS
+```
+FRENCH_BANK_BINS est un dictionnaire contenant les informations sur les Bins des banques franÃ§aises. Voici un exemple d'utilisation :
+
+```python
+print(FRENCH_BANK_BINS["BNP_Paribas"]["gold"][0])
+```
+
+Cela affichera les informations suivantes :
+
+```arduino
+{
+    'bin': '497462',
+    'type': 'CrÃ©dit',
+    'bank': 'BNP Paribas',
+    'level': 'Gold'
+}
+```
+
+## Contribuer
+
+Si vous souhaitez contribuer au projet, veuillez soumettre une pull request sur [https://github.com/toomanylog/french-bins](https://github.com/toomanylog/french-bins).
+
+## Licence
+
+french-bins est publiÃ© sous la licence MIT. Voir le fichier LICENSE pour plus de dÃ©tails.
