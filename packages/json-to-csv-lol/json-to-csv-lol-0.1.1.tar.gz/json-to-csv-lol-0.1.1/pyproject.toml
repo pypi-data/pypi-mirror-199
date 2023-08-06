@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "json-to-csv-lol"
+version = "0.1.1"
+description = ""
+authors = ["Eduardo Alvarez <walojose46@gmail.com>"]
+readme = 'README.md'
+repository = "https://github.com/walis85300/json-to-csv-lol.git"
+
+[tool.poetry.scripts]
+json-to-csv-lol = "json_to_csv-lol.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.7.0"}
+polars = "^0.16.16"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+ruff = "^0.0.259"
+black = "^23.1.0"
+unittest = "^0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
