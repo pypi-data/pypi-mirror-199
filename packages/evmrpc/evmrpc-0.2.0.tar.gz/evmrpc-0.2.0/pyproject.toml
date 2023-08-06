@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "evmrpc"
+version = "0.2.0"
+description = "A library for batching Ethereum RPC calls"
+authors = ["Fed <federicoulfo@gmail.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+web3 = "^6.0.0"
+
+[tool.poetry.dev-dependencies]
+black = "^23.1.0"
+pre-commit = "^3.2.1"
+reorder-python-imports = "^3.9.0"
+pyupgrade = "^3.3.1"
+pytest = "^7.2.1"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
