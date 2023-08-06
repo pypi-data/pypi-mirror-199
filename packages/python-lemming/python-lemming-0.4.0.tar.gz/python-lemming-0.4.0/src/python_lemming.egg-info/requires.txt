@@ -1,0 +1,5 @@
+python-mylog>=0.7.0
+confz
+
+[:python_version < "3.11"]
+tomli
