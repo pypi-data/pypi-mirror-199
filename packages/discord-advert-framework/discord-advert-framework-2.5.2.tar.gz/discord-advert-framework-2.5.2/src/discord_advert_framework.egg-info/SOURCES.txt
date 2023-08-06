@@ -1,0 +1,269 @@
+.flake8
+.gitignore
+.readthedocs.yml
+LICENSE.md
+MANIFEST.in
+README.rst
+install.ps1
+install.sh
+optional.json
+pyproject.toml
+.github/ISSUE_TEMPLATE/bugs.yaml
+.github/ISSUE_TEMPLATE/features.yml
+.github/PR/pull_request_template.md
+.github/codeql/codeql-config.yml
+.github/workflows/codeql.yml
+.github/workflows/create_release.yml
+.github/workflows/docs.yml
+.github/workflows/python-publish.yml
+.github/workflows/python-tests.yml
+Examples/Examples.zip
+Examples/Additional Application Layer Example/Coffee/main_coffee.py
+Examples/Additional Application Layer Example/Coffee/images/A_small_cup_of_coffee.jpg
+Examples/Additional Application Layer Example/Coffee/images/CA_Home_Coffee_in_cafe@2x.png
+Examples/Additional Application Layer Example/Coffee/images/Cappuccino-2.webp
+Examples/Additional Application Layer Example/Coffee/images/Roasted_coffee_beans.jpg
+Examples/Additional Application Layer Example/Coffee/images/istockphoto-1137365972-612x612.jpg
+Examples/Additional Application Layer Example/Coffee/images/istockphoto-508347326-612x612.jpg
+Examples/Additional Application Layer Example/Coffee/images/pexels-photo-302899.webp
+Examples/Additional Application Layer Example/Coffee/images/pexels-photo-312418.webp
+Examples/Automatic Generation/autochannel.py
+Examples/Automatic Generation/autoguild.py
+Examples/Dynamic Modification/main_add_object.py
+Examples/Dynamic Modification/main_remove_object.py
+Examples/Dynamic Modification/main_update.py
+Examples/Logging/CSV files/main_rickroll.py
+Examples/Logging/CSV files/History/2022/09/22/David's py dungeon.csv
+Examples/Logging/JSON files/main_rickroll.py
+Examples/Logging/JSON files/History/2022/05/23/#David's dungeon.json
+Examples/Logging/SQL Logging/rolls.py
+Examples/Message Types/DirectMESSAGE/main_data_function.py
+Examples/Message Types/DirectMESSAGE/main_send_multiple.py
+Examples/Message Types/TextMESSAGE/main_data_function.py
+Examples/Message Types/TextMESSAGE/main_send_multiple.py
+Examples/Message Types/VoiceMESSAGE/VoiceMessage.mp3
+Examples/Message Types/VoiceMESSAGE/main_data_function.py
+Examples/Message Types/VoiceMESSAGE/main_stream_audio.py
+Examples/Web/main_web.py
+Patches/1_client.patch
+Patches/2_http.patch
+Patches/3_gateway.patch
+Patches/4_version.patch
+Patches/5_interactions.patch
+docs/Makefile
+docs/dep_local.json
+docs/setup.py
+docs/images/captcha.png
+docs/images/logo.png
+docs/source/changelog.rst
+docs/source/conf.py
+docs/source/dep_local.json
+docs/source/index.rst
+docs/source/guide/autogen.rst
+docs/source/guide/index.rst
+docs/source/guide/logging.rst
+docs/source/guide/messages.rst
+docs/source/guide/modification.rst
+docs/source/guide/quickstart.rst
+docs/source/guide/web.rst
+docs/source/guide/images/logging_process.drawio.svg
+docs/source/guide/images/search_update_method.png
+docs/source/guide/images/sql_er.drawio.svg
+docs/source/guide/images/sql_logging_process.drawio.svg
+docs/source/images/changelog_2_1_slippage_fix.png
+docs/source/scripts/generate_autodoc.py
+docs/thesis/abstract.rst
+docs/thesis/acknowledgements.rst
+docs/thesis/conf.py
+docs/thesis/dep_local.json
+docs/thesis/discord-advert-framework.rst
+docs/thesis/discord.rst
+docs/thesis/documenting.rst
+docs/thesis/index.rst
+docs/thesis/introduction.rst
+docs/thesis/sources.json
+docs/thesis/testing.rst
+docs/thesis/titlepage.tex
+docs/thesis/images/autodoc_example.png
+docs/thesis/images/chatgpt.png
+docs/thesis/images/daf_abstraction.drawio.svg
+docs/thesis/images/discord_client_struct.drawio.png
+docs/thesis/images/discord_logo.svg
+docs/thesis/images/discord_text_channel.png
+docs/thesis/images/discord_voice_channel.png
+docs/thesis/images/example_bunny_nft.png
+docs/thesis/images/feuni_discord.png
+docs/thesis/images/ssfe_discord.png
+docs/thesis/images/topgg_find_servers.png
+docs/thesis/scripts/generate_lit.py
+requirements/docs.txt
+requirements/mandatory.txt
+requirements/sql.txt
+requirements/testing.txt
+requirements/voice.txt
+requirements/web.txt
+src/_discord/__init__.py
+src/_discord/__main__.py
+src/_discord/_typed_dict.py
+src/_discord/_version.py
+src/_discord/abc.py
+src/_discord/activity.py
+src/_discord/appinfo.py
+src/_discord/asset.py
+src/_discord/audit_logs.py
+src/_discord/automod.py
+src/_discord/backoff.py
+src/_discord/bot.py
+src/_discord/channel.py
+src/_discord/client.py
+src/_discord/cog.py
+src/_discord/colour.py
+src/_discord/components.py
+src/_discord/context_managers.py
+src/_discord/embeds.py
+src/_discord/emoji.py
+src/_discord/enums.py
+src/_discord/errors.py
+src/_discord/file.py
+src/_discord/flags.py
+src/_discord/gateway.py
+src/_discord/guild.py
+src/_discord/http.py
+src/_discord/integrations.py
+src/_discord/interactions.py
+src/_discord/invite.py
+src/_discord/iterators.py
+src/_discord/member.py
+src/_discord/mentions.py
+src/_discord/message.py
+src/_discord/mixins.py
+src/_discord/object.py
+src/_discord/oggparse.py
+src/_discord/opus.py
+src/_discord/partial_emoji.py
+src/_discord/permissions.py
+src/_discord/player.py
+src/_discord/py.typed
+src/_discord/raw_models.py
+src/_discord/reaction.py
+src/_discord/role.py
+src/_discord/scheduled_events.py
+src/_discord/shard.py
+src/_discord/stage_instance.py
+src/_discord/state.py
+src/_discord/sticker.py
+src/_discord/team.py
+src/_discord/template.py
+src/_discord/threads.py
+src/_discord/user.py
+src/_discord/utils.py
+src/_discord/voice_client.py
+src/_discord/welcome_screen.py
+src/_discord/widget.py
+src/_discord/bin/COPYING
+src/_discord/bin/libopus-0.x64.dll
+src/_discord/bin/libopus-0.x86.dll
+src/_discord/commands/__init__.py
+src/_discord/commands/context.py
+src/_discord/commands/core.py
+src/_discord/commands/options.py
+src/_discord/commands/permissions.py
+src/_discord/ext/bridge/__init__.py
+src/_discord/ext/bridge/bot.py
+src/_discord/ext/bridge/context.py
+src/_discord/ext/bridge/core.py
+src/_discord/ext/commands/__init__.py
+src/_discord/ext/commands/_types.py
+src/_discord/ext/commands/bot.py
+src/_discord/ext/commands/cog.py
+src/_discord/ext/commands/context.py
+src/_discord/ext/commands/converter.py
+src/_discord/ext/commands/cooldowns.py
+src/_discord/ext/commands/core.py
+src/_discord/ext/commands/errors.py
+src/_discord/ext/commands/flags.py
+src/_discord/ext/commands/help.py
+src/_discord/ext/commands/view.py
+src/_discord/ext/pages/__init__.py
+src/_discord/ext/pages/pagination.py
+src/_discord/ext/tasks/__init__.py
+src/_discord/sinks/__init__.py
+src/_discord/sinks/core.py
+src/_discord/sinks/errors.py
+src/_discord/sinks/m4a.py
+src/_discord/sinks/mka.py
+src/_discord/sinks/mkv.py
+src/_discord/sinks/mp3.py
+src/_discord/sinks/mp4.py
+src/_discord/sinks/ogg.py
+src/_discord/sinks/pcm.py
+src/_discord/sinks/wave.py
+src/_discord/types/__init__.py
+src/_discord/types/activity.py
+src/_discord/types/appinfo.py
+src/_discord/types/audit_log.py
+src/_discord/types/automod.py
+src/_discord/types/channel.py
+src/_discord/types/components.py
+src/_discord/types/embed.py
+src/_discord/types/emoji.py
+src/_discord/types/gateway.py
+src/_discord/types/guild.py
+src/_discord/types/integration.py
+src/_discord/types/interactions.py
+src/_discord/types/invite.py
+src/_discord/types/member.py
+src/_discord/types/message.py
+src/_discord/types/raw_models.py
+src/_discord/types/role.py
+src/_discord/types/scheduled_events.py
+src/_discord/types/snowflake.py
+src/_discord/types/sticker.py
+src/_discord/types/team.py
+src/_discord/types/template.py
+src/_discord/types/threads.py
+src/_discord/types/user.py
+src/_discord/types/voice.py
+src/_discord/types/webhook.py
+src/_discord/types/welcome_screen.py
+src/_discord/types/widget.py
+src/_discord/ui/__init__.py
+src/_discord/ui/button.py
+src/_discord/ui/input_text.py
+src/_discord/ui/item.py
+src/_discord/ui/modal.py
+src/_discord/ui/select.py
+src/_discord/ui/view.py
+src/_discord/webhook/__init__.py
+src/_discord/webhook/async_.py
+src/_discord/webhook/sync.py
+src/daf/__init__.py
+src/daf/client.py
+src/daf/core.py
+src/daf/dtypes.py
+src/daf/guild.py
+src/daf/misc.py
+src/daf/web.py
+src/daf/logging/__init__.py
+src/daf/logging/logging.py
+src/daf/logging/sql.py
+src/daf/logging/tracing.py
+src/daf/message/__init__.py
+src/daf/message/base.py
+src/daf/message/text_based.py
+src/daf/message/voice_based.py
+src/discord_advert_framework.egg-info/PKG-INFO
+src/discord_advert_framework.egg-info/SOURCES.txt
+src/discord_advert_framework.egg-info/dependency_links.txt
+src/discord_advert_framework.egg-info/requires.txt
+src/discord_advert_framework.egg-info/top_level.txt
+src/framework/__init__.py
+testing/conftest.py
+testing/test_autogen.py
+testing/test_logging.py
+testing/test_period_dynamic.py
+testing/test_send_normal.py
+testing/test_update.py
+testing/testing123.mp3
+testing/fixtures/__init__.py
+testing/fixtures/main.py
