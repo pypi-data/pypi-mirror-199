@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: dilax
+Version: 0.1.0
+Summary: differentiable (binned) likelihoods with JAX
+Home-page: https://github.com/pfackeldey/dilax/tree/main
+Keywords: fit,likelihood,hep,jax,differentiable,binned
+Author: Peter Fackeldey
+Author-email: peter.fackeldey@rwth-aachen.de
+Requires-Python: >=3.10,<4.0
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: chex (>=0.1.7,<0.2.0)
+Requires-Dist: jax (>=0.4.7,<0.5.0)
+Requires-Dist: jaxopt (>=0.6,<0.7)
+Requires-Dist: tqdm (>=4.65.0,<5.0.0)
+Project-URL: Repository, https://github.com/pfackeldey/dilax/tree/main
+Description-Content-Type: text/markdown
+
+# dilax
+differentiable (binned) likelihoods with JAX
+
