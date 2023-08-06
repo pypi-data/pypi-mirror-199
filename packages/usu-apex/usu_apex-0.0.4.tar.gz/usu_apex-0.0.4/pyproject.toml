@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "usu-apex"
+version = "0.0.4"
+authors = [
+  { name="AJ Burns", email="aj501173@gmail.com" },
+  { name="Karsten Jacobson", email="karsten.jacobson1997@gmail.com" },
+  { name="Ryan Lewis", email="rylewis456@gmail.com" },
+  { name="Spencer Kimball", email="spencerkimball14@gmail.com" },
+]
+description = "The Aggie Python Engineering eXecution"
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ajburns147/usu-apex"
