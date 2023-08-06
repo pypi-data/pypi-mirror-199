@@ -1,0 +1,47 @@
+=========
+Changelog
+=========
+
+2.0.0 (March 27, 2022)
+----------------------
+
+* Improve documentation
+* Add handling of NA values
+* Bug fixes
+* Add datasets module
+* Add visualization functions
+* Performance improvements
+* BREAKING: error_analysis functions have been renamed.
+* BREAKING: estimators have been renamed.
+* Added estimators support for sensitivity analyses
+* Added fairness plots
+* Performance improvements
+* Added `compress_memberships()` function for performance improvements.
+
+1.2.0 (January 11, 2022)
+------------------------
+
+- Refactoring and documentation overhaul.
+
+1.1.0 (January 10, 2022)
+------------------------
+
+- Added additional error metrics, performance evaluation metrics, and performance estimators.
+- Added record-level error metrics and error analysis tools.
+
+1.0.2 (December 5, 2022)
+------------------------
+
+- Update setup.py with find_packages()
+
+1.0.1 (November 30, 2022)
+-------------------------
+
+- Add "normalize" option to plot_cluster_sizes_distribution.
+- Fix bugs in homonimy_rate and and name_variation_rate.
+- Fix bug in estimators.
+
+1.0.0
+-----
+
+- Initial release
