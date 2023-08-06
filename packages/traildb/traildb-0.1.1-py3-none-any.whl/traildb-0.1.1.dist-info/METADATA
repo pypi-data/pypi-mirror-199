@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: traildb
+Version: 0.1.1
+Summary: The Central Information Source For AI Development
+Home-page: https://www.trail-ml.com/?utm_source=pypi&utm_medium=pypi&utm_campaign=pypi
+Author: NP
+Author-email: nikolaus@trail-ml.com
+License: MIT
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+Requires-Dist: mlflow
+Requires-Dist: aiohttp
+Requires-Dist: gql
+Requires-Dist: pyrebase4
+
+# Trail
+
+Trail brings more transparency in your ml experimentation and make your AI development understandable - for data science teams, product managers and business stakeholder
+
+# Prerequisite:
+To use trail, you need a user account, which you get on the trail-ml homepage  (see Project-Links).
+Once your signed up you can start by using mlflow to track experiments and follow the steps below.
+
+# Installation
+
+Install Trail from Pypi via 
+```python 
+pip install traildb
+```
+
+# Get started
+
+```python 
+from traildb import trail_init
+```
+
+# log experiment
+
+Logging experiments is as easy as including one line of code. You'll get the parameteres email and password at signup and see the project_id and parent values in the web app. <br />
+
+<br />
+
+```python
+with mlflow.start_run() as run:
+    with trail_init(email, password, project_id, parent):
+      ...your training code...
+```
