@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: crossgui
+Version: 0.0.1
+Summary: Сommon widgets between different graphical environments.
+Home-page: https://github.com/2trvl/dotfiles/tree/master/scripts/crossgui
+License: BSD-2-Clause
+Keywords: dmenu,qt,rofi,tui,widgets
+Author: Andrew Shteren
+Author-email: dank.txt@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Development Status :: 1 - Planning
+Classifier: Environment :: Console
+Classifier: Environment :: X11 Applications :: Qt
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Internationalization
+Classifier: Topic :: Software Development :: User Interfaces
+Classifier: Topic :: Software Development :: Widget Sets
+Description-Content-Type: text/markdown
+
+Writing GUI applications in Python is hard, so let's make it easy and simple!
+
