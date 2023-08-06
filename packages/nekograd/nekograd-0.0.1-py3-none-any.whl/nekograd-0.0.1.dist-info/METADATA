@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: nekograd
+Version: 0.0.1
+Home-page: https://github.com/arseniybelkov/nekograd
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scikit-learn
+Requires-Dist: scikit-image
+Requires-Dist: torch
+Requires-Dist: pytorch-lightning
+Requires-Dist: tensorboardX
+Requires-Dist: cytoolz
+
+# nekograd
+PyTorch-Lightning wrapped in some shit code
+```bash
+pip install nekograd
+```
+
+## Example
+
+```python
+import torch
+import torch.nn as nn
+import pytorch_lightning as pl
+from nekograd.model import CoreModel
+from sklearn.metrics import accuracy_score
+
+
+architecture: nn.Module = ...
+criterion: Callable = ...
+metrics: Dict[str, Callable] = {"accuracy": accuracy_score}
+
+
+model = CoreModel(architecture, criterion, metrics)
+device = "gpu" if torch.cuda.is_available() else "cpu"
+
+trainer = pl.Trainer(max_epochs=20, accelerator=device)
+
+trainer.fit(model, datamodule=...)
+trainer.test(model, datamodule=...)
+```
