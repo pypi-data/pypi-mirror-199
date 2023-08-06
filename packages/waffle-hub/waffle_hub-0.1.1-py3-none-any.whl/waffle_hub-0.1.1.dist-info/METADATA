@@ -1,0 +1,105 @@
+Metadata-Version: 2.1
+Name: waffle-hub
+Version: 0.1.1
+Summary: Waffle hub
+Home-page: https://github.com/snuailab/waffle_hub
+Author: SNUAILAB
+Author-email: huijae.lee@snuailab.ai
+License: GPL-3.0
+Project-URL: Bug Reports, https://github.com/snuailab/waffle_hub/issues
+Project-URL: Source, https://github.com/snuailab/waffle_hub
+Keywords: machine-learning,deep-learning,vision,ML,DL,AI,YOLO,Ultralytics,SNUAILAB
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Software Development
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Image Recognition
+Classifier: Operating System :: POSIX :: Linux
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: tqdm
+Requires-Dist: tabulate (==0.9.0)
+Requires-Dist: pydantic
+Requires-Dist: typer
+Requires-Dist: rich
+Requires-Dist: onnxruntime
+Requires-Dist: torch (==1.13.1)
+Requires-Dist: torchaudio (==0.13.1)
+Requires-Dist: torchvision (==0.14.1)
+Requires-Dist: waffle-utils (==0.2.2)
+Requires-Dist: sentry-sdk
+
+![header](https://github.com/snuailab/assets/blob/main/snuailab/full/snuAiLab.black.300ppi.png?raw=true)
+
+# Waffle Hub
+- waffle 의 training core
+- 다양한 backend framework 를 제공
+- SNUAILAB 데이터 형식으로 모든 backend framework 를 사용 가능
+<img src="https://github.com/snuailab/assets/blob/main/waffle/docs/diagrams/hub_flow.png?raw=true" width="100%" />
+<!--
+# Usage
+### Query Format
+```python
+# "wh help" for available backends.
+# "wh <backend> help" for available tasks.
+# "wh <backend> <task> help" for available jobs.
+# "wh <backend> <task> <job> help" for available parameters.
+wh <backend> <task> <job> \  # base query
+   name=<exp_name> \ 
+   <param_key>=<value>  # params
+```
+### Basic Use
+```python
+wh yolo detection train \
+   name=my_model \
+   model=yolov8s \
+   image_dir=./dataset/mnist/images \
+   coco_file=./dataset/mnist/ann.json
+   
+wh mm pose_estimation train \
+   name=my_model \
+   model=DeepPose \
+   image_dir=./dataset/mnist/images \
+   coco_file=./dataset/mnist/ann.json
+```
+### Advanced Use
+```python
+# check "wh yolo train detection help" for available parameters.
+wh yolo detection train \  
+   name=my_model \
+   model=yolov8s \
+   image_dir=./dataset/mnist/images \
+   coco_file=./dataset/mnist/ann.json \
+   epoch=100 \
+   patience=10 \
+   batch=32 \
+   learning_rate=0.001 \
+   pretrained_weight=base_ckpt.pt \
+   letter_box=True \
+   r=128 \
+   g=128 \
+   b=128 \
+   iou_threshold=0.6 \
+   conf_threshold=0.8
+```
+or simply
+```python
+wh yolo detection train \
+   name=my_model \
+   config_from=config.yaml \
+   <override>
+```
+or from pretrained model
+```python
+wh yolo detection train \
+   name=my_model \
+   start_from=model.pt \
+   <override>
+```
+-->
