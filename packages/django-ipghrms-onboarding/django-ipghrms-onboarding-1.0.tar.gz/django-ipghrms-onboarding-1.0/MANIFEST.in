@@ -1,0 +1,5 @@
+include LICENSE
+include README.rst
+recursive-include onboarding/templates *
+recursive-include onboarding/migrations *
+recursive-include onboarding/views *
