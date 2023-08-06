@@ -1,0 +1,11 @@
+*HELP for {self.name}*
+
+`Interact with the bot by sending messages and the bot should reply it properly most of the time.`
+
+`In cases where the response implies a failure to understand the given input, repeat the sentence with more clarity of the context.`
+
+`To preserve bot memory, a small number of chats are stored encrypted but might be still *recoverable by the bot admin*, type "forget" or "clear" to erase all.`
+
+`Never reveal any sensitive information in the chats [read the /disclaimer].`
+
+:: Powered by Telegram-Bot-GPT ver {self.ver}

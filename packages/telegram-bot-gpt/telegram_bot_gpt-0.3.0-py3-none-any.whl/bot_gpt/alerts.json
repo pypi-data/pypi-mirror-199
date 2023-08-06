@@ -1,0 +1,28 @@
+{
+  "errors": {
+    "Unknown error": {
+      "code": "000",
+      "description": "Unknown error",
+      "admin": "Unknown error occurred, restarting the bot manually may resolve the problem.",
+      "user": "Unknown error occurred, contact admin for further info."
+    },
+    "No API key provided": {
+      "code": "001",
+      "description": "OpenAI key not set",
+      "admin": "OpenAI key not set, use bot.set_openai_key(\"<YOUR_OPENAI_KEY>\") to resolve.",
+      "user": "Bot configuration incorrect, contact admin for further info."
+    },
+    "Incorrect API key provided": {
+      "code": "002",
+      "description": "OpenAI key not working",
+      "admin": "OpenAI key not working, use bot.set_openai_key(\"<YOUR_OPENAI_KEY>\") to resolve.",
+      "user": "Bot configuration incorrect, contact admin for further info."
+    },
+    "This model's maximum context length is": {
+      "code": "101",
+      "description": "Input too long",
+      "admin": "Your input is too long, please shorten it.",
+      "user": "Your input is too long, please shorten it."
+    }
+  }
+}
