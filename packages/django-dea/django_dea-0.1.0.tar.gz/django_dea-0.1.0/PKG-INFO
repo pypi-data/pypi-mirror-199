@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: django-dea
+Version: 0.1.0
+Summary: Double entry accounting package for django
+License: MIT
+Author: rajeshr188
+Author-email: rajeshrathodh@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: django-money (>=3.0.0,<4.0.0)
+Requires-Dist: django-mptt (>=0.14.0,<0.15.0)
+Requires-Dist: psycopg2 (>=2.9.5,<3.0.0)
+Description-Content-Type: text/markdown
+
+-- Type: money_value
+
+-- DROP TYPE IF EXISTS public.money_value;
+
+CREATE TYPE public.money_value AS
+(
+	amount numeric(14,0),
+	currency character varying(3)
+);
+
+ALTER TYPE public.money_value
+    OWNER TO postgres;
+
