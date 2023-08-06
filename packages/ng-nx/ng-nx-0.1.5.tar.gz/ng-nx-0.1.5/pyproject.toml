@@ -1,0 +1,88 @@
+[tool.pdm.scripts.test]
+shell = "    pdm update -dG dev\n    pytest tests/unit/\n"
+
+[tool.pdm.scripts.lint]
+shell = "    pdm update -dG lint\n    flake8 --max-line-length=84 ng_nx tests\n    isort --check ng_nx tests --diff\n    black --line-length 84 --check ng_nx tests --diff\n"
+
+[tool.pdm.scripts.format]
+shell = "    pdm update -dG lint\n    isort ng_nx tests\n    black --line-length 84 ng_nx tests\n"
+
+[tool.pdm.scripts.dockerup]
+shell = "    docker-compose -f 'tests/integration/setup/docker-compose.yaml' up -d --remove-orphans\n    echo \"Waiting for NebulaGraph to start...\"\n    sleep 5\n    for i in {1..50}; do docker-compose -f 'tests/integration/setup/docker-compose.yaml' ps | grep \"unhealthy\\|starting\" | wc -l | grep -q 0 && break; echo Waiting for another 5 sec; sleep 5; done\n    echo \"NebulaGraph is up and running, removing console container\"\n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' stop console\n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' rm -f console\n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' ps\n"
+
+[tool.pdm.scripts.dockerstatus]
+shell = "    docker-compose -f 'tests/integration/setup/docker-compose.yaml' ps\n"
+
+[tool.pdm.scripts.dockerdown]
+shell = "    docker-compose -f 'tests/integration/setup/docker-compose.yaml' down\n"
+
+[tool.pdm.scripts.int-test]
+shell = "    pdm update -dG dev\n    pdm run dockerup\n\n    echo \"Run integration tests\"\n\n    pytest tests/integration/\n"
+
+[tool.black]
+line-length = 84
+exclude = "/(\n    \\.eggs\n  | \\.git\n  | \\.hg\n  | \\.mypy_cache\n  | \\.tox\n  | \\.venv\n  | _build\n  | buck-out\n  | build\n  | dist\n)/\n"
+
+[tool.isort]
+profile = "black"
+atomic = true
+skip_glob = [
+    "*/setup.py",
+]
+filter_files = true
+
+[project]
+name = "ng_nx"
+version = "0.1.5"
+description = "NebulaGraph NetowrkX adaptor"
+authors = [
+    { name = "Wey Gu", email = "weyl.gu@gmail.com" },
+]
+dependencies = [
+    "networkx>=2.5.1",
+    "nebula3-python",
+    "pandas",
+    "numpy>=1.21.6",
+    "scipy>=1.7.3",
+]
+requires-python = ">=3.7,<3.11"
+readme = "README.md"
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.license]
+text = "Apache-2.0"
+
+[project.urls]
+Homepage = "https://github.com/wey-gu/nebulagraph-nx"
+Repository = "https://github.com/wey-gu/nebulagraph-nx"
+Documentation = "https://github.com/wey-gu/nebulagraph-nx#documentation"
+Changelog = "https://github.com/wey-gu/nebulagraph-nx/releases"
+
+[project.optional-dependencies]
+lint = [
+    "flake8>=4.0.1",
+    "black[jupyter]>=23.1.0",
+    "isort>=5.11.5",
+]
+test = [
+    "pytest>=7.2.2",
+    "pytest-mock>=3.10.0",
+]
+dev = [
+    "ng_nx[lint,test]",
+]
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
