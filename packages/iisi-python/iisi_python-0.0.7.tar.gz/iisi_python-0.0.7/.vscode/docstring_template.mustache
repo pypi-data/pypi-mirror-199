@@ -1,0 +1,19 @@
+{{! Iisi Docstring Template }}
+
+{{summaryPlaceholder}}
+
+{{#parametersExist}}
+{{#args}}
+:param {{var}}: {{descriptionPlaceholder}}.
+{{/args}}
+{{/parametersExist}}
+{{#returnsExist}}
+{{#returns}}
+:return: {{typePlaceholder}}: {{descriptionPlaceholder}}.
+{{/returns}}
+{{/returnsExist}}
+{{#exceptionsExist}}
+{{#exceptions}}
+:raise {{type}}: {{descriptionPlaceholder}}.
+{{/exceptions}}
+{{/exceptionsExist}}

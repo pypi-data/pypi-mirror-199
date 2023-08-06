@@ -1,0 +1,16 @@
+[format]
+max-line-length=100
+# Allow only LF line endings
+expected-line-ending-format=LF
+
+[messages control]
+# Black takes care about it, and conflicts with pylint
+min-public-methods=0
+
+[BASIC]
+good-names=id
+
+[similarities]
+# Ignore imports when computing similarities.
+ignore-imports=yes
+min-similarity-lines=10
