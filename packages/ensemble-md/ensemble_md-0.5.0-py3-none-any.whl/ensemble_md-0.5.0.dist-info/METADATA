@@ -1,0 +1,69 @@
+Metadata-Version: 2.1
+Name: ensemble-md
+Version: 0.5.0
+Summary: A package for setting up, performing, and analyzing molecular dynamics ensembles using GROMACS
+Author: Wei-Tse Hsu
+Author-email: wehs7661@colorado.edu
+License: MIT
+Project-URL: Documentation, https://ensemble-md.readthedocs.io/
+Project-URL: Source Code, https://github.com/wehs7661/ensemble_md
+Keywords: molecular mechanics,free energy calculations,advanced sampling
+Platform: Linux
+Platform: Mac OS-X
+Platform: Unix
+Platform: Windows
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows 
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: natsort
+Requires-Dist: argparse
+Requires-Dist: pymbar (>=4.0.1)
+Requires-Dist: alchemlyb (>=2.0.0)
+Requires-Dist: pyyaml
+Requires-Dist: seaborn
+Requires-Dist: matplotlib
+Requires-Dist: pyemma
+Provides-Extra: gmxapi
+Requires-Dist: pybind11 (>=2.6) ; extra == 'gmxapi'
+Requires-Dist: setuptools (>=42.0) ; extra == 'gmxapi'
+Requires-Dist: mpi4py ; extra == 'gmxapi'
+Requires-Dist: gmxapi (>=0.4.0rc2) ; extra == 'gmxapi'
+
+Ensemble Molecular Dynamics
+==============================
+[//]: # (Badges)
+[![wehs7661](https://circleci.com/gh/wehs7661/ensemble_md.svg?style=shield)](https://app.circleci.com/pipelines/github/wehs7661/ensemble_md?branch=master)
+[![codecov](https://codecov.io/gh/wehs7661/ensemble_md/branch/master/graph/badge.svg)](https://app.codecov.io/gh/wehs7661/ensemble_md/tree/master)
+[![Documentation Status](https://readthedocs.org/projects/ensemble-md/badge/?version=latest)](https://ensemble_md.readthedocs.io/en/latest/?badge=latest)
+[![GitHub Actions Lint Status](https://github.com/wehs7661/ensemble_md/actions/workflows/lint.yaml/badge.svg)](https://github.com/wehs7661/ensemble_md/actions/workflows/lint.yaml)
+[![PyPI version](https://badge.fury.io/py/ensemble-md.svg)](https://badge.fury.io/py/ensemble-md)
+[![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://lbesson.mit-license.org/)
+
+**ensemble_md** is a Python package that provides methods for setting up, running, and analyzing molecular dynamics ensembles in GROMACS. The current implementation is mainly for synchronous ensemble of expanded ensemble (EXEE), but we will develop methods like asynchronous EEXE, or ensemble of alchemical metadynamics in the future. For installation instructions, theory overview, tutorials, and API references, please visit the [documentation](https://ensemble_md.readthedocs.io/).
+
+### Copyright
+
+Copyright (c) 2022, Wei-Tse Hsu
+
+
+#### Acknowledgements
+ 
+Project based on the 
+[Computational Molecular Science Python Cookiecutter](https://github.com/molssi/cookiecutter-cms) version 1.6.

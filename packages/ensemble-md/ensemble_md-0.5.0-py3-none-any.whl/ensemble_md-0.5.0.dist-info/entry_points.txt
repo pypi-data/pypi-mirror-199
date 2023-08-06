@@ -1,0 +1,4 @@
+[console_scripts]
+analyze_EEXE = ensemble_md.cli.analyze_EEXE:main
+explore_EEXE = ensemble_md.cli.explore_EEXE:main
+run_EEXE = ensemble_md.cli.run_EEXE:main
