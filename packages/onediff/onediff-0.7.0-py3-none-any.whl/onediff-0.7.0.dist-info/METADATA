@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: onediff
+Version: 0.7.0
+Summary: OneFlow backend for diffusers
+Home-page: https://github.com/Oneflow-Inc/oneflow
+Author: OneFlow contributors
+Author-email: caishenghang@oneflow.org
+License: Apache
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.7.0
+Requires-Dist: transformers (>=4.26)
+Requires-Dist: diffusers
+
