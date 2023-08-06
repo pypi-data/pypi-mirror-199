@@ -1,0 +1,63 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'payroll-dash' %}">PAINEL PAYROLL</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-body">
+                    <center>
+                        <h4>{{ legend|upper }}</h4>
+                        <h1>{{ cat|upper }}</h1>
+                    </center>
+                    <table class="table table-sm" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Naran</th>
+                                <th>Kategoria</th>
+                                <th>Pojisaun</th>
+                                <th>Grau</th>
+                                <th>Gross Salary</th>
+                                <th>Tax (10%)</th>
+                                <th>Social Security (4%)</th>
+                                <th>Net</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'emp-detail' obj.employee.hashed %}" title="Detalha Pessoal">{{ obj.employee }}</a></td>
+                                <td>{{ obj.category }}</td>
+                                <td>{% if obj.position %}{{ obj.position }}{% endif %}</td>
+                                <td>{% if obj.position %}{{ obj.grade }}{% endif %}</td>
+                                <td>{% if obj.salary.gross %}$ {{ obj.salary.gross|intcomma }}{% else %}$ 0.0 {% endif %}</td>
+                                <td>{% if obj.salary.tax %}$ {{ obj.salary.tax|intcomma }}{% else %}$ 0.0 {% endif %}</td>
+                                <td>{% if obj.salary.social %}$ {{ obj.salary.social|intcomma }}{% else %}$ 0.0 {% endif %}</td>
+                                <td>{% if obj.salary.net %}$ {{ obj.salary.net|intcomma }}{% else %}$ 0.0 {% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
