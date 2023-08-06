@@ -1,0 +1,62 @@
+[tool.poetry]
+name = "djext"
+version = "0.5.2"
+description = "Quick tools for Django"
+authors = ["Yehuda Deutsch <yeh@uda.co.il>"]
+maintainers = ["Yehuda Deutsch <yeh@uda.co.il>"]
+repository = "https://gitlab.com/x59/djext"
+license = "MIT"
+readme = "README.md"
+keywords = [
+    "django",
+    "http",
+    "wsgi",
+    "quick",
+    "tools",
+    "models",
+    "forms",
+    "views",
+    "templates",
+    "templatetags",
+]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django",
+    "Framework :: Django :: 2",
+    "Framework :: Django :: 3",
+    "Framework :: Django :: 4",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Internet :: WWW/HTTP",
+    "Topic :: Software Development :: Libraries",
+]
+
+packages = [
+    { include = "djext" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+django = "^4.1.5"
+jsonschema = "^4.17.3"
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+
+[tool.poetry.group.json.dependencies]
+jsonschema = "^4.17.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
