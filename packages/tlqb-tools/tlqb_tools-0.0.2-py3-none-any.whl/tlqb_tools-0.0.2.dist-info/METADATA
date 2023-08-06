@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: tlqb-tools
+Version: 0.0.2
+Summary: WHAT IS THE REASON YOU BUILD THIS PROJECT AND WHAT IT DOES
+Home-page: https://github.com/TLQB/tlqb-tools
+Author: tranlequybao
+Author-email: tranlequybaotk12@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+## TLQB TOOLS
+Test publish module to pypi ...
+
+## INSTALLATION
+Currently it is only supported Python3 onwards. It can be installed through pip:
+```shell
+pip install tlqb_tools
+```
+
+## USAGE
+The following example illustrates the ease of use of this package:
+```python
+from tlqb_tools import tlqb
+tlqb.sum_func(10,20)
+```
+
+## LICENSE
+
