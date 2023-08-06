@@ -1,0 +1,30 @@
+query getTestPlansByTestJiraId ($jira_id: String!) {
+  getTests(jql: $jira_id, limit: 50) {
+    total
+    start
+    limit
+    results {
+      issueId
+      jira(fields: ["key"])
+      projectId
+      testPlans(limit: 100) {
+        total
+        start
+        limit
+        results {
+          issueId
+          projectId
+          folders {
+            name
+            path
+            issuesCount
+            testsCount
+            preconditionsCount
+            folders
+          }
+          jira(fields: ["key"])
+        }
+      }
+    }
+  }
+}

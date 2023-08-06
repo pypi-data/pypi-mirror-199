@@ -1,0 +1,17 @@
+mutation createEmptyTestSet ($summary: String!, $project_key: String!) {
+    createTestSet(
+        testIssueIds: []
+        jira: {
+            fields: {
+                summary: $summary,
+                project: {key: $project_key}
+            }
+        }
+    ) {
+        testSet {
+            issueId
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}

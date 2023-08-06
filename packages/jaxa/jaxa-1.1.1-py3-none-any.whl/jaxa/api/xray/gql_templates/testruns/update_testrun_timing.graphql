@@ -1,0 +1,9 @@
+mutation updateTestRun ($testrun_id: String!, $startedon: String!, $finishedon: String!) {
+    updateTestRun(
+        id: $testrun_id,
+        startedOn: $startedon,
+        finishedOn: $finishedon
+    ) {
+        warnings
+    }
+}

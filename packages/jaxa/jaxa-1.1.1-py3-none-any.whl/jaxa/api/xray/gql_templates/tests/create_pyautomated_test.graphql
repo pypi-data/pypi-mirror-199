@@ -1,0 +1,19 @@
+mutation createPyAutomatedTest($project_id: String!, $summary: String!, $unstructured: String!) {
+    createTest(
+        testType: { name: "pyAutomated" },
+        unstructured: $unstructured,
+        jira: {
+            fields: { summary:$summary, project: {key: $project_id} }
+        }
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            unstructured
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
