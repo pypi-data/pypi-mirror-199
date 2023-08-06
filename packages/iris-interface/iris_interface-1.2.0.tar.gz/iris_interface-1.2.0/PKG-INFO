@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: iris_interface
+Version: 1.2.0
+Summary: An interface for Iris modules
+Home-page: https://github.com/dfir-iris/iris-module-interface
+Author: DFIR-IRIS
+Author-email: contact@dfir-iris.org
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)](./LICENSE.txt)
+
+# IrisModuleInterface
+
+This Python package is used by IRIS modules to interact and extend IRIS capabilities.  
+It's the interface which module have to use to communicate with the platform.   
+Please read IRIS [documentation](https://docs.dfir-iris.org/development/modules/) for further information. 
+
+## License
+
+The contents of this repository is available under [LGPL3 license](LICENSE.txt).
+
+
