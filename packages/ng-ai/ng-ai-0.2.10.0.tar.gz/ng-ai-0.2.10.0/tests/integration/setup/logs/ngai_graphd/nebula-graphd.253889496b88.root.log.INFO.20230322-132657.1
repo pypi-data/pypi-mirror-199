@@ -1,0 +1,590 @@
+Log file created at: 2023/03/22 13:26:57
+Running on machine: 253889496b88
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20230322 13:26:57.075073     1 StatsManager.cpp:107] Registered stats num_queries
+I20230322 13:26:57.093183     1 StatsManager.cpp:107] Registered stats num_active_queries
+I20230322 13:26:57.093564     1 StatsManager.cpp:107] Registered stats num_slow_queries
+I20230322 13:26:57.093870     1 StatsManager.cpp:107] Registered stats num_sentences
+I20230322 13:26:57.096243     1 StatsManager.cpp:107] Registered stats num_query_errors
+I20230322 13:26:57.096555     1 StatsManager.cpp:107] Registered stats num_query_errors_leader_changes
+I20230322 13:26:57.098335     1 StatsManager.cpp:159] Registered histogram query_latency_us [bucketSize: 1000, min value: 0, max value: 2000]
+I20230322 13:26:57.098764     1 StatsManager.cpp:159] Registered histogram slow_query_latency_us [bucketSize: 1000, min value: 0, max value: 2000]
+I20230322 13:26:57.099133     1 StatsManager.cpp:107] Registered stats num_killed_queries
+I20230322 13:26:57.099615     1 StatsManager.cpp:107] Registered stats num_queries_hit_memory_watermark
+I20230322 13:26:57.099941     1 StatsManager.cpp:159] Registered histogram optimizer_latency_us [bucketSize: 1000, min value: 0, max value: 2000]
+I20230322 13:26:57.100257     1 StatsManager.cpp:107] Registered stats num_aggregate_executors
+I20230322 13:26:57.100582     1 StatsManager.cpp:107] Registered stats num_sort_executors
+I20230322 13:26:57.100888     1 StatsManager.cpp:107] Registered stats num_indexscan_executors
+I20230322 13:26:57.101159     1 StatsManager.cpp:107] Registered stats num_opened_sessions
+I20230322 13:26:57.101413     1 StatsManager.cpp:107] Registered stats num_auth_failed_sessions
+I20230322 13:26:57.101691     1 StatsManager.cpp:107] Registered stats num_auth_failed_sessions_bad_username_password
+I20230322 13:26:57.101945     1 StatsManager.cpp:107] Registered stats num_auth_failed_sessions_out_of_max_allowed
+I20230322 13:26:57.102224     1 StatsManager.cpp:107] Registered stats num_active_sessions
+I20230322 13:26:57.102602     1 StatsManager.cpp:107] Registered stats num_reclaimed_expired_sessions
+I20230322 13:26:57.102902     1 StatsManager.cpp:107] Registered stats num_rpc_sent_to_metad
+I20230322 13:26:57.103245     1 StatsManager.cpp:107] Registered stats num_rpc_sent_to_metad_failed
+I20230322 13:26:57.103531     1 StatsManager.cpp:107] Registered stats num_rpc_sent_to_storaged
+I20230322 13:26:57.103842     1 StatsManager.cpp:107] Registered stats num_rpc_sent_to_storaged_failed
+I20230322 13:26:57.123087     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20230322 13:26:57.135619     8 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.140072     9 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.141086    10 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.143879    11 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.148072    12 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.152657     7 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.153570     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20230322 13:26:57.154546     1 GraphDaemon.cpp:136] Number of networking IO threads: 4
+I20230322 13:26:57.155133     1 GraphDaemon.cpp:145] Number of worker threads: 4
+I20230322 13:26:57.162073    13 PosixThreadFactory.cpp:192] setpriority failed (are you root?) with error 13: Permission denied
+I20230322 13:26:57.164168    17 PosixThreadFactory.cpp:192] setpriority failed (are you root?) with error 13: Permission denied
+I20230322 13:26:57.162359    14 PosixThreadFactory.cpp:192] setpriority failed (are you root?) with error 13: Permission denied
+I20230322 13:26:57.162186    15 PosixThreadFactory.cpp:192] setpriority failed (are you root?) with error 13: Permission denied
+I20230322 13:26:57.162848    16 PosixThreadFactory.cpp:192] setpriority failed (are you root?) with error 13: Permission denied
+I20230322 13:26:57.163792    18 PosixThreadFactory.cpp:192] setpriority failed (are you root?) with error 13: Permission denied
+I20230322 13:26:57.189863     1 ThriftClientManager.h:31] ThriftClientManager
+I20230322 13:26:57.191284     1 MetaClient.cpp:80] Create meta client to "metad2":9559
+I20230322 13:26:57.192756     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20230322 13:26:57.194239     1 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:26:57.205986    31 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:57.208606    31 ThriftClientManager-inl.h:53] There is no existing client to "metad0":9559, trying to create one
+I20230322 13:26:57.209679    31 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.25.0.4":9559
+I20230322 13:26:57.210091    31 ThriftClientManager-inl.h:74] Connecting to "metad0":9559 for 1 times
+I20230322 13:26:57.210568    31 AsyncSocket.cpp:539] new AsyncSocket(0x7ffff9828400, evb=0x7ffff9817280)
+I20230322 13:26:57.211230    31 AsyncSocket.cpp:3731] AsyncSocket(this=0x7ffff9828400, fd=folly::NetworkSocket(-1)): connect attempt
+I20230322 13:26:57.211773    31 AsyncSocket.cpp:806] AsyncSocket::connect(this=0x7ffff9828400, evb=0x7ffff9817280, fd=folly::NetworkSocket(39), host=172.25.0.4:9559
+I20230322 13:26:57.216116    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:26:58.208509    31 AsyncSocket.cpp:3555] AsyncSocket(this=0x7ffff9828400, fd=folly::NetworkSocket(39), state=1 host=172.25.0.4:9559): failed while writing in timeoutExpired(): AsyncSocketException: write timed out during connection, type = Timed out
+I20230322 13:26:58.211392    31 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff9828400, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: write timed out during connection, type = Timed out
+I20230322 13:26:58.212661    31 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff9828400, fd_=folly::NetworkSocket(-1), state=4, shutdownFlags=6
+I20230322 13:26:58.213146    31 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffff9828400, evb=0x7ffff9817280, fd=folly::NetworkSocket(-1), state=4
+I20230322 13:26:58.213449    31 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff9828400, fd_=folly::NetworkSocket(-1), state=4, shutdownFlags=6
+I20230322 13:26:59.213301    32 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:26:59.214004    31 ThriftClientManager-inl.h:53] There is no existing client to "metad1":9559, trying to create one
+E20230322 13:26:59.229202    31 ThriftClientManager-inl.h:70] Failed to resolve address for 'metad1': Name or service not known (error=-2): Unknown error -2
+I20230322 13:26:59.235924    31 ThriftClientManager-inl.h:74] Connecting to "metad1":9559 for 2 times
+I20230322 13:26:59.236119    31 AsyncSocket.cpp:539] new AsyncSocket(0x7ffff9828800, evb=0x7ffff9817280)
+I20230322 13:26:59.236584    31 AsyncSocket.cpp:3514] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(-1), state=0 host=<uninitialized address>): failed while connecting in connect(): AsyncSocketException: Failed to resolve address for 'metad1': Name or service not known (error=-2): Unknown error -2, type = Internal error
+I20230322 13:26:59.236793    31 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: Failed to resolve address for 'metad1': Name or service not known (error=-2): Unknown error -2, type = Internal error
+I20230322 13:26:59.237146    31 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: Failed to resolve address for 'metad1': Name or service not known (error=-2): Unknown error -2, type = Internal error
+I20230322 13:26:59.237533    31 AsyncSocket.cpp:3739] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(-1)): setReadCallback(0x7ffff9842750) called in invalid state 4
+I20230322 13:26:59.237819    31 MetaClient.cpp:730] Send request to meta "metad1":9559
+I20230322 13:26:59.238415    31 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff9828800, fd_=folly::NetworkSocket(-1), state=4, shutdownFlags=6
+I20230322 13:26:59.238977    31 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffff9828800, evb=0x7ffff9817280, fd=folly::NetworkSocket(-1), state=4
+I20230322 13:26:59.239148    31 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff9828800, fd_=folly::NetworkSocket(-1), state=4, shutdownFlags=6
+I20230322 13:27:00.242449    33 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:27:00.244091    31 ThriftClientManager-inl.h:38] Invalid Channel: 0x7ffff9842000 for host: "metad0":9559
+I20230322 13:27:00.244468    31 ThriftClientManager-inl.h:53] There is no existing client to "metad0":9559, trying to create one
+I20230322 13:27:00.245218    31 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.25.0.4":9559
+I20230322 13:27:00.245535    31 ThriftClientManager-inl.h:74] Connecting to "metad0":9559 for 3 times
+I20230322 13:27:00.245844    31 AsyncSocket.cpp:539] new AsyncSocket(0x7ffff9828800, evb=0x7ffff9817280)
+I20230322 13:27:00.246212    31 AsyncSocket.cpp:3731] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(-1)): connect attempt
+I20230322 13:27:00.246553    31 AsyncSocket.cpp:806] AsyncSocket::connect(this=0x7ffff9828800, evb=0x7ffff9817280, fd=folly::NetworkSocket(49), host=172.25.0.4:9559
+I20230322 13:27:00.247121    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.247643    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=1
+I20230322 13:27:00.248140    31 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=1
+I20230322 13:27:00.248589    31 AsyncSocket.cpp:2962] AsyncSocket::handleConnect() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=1
+I20230322 13:27:00.248957    31 AsyncSocket.cpp:3712] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(49)): connect success invoked
+I20230322 13:27:00.249398    31 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff9828800, fd=folly::NetworkSocket(49), evb=0x7ffff9817280, state=2, events=2
+I20230322 13:27:00.250314    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.250937    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.251432    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:27:00.251906    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:27:00.252307    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 14 bytes
+I20230322 13:27:00.253561    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.253930    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.254271    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:27:00.254525    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:27:00.254792    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:27:00.256136    31 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:27:00.257535    34 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:27:00.258440    32 ThriftClientManager-inl.h:53] There is no existing client to "metad0":9559, trying to create one
+I20230322 13:27:00.259110    32 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.25.0.4":9559
+I20230322 13:27:00.259415    32 ThriftClientManager-inl.h:74] Connecting to "metad0":9559 for 1 times
+I20230322 13:27:00.260102    32 AsyncSocket.cpp:539] new AsyncSocket(0x7ffff8f27400, evb=0x7ffff8f16280)
+I20230322 13:27:00.260597    32 AsyncSocket.cpp:3731] AsyncSocket(this=0x7ffff8f27400, fd=folly::NetworkSocket(-1)): connect attempt
+I20230322 13:27:00.261209    32 AsyncSocket.cpp:806] AsyncSocket::connect(this=0x7ffff8f27400, evb=0x7ffff8f16280, fd=folly::NetworkSocket(54), host=172.25.0.4:9559
+I20230322 13:27:00.261876    32 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.263792    32 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=1
+I20230322 13:27:00.264140    32 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=1
+I20230322 13:27:00.264568    32 AsyncSocket.cpp:2962] AsyncSocket::handleConnect() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=1
+I20230322 13:27:00.264953    32 AsyncSocket.cpp:3712] AsyncSocket(this=0x7ffff8f27400, fd=folly::NetworkSocket(54)): connect success invoked
+I20230322 13:27:00.265250    32 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff8f27400, fd=folly::NetworkSocket(54), evb=0x7ffff8f16280, state=2, events=2
+I20230322 13:27:00.265600    32 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.266144    32 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.266463    32 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.266716    32 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff8f2a140, buflen=288
+I20230322 13:27:00.267020    32 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8f27400, iovs=0x7ffff1fc9240, num=1
+I20230322 13:27:00.267268    32 AsyncSocket.cpp:2711] this=0x7ffff8f27400, AsyncSocket::handleRead() got 90 bytes
+I20230322 13:27:00.270155    33 ThriftClientManager-inl.h:53] There is no existing client to "metad0":9559, trying to create one
+I20230322 13:27:00.270856    33 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.25.0.4":9559
+I20230322 13:27:00.271158    33 ThriftClientManager-inl.h:74] Connecting to "metad0":9559 for 1 times
+I20230322 13:27:00.271507    33 AsyncSocket.cpp:539] new AsyncSocket(0x7ffff84a2400, evb=0x7ffff8491280)
+I20230322 13:27:00.271728    33 AsyncSocket.cpp:3731] AsyncSocket(this=0x7ffff84a2400, fd=folly::NetworkSocket(-1)): connect attempt
+I20230322 13:27:00.272015    33 AsyncSocket.cpp:806] AsyncSocket::connect(this=0x7ffff84a2400, evb=0x7ffff8491280, fd=folly::NetworkSocket(55), host=172.25.0.4:9559
+I20230322 13:27:00.272641    33 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.273651    33 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=1
+I20230322 13:27:00.273978    33 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=1
+I20230322 13:27:00.274181    33 AsyncSocket.cpp:2962] AsyncSocket::handleConnect() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=1
+I20230322 13:27:00.274426    33 AsyncSocket.cpp:3712] AsyncSocket(this=0x7ffff84a2400, fd=folly::NetworkSocket(55)): connect success invoked
+I20230322 13:27:00.274718    33 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff84a2400, fd=folly::NetworkSocket(55), evb=0x7ffff8491280, state=2, events=2
+I20230322 13:27:00.275003    33 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.275494    33 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.275749    33 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.275986    33 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff84a5140, buflen=288
+I20230322 13:27:00.276221    33 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff84a2400, iovs=0x7ffff17c8240, num=1
+I20230322 13:27:00.276787    33 AsyncSocket.cpp:2711] this=0x7ffff84a2400, AsyncSocket::handleRead() got 62 bytes
+I20230322 13:27:00.279933    34 ThriftClientManager-inl.h:53] There is no existing client to "metad0":9559, trying to create one
+I20230322 13:27:00.280658    34 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.25.0.4":9559
+I20230322 13:27:00.281004    34 ThriftClientManager-inl.h:74] Connecting to "metad0":9559 for 1 times
+I20230322 13:27:00.281251    34 AsyncSocket.cpp:539] new AsyncSocket(0x7ffff8028400, evb=0x7ffff8017280)
+I20230322 13:27:00.281564    34 AsyncSocket.cpp:3731] AsyncSocket(this=0x7ffff8028400, fd=folly::NetworkSocket(-1)): connect attempt
+I20230322 13:27:00.281858    34 AsyncSocket.cpp:806] AsyncSocket::connect(this=0x7ffff8028400, evb=0x7ffff8017280, fd=folly::NetworkSocket(56), host=172.25.0.4:9559
+I20230322 13:27:00.282487    34 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.283565    34 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=1
+I20230322 13:27:00.283843    34 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=1
+I20230322 13:27:00.284129    34 AsyncSocket.cpp:2962] AsyncSocket::handleConnect() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=1
+I20230322 13:27:00.284411    34 AsyncSocket.cpp:3712] AsyncSocket(this=0x7ffff8028400, fd=folly::NetworkSocket(56)): connect success invoked
+I20230322 13:27:00.284687    34 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff8028400, fd=folly::NetworkSocket(56), evb=0x7ffff8017280, state=2, events=2
+I20230322 13:27:00.284955    34 AsyncSocket.cpp:2775] AsyncSocket::handleWrite() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.285369    34 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.285631    34 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.285882    34 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff802b140, buflen=288
+I20230322 13:27:00.286159    34 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8028400, iovs=0x7ffff0fc7240, num=1
+I20230322 13:27:00.286412    34 AsyncSocket.cpp:2711] this=0x7ffff8028400, AsyncSocket::handleRead() got 51 bytes
+I20230322 13:27:00.289052    31 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.289480    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.290747    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.291036    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.291376    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:27:00.291754    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:27:00.291994    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 37 bytes
+I20230322 13:27:00.294329    32 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.294759    32 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.295992    32 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.296274    32 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.296536    32 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff8f2a140, buflen=288
+I20230322 13:27:00.296761    32 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8f27400, iovs=0x7ffff1fc9240, num=1
+I20230322 13:27:00.296985    32 AsyncSocket.cpp:2711] this=0x7ffff8f27400, AsyncSocket::handleRead() got 37 bytes
+I20230322 13:27:00.299413    33 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.299722    33 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.300760    33 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.301034    33 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.301281    33 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff84a5140, buflen=288
+I20230322 13:27:00.301537    33 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff84a2400, iovs=0x7ffff17c8240, num=1
+I20230322 13:27:00.301834    33 AsyncSocket.cpp:2711] this=0x7ffff84a2400, AsyncSocket::handleRead() got 37 bytes
+I20230322 13:27:00.304292    34 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.304664    34 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.305887    34 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.306306    34 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.306681    34 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff802b140, buflen=288
+I20230322 13:27:00.307008    34 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8028400, iovs=0x7ffff0fc7240, num=1
+I20230322 13:27:00.307312    34 AsyncSocket.cpp:2711] this=0x7ffff8028400, AsyncSocket::handleRead() got 79 bytes
+I20230322 13:27:00.309176     1 MetaClient.cpp:3261] Load leader of "storaged0":9779 in 0 space
+I20230322 13:27:00.309500     1 MetaClient.cpp:3267] Load leader ok
+I20230322 13:27:00.311784     1 MetaClient.cpp:1022] Listener is null!
+I20230322 13:27:00.312295     1 MetaClient.cpp:1084] Listener is null!
+I20230322 13:27:00.312656     1 MetaClient.cpp:1194] Listener is null!
+I20230322 13:27:00.314363    31 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.314893    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.316216    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.316553    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:00.316857    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:27:00.317176    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:27:00.317474    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 35 bytes
+I20230322 13:27:00.319597    32 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.320048    32 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.322314    32 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.322616    32 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:00.322881    32 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff8f2a140, buflen=288
+I20230322 13:27:00.323143    32 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8f27400, iovs=0x7ffff1fc9240, num=1
+I20230322 13:27:00.323402    32 AsyncSocket.cpp:2711] this=0x7ffff8f27400, AsyncSocket::handleRead() got 35 bytes
+I20230322 13:27:00.324659     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20230322 13:27:00.332535    33 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.332949    33 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.333583    33 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.334232    33 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:00.334522    33 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff84a5140, buflen=288
+I20230322 13:27:00.334841    33 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff84a2400, iovs=0x7ffff17c8240, num=1
+I20230322 13:27:00.335201    33 AsyncSocket.cpp:2711] this=0x7ffff84a2400, AsyncSocket::handleRead() got 37 bytes
+I20230322 13:27:00.335584     1 GraphSessionManager.cpp:338] Total of 0 sessions are loaded
+I20230322 13:27:00.336108     1 ThriftClientManager.h:31] ThriftClientManager
+E20230322 13:27:00.339211     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/32.000MiB
+I20230322 13:27:00.342525     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20230322 13:27:00.344475    34 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:00.344887    34 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:00.346777    34 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.347113    34 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:00.347467    34 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff802b140, buflen=288
+I20230322 13:27:00.347769    34 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8028400, iovs=0x7ffff0fc7240, num=1
+I20230322 13:27:00.348064    34 AsyncSocket.cpp:2711] this=0x7ffff8028400, AsyncSocket::handleRead() got 37 bytes
+I20230322 13:27:00.349076     1 Snowflake.cpp:17] WorkerId init success: 2
+I20230322 13:27:00.350566    38 GraphServer.cpp:63] Starting nebula-graphd on ngai_graphd:9669
+I20230322 13:27:00.352371    38 ThriftServer.cpp:366] libevent 2.1.12-stable method epoll
+I20230322 13:27:00.356616    39 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:27:00.361680    38 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:27:10.737187    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:27:10.741403    31 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:10.743176    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:10.750397    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:10.751317    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:10.752185    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:27:10.753067    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:27:10.753823    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:27:10.754688    31 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:27:20.758800    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:27:20.762436    32 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:20.764320    32 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:20.775524    32 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:20.776690    32 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:27:20.777899    32 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff8f2a140, buflen=288
+I20230322 13:27:20.778797    32 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8f27400, iovs=0x7ffff1fc9240, num=1
+I20230322 13:27:20.781095    32 AsyncSocket.cpp:2711] this=0x7ffff8f27400, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:27:20.784034    32 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:27:27.117038     8 AsyncSocket.cpp:577] new AsyncSocket(0x7ffffdc40000, evb=0x7ffffdc0a000, fd=folly::NetworkSocket(86), zeroCopyBufId=0)
+I20230322 13:27:27.118204     8 HTTPSessionAcceptor.cpp:94] Created new  session for peer 172.25.0.2:37274
+I20230322 13:27:27.119485     8 HTTPSession.cpp:2891] proto=http/1.1, UA=, downstream=172.25.0.2:37274, 172.25.0.2:19669=local: resuming reads
+I20230322 13:27:27.120085     8 HTTPSession.cpp:2164] proto=http/1.1, UA=, downstream=172.25.0.2:37274, 172.25.0.2:19669=local in loop callback
+I20230322 13:27:27.120720     8 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffffdc40000, fd=folly::NetworkSocket(86), evb=0x7ffffdc0a000, state=2, events=2
+I20230322 13:27:27.121203     8 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffffdc40000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:27.121536     8 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffffdc40000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:27.121953     8 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffffdc4d000, buflen=4064
+I20230322 13:27:27.122275     8 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffffdc40000, iovs=0x7ffffe9f5240, num=1
+I20230322 13:27:27.122618     8 AsyncSocket.cpp:2711] this=0x7ffffdc40000, AsyncSocket::handleRead() got 87 bytes
+I20230322 13:27:27.123328     8 HTTPSession.cpp:690] processing new msg streamID=1 proto=http/1.1, UA=, downstream=172.25.0.2:37274, 172.25.0.2:19669=local
+I20230322 13:27:27.124352     8 HTTP2PriorityQueue.cpp:512] Adding id=1 with parent=0 and weight=16
+I20230322 13:27:27.124907     8 HTTPSession.cpp:2699] proto=http/1.1, UA=, downstream=172.25.0.2:37274, 172.25.0.2:19669=local adding streamID=1, liveTransactions_ was 0
+I20230322 13:27:27.127142     8 HTTPSession.cpp:839] processing ingress headers complete for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.127518     8 HTTPDownstreamSession.cpp:30] setupOnHeadersComplete txn=0x7ffffdc10608, id=1, handlder=0, msg=0x7ffffdc0a280
+I20230322 13:27:27.129127     8 HTTPSession.cpp:980] processing ingress message complete for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.129565     8 HTTPTransaction.cpp:503] ingress EOM on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.132843     8 HTTPSession.cpp:1591] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local sending headers, size=0, uncompressedSize=100
+I20230322 13:27:27.133241     8 HTTPSession.cpp:2248] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local scheduling write callback
+I20230322 13:27:27.133832     8 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=45
+I20230322 13:27:27.134307     8 HTTPTransaction.cpp:1331] Queued egress EOM on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.134584     8 HTTPTransaction.cpp:1519] transaction already egress complete, not updating pause state proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.134927     8 HTTPSession.cpp:2164] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local in loop callback
+I20230322 13:27:27.135565     8 HTTPSession.cpp:2104] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local egressing txnID=1 allowed=65536
+I20230322 13:27:27.136219     8 HTTPTransaction.cpp:1247] Sending 45 bytes of body. eom=yes send_window is None trailers=no proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.136523     8 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=-45
+I20230322 13:27:27.136911     8 HTTPSession.cpp:1639] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local sending EOM in body for streamID=1
+I20230322 13:27:27.137547     8 ByteEventTracker.cpp:93]  adding last byte event for 145
+I20230322 13:27:27.138043     8 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=-45
+I20230322 13:27:27.138401     8 HTTPTransaction.cpp:1519] transaction already egress complete, not updating pause state proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.138876     8 HTTPSession.cpp:2211] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local writing 145, activeWrites=1 cork:0 timestampTx:0 timestampAck:0
+I20230322 13:27:27.139420     8 HTTPSession.cpp:2745] total bytesWritten_: 145
+I20230322 13:27:27.139842     8 ByteEventTracker.cpp:72]  removing ByteEvent (FIRST_HEADER_BYTE, 100)
+I20230322 13:27:27.140292     8 ByteEventTracker.cpp:72]  removing ByteEvent (FIRST_BYTE, 101)
+I20230322 13:27:27.140596     8 ByteEventTracker.cpp:72]  removing ByteEvent (LAST_BYTE, 145)
+I20230322 13:27:27.140934     8 HTTPTransaction.cpp:151] destroying transaction proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:27.141516     8 HTTPSession.cpp:1886] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local removing streamID=1, liveTransactions was 1
+I20230322 13:27:27.142027     8 HTTP2PriorityQueue.cpp:588] Deleting dangling node over max id=1
+I20230322 13:27:27.142534     8 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffffdc40000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:27.142808     8 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffffdc40000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:27.143051     8 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffffdc4d000, buflen=4064
+I20230322 13:27:27.143307     8 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffffdc40000, iovs=0x7ffffe9f5240, num=1
+I20230322 13:27:27.143560     8 AsyncSocket.cpp:2711] this=0x7ffffdc40000, AsyncSocket::handleRead() got 0 bytes
+I20230322 13:27:27.143839     8 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffffdc40000, fd=folly::NetworkSocket(86), evb=0x7ffffdc0a000, state=2, events=0
+I20230322 13:27:27.144129     8 HTTPSession.cpp:543] EOF on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local
+I20230322 13:27:27.144532     8 HTTPSession.cpp:2273] shutdown request for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local: reads=1 (currently 0), writes=1 (currently 0)
+I20230322 13:27:27.144857     8 HTTPSession.cpp:2323] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local writes drained, closing
+I20230322 13:27:27.145156     8 AsyncSocket.cpp:1827] AsyncSocket::shutdownWriteNow(): this=0x7ffffdc40000, fd=folly::NetworkSocket(86), state=2, shutdownFlags=4
+I20230322 13:27:27.145424     8 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffdc40000, fd_=folly::NetworkSocket(86), state=2, shutdownFlags=4
+I20230322 13:27:27.145736     8 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffffdc40000, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:27:27.146198     8 HTTPSession.cpp:2446] destroying proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local
+I20230322 13:27:27.146531     8 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffdc40000, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:27:27.146998     8 HTTPSession.cpp:233] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:37274, 172.25.0.2:19669=local closing
+I20230322 13:27:27.147794     8 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffffdc40000, evb=0x7ffffdc0a000, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:27:27.148166     8 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffdc40000, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:27:27.149711     8 Acceptor.cpp:476] Acceptor=0x7ffffea3b000 onEmpty()
+I20230322 13:27:30.799052    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:27:30.802829    33 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:30.804921    33 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:30.810954    33 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:30.811765    33 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:27:30.812616    33 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff84a5140, buflen=288
+I20230322 13:27:30.813398    33 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff84a2400, iovs=0x7ffff17c8240, num=1
+I20230322 13:27:30.814062    33 AsyncSocket.cpp:2711] this=0x7ffff84a2400, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:27:30.815237    33 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:27:40.824558    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:27:40.827392    34 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:40.828436    34 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:40.837499    34 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:40.838510    34 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:27:40.839776    34 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff802b140, buflen=288
+I20230322 13:27:40.840576    34 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8028400, iovs=0x7ffff0fc7240, num=1
+I20230322 13:27:40.841423    34 AsyncSocket.cpp:2711] this=0x7ffff8028400, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:27:40.842388    34 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:27:50.851696    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:27:50.853746    31 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:27:50.854326    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:27:50.860003    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:50.860945    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:27:50.861703    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:27:50.862461    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:27:50.863427    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:27:50.864424    31 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:27:57.258692     9 AsyncSocket.cpp:577] new AsyncSocket(0x7ffffce35000, evb=0x7ffffce09000, fd=folly::NetworkSocket(86), zeroCopyBufId=0)
+I20230322 13:27:57.259380     9 HTTPSessionAcceptor.cpp:94] Created new  session for peer 172.25.0.2:42936
+I20230322 13:27:57.259977     9 HTTPSession.cpp:2891] proto=http/1.1, UA=, downstream=172.25.0.2:42936, 172.25.0.2:19669=local: resuming reads
+I20230322 13:27:57.260346     9 HTTPSession.cpp:2164] proto=http/1.1, UA=, downstream=172.25.0.2:42936, 172.25.0.2:19669=local in loop callback
+I20230322 13:27:57.260761     9 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffffce35000, fd=folly::NetworkSocket(86), evb=0x7ffffce09000, state=2, events=2
+I20230322 13:27:57.261183     9 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffffce35000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:57.261463     9 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffffce35000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:57.262171     9 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffffce42000, buflen=4064
+I20230322 13:27:57.262491     9 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffffce35000, iovs=0x7ffffdbf5240, num=1
+I20230322 13:27:57.262849     9 AsyncSocket.cpp:2711] this=0x7ffffce35000, AsyncSocket::handleRead() got 87 bytes
+I20230322 13:27:57.263187     9 HTTPSession.cpp:690] processing new msg streamID=1 proto=http/1.1, UA=, downstream=172.25.0.2:42936, 172.25.0.2:19669=local
+I20230322 13:27:57.263468     9 HTTP2PriorityQueue.cpp:512] Adding id=1 with parent=0 and weight=16
+I20230322 13:27:57.263756     9 HTTPSession.cpp:2699] proto=http/1.1, UA=, downstream=172.25.0.2:42936, 172.25.0.2:19669=local adding streamID=1, liveTransactions_ was 0
+I20230322 13:27:57.264182     9 HTTPSession.cpp:839] processing ingress headers complete for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.264585     9 HTTPDownstreamSession.cpp:30] setupOnHeadersComplete txn=0x7ffffce0f608, id=1, handlder=0, msg=0x7ffffce09280
+I20230322 13:27:57.264961     9 HTTPSession.cpp:980] processing ingress message complete for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.265321     9 HTTPTransaction.cpp:503] ingress EOM on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.265625     9 HTTPSession.cpp:1591] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local sending headers, size=0, uncompressedSize=100
+I20230322 13:27:57.266034     9 HTTPSession.cpp:2248] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local scheduling write callback
+I20230322 13:27:57.266376     9 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=45
+I20230322 13:27:57.266606     9 HTTPTransaction.cpp:1331] Queued egress EOM on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.266844     9 HTTPTransaction.cpp:1519] transaction already egress complete, not updating pause state proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.267072     9 HTTPSession.cpp:2164] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local in loop callback
+I20230322 13:27:57.267344     9 HTTPSession.cpp:2104] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local egressing txnID=1 allowed=65536
+I20230322 13:27:57.267661     9 HTTPTransaction.cpp:1247] Sending 45 bytes of body. eom=yes send_window is None trailers=no proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.267982     9 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=-45
+I20230322 13:27:57.268199     9 HTTPSession.cpp:1639] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local sending EOM in body for streamID=1
+I20230322 13:27:57.268436     9 ByteEventTracker.cpp:93]  adding last byte event for 145
+I20230322 13:27:57.268616     9 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=-45
+I20230322 13:27:57.268863     9 HTTPTransaction.cpp:1519] transaction already egress complete, not updating pause state proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.269066     9 HTTPSession.cpp:2211] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local writing 145, activeWrites=1 cork:0 timestampTx:0 timestampAck:0
+I20230322 13:27:57.269346     9 HTTPSession.cpp:2745] total bytesWritten_: 145
+I20230322 13:27:57.269564     9 ByteEventTracker.cpp:72]  removing ByteEvent (FIRST_HEADER_BYTE, 100)
+I20230322 13:27:57.269831     9 ByteEventTracker.cpp:72]  removing ByteEvent (FIRST_BYTE, 101)
+I20230322 13:27:57.270061     9 ByteEventTracker.cpp:72]  removing ByteEvent (LAST_BYTE, 145)
+I20230322 13:27:57.270628     9 HTTPTransaction.cpp:151] destroying transaction proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local, streamID=1
+I20230322 13:27:57.270871     9 HTTPSession.cpp:1886] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local removing streamID=1, liveTransactions was 1
+I20230322 13:27:57.271070     9 HTTP2PriorityQueue.cpp:588] Deleting dangling node over max id=1
+I20230322 13:27:57.273032     9 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffffce35000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:57.273320     9 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffffce35000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:27:57.273571     9 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffffce42000, buflen=4064
+I20230322 13:27:57.273901     9 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffffce35000, iovs=0x7ffffdbf5240, num=1
+I20230322 13:27:57.274246     9 AsyncSocket.cpp:2711] this=0x7ffffce35000, AsyncSocket::handleRead() got 0 bytes
+I20230322 13:27:57.274552     9 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffffce35000, fd=folly::NetworkSocket(86), evb=0x7ffffce09000, state=2, events=0
+I20230322 13:27:57.274869     9 HTTPSession.cpp:543] EOF on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local
+I20230322 13:27:57.275199     9 HTTPSession.cpp:2273] shutdown request for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local: reads=1 (currently 0), writes=1 (currently 0)
+I20230322 13:27:57.275452     9 HTTPSession.cpp:2323] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local writes drained, closing
+I20230322 13:27:57.275691     9 AsyncSocket.cpp:1827] AsyncSocket::shutdownWriteNow(): this=0x7ffffce35000, fd=folly::NetworkSocket(86), state=2, shutdownFlags=4
+I20230322 13:27:57.276048     9 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffce35000, fd_=folly::NetworkSocket(86), state=2, shutdownFlags=4
+I20230322 13:27:57.276465     9 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffffce35000, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:27:57.276791     9 HTTPSession.cpp:2446] destroying proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local
+I20230322 13:27:57.277045     9 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffce35000, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:27:57.277441     9 HTTPSession.cpp:233] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:42936, 172.25.0.2:19669=local closing
+I20230322 13:27:57.277840     9 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffffce35000, evb=0x7ffffce09000, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:27:57.278295     9 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffce35000, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:27:57.279459     9 Acceptor.cpp:476] Acceptor=0x7ffffea3b700 onEmpty()
+I20230322 13:28:00.875089    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:28:00.875782    32 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:28:00.876164    32 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:28:00.878427    32 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:28:00.878715    32 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8f27400, fd=folly::NetworkSocket(54), state=2
+I20230322 13:28:00.879052    32 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff8f2a140, buflen=288
+I20230322 13:28:00.879295    32 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8f27400, iovs=0x7ffff1fc9240, num=1
+I20230322 13:28:00.879632    32 AsyncSocket.cpp:2711] this=0x7ffff8f27400, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:28:00.880170    32 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:28:10.881806    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:28:10.885246    33 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:28:10.886690    33 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:28:10.894584    33 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:28:10.895485    33 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff84a2400, fd=folly::NetworkSocket(55), state=2
+I20230322 13:28:10.896481    33 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff84a5140, buflen=288
+I20230322 13:28:10.897285    33 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff84a2400, iovs=0x7ffff17c8240, num=1
+I20230322 13:28:10.898296    33 AsyncSocket.cpp:2711] this=0x7ffff84a2400, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:28:10.899247    33 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:28:20.906615    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:28:20.907236    34 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:28:20.907622    34 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:28:20.910238    34 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:28:20.910655    34 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff8028400, fd=folly::NetworkSocket(56), state=2
+I20230322 13:28:20.911103    34 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff802b140, buflen=288
+I20230322 13:28:20.911473    34 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff8028400, iovs=0x7ffff0fc7240, num=1
+I20230322 13:28:20.911944    34 AsyncSocket.cpp:2711] this=0x7ffff8028400, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:28:20.912314    34 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:28:27.370304    10 AsyncSocket.cpp:577] new AsyncSocket(0x7ffffc035000, evb=0x7ffffc009000, fd=folly::NetworkSocket(86), zeroCopyBufId=0)
+I20230322 13:28:27.370980    10 HTTPSessionAcceptor.cpp:94] Created new  session for peer 172.25.0.2:44876
+I20230322 13:28:27.371471    10 HTTPSession.cpp:2891] proto=http/1.1, UA=, downstream=172.25.0.2:44876, 172.25.0.2:19669=local: resuming reads
+I20230322 13:28:27.371836    10 HTTPSession.cpp:2164] proto=http/1.1, UA=, downstream=172.25.0.2:44876, 172.25.0.2:19669=local in loop callback
+I20230322 13:28:27.372149    10 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffffc035000, fd=folly::NetworkSocket(86), evb=0x7ffffc009000, state=2, events=2
+I20230322 13:28:27.372550    10 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffffc035000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:28:27.372867    10 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffffc035000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:28:27.373170    10 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffffc042000, buflen=4064
+I20230322 13:28:27.373484    10 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffffc035000, iovs=0x7ffffcdf5240, num=1
+I20230322 13:28:27.373750    10 AsyncSocket.cpp:2711] this=0x7ffffc035000, AsyncSocket::handleRead() got 87 bytes
+I20230322 13:28:27.373997    10 HTTPSession.cpp:690] processing new msg streamID=1 proto=http/1.1, UA=, downstream=172.25.0.2:44876, 172.25.0.2:19669=local
+I20230322 13:28:27.374249    10 HTTP2PriorityQueue.cpp:512] Adding id=1 with parent=0 and weight=16
+I20230322 13:28:27.374514    10 HTTPSession.cpp:2699] proto=http/1.1, UA=, downstream=172.25.0.2:44876, 172.25.0.2:19669=local adding streamID=1, liveTransactions_ was 0
+I20230322 13:28:27.374761    10 HTTPSession.cpp:839] processing ingress headers complete for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.375015    10 HTTPDownstreamSession.cpp:30] setupOnHeadersComplete txn=0x7ffffc00f608, id=1, handlder=0, msg=0x7ffffc009280
+I20230322 13:28:27.375555    10 HTTPSession.cpp:980] processing ingress message complete for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.375792    10 HTTPTransaction.cpp:503] ingress EOM on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.376078    10 HTTPSession.cpp:1591] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local sending headers, size=0, uncompressedSize=100
+I20230322 13:28:27.376281    10 HTTPSession.cpp:2248] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local scheduling write callback
+I20230322 13:28:27.376530    10 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=45
+I20230322 13:28:27.376807    10 HTTPTransaction.cpp:1331] Queued egress EOM on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.377048    10 HTTPTransaction.cpp:1519] transaction already egress complete, not updating pause state proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.377336    10 HTTPSession.cpp:2164] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local in loop callback
+I20230322 13:28:27.377590    10 HTTPSession.cpp:2104] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local egressing txnID=1 allowed=65536
+I20230322 13:28:27.377869    10 HTTPTransaction.cpp:1247] Sending 45 bytes of body. eom=yes send_window is None trailers=no proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.378196    10 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=-45
+I20230322 13:28:27.378469    10 HTTPSession.cpp:1639] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local sending EOM in body for streamID=1
+I20230322 13:28:27.378733    10 ByteEventTracker.cpp:93]  adding last byte event for 145
+I20230322 13:28:27.379050    10 HTTPSessionBase.cpp:147] notifyEgressBodyBuffered pwsd=-45
+I20230322 13:28:27.379293    10 HTTPTransaction.cpp:1519] transaction already egress complete, not updating pause state proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.379578    10 HTTPSession.cpp:2211] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local writing 145, activeWrites=1 cork:0 timestampTx:0 timestampAck:0
+I20230322 13:28:27.379882    10 HTTPSession.cpp:2745] total bytesWritten_: 145
+I20230322 13:28:27.380113    10 ByteEventTracker.cpp:72]  removing ByteEvent (FIRST_HEADER_BYTE, 100)
+I20230322 13:28:27.380386    10 ByteEventTracker.cpp:72]  removing ByteEvent (FIRST_BYTE, 101)
+I20230322 13:28:27.380584    10 ByteEventTracker.cpp:72]  removing ByteEvent (LAST_BYTE, 145)
+I20230322 13:28:27.380795    10 HTTPTransaction.cpp:151] destroying transaction proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local, streamID=1
+I20230322 13:28:27.381088    10 HTTPSession.cpp:1886] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local removing streamID=1, liveTransactions was 1
+I20230322 13:28:27.381350    10 HTTP2PriorityQueue.cpp:588] Deleting dangling node over max id=1
+I20230322 13:28:27.383272    10 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffffc035000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:28:27.383508    10 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffffc035000, fd=folly::NetworkSocket(86), state=2
+I20230322 13:28:27.383800    10 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffffc042000, buflen=4064
+I20230322 13:28:27.384048    10 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffffc035000, iovs=0x7ffffcdf5240, num=1
+I20230322 13:28:27.384289    10 AsyncSocket.cpp:2711] this=0x7ffffc035000, AsyncSocket::handleRead() got 0 bytes
+I20230322 13:28:27.384799    10 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffffc035000, fd=folly::NetworkSocket(86), evb=0x7ffffc009000, state=2, events=0
+I20230322 13:28:27.385092    10 HTTPSession.cpp:543] EOF on proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local
+I20230322 13:28:27.385397    10 HTTPSession.cpp:2273] shutdown request for proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local: reads=1 (currently 0), writes=1 (currently 0)
+I20230322 13:28:27.385669    10 HTTPSession.cpp:2323] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local writes drained, closing
+I20230322 13:28:27.385917    10 AsyncSocket.cpp:1827] AsyncSocket::shutdownWriteNow(): this=0x7ffffc035000, fd=folly::NetworkSocket(86), state=2, shutdownFlags=4
+I20230322 13:28:27.386152    10 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffc035000, fd_=folly::NetworkSocket(86), state=2, shutdownFlags=4
+I20230322 13:28:27.386415    10 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffffc035000, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:28:27.386677    10 HTTPSession.cpp:2446] destroying proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local
+I20230322 13:28:27.386956    10 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffc035000, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:28:27.387223    10 HTTPSession.cpp:233] proto=http/1.1, UA=curl/7.68.0, downstream=172.25.0.2:44876, 172.25.0.2:19669=local closing
+I20230322 13:28:27.387498    10 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffffc035000, evb=0x7ffffc009000, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:28:27.387720    10 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffffc035000, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:28:27.387925    10 Acceptor.cpp:476] Acceptor=0x7ffffea3be00 onEmpty()
+I20230322 13:28:30.924130    35 MetaClient.cpp:2662] Send heartbeat to "metad0":9559, clusterId 0
+I20230322 13:28:30.927438    31 ThriftClientManager-inl.h:47] Getting a client to "metad0":9559
+I20230322 13:28:30.928992    31 MetaClient.cpp:730] Send request to meta "metad0":9559
+I20230322 13:28:30.935915    31 AsyncSocket.cpp:2416] AsyncSocket::handleErrMessages() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:28:30.937067    31 AsyncSocket.cpp:2638] AsyncSocket::handleRead() this=0x7ffff9828800, fd=folly::NetworkSocket(49), state=2
+I20230322 13:28:30.937988    31 AsyncSocket.cpp:2680] prepareReadBuffer() buf=0x7ffff982d080, buflen=288
+I20230322 13:28:30.938840    31 AsyncSocket.cpp:2328] AsyncSocket::performReadInternal() this=0x7ffff9828800, iovs=0x7ffff27ca240, num=1
+I20230322 13:28:30.939631    31 AsyncSocket.cpp:2711] this=0x7ffff9828800, AsyncSocket::handleRead() got 41 bytes
+I20230322 13:28:30.940516    31 MetaClient.cpp:2680] Metad last update time: 0
+I20230322 13:28:32.571615     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20230322 13:28:32.572852     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.574033    38 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.581391    33 Acceptor.cpp:460] Acceptor 0x7fffff8e2328 acceptStopped()
+I20230322 13:28:32.583530    33 ConnectionManager.cpp:130] 0x7fffff86a280 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.586037    33 ConnectionManager.cpp:172] Scheduling idle grace period of 29500ms
+I20230322 13:28:32.582278    31 Acceptor.cpp:460] Acceptor 0x7fffff8e1928 acceptStopped()
+I20230322 13:28:32.587512    31 ConnectionManager.cpp:130] 0x7fffff869e00 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.587910    31 ConnectionManager.cpp:172] Scheduling idle grace period of 29500ms
+I20230322 13:28:32.588272    31 ConnectionManager.cpp:213] 0x7fffff869e50 notified n=0
+I20230322 13:28:32.589188    31 ConnectionManager.cpp:220] 0x7fffff869e50 finished notify_pending_shutdown
+I20230322 13:28:32.589802    31 Acceptor.cpp:490] All connections drained from Acceptor=0x7fffff8e1928 in thread 0x7ffff9817280
+I20230322 13:28:32.581511    32 Acceptor.cpp:460] Acceptor 0x7fffff8e1e28 acceptStopped()
+I20230322 13:28:32.590972    32 ConnectionManager.cpp:130] 0x7fffff86a100 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.591354    32 ConnectionManager.cpp:172] Scheduling idle grace period of 29500ms
+I20230322 13:28:32.591818    32 ConnectionManager.cpp:213] 0x7fffff86a150 notified n=0
+I20230322 13:28:32.592427    32 ConnectionManager.cpp:220] 0x7fffff86a150 finished notify_pending_shutdown
+I20230322 13:28:32.592918    32 Acceptor.cpp:490] All connections drained from Acceptor=0x7fffff8e1e28 in thread 0x7ffff8f16280
+I20230322 13:28:32.581422    34 Acceptor.cpp:460] Acceptor 0x7fffff8e2828 acceptStopped()
+I20230322 13:28:32.593878    34 ConnectionManager.cpp:130] 0x7fffff86a400 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.594225    34 ConnectionManager.cpp:172] Scheduling idle grace period of 29500ms
+I20230322 13:28:32.595129    34 ConnectionManager.cpp:213] 0x7fffff86a450 notified n=0
+I20230322 13:28:32.587126    33 ConnectionManager.cpp:213] 0x7fffff86a2d0 notified n=0
+I20230322 13:28:32.596242    33 ConnectionManager.cpp:220] 0x7fffff86a2d0 finished notify_pending_shutdown
+I20230322 13:28:32.598322    33 Acceptor.cpp:490] All connections drained from Acceptor=0x7fffff8e2328 in thread 0x7ffff8491280
+I20230322 13:28:32.586346    38 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.595749    34 ConnectionManager.cpp:220] 0x7fffff86a450 finished notify_pending_shutdown
+I20230322 13:28:32.599871    34 Acceptor.cpp:490] All connections drained from Acceptor=0x7fffff8e2828 in thread 0x7ffff8017280
+I20230322 13:28:32.599567    39 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.601641    39 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.604030    38 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.605228    31 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.605249    38 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.606243    32 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.605942    31 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff9828800, fd_=folly::NetworkSocket(49), state=2, shutdownFlags=0
+I20230322 13:28:32.607076    31 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff9828800, fd=folly::NetworkSocket(49), evb=0x7ffff9817280, state=3, events=0
+I20230322 13:28:32.606673    32 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:28:32.607956    32 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.609233    32 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff8f27400, fd_=folly::NetworkSocket(54), state=2, shutdownFlags=0
+I20230322 13:28:32.609659    32 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff8f27400, fd=folly::NetworkSocket(54), evb=0x7ffff8f16280, state=3, events=0
+I20230322 13:28:32.607590    31 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff9828800, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:28:32.606345    38 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.610455    32 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff8f27400, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:28:32.612501    32 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffff8f27400, evb=0x7ffff8f16280, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:28:32.612951    32 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff8f27400, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:28:32.611896    38 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.611094    31 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffff9828800, evb=0x7ffff9817280, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:28:32.614580    31 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff9828800, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:28:32.614928    31 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.614225    34 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.616339    34 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff8028400, fd_=folly::NetworkSocket(56), state=2, shutdownFlags=0
+I20230322 13:28:32.616679    34 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff8028400, fd=folly::NetworkSocket(56), evb=0x7ffff8017280, state=3, events=0
+I20230322 13:28:32.611866    33 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.614110    32 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.617120    34 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff8028400, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:28:32.617995    34 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffff8028400, evb=0x7ffff8017280, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:28:32.618309    34 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff8028400, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:28:32.618646    34 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.617409    33 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff84a2400, fd_=folly::NetworkSocket(55), state=2, shutdownFlags=0
+I20230322 13:28:32.619688    33 AsyncSocket.cpp:3412] AsyncSocket::updateEventRegistration(this=0x7ffff84a2400, fd=folly::NetworkSocket(55), evb=0x7ffff8491280, state=3, events=0
+I20230322 13:28:32.620110    33 AsyncSocket.cpp:3692] AsyncSocket(this=0x7ffff84a2400, fd=folly::NetworkSocket(-1)): connect err invoked with ex: AsyncSocketException: socket closed locally, type = End of file
+I20230322 13:28:32.620385    33 AsyncSocket.cpp:650] AsyncSocket::destroy(this=0x7ffff84a2400, evb=0x7ffff8491280, fd=folly::NetworkSocket(-1), state=3
+I20230322 13:28:32.620765    33 AsyncSocket.cpp:1721] AsyncSocket::closeNow(): this=0x7ffff84a2400, fd_=folly::NetworkSocket(-1), state=3, shutdownFlags=6
+I20230322 13:28:32.621121    33 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.621922    38 GraphServer.cpp:70] nebula-graphd on ngai_graphd:9669 has been stopped
+I20230322 13:28:32.622431    38 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.622817     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20230322 13:28:32.623173     1 GraphServer.cpp:101] The graph server has been stopped
+I20230322 13:28:32.627974     1 StorageClientBase-inl.h:39] Destructing StorageClientBase
+I20230322 13:28:32.628692     1 ThriftClientManager.h:27] ~ThriftClientManager
+I20230322 13:28:32.629968     1 MetaClient.cpp:89] ~MetaClient
+I20230322 13:28:32.630926     1 ThriftClientManager.h:27] ~ThriftClientManager
+I20230322 13:28:32.632153    11 Acceptor.cpp:460] Acceptor 0x7ffffea3c500 acceptStopped()
+I20230322 13:28:32.632896    11 ConnectionManager.cpp:130] 0x7ffffea10f00 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.633297    11 ConnectionManager.cpp:172] Scheduling idle grace period of 5000ms
+I20230322 13:28:32.633754    11 ConnectionManager.cpp:213] 0x7ffffea10f50 notified n=0
+I20230322 13:28:32.634308    11 ConnectionManager.cpp:220] 0x7ffffea10f50 finished notify_pending_shutdown
+I20230322 13:28:32.636116    11 Acceptor.cpp:490] All connections drained from Acceptor=0x7ffffea3c500 in thread 0x7ffffb209000
+I20230322 13:28:32.632201     8 Acceptor.cpp:460] Acceptor 0x7ffffea3b000 acceptStopped()
+I20230322 13:28:32.636868     8 ConnectionManager.cpp:130] 0x7ffffea10a80 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.637185     8 ConnectionManager.cpp:172] Scheduling idle grace period of 5000ms
+I20230322 13:28:32.637794     8 ConnectionManager.cpp:213] 0x7ffffea10ad0 notified n=0
+I20230322 13:28:32.638223     8 ConnectionManager.cpp:220] 0x7ffffea10ad0 finished notify_pending_shutdown
+I20230322 13:28:32.638634     8 Acceptor.cpp:490] All connections drained from Acceptor=0x7ffffea3b000 in thread 0x7ffffdc0a000
+I20230322 13:28:32.632155    10 Acceptor.cpp:460] Acceptor 0x7ffffea3be00 acceptStopped()
+I20230322 13:28:32.639418    10 ConnectionManager.cpp:130] 0x7ffffea10d80 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.639686    10 ConnectionManager.cpp:172] Scheduling idle grace period of 5000ms
+I20230322 13:28:32.639906    10 ConnectionManager.cpp:213] 0x7ffffea10dd0 notified n=0
+I20230322 13:28:32.640131    10 ConnectionManager.cpp:220] 0x7ffffea10dd0 finished notify_pending_shutdown
+I20230322 13:28:32.641582    10 Acceptor.cpp:490] All connections drained from Acceptor=0x7ffffea3be00 in thread 0x7ffffc009000
+I20230322 13:28:32.632220     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.632212     9 Acceptor.cpp:460] Acceptor 0x7ffffea3b700 acceptStopped()
+I20230322 13:28:32.642783     9 ConnectionManager.cpp:130] 0x7ffffea10c00 initiateGracefulShutdown with nconns=0
+I20230322 13:28:32.643100     9 ConnectionManager.cpp:172] Scheduling idle grace period of 5000ms
+I20230322 13:28:32.644295     9 ConnectionManager.cpp:213] 0x7ffffea10c50 notified n=0
+I20230322 13:28:32.642863    12 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.644675     9 ConnectionManager.cpp:220] 0x7ffffea10c50 finished notify_pending_shutdown
+I20230322 13:28:32.645256     9 Acceptor.cpp:490] All connections drained from Acceptor=0x7ffffea3b700 in thread 0x7ffffce09000
+I20230322 13:28:32.644990    12 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.646241     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.646528     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.646910     9 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.647222     9 EventBase.cpp:324] EventBase(): Starting loop.
+I20230322 13:28:32.646531     8 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.647773     8 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.647481     9 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.648725     9 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.646939     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.653115    10 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.653612    10 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.653136     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.654333    11 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.654646    11 EventBase.cpp:227] EventBase(): Destroyed.
+I20230322 13:28:32.655061     1 EventBase.cpp:550] EventBase(): Received terminateLoopSoon() command.
+I20230322 13:28:32.655426     7 EventBase.cpp:477] EventBase(): Done with loop.
+I20230322 13:28:32.655987     7 EventBase.cpp:227] EventBase(): Destroyed.

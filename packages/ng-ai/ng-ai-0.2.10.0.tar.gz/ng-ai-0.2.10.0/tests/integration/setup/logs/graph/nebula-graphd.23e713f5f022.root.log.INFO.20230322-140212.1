@@ -1,0 +1,67 @@
+Log file created at: 2023/03/22 14:02:12
+Running on machine: 23e713f5f022
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20230322 14:02:12.078788     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20230322 14:02:12.102845     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20230322 14:02:12.105144     1 GraphDaemon.cpp:136] Number of networking IO threads: 4
+I20230322 14:02:12.106762     1 GraphDaemon.cpp:145] Number of worker threads: 4
+I20230322 14:02:12.120399     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20230322 14:02:12.129348     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20230322 14:02:12.134841    30 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:12.163383    31 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:17.169292    32 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:17.177923    33 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:17.193965     1 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:02:17.195554     1 MetaClient.cpp:3265] Load leader ok
+I20230322 14:02:17.201218     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20230322 14:02:17.207187     1 GraphSessionManager.cpp:347] Total of 0 sessions are loaded
+E20230322 14:02:17.213941     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/31.000MiB
+I20230322 14:02:17.229596     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20230322 14:02:17.230753     1 Snowflake.cpp:17] WorkerId init success: 1
+I20230322 14:02:17.231611    37 GraphServer.cpp:62] Starting nebula-graphd on graphd:9669
+I20230322 14:02:17.484972    19 GraphService.cpp:77] Authenticating user root from 172.28.0.8:40462
+E20230322 14:02:17.512272    22 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20230322 14:02:48.092182    34 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:02:48.094673    34 MetaClient.cpp:3265] Load leader ok
+I20230322 14:03:42.980424    22 GraphService.cpp:77] Authenticating user root from 172.28.0.8:49362
+I20230322 14:03:47.374989    20 GraphService.cpp:77] Authenticating user root from 172.28.0.8:49368
+I20230322 14:03:48.192301    34 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 0 space
+I20230322 14:03:48.193295    34 MetaClient.cpp:3265] Load leader ok
+I20230322 14:03:58.219308    34 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 0 space
+I20230322 14:03:58.220732    34 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:07.385319    19 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:04:08.249070    34 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:08.250061    34 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:28.285604    34 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:28.287189    34 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:47.442589    33 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.28.0.6":9779
+I20230322 14:04:47.456197    30 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.28.0.6":9779
+I20230322 14:04:47.462889    31 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.28.0.6":9779
+I20230322 14:04:47.469177    32 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.28.0.6":9779
+I20230322 14:04:48.256000    21 GraphService.cpp:77] Authenticating user root from 172.28.0.8:37620
+I20230322 14:04:48.259487    22 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:04:48.613830    21 GraphService.cpp:77] Authenticating user root from 172.28.0.8:37640
+I20230322 14:04:48.617358    21 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:04:53.041759    22 GraphService.cpp:77] Authenticating user root from 172.28.0.8:37654
+I20230322 14:04:53.045022    19 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+W20230322 14:04:53.046089    21 ShowStatsExecutor.cpp:21] SpaceId: 11, Show status failed: Job is not finished!
+E20230322 14:04:53.046761    21 QueryInstance.cpp:151] Job is not finished!, query:  USE basketballplayer; SHOW STATS;
+I20230322 14:04:58.340474    34 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:58.341794    34 MetaClient.cpp:3265] Load leader ok
+I20230322 14:06:14.914665    22 GraphService.cpp:77] Authenticating user root from 172.28.0.3:39998
+I20230322 14:06:14.914717    19 GraphService.cpp:77] Authenticating user root from 172.28.0.3:39980
+I20230322 14:06:14.914747    20 GraphService.cpp:77] Authenticating user root from 172.28.0.3:39984
+I20230322 14:06:14.914666    21 GraphService.cpp:77] Authenticating user root from 172.28.0.3:40010
+I20230322 14:06:14.981276    19 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:06:14.982026    19 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:06:14.982122    21 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:06:14.983173    22 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:06:15.466857    21 GraphService.cpp:77] Authenticating user root from 172.28.0.3:40034
+I20230322 14:06:15.469463    20 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:06:16.591063    22 GraphService.cpp:77] Authenticating user root from 172.28.0.1:45056
+I20230322 14:06:16.593837    19 SwitchSpaceExecutor.cpp:45] Graph switched to `basketballplayer', space id: 11
+I20230322 14:06:17.652577     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20230322 14:06:17.668172    37 GraphServer.cpp:69] nebula-graphd on graphd:9669 has been stopped
+I20230322 14:06:17.669075     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20230322 14:06:17.669925     1 GraphServer.cpp:100] The graph server has been stopped

@@ -1,0 +1,36 @@
+Log file created at: 2023/03/22 13:00:31
+Running on machine: 7e3f5daba511
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20230322 13:00:31.186671     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20230322 13:00:36.206959     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20230322 13:00:36.209618     1 GraphDaemon.cpp:136] Number of networking IO threads: 4
+I20230322 13:00:36.210913     1 GraphDaemon.cpp:145] Number of worker threads: 4
+I20230322 13:00:36.219432     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20230322 13:00:36.220899     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20230322 13:00:36.225256    30 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.23.0.2":9559
+I20230322 13:00:37.232576    30 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.23.0.2":9559
+I20230322 13:00:37.250509    31 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.23.0.2":9559
+I20230322 13:00:42.263967    32 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.23.0.2":9559
+I20230322 13:00:42.272468    33 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.23.0.2":9559
+I20230322 13:00:42.278733     1 MetaClient.cpp:3265] Load leader ok
+I20230322 13:00:42.284505     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20230322 13:00:42.286653     1 GraphSessionManager.cpp:347] Total of 0 sessions are loaded
+E20230322 13:00:42.294965     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/31.000MiB
+I20230322 13:00:42.312456     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20230322 13:00:42.318190     1 Snowflake.cpp:17] WorkerId init success: 0
+I20230322 13:00:42.319089    37 GraphServer.cpp:62] Starting nebula-graphd on graphd:9669
+I20230322 13:00:42.613279    21 GraphService.cpp:77] Authenticating user root from 172.23.0.8:56658
+I20230322 13:01:50.513463    20 GraphService.cpp:77] Authenticating user root from 172.23.0.8:46334
+W20230322 13:01:50.516595    19 SpaceExecutor.cpp:117] Get space ID failed when prepare text index: basketballplayer
+W20230322 13:01:50.519264    19 SpaceExecutor.cpp:126] Drop space `basketballplayer' failed: SpaceNotFound: Space not existed!
+E20230322 13:01:50.520018    21 QueryInstance.cpp:151] SpaceNotFound: Space not existed!, query:  DROP SPACE basketballplayer;
+I20230322 13:01:52.937549    20 GraphService.cpp:77] Authenticating user root from 172.23.0.8:46348
+E20230322 13:01:52.940605    19 QueryInstance.cpp:151] SemanticError: Space was not chosen., query:  SUBMIT JOB STATS
+I20230322 13:01:53.273008    19 GraphService.cpp:77] Authenticating user root from 172.23.0.8:46364
+E20230322 13:01:53.276480    19 UseValidator.cpp:28] Unknown space: basketballplayer : SpaceNotFound: SpaceName `basketballplayer`
+E20230322 13:01:53.277254    19 QueryInstance.cpp:151] SpaceNotFound: SpaceName `basketballplayer`, query:  USE basketballplayer; CREATE TAG IF NOT EXISTS label_propagation (cluster_id string NOT NULL);
+I20230322 13:01:54.269383     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20230322 13:01:54.273592    37 GraphServer.cpp:69] nebula-graphd on graphd:9669 has been stopped
+I20230322 13:01:54.274582     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20230322 13:01:54.275564     1 GraphServer.cpp:100] The graph server has been stopped

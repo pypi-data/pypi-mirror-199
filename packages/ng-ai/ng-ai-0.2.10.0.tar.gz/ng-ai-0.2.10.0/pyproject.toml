@@ -1,0 +1,101 @@
+[tool.pdm.scripts.ng_ai-api]
+call = "ng_ai.ng_ai_api.__main__:run"
+
+[tool.pdm.scripts.test]
+shell = "    pdm update -dG dev\n    pytest tests/unit/\n"
+
+[tool.pdm.scripts.lint]
+shell = "    pdm update -dG lint\n    flake8 --max-line-length=84 ng_ai tests\n    isort --check ng_ai tests --diff\n    black --line-length 84 --check ng_ai tests --diff\n"
+
+[tool.pdm.scripts.format]
+shell = "    pdm update -dG lint\n    isort ng_ai tests\n    black --line-length 84 ng_ai tests examples\n"
+
+[tool.pdm.scripts.dockerup]
+shell = "    echo \"Downloading jar packages for NebulaGraph Algorithm\"\n    mkdir -p tests/integration/setup/download\n    mkdir -p tests/integration/setup/udf\n    ALGO_VERSION=\"3.1.0\"\n    SPARK_C_VERSION=\"3.4.0\"\n    wget -O tests/integration/setup/download/nebula-algo.jar https://repo1.maven.org/maven2/com/vesoft/nebula-algorithm/$ALGO_VERSION/nebula-algorithm-$ALGO_VERSION.jar\n    # wget -O tests/integration/setup/download/nebula-spark-connector.jar https://repo1.maven.org/maven2/com/vesoft/nebula-spark-connector/$SPARK_C_VERSION/nebula-spark-connector-$SPARK_C_VERSION.jar\n    wget -O tests/integration/setup/udf/ng_ai.so https://github.com/wey-gu/nebulagraph-ai/releases/download/0.2.9/ng_ai-ubuntu-2004-nebulagraph-nightly-2023.03.13.so\n    chmod +x tests/integration/setup/udf/ng_ai.so\n    echo \"Starting NebulaGraph\"\n \n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' up -d --remove-orphans\n    echo \"Waiting for NebulaGraph to start...\"\n    sleep 10\n    for i in {1..50}; do docker-compose -f 'tests/integration/setup/docker-compose.yaml' ps | grep \"unhealthy\\|starting\" | wc -l | grep -q 0 && break; echo Waiting for another 5 sec; sleep 5; done\n    echo \"NebulaGraph is up and running, removing console container\"\n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' stop console\n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' rm -f console\n    docker-compose -f 'tests/integration/setup/docker-compose.yaml' ps\n"
+
+[tool.pdm.scripts.dockerstatus]
+shell = "    docker-compose -f 'tests/integration/setup/docker-compose.yaml' ps\n"
+
+[tool.pdm.scripts.dockerdown]
+shell = "    docker-compose -f 'tests/integration/setup/docker-compose.yaml' down\n"
+
+[tool.pdm.scripts.teardown]
+shell = "    docker-compose -f 'tests/integration/setup/docker-compose.yaml' down\n    rm -fr tests/integration/setup/download\n    rm -fr tests/integration/setup/udf\n"
+
+[tool.pdm.scripts.int-test]
+shell = "    pdm update -dG dev\n    pdm run dockerup\n\n    mkdir -p tests/integration/setup/build/\n\n    echo \"Build and Install ng_ai to jupyter_spark, master_spark container\"\n    pdm build --dest tests/integration/setup/build/\n\n    docker exec master_spark sh -c 'pip3 uninstall ng_ai -y'\n    docker exec master_spark sh -c 'pip3 install /root/build/*.whl'\n    docker restart master_spark\n    docker exec jupyter_spark sh -c 'pip3 uninstall ng_ai -y'\n    docker exec jupyter_spark sh -c 'pip3 install /root/build/*.whl'\n    docker restart jupyter_spark\n    sleep 7\n    echo \"Run integration tests\"\n\n    pytest tests/integration/\n"
+
+[tool.black]
+line-length = 84
+exclude = "/(\n    \\.eggs\n  | \\.git\n  | \\.hg\n  | \\.mypy_cache\n  | \\.tox\n  | \\.venv\n  | _build\n  | buck-out\n  | build\n  | dist\n)/\n"
+
+[tool.isort]
+profile = "black"
+atomic = true
+skip_glob = [
+    "*/setup.py",
+]
+filter_files = true
+
+[project]
+name = "ng_ai"
+version = "0.2.10.0"
+description = "NebulaGraph AI Suite"
+authors = [
+    { name = "Wey Gu", email = "weyl.gu@gmail.com" },
+]
+dependencies = [
+    "flask>=2.0.3",
+]
+requires-python = ">=3.7.1,<3.10"
+readme = "README.md"
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+]
+
+[project.license]
+text = "Apache-2.0"
+
+[project.urls]
+Homepage = "https://github.com/wey-gu/nebulagraph-ai"
+Repository = "https://github.com/wey-gu/nebulagraph-ai"
+Documentation = "https://github.com/wey-gu/nebulagraph-ai#documentation"
+Changelog = "https://github.com/wey-gu/nebulagraph-ai/releases"
+
+[project.optional-dependencies]
+spark = [
+    "pyspark>=3.2.3",
+]
+networkx = [
+    "ng_nx>=0.1.8",
+    "pandas>=1.3.5",
+    "numpy>=1.21.6",
+    "scipy>=1.7.3",
+]
+all = [
+    "ng_ai[spark,networkx]",
+]
+lint = [
+    "flake8>=4.0.1",
+    "black[jupyter]>=23.1.0",
+    "isort>=5.11.5",
+]
+test = [
+    "pytest>=7.2.2",
+    "chispa>=0.9.2",
+    "nebula3-python",
+]
+dev = [
+    "ng_ai[all,lint,test]",
+]
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"

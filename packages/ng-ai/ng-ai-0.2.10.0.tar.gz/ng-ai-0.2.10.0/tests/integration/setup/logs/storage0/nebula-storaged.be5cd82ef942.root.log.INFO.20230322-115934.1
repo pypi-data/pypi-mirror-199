@@ -1,0 +1,250 @@
+Log file created at: 2023/03/22 11:59:34
+Running on machine: be5cd82ef942
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20230322 11:59:34.537066     1 StorageDaemon.cpp:132] localhost = "storaged0":9779
+I20230322 11:59:34.540051     1 StorageDaemon.cpp:147] data path= /data/storage
+I20230322 11:59:34.546391     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20230322 11:59:34.547022     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 1
+I20230322 11:59:34.548195     1 FileBasedClusterIdMan.cpp:53] Get clusterId: 983123589676682542
+I20230322 11:59:39.554491    47 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:39.588006    53 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:39.592533    54 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:44.597983    55 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:49.611683    56 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:49.620801    57 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:49.631045    58 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:54.642118    59 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:54.645820     1 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 0 space
+I20230322 11:59:54.646962     1 MetaClient.cpp:3265] Load leader ok
+I20230322 11:59:54.648964    60 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:54.651600    61 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 11:59:54.655851     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20230322 11:59:54.656785     1 StorageServer.cpp:244] Init schema manager
+I20230322 11:59:54.657718     1 StorageServer.cpp:247] Init index manager
+I20230322 11:59:54.658433     1 StorageServer.cpp:250] Init kvstore
+I20230322 11:59:54.659096     1 NebulaStore.cpp:52] Start the raft service...
+I20230322 11:59:54.671386     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20230322 11:59:54.689280     1 RaftexService.cpp:46] Start raft service on 9780
+I20230322 11:59:54.690635     1 NebulaStore.cpp:86] Scan the local path, and init the spaces_
+E20230322 11:59:54.691601     1 FileUtils.cpp:377] Failed to read the directory "/data/storage/nebula" (2): No such file or directory
+I20230322 11:59:54.697891     1 NebulaStore.cpp:272] Init data from partManager for "storaged0":9779
+I20230322 11:59:54.698498     1 NebulaStore.cpp:79] Register handler...
+I20230322 11:59:54.699044     1 StorageServer.cpp:253] Init LogMonitor
+I20230322 11:59:54.701026     1 StorageServer.cpp:120] Starting Storage HTTP Service
+I20230322 11:59:54.702211     1 StorageServer.cpp:124] Http Thread Pool started
+I20230322 11:59:54.706288    79 WebService.cpp:124] Web service started on HTTP[19779]
+I20230322 11:59:54.712772     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20230322 11:59:54.713260     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20230322 11:59:54.713837     1 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20230322 11:59:54.714879     1 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20230322 11:59:54.752791     1 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/0/data
+I20230322 11:59:54.754009     1 AdminTaskManager.cpp:22] max concurrent subtasks: 10
+I20230322 11:59:54.754550     1 AdminTaskManager.cpp:40] exit AdminTaskManager::init()
+I20230322 11:59:54.754575   103 AdminTaskManager.cpp:224] waiting for incoming task
+E20230322 11:59:54.772138     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/126.999MiB
+I20230322 11:59:54.773922     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20230322 12:00:05.344592    68 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 12:00:15.362175    69 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 12:00:25.388933    70 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 12:00:35.407510    71 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 12:00:50.434255    72 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 12:00:50.449076    73 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.22.0.2":9559
+I20230322 12:00:50.473628    62 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 0 space
+I20230322 12:00:50.475059    62 MetaClient.cpp:3265] Load leader ok
+I20230322 12:00:50.477187    62 NebulaStore.cpp:388] Create data space 2
+I20230322 12:00:50.486265    62 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20230322 12:00:50.487212    62 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20230322 12:00:50.488205    62 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20230322 12:00:50.489524    62 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20230322 12:00:50.531466    62 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/2/data
+I20230322 12:00:50.536092    62 NebulaStore.cpp:451] Space 2, part 2 has been added, asLearner 0
+I20230322 12:00:50.538627    62 NebulaStore.cpp:451] Space 2, part 1 has been added, asLearner 0
+I20230322 12:00:50.541355    62 NebulaStore.cpp:451] Space 2, part 3 has been added, asLearner 0
+I20230322 12:00:50.544297    62 NebulaStore.cpp:451] Space 2, part 5 has been added, asLearner 0
+I20230322 12:00:50.547180    62 NebulaStore.cpp:451] Space 2, part 4 has been added, asLearner 0
+I20230322 12:00:50.550238    62 NebulaStore.cpp:451] Space 2, part 9 has been added, asLearner 0
+I20230322 12:00:50.553047    62 NebulaStore.cpp:451] Space 2, part 10 has been added, asLearner 0
+I20230322 12:00:50.556461    62 NebulaStore.cpp:451] Space 2, part 8 has been added, asLearner 0
+I20230322 12:00:50.559376    62 NebulaStore.cpp:451] Space 2, part 7 has been added, asLearner 0
+I20230322 12:00:50.562549    62 NebulaStore.cpp:451] Space 2, part 6 has been added, asLearner 0
+I20230322 12:01:00.604552    62 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 12:01:00.607345    62 MetaClient.cpp:3265] Load leader ok
+I20230322 12:01:10.642580    62 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 12:01:10.645259    62 MetaClient.cpp:3265] Load leader ok
+I20230322 12:01:20.691629    62 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 12:01:20.694640    62 MetaClient.cpp:3265] Load leader ok
+I20230322 12:01:41.527706    44 AdminTask.cpp:21] createAdminTask (3, 0)
+I20230322 12:01:41.529954    44 AdminTaskManager.cpp:155] enqueue task(3, 0)
+I20230322 12:01:41.530102   103 AdminTaskManager.cpp:236] dequeue task(3, 0)
+I20230322 12:01:41.531967   103 AdminTaskManager.cpp:279] run task(3, 0), 10 subtasks in 10 thread
+I20230322 12:01:41.533639   191 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.534344   192 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.534658   191 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.536149   191 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 9
+I20230322 12:01:41.535341   192 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.537863   192 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 8
+I20230322 12:01:41.534826   193 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.539386   193 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.540040   193 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 7
+I20230322 12:01:41.537308   197 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.535599   194 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.538151   198 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.538540   191 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.539062   103 AdminTaskManager.cpp:224] waiting for incoming task
+I20230322 12:01:41.539075   192 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.545135   192 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.536949   196 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.541756   197 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.547093   197 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 5
+I20230322 12:01:41.542979   198 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.548337   198 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 4
+I20230322 12:01:41.536319   195 StatsTask.cpp:110] Start stats task
+I20230322 12:01:41.545840   192 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 6
+I20230322 12:01:41.546545   196 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.542418   194 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.551312   194 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 2
+I20230322 12:01:41.549168   199 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.549188   200 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.549607   195 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.553761   195 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 1
+I20230322 12:01:41.550832   193 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.543995   191 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:41.555387   191 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 0
+I20230322 12:01:41.550730   196 AdminTaskManager.cpp:315] subtask of task(3, 0) finished, unfinished task 3
+I20230322 12:01:41.555886   191 StatsTask.cpp:312] task(3, 0) finished, rc=[SUCCEEDED]
+I20230322 12:01:41.557569   104 AdminTaskManager.cpp:92] reportTaskFinish(), job=3, task=0, rc=SUCCEEDED
+I20230322 12:01:41.557765   197 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.559038   198 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.560236   192 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.561931   194 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.564198   104 AdminTaskManager.cpp:134] reportTaskFinish(), job=3, task=0, rc=SUCCEEDED
+I20230322 12:01:41.564360   195 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:41.566910   196 AdminTaskManager.cpp:326] task(3, 0) runSubTask() exit
+I20230322 12:01:50.761283    62 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 12:01:50.765332    62 MetaClient.cpp:3265] Load leader ok
+I20230322 12:01:57.359726    44 AdminTask.cpp:21] createAdminTask (4, 0)
+I20230322 12:01:57.363534    44 AdminTaskManager.cpp:155] enqueue task(4, 0)
+I20230322 12:01:57.363545   103 AdminTaskManager.cpp:236] dequeue task(4, 0)
+I20230322 12:01:57.366189   103 AdminTaskManager.cpp:279] run task(4, 0), 10 subtasks in 10 thread
+I20230322 12:01:57.367439   191 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367476   194 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367493   195 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367503   192 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.372851   192 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.367596   196 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367601   197 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367633   103 AdminTaskManager.cpp:224] waiting for incoming task
+I20230322 12:01:57.367693   199 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367702   200 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.367772   193 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.368726   191 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.382254   191 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 8
+I20230322 12:01:57.371668   195 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.367589   198 StatsTask.cpp:110] Start stats task
+I20230322 12:01:57.385629   198 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.386533   198 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 6
+I20230322 12:01:57.376595   197 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.388548   197 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 5
+I20230322 12:01:57.379941   200 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.390040   200 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 4
+I20230322 12:01:57.370014   194 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.391714   194 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 3
+I20230322 12:01:57.374094   192 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 9
+I20230322 12:01:57.375190   196 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.394598   196 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 2
+I20230322 12:01:57.381314   193 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.396560   193 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 1
+I20230322 12:01:57.393936   191 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.378871   199 StatsTask.cpp:307] Stats task finished
+I20230322 12:01:57.398967   199 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 0
+I20230322 12:01:57.399719   199 StatsTask.cpp:312] task(4, 0) finished, rc=[SUCCEEDED]
+I20230322 12:01:57.384687   195 AdminTaskManager.cpp:315] subtask of task(4, 0) finished, unfinished task 7
+I20230322 12:01:57.401085   195 AdminTaskManager.cpp:294] task(4, 0) runSubTask() exit
+I20230322 12:01:57.397660   198 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.400848   200 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.401033   104 AdminTaskManager.cpp:92] reportTaskFinish(), job=4, task=0, rc=SUCCEEDED
+I20230322 12:01:57.399410   197 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.402740   194 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.403656   192 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.405720   196 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.407325   193 AdminTaskManager.cpp:326] task(4, 0) runSubTask() exit
+I20230322 12:01:57.409628   104 AdminTaskManager.cpp:134] reportTaskFinish(), job=4, task=0, rc=SUCCEEDED
+I20230322 12:43:47.499814    44 AdminTask.cpp:21] createAdminTask (5, 0)
+I20230322 12:43:47.506567    44 AdminTaskManager.cpp:155] enqueue task(5, 0)
+I20230322 12:43:47.506701   103 AdminTaskManager.cpp:236] dequeue task(5, 0)
+I20230322 12:43:47.510648   103 AdminTaskManager.cpp:279] run task(5, 0), 10 subtasks in 10 thread
+I20230322 12:43:47.512591   191 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.512725   194 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.512809   195 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.512908   197 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.512923   103 AdminTaskManager.cpp:224] waiting for incoming task
+I20230322 12:43:47.513011   199 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.513028   200 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.513108   192 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.513381   193 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.513535   196 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.513712   198 StatsTask.cpp:110] Start stats task
+I20230322 12:43:47.515874   191 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.534129   191 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 9
+I20230322 12:43:47.519520   195 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.537240   195 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 8
+I20230322 12:43:47.525200   199 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.540500   199 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 7
+I20230322 12:43:47.528527   192 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.542018   192 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 6
+I20230322 12:43:47.531580   196 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.543319   196 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 5
+I20230322 12:43:47.517124   194 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.544744   194 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 4
+I20230322 12:43:47.526983   200 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.545838   200 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 3
+I20230322 12:43:47.532876   198 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.546948   198 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 2
+I20230322 12:43:47.530210   193 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.548012   193 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 1
+I20230322 12:43:47.521385   197 StatsTask.cpp:307] Stats task finished
+I20230322 12:43:47.549296   197 AdminTaskManager.cpp:315] subtask of task(5, 0) finished, unfinished task 0
+I20230322 12:43:47.549275   195 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.546204   191 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.549919   197 StatsTask.cpp:312] task(5, 0) finished, rc=[SUCCEEDED]
+I20230322 12:43:47.551461   199 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.552939   192 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.554163   104 AdminTaskManager.cpp:92] reportTaskFinish(), job=5, task=0, rc=SUCCEEDED
+I20230322 12:43:47.554193   196 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.555428   194 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.556855   200 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.557569   198 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.558720   193 AdminTaskManager.cpp:326] task(5, 0) runSubTask() exit
+I20230322 12:43:47.564630   104 AdminTaskManager.cpp:134] reportTaskFinish(), job=5, task=0, rc=SUCCEEDED
+I20230322 12:59:19.515177     1 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20230322 12:59:19.518914     1 NebulaStore.cpp:323] Stop the raft service...
+I20230322 12:59:19.519825     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20230322 12:59:19.520593     1 RaftexService.cpp:77] All partitions have stopped
+I20230322 12:59:19.521421     1 NebulaStore.cpp:326] Stop kv engine...
+I20230322 12:59:19.540750     1 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20230322 12:59:19.541575   104 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20230322 12:59:19.552235   103 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20230322 12:59:19.553786     1 RocksEngine.h:206] Release rocksdb on /data/storage/nebula/0
+I20230322 12:59:19.559576     1 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20230322 12:59:19.560827     1 NebulaStore.cpp:323] Stop the raft service...
+I20230322 12:59:19.561482     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20230322 12:59:19.561879     1 RaftexService.cpp:77] All partitions have stopped
+I20230322 12:59:19.562330     1 NebulaStore.cpp:326] Stop kv engine...
+I20230322 12:59:19.562794     1 NebulaStore.cpp:40] Cut off the relationship with meta client
+I20230322 12:59:19.563685     1 Part.h:59] [Port: 9780, Space: 2, Part: 6] ~Part()
+I20230322 12:59:19.565318     1 Part.h:59] [Port: 9780, Space: 2, Part: 7] ~Part()
+I20230322 12:59:19.566792     1 Part.h:59] [Port: 9780, Space: 2, Part: 8] ~Part()
+I20230322 12:59:19.569285     1 Part.h:59] [Port: 9780, Space: 2, Part: 10] ~Part()
+I20230322 12:59:19.571774     1 Part.h:59] [Port: 9780, Space: 2, Part: 9] ~Part()
+I20230322 12:59:19.573257     1 Part.h:59] [Port: 9780, Space: 2, Part: 1] ~Part()
+I20230322 12:59:19.574432     1 Part.h:59] [Port: 9780, Space: 2, Part: 2] ~Part()
+I20230322 12:59:19.575546     1 Part.h:59] [Port: 9780, Space: 2, Part: 3] ~Part()
+I20230322 12:59:19.576716     1 Part.h:59] [Port: 9780, Space: 2, Part: 5] ~Part()
+I20230322 12:59:19.577876     1 Part.h:59] [Port: 9780, Space: 2, Part: 4] ~Part()
+I20230322 12:59:19.579025     1 RocksEngine.h:206] Release rocksdb on /data/storage/nebula/2
+I20230322 12:59:19.582273     1 NebulaStore.cpp:48] ~NebulaStore()
+I20230322 12:59:19.582953     1 StorageDaemon.cpp:186] The storage Daemon stopped
+I20230322 12:59:19.589843     1 StatsTask.h:27] Release Stats Task
+I20230322 12:59:19.590615     1 StatsTask.h:27] Release Stats Task
+I20230322 12:59:19.591161     1 StatsTask.h:27] Release Stats Task

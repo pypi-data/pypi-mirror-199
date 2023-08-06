@@ -1,0 +1,223 @@
+Log file created at: 2023/03/22 14:02:11
+Running on machine: dbead469f791
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20230322 14:02:11.499413     1 StorageDaemon.cpp:132] localhost = "storaged0":9779
+I20230322 14:02:11.530242     1 StorageDaemon.cpp:147] data path= /data/storage
+I20230322 14:02:11.566406     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20230322 14:02:11.594601     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 1
+W20230322 14:02:11.599334     1 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+I20230322 14:02:16.686640    46 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:16.703812    46 MetaClient.cpp:2668] Persist the cluster Id from metad 983123589676682542
+I20230322 14:02:16.705308    46 FileBasedClusterIdMan.cpp:21] Remove the existed file cluster.id
+I20230322 14:02:16.707193    46 FileBasedClusterIdMan.cpp:34] Persist clusterId 983123589676682542 succeeded!
+I20230322 14:02:21.714211    52 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:21.724274    53 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:21.729833    54 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:21.734570    55 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:21.739858    56 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:21.748924    57 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:26.758715    58 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:26.764968    59 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:26.770360    60 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:26.779938    61 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:26.796232    62 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:31.807343    63 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:31.815074    64 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:31.820859    65 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:31.825981     1 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:02:31.828791     1 MetaClient.cpp:3265] Load leader ok
+I20230322 14:02:31.833822    66 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.28.0.2":9559
+I20230322 14:02:31.840133     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20230322 14:02:31.842310     1 StorageServer.cpp:244] Init schema manager
+I20230322 14:02:31.844110     1 StorageServer.cpp:247] Init index manager
+I20230322 14:02:31.845400     1 StorageServer.cpp:250] Init kvstore
+I20230322 14:02:31.846769     1 NebulaStore.cpp:52] Start the raft service...
+I20230322 14:02:31.849995     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20230322 14:02:31.863262     1 RaftexService.cpp:46] Start raft service on 9780
+I20230322 14:02:31.865650     1 NebulaStore.cpp:86] Scan the local path, and init the spaces_
+I20230322 14:02:31.869845     1 NebulaStore.cpp:93] Scan path "/data/storage/nebula/0"
+I20230322 14:02:31.870887     1 NebulaStore.cpp:93] Scan path "/data/storage/nebula/9"
+I20230322 14:02:31.873677     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20230322 14:02:31.874716     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20230322 14:02:31.875766     1 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20230322 14:02:31.877132     1 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20230322 14:02:32.051901     1 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/9/data
+I20230322 14:02:32.053345     1 NebulaStore.cpp:197] Load space 9 from disk
+I20230322 14:02:32.056759     1 NebulaStore.cpp:206] Need to open 10 parts of space 9
+I20230322 14:02:32.071530    71 NebulaStore.cpp:229] Load part 9, 4 from disk
+I20230322 14:02:32.071585    69 NebulaStore.cpp:229] Load part 9, 2 from disk
+I20230322 14:02:32.071662    70 NebulaStore.cpp:229] Load part 9, 3 from disk
+I20230322 14:02:32.072341    68 NebulaStore.cpp:229] Load part 9, 1 from disk
+I20230322 14:02:32.087056    71 NebulaStore.cpp:229] Load part 9, 8 from disk
+I20230322 14:02:32.087366    69 NebulaStore.cpp:229] Load part 9, 6 from disk
+I20230322 14:02:32.089098    70 NebulaStore.cpp:229] Load part 9, 7 from disk
+I20230322 14:02:32.089254    68 NebulaStore.cpp:229] Load part 9, 5 from disk
+I20230322 14:02:32.094386    69 NebulaStore.cpp:229] Load part 9, 10 from disk
+I20230322 14:02:32.095680    68 NebulaStore.cpp:229] Load part 9, 9 from disk
+I20230322 14:02:32.096204     1 NebulaStore.cpp:263] Load space 9 complete
+I20230322 14:02:32.096819     1 NebulaStore.cpp:272] Init data from partManager for "storaged0":9779
+I20230322 14:02:32.097390     1 NebulaStore.cpp:370] Data space 9 has existed!
+I20230322 14:02:32.098001     1 NebulaStore.cpp:422] [Space: 9, Part: 1] has existed!
+I20230322 14:02:32.098575     1 NebulaStore.cpp:422] [Space: 9, Part: 2] has existed!
+I20230322 14:02:32.099350     1 NebulaStore.cpp:422] [Space: 9, Part: 3] has existed!
+I20230322 14:02:32.099823     1 NebulaStore.cpp:422] [Space: 9, Part: 4] has existed!
+I20230322 14:02:32.100308     1 NebulaStore.cpp:422] [Space: 9, Part: 5] has existed!
+I20230322 14:02:32.100803     1 NebulaStore.cpp:422] [Space: 9, Part: 6] has existed!
+I20230322 14:02:32.101264     1 NebulaStore.cpp:422] [Space: 9, Part: 7] has existed!
+I20230322 14:02:32.101703     1 NebulaStore.cpp:422] [Space: 9, Part: 8] has existed!
+I20230322 14:02:32.102185     1 NebulaStore.cpp:422] [Space: 9, Part: 9] has existed!
+I20230322 14:02:32.102671     1 NebulaStore.cpp:422] [Space: 9, Part: 10] has existed!
+I20230322 14:02:32.103137     1 NebulaStore.cpp:79] Register handler...
+I20230322 14:02:32.103538     1 StorageServer.cpp:253] Init LogMonitor
+I20230322 14:02:32.104058     1 StorageServer.cpp:120] Starting Storage HTTP Service
+I20230322 14:02:32.104802     1 StorageServer.cpp:124] Http Thread Pool started
+I20230322 14:02:37.124338    96 WebService.cpp:124] Web service started on HTTP[19779]
+I20230322 14:02:37.130818     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20230322 14:02:37.132848     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20230322 14:02:37.134554     1 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20230322 14:02:37.136343     1 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20230322 14:02:37.201103     1 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/0/data
+I20230322 14:02:37.202322     1 AdminTaskManager.cpp:22] max concurrent subtasks: 10
+I20230322 14:02:37.202919     1 AdminTaskManager.cpp:40] exit AdminTaskManager::init()
+I20230322 14:02:37.202932   117 AdminTaskManager.cpp:224] waiting for incoming task
+E20230322 14:02:37.221134     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/130.005MiB
+I20230322 14:02:37.225131     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20230322 14:02:52.456686    67 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:02:52.460469    67 MetaClient.cpp:3265] Load leader ok
+I20230322 14:03:52.564877    67 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 0 space
+I20230322 14:03:52.567620    67 MetaClient.cpp:3265] Load leader ok
+I20230322 14:03:52.569407    67 NebulaStore.cpp:388] Create data space 11
+I20230322 14:03:52.579275    67 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20230322 14:03:52.581226    67 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20230322 14:03:52.582577    67 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20230322 14:03:52.584149    67 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20230322 14:03:52.626286    67 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/11/data
+I20230322 14:03:52.630697    67 NebulaStore.cpp:451] Space 11, part 2 has been added, asLearner 0
+I20230322 14:03:52.633285    67 NebulaStore.cpp:451] Space 11, part 1 has been added, asLearner 0
+I20230322 14:03:52.635788    67 NebulaStore.cpp:451] Space 11, part 3 has been added, asLearner 0
+I20230322 14:03:52.638855    67 NebulaStore.cpp:451] Space 11, part 5 has been added, asLearner 0
+I20230322 14:03:52.642169    67 NebulaStore.cpp:451] Space 11, part 4 has been added, asLearner 0
+I20230322 14:03:52.650660    67 NebulaStore.cpp:451] Space 11, part 9 has been added, asLearner 0
+I20230322 14:03:52.657073    67 NebulaStore.cpp:451] Space 11, part 10 has been added, asLearner 0
+I20230322 14:03:52.661610    67 NebulaStore.cpp:451] Space 11, part 8 has been added, asLearner 0
+I20230322 14:03:52.664561    67 NebulaStore.cpp:451] Space 11, part 7 has been added, asLearner 0
+I20230322 14:03:52.667451    67 NebulaStore.cpp:451] Space 11, part 6 has been added, asLearner 0
+I20230322 14:03:52.669924    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 2] Clean rocksdb part data
+I20230322 14:03:52.671247    67 NebulaStore.cpp:565] Space 9, part 2 has been removed!
+I20230322 14:03:52.672546    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 1] Clean rocksdb part data
+I20230322 14:03:52.673394    67 NebulaStore.cpp:565] Space 9, part 1 has been removed!
+I20230322 14:03:52.675247    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 3] Clean rocksdb part data
+I20230322 14:03:52.676128    67 NebulaStore.cpp:565] Space 9, part 3 has been removed!
+I20230322 14:03:52.677893    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 5] Clean rocksdb part data
+I20230322 14:03:52.678755    67 NebulaStore.cpp:565] Space 9, part 5 has been removed!
+I20230322 14:03:52.680169    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 4] Clean rocksdb part data
+I20230322 14:03:52.681035    67 NebulaStore.cpp:565] Space 9, part 4 has been removed!
+I20230322 14:03:52.682873    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 9] Clean rocksdb part data
+I20230322 14:03:52.683827    67 NebulaStore.cpp:565] Space 9, part 9 has been removed!
+I20230322 14:03:52.686682    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 10] Clean rocksdb part data
+I20230322 14:03:52.687669    67 NebulaStore.cpp:565] Space 9, part 10 has been removed!
+I20230322 14:03:52.690920    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 8] Clean rocksdb part data
+I20230322 14:03:52.692081    67 NebulaStore.cpp:565] Space 9, part 8 has been removed!
+I20230322 14:03:52.693348    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 7] Clean rocksdb part data
+I20230322 14:03:52.694284    67 NebulaStore.cpp:565] Space 9, part 7 has been removed!
+I20230322 14:03:52.695586    67 Part.cpp:490] [Port: 9780, Space: 9, Part: 6] Clean rocksdb part data
+I20230322 14:03:52.696461    67 NebulaStore.cpp:565] Space 9, part 6 has been removed!
+I20230322 14:03:52.697180    67 RocksEngine.h:206] Release rocksdb on /data/storage/nebula/9
+I20230322 14:03:52.699460    67 NebulaStore.cpp:708] Try to remove space directory: /data/storage/nebula/9
+I20230322 14:03:52.713977    67 NebulaStore.cpp:710] Space directory removed: /data/storage/nebula/9
+I20230322 14:03:52.714385    67 NebulaStore.cpp:526] Data space 9 has been removed!
+I20230322 14:03:54.115770    70 Part.h:59] [Port: 9780, Space: 9, Part: 10] ~Part()
+I20230322 14:03:54.470549    68 Part.h:59] [Port: 9780, Space: 9, Part: 5] ~Part()
+I20230322 14:03:54.474136    71 Part.h:59] [Port: 9780, Space: 9, Part: 1] ~Part()
+I20230322 14:03:54.721274    70 Part.h:59] [Port: 9780, Space: 9, Part: 6] ~Part()
+I20230322 14:03:54.728085    69 Part.h:59] [Port: 9780, Space: 9, Part: 4] ~Part()
+I20230322 14:03:54.872315    71 Part.h:59] [Port: 9780, Space: 9, Part: 2] ~Part()
+I20230322 14:03:54.984454    68 Part.h:59] [Port: 9780, Space: 9, Part: 3] ~Part()
+I20230322 14:03:55.248119    70 Part.h:59] [Port: 9780, Space: 9, Part: 8] ~Part()
+I20230322 14:03:55.279532    71 Part.h:59] [Port: 9780, Space: 9, Part: 7] ~Part()
+I20230322 14:03:55.303524    69 Part.h:59] [Port: 9780, Space: 9, Part: 9] ~Part()
+I20230322 14:04:02.743328    67 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:02.745201    67 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:12.785288    67 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:12.787441    67 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:32.838073    67 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:32.841212    67 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:52.868496    67 MetaClient.cpp:3259] Load leader of "storaged0":9779 in 1 space
+I20230322 14:04:52.869236    67 MetaClient.cpp:3265] Load leader ok
+I20230322 14:04:53.279234    18 AdminTask.cpp:21] createAdminTask (12, 0)
+I20230322 14:04:53.281780    18 AdminTaskManager.cpp:155] enqueue task(12, 0)
+I20230322 14:04:53.281826   117 AdminTaskManager.cpp:236] dequeue task(12, 0)
+I20230322 14:04:53.283713   117 AdminTaskManager.cpp:279] run task(12, 0), 10 subtasks in 10 thread
+I20230322 14:04:53.285020   213 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.285961   216 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.286795   216 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.287660   216 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 9
+I20230322 14:04:53.286042   213 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.289273   213 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 8
+I20230322 14:04:53.286602   218 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.285688   215 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.286949   219 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.287247   220 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.287496   221 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.285356   214 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.287770   117 AdminTaskManager.cpp:224] waiting for incoming task
+I20230322 14:04:53.287838   222 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.286307   217 StatsTask.cpp:110] Start stats task
+I20230322 14:04:53.290884   218 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.297325   218 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 7
+I20230322 14:04:53.292353   219 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.298611   219 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 6
+I20230322 14:04:53.293910   221 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.299970   221 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 5
+I20230322 14:04:53.295969   222 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.301344   222 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 4
+I20230322 14:04:53.291649   215 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.302882   215 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 3
+I20230322 14:04:53.293120   220 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.304069   220 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 2
+I20230322 14:04:53.300148   213 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.296682   217 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.305959   217 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 1
+I20230322 14:04:53.294682   214 StatsTask.cpp:307] Stats task finished
+I20230322 14:04:53.307089   214 AdminTaskManager.cpp:315] subtask of task(12, 0) finished, unfinished task 0
+I20230322 14:04:53.298614   216 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.307660   214 StatsTask.cpp:312] task(12, 0) finished, rc=[SUCCEEDED]
+I20230322 14:04:53.307956   218 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.309813   118 AdminTaskManager.cpp:92] reportTaskFinish(), job=12, task=0, rc=SUCCEEDED
+I20230322 14:04:53.309414   219 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.310863   221 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.312366   222 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.313541   215 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.314754   220 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:04:53.315559   118 AdminTaskManager.cpp:134] reportTaskFinish(), job=12, task=0, rc=SUCCEEDED
+I20230322 14:04:53.316608   217 AdminTaskManager.cpp:326] task(12, 0) runSubTask() exit
+I20230322 14:06:17.908471     1 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20230322 14:06:17.916741     1 NebulaStore.cpp:323] Stop the raft service...
+I20230322 14:06:17.917676     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20230322 14:06:17.918603     1 RaftexService.cpp:77] All partitions have stopped
+I20230322 14:06:17.921489     1 NebulaStore.cpp:326] Stop kv engine...
+I20230322 14:06:17.938441     1 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20230322 14:06:17.939780   118 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20230322 14:06:17.958240   117 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20230322 14:06:17.960402     1 RocksEngine.h:206] Release rocksdb on /data/storage/nebula/0
+I20230322 14:06:17.965596     1 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20230322 14:06:17.966218     1 NebulaStore.cpp:323] Stop the raft service...
+I20230322 14:06:17.966622     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20230322 14:06:17.967078     1 RaftexService.cpp:77] All partitions have stopped
+I20230322 14:06:17.967537     1 NebulaStore.cpp:326] Stop kv engine...
+I20230322 14:06:17.968050     1 NebulaStore.cpp:40] Cut off the relationship with meta client
+I20230322 14:06:17.968976     1 Part.h:59] [Port: 9780, Space: 11, Part: 6] ~Part()
+I20230322 14:06:17.970069     1 Part.h:59] [Port: 9780, Space: 11, Part: 7] ~Part()
+I20230322 14:06:17.971136     1 Part.h:59] [Port: 9780, Space: 11, Part: 8] ~Part()
+I20230322 14:06:17.972146     1 Part.h:59] [Port: 9780, Space: 11, Part: 10] ~Part()
+I20230322 14:06:17.973125     1 Part.h:59] [Port: 9780, Space: 11, Part: 9] ~Part()
+I20230322 14:06:17.974656     1 Part.h:59] [Port: 9780, Space: 11, Part: 1] ~Part()
+I20230322 14:06:17.976104     1 Part.h:59] [Port: 9780, Space: 11, Part: 2] ~Part()
+I20230322 14:06:17.977174     1 Part.h:59] [Port: 9780, Space: 11, Part: 3] ~Part()
+I20230322 14:06:17.978281     1 Part.h:59] [Port: 9780, Space: 11, Part: 5] ~Part()
+I20230322 14:06:17.979257     1 Part.h:59] [Port: 9780, Space: 11, Part: 4] ~Part()
+I20230322 14:06:17.980288     1 RocksEngine.h:206] Release rocksdb on /data/storage/nebula/11
+I20230322 14:06:17.982637     1 NebulaStore.cpp:48] ~NebulaStore()
+I20230322 14:06:17.983547     1 StorageDaemon.cpp:186] The storage Daemon stopped
+I20230322 14:06:17.991755     1 StatsTask.h:27] Release Stats Task

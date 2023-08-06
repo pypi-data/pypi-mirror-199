@@ -1,0 +1,97 @@
+Log file created at: 2023/03/27 01:22:46
+Running on machine: 2495df5fef83
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20230327 01:22:46.990617     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/32.000MiB
+E20230327 02:02:04.572603    19 QueryInstance.cpp:151] TagNotFound: Tag not existed!, query: DESC TAG  pagerank
+E20230327 04:09:17.978902    19 QueryInstance.cpp:151] TagNotFound: Tag not existed!, query: DESC TAG  pagerank
+E20230327 04:11:09.590186    21 QueryInstance.cpp:151] TagNotFound: Tag not existed!, query: DESC TAG player1
+E20230327 05:01:52.576946    22 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 05:01:52.625412    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 05:29:53.380766    22 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 05:29:53.415417    21 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 05:31:18.703938    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: DESC TAG pagerank
+E20230327 05:33:01.369199    21 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 05:33:01.405272    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 05:33:47.509303    21 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 05:33:47.542237    21 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 05:34:38.187057    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 10
+E20230327 05:34:38.189294    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 9
+E20230327 05:34:38.190093    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 8
+E20230327 05:34:38.191020    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 7
+E20230327 05:34:38.192068    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 6
+E20230327 05:34:38.193022    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 4
+E20230327 05:34:38.194061    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 5
+E20230327 05:34:38.194972    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 3
+E20230327 05:34:38.196069    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 1
+E20230327 05:34:38.197016    19 StorageAccessExecutor.h:40] AppendVerticesExecutor failed, error E_TAG_NOT_FOUND, part 2
+E20230327 05:34:38.198828    19 QueryInstance.cpp:151] Storage Error: Tag not found., query: match (n:player) return n limit 100
+E20230327 05:37:45.035430    22 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 05:37:45.082175    21 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 05:43:50.540066    21 QueryInstance.cpp:151] TagNotFound: Tag not existed!, query: DESC TAG louvain
+E20230327 05:44:09.540122    22 MutateValidator.cpp:61] No schema found for louvain : TagNotFound: TagName `louvain`
+E20230327 05:44:09.542795    22 QueryInstance.cpp:151] SemanticError: No schema found for `louvain', query: INSERT VERTEX louvain (cluster_id) VALUES "player102":(6),"player100":(6),"player101":(6),"player129":(2),"player116":(2),"player121":(2),"player128":(2),"player138":(3),"player115":(3),"player139":(4),"player108":(6),"player142":(5),"player117":(5),"player103":(4),"player113":(6),"player104":(6),"player105":(6),"player106":(6),"player118":(7),"player119":(6),"player120":(7),"player125":(6),"player130":(8),"player149":(8),"player136":(1),"player137":(1),"player147":(1),"player148":(1),"player109":(6),"player131":(7),"player143":(1),"player150":(1),"player114":(4),"player140":(4),"player127":(1),"player135":(6),"player126":(2),"player133":(4),"player144":(4),"player107":(6),"player141":(2),"player124":(2),"player134":(2),"player145":(3),"team203":(6),"team204":(6),"team212":(4),"team210":(3),"team216":(2),"team221":(3),"team229":(2),"team225":(3),"team206":(0),"team214":(1),"team215":(3),"team222":(6),"player122":(1),"team207":(2),"team213":(1),"team223":(1),"player123":(0),"team209":(0),"team218":(4),"team200":(5),"team201":(3),"team228":(3),"team208":(4),"team202":(2),"team205":(7),"team219":(8),"player111":(5),"team220":(5),"team226":(4),"team227":(1),"player132":(3),"player146":(3),"player110":(5),"team217":(2)
+E20230327 05:45:26.011924    20 QueryInstance.cpp:151] Scan vertices or edges need to specify a limit number, or limit number can not push down., query: match (n) return properties(n).name, n.pagerank.pagerank, n.louvain.cluster_id
+E20230327 06:25:29.414175    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 10
+E20230327 06:25:29.416139    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 9
+E20230327 06:25:29.417338    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 8
+E20230327 06:25:29.418507    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 7
+E20230327 06:25:29.419752    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 6
+E20230327 06:25:29.421025    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 4
+E20230327 06:25:29.422183    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 5
+E20230327 06:25:29.423439    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 3
+E20230327 06:25:29.424814    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 1
+E20230327 06:25:29.425920    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 2
+E20230327 06:25:29.427429    19 QueryInstance.cpp:151] Storage Error: Tag not found., query: match (n) return properties(n).name, n.pagerank.pagerank, n.louvain.cluster_id LIMIT 5
+E20230327 06:25:30.814033    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 10
+E20230327 06:25:30.815946    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 9
+E20230327 06:25:30.816978    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 8
+E20230327 06:25:30.817888    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 7
+E20230327 06:25:30.818711    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 6
+E20230327 06:25:30.819582    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 4
+E20230327 06:25:30.820425    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 5
+E20230327 06:25:30.821184    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 3
+E20230327 06:25:30.822052    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 1
+E20230327 06:25:30.822918    21 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 2
+E20230327 06:25:30.823750    19 QueryInstance.cpp:151] Storage Error: Tag not found., query: match (n) return properties(n).name, n.pagerank.pagerank, n.louvain.cluster_id LIMIT 5
+E20230327 06:25:31.703099    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 10
+E20230327 06:25:31.704078    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 9
+E20230327 06:25:31.705008    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 8
+E20230327 06:25:31.705965    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 7
+E20230327 06:25:31.707461    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 6
+E20230327 06:25:31.708709    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 4
+E20230327 06:25:31.709983    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 5
+E20230327 06:25:31.711642    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 3
+E20230327 06:25:31.712834    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 1
+E20230327 06:25:31.714066    20 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 2
+E20230327 06:25:31.715204    20 QueryInstance.cpp:151] Storage Error: Tag not found., query: match (n) return properties(n).name, n.pagerank.pagerank, n.louvain.cluster_id LIMIT 5
+E20230327 06:25:32.482573    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 10
+E20230327 06:25:32.484071    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 9
+E20230327 06:25:32.485428    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 8
+E20230327 06:25:32.486868    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 7
+E20230327 06:25:32.488073    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 6
+E20230327 06:25:32.489431    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 4
+E20230327 06:25:32.490778    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 5
+E20230327 06:25:32.492008    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 3
+E20230327 06:25:32.493125    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 1
+E20230327 06:25:32.494145    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 2
+E20230327 06:25:32.494931    22 QueryInstance.cpp:151] Storage Error: Tag not found., query: match (n) return properties(n).name, n.pagerank.pagerank, n.louvain.cluster_id LIMIT 5
+E20230327 06:25:33.287573    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 10
+E20230327 06:25:33.288410    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 9
+E20230327 06:25:33.289136    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 8
+E20230327 06:25:33.289971    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 7
+E20230327 06:25:33.290856    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 6
+E20230327 06:25:33.291617    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 4
+E20230327 06:25:33.292374    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 5
+E20230327 06:25:33.293165    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 3
+E20230327 06:25:33.293985    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 1
+E20230327 06:25:33.294736    22 StorageAccessExecutor.h:40] ScanVerticesExecutor failed, error E_TAG_NOT_FOUND, part 2
+E20230327 06:25:33.295645    20 QueryInstance.cpp:151] Storage Error: Tag not found., query: match (n) return properties(n).name, n.pagerank.pagerank, n.louvain.cluster_id LIMIT 5
+E20230327 06:25:49.976413    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 06:25:50.017241    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 06:34:38.626237    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 06:34:38.673763    22 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 06:35:15.666674    22 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 06:35:15.725085    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
+E20230327 06:38:28.658656    21 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `follow'.
+E20230327 06:38:28.696431    20 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `serve'.
