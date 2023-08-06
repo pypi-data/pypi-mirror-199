@@ -1,0 +1,11 @@
+Metadata-Version: 2.1
+Name: evmrpc
+Version: 0.2.0
+Summary: A library for batching Ethereum RPC calls
+Author: Fed
+Author-email: federicoulfo@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: web3 (>=6.0.0,<7.0.0)
