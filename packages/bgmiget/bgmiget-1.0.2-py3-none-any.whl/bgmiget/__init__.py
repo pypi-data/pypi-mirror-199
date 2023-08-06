@@ -1,0 +1,1 @@
+from .bgmiget import main
