@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: process-life-and-death-monitor
+Version: 0.1.5
+Summary: Process life-and-death monitor
+Home-page: https://github.com/tos-kamiya/process-life-and-death-monitor
+Author: Toshihiro Kamiya
+Author-email: kamiya@mbj.nifty.com
+License: BSD 2-Clause License
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows :: Windows 10
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+process-life-and-death-monitor
+==============================
+
+This program monitors running processes and highlights information about their creation and termination.
+
+* Displays a list of processes that have command names or arguments or current directory that match the specified `query`.
+* The display is refreshed at regular intervals,
+* with newly created processes in blue and terminated processes in red.
+
+Please visit [the homepage](https://github.com/tos-kamiya/process-life-and-death-monitor) for more information.
+
+### Screenshot
+
+![](https://github.com/tos-kamiya/process-life-and-death-monitor/blob/main/screenshot_windows.png?raw=True)
+
+
