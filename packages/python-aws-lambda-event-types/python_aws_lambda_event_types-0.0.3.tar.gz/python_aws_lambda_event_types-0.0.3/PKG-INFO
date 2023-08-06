@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: python-aws-lambda-event-types
+Version: 0.0.3
+Summary: Transform AWS Events into dataclasses
+Home-page: https://github.com/mraspberry/python-aws-lambda-event-types
+License: BSD-3-Clause
+Author: Matthew Raspberry
+Author-email: 3092450+mraspberry@users.noreply.github.com
+Requires-Python: >=3.7,<4.0
+Classifier: Development Status :: 3 - Alpha
+Classifier: Environment :: Other Environment
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: inflection (>=0.5.1,<0.6.0)
+Requires-Dist: wrapt (>=1.15.0,<2.0.0)
+Project-URL: Repository, https://github.com/mraspberry/python-aws-lambda-event-types
+Description-Content-Type: text/markdown
+
+# AWS Events Types
+
+This package provides decorators for AWS services that issue events
+that automatically transform the events into a dataclass
+
