@@ -1,0 +1,12 @@
+BASE_URL = "https://api.ask-jennie.com/"
+
+LOGIN_URL = BASE_URL + "v1/login/"
+LOGIN_VIA_GOOGLE_URL = BASE_URL + "v1/continue-with-google/"
+LOGIN_VIA_KEY = BASE_URL + "v1/active-sdk/"
+AUTOMATION_URL = BASE_URL + "v1/automation/TYPE/"
+AUTOMATION_SYNC_URL = BASE_URL + "v1/automation/sync/"
+AUTOMATION_VALIDATE_URL = BASE_URL + "v1/automation/TYPE/validate/"
+CUSTOM_AUTOMATION_URL = BASE_URL + "v1/custom-automations/TYPE/validate/"
+CUSTOM_AUTOMATION_VALIDATE_URL = BASE_URL + "v1/custom-automations/TYPE/validate/"
+IMAGE_UPLOAD_URL = BASE_URL + "v1/image_upload/"
+TEXT_UPLOAD_URL = BASE_URL + "v1/file_upload/"
