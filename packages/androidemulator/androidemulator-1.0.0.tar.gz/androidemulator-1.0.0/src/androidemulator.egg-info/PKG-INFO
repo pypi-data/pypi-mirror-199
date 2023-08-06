@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: androidemulator
+Version: 1.0.0
+Summary: Controls the Android Emulator from python API bindings
+Home-page: https://github.com/zackees/androidemulator
+Maintainer: Zachary Vorhies
+License: BSD 3-Clause License
+Keywords: template-python-cmd
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# androidemulator
+
+Controls an android emulator. Useful for testing on multiple android versions.
+
+[![Linting](https://github.com/zackees/androidemulator/actions/workflows/lint.yml/badge.svg)](https://github.com/zackees/androidemulator/actions/workflows/lint.yml)
+
+[![MacOS_Tests](https://github.com/zackees/androidemulator/actions/workflows/push_macos.yml/badge.svg)](https://github.com/zackees/androidemulator/actions/workflows/push_macos.yml)
+[![Ubuntu_Tests](https://github.com/zackees/androidemulator/actions/workflows/push_ubuntu.yml/badge.svg)](https://github.com/zackees/androidemulator/actions/workflows/push_ubuntu.yml)
+[![Win_Tests](https://github.com/zackees/androidemulator/actions/workflows/push_win.yml/badge.svg)](https://github.com/zackees/androidemulator/actions/workflows/push_win.yml)
+
+
+To develop software, run `. ./activate.sh`
+
+# Windows
+
+This environment requires you to use `git-bash`.
+
+# Linting
+
+Run `./lint.sh` to find linting errors using `pylint`, `flake8` and `mypy`.
