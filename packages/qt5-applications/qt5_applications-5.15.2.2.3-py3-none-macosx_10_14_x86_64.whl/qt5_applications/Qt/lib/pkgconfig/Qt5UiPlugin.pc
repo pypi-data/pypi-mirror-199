@@ -1,0 +1,12 @@
+prefix=/Users/runner/work/qt-applications/qt-applications/build/qt_applications-nbag5a8h/qt/5.15.2/clang_64
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/lib/QtUiPlugin.framework/Headers
+
+
+Name: Qt5 UiPlugin
+Description: Qt UiPlugin module
+Version: 5.15.2
+Cflags: -DQT_UIPLUGIN_LIB -I${includedir} -F${libdir}
+Requires: Qt5Core Qt5Gui Qt5Widgets
+

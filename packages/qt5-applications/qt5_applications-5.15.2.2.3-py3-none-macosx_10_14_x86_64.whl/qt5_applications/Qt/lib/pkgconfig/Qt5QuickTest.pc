@@ -1,0 +1,13 @@
+prefix=/Users/runner/work/qt-applications/qt-applications/build/qt_applications-nbag5a8h/qt/5.15.2/clang_64
+exec_prefix=${prefix}
+libdir=${prefix}/lib
+includedir=${prefix}/lib/QtQuickTest.framework/Headers
+
+
+Name: Qt5 QuickTest
+Description: Qt QuickTest module
+Version: 5.15.2
+Libs: -F${libdir} -framework QtQuickTest 
+Cflags: -DQT_QMLTEST_LIB -I${includedir} -F${libdir}
+Requires: Qt5Core Qt5Test Qt5Widgets
+
