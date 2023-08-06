@@ -1,0 +1,9 @@
+Metadata-Version: 2.1
+Name: led-list
+Version: 0.2.0
+Summary: Teach Python lists with a BlinkStick LED strip.
+Project-URL: Homepage, https://github.com/connorff/led-list
+Author-email: Connor Fogarty <connorflynnfogarty@gmail.com>
+License-File: LICENSE
+Requires-Python: >=3.7
+Requires-Dist: blinkstick>=0.7.0
