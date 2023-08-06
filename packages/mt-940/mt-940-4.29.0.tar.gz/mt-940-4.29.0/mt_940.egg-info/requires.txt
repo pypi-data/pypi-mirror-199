@@ -1,0 +1,13 @@
+
+[docs]
+sphinx>=1.7.2
+GitPython>=2.1.9
+sphinx2rst
+
+[tests]
+pyyaml
+pytest
+pytest-cache
+pytest-cover
+pytest-flake8
+flake8
