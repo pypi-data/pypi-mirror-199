@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling", "hatch-vcs"]
+build-backend = "hatchling.build"
+
+[project]
+name = "switchbot_utility"
+authors = [
+  { name="MATSUMURA Hidetoshi", email="icarrot@mac.com" },
+]
+description = "Python Switchbot utilities"
+readme = "README.md"
+dependencies = ["requests"]
+requires-python = ">=3.6"
+keywords = [
+    "Switchbot",
+    "IoT",
+    "Switchbot API"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dynamic = ["version"]
+
+[project.urls]
+"Homepage" = "https://github.com/iCarrot0605/Switchbot_utility"
+"Bug Tracker" = "https://github.com/iCarrot0605/Switchbot_utility/issues"
+
+[tool.hatch.version]
+source = "vcs"
+
+[tool.hatch.build.hooks.vcs]
+version-file = "src/switchbot_utility/_version.py"
