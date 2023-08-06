@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: darwin-env-selector
+Version: 0.1.0
+Summary: An environment file selector for Darwin
+License: MIT
+Author: Owen Jones
+Author-email: owenxjones@pm.me
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: python-simple-menu (>=1.1.15,<2.0.0)
+Requires-Dist: rich (>=13.3.2,<14.0.0)
+Description-Content-Type: text/markdown
+
+# Darwin Environment Switcher
+
+Simple switcher for config files
