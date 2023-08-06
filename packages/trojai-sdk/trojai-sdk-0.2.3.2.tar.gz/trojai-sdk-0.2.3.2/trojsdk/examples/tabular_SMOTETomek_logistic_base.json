@@ -1,0 +1,53 @@
+{
+	"test_run_name": "cleaned_credit_approval_data",
+	"task_type": "tabular",
+	"audit": true,
+	"run_attacks_from_model_profile": true,
+	"dataset": {
+		"name": "cleaned_credit_approval_test",
+		"path_to_data": "s3://trojai-object-storage/CreditApprovalFiles/cleaned_approval_test.csv",
+		"data_loader_config": {
+			"batch_size": 16,
+			"shuffle": false
+		},
+		"train_dataset": {
+			"name": "cleaned_credit_approval_train",
+			"path_to_data": "s3://trojai-object-storage/CreditApprovalFiles/cleaned_approval_train.csv",
+			"data_loader_config": {
+				"batch_size": 16,
+				"shuffle": false
+			},
+			"label_column": "target",
+			"classes_dictionary": {
+				"No": 0,
+				"Yes": 1
+			}
+		},
+		"model": {
+			"name": "SMOTETomek_logistic",
+			"path_to_model_file": "s3://trojai-object-storage/CreditApprovalFiles/sklearn_wrapper.py",
+			"model_args_dict": {
+				"model_file": "s3://trojai-object-storage/CreditApprovalFiles/SMOTETomek_logistic.pkl"
+			}
+		},
+		"auth_config": {
+			"api_endpoint": "http://localhost/api/v1",
+			"auth_keys": {
+				"id_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIyMGI4MGFmNC00MDIxLTExZWQtYjg3OC0wMjQyYWMxMjAwMDIiLCJ1c2VybmFtZSI6InRyb2prOHMiLCJlbWFpbCI6Im5vcmVwbHlAdHJvai5haSIsImlhdCI6MTUxNjIzOTAyMn0._xCVejGSmTrgst2JQOSUzC9AHzvqjkO-YyXJCAyndE4",
+				"refresh_token": "eyJjdHkiOiJKV1QiLCJlbmMiOiJBMjU2R0NNIiwiYWxnIjoiUlNBLU9BRVAifQ.V4QmvpHDqXncE43VvCkZeJbOYo-hvOVgJo5p45-1J3NPPjW94aIcx6mFpBq8LzgPhaVU8Jl-BlDUsNeZxEfTF-IeD15LmVtSvRzSJWG4e1xyVFDDPHJHjtle9fNDIoFCf8-HDRrrxeX4QPi3CX0YsqdTjbbZuUVMOtdO23Y8xMqm5048vr08SgHK7F43m9GXEvGm8fcAQp5Fx39vb28lW9In_p9pgsbWcuSTFvuZJYsjRyoiwkof9Hs4x2PfrQRmAaR1U6qM7oyilK430c9jddy5mM-P7zJ1lxC4JD4aD26ONAhOegjeb0n8o8Yw_orEK-XxQUvFolxX1La-V1S75A.QvrV0IBA8YPVhK_6.XiLBDAZYzP2zR28H3IrzPMEcbaPF-p-NjSqE74eAWLrpnTrvlGev-ZL7bGjXv3v2eS2wga0R8pWWXOGap2Eog9qw6FheVPKzBoqSTHqUK6tJohatWPqvDKCCoKTc9jxhOsxMWfENbVMNnJl37EZpQVej6GlVkkg0gPKOnhfJHm3XT5cSRqFktdGNuStOGcOU-NzGFLy3_EAcy5Iw3CmG5v-aBhqGSpxpFXhmqesur5CCv-_GNW3NWkxafnYLn4rDy4QTLEz66Avn4UqgM_3_dIbqpSfhs8LK_YrXYcseWKMduEI1GEYmhmp0LpocjtCF1tC_KXCFyKQI_zHfaaZZiPMuf6gk9cpLH_ARntDktg9ypEu6Z2xsjanua3qhCw2fTw0-vb1HM1-lPbzvMhlBues-PBFZPjQoLeEU_urnm1PmrXo0uX_fNpwCX4Qahvp_wtQChZiINQUBQYYTXDlDgbK_r2OVlC7OpK_WVa5zCqdGXgWd0f2xpcKa2VHvbMlmV_zmEsYl24ywRMKUiQFUMqj_eZGLlH-HZOaVYIjpHqDcbRe1USEIhD2PEXfHVMvwH4exdjeCEbJZXc9O1zoRux1tFcdaoUcV2scYQUAW-3Sc9SgaZlmCtfWCzz2UNt3U_KDesiAn6fvBFnonpiqE_OGaLSu2fXuaAYu2zASxuj4E9zTnnnD4jR5_PRwPM7m5MZ3leOtfBKemLRo-Q7CdViw9uc49SLuWepDr9rKueRLsA3yE-FB71dJHXl9bwabqDiy0Fub5uwRIZpVb4TeJTnd7iuS_NwEfe8QnPOWWWLTSPeQCZuYT93FXlEMKfCqp9pRtQ01S4vJ0jMpHk_OFXyFTjS4l4a50GMeRFD2h_7HWeRaXMm1f60HvZnJFUkvx2SlZDA-MvlDNYkSHtuDc4fuFv67znjmB1Qz3DuHZYV0bNNruVsnJqs9P41DXhtiiwJ4qv2FOix8lLtD00eqlOBbt86ggPtpmu3t9TqQKrH9J8E1N2bJb1hq67q9_qYfTJJSGC7Y_go2HeHffxgVflVGLyXf_5Ba7M7caQN-6AF5OEiyONjGzUn2dBvNzt2m_zlvKr4iZBWpC5XBWr9RbR2kzZkhAg_nFQbx2_EGYpyfIfKQyb1SP4ukhstgL5vD2Vshq1lAUUBcm0eb3_pRjwzaudEHricJsmRPh9YJakaqzCRlTkuJEhC89gGPuXSK-VPeQA3rkj93X4PT8Quf0DPQiIgxAbGOGYxAVBaeZEQVXL6tQujVHDnpL7eW5uq8nItfRG4CmLWw0ob7AlQ.VWFBh_NYVxF3fv28NXZrFg",
+				"api_key": "Wla2FDDbjL1jW3fijhz6I1p2RW4xSpvE1Vaba50X"
+			},
+			"secrets": {
+				"AWS_ACCESS_KEY_ID": "AKIAQASF3SJBUF24YMZI",
+				"AWS_SECRET_ACCESS_KEY": "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"
+			},
+			"project_name": "credit_approval_model_comparison",
+			"dataset_name": "cleaned_credit_approval_data"
+		},
+		"docker_metadata": {
+			"docker_image_url": "trojai/troj-engine-base-tabular:tabular-predev-latest",
+			"docker_secret_name": "trojaicreds",
+			"image_pull_policy": "Always"
+		}
+	}
+}
