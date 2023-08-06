@@ -1,0 +1,5 @@
+numpy>=1.18
+cython>=0.29
+
+[gpu]
+cupy>=8.3.0
