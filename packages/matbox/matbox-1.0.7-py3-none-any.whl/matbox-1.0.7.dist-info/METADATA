@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: matbox
+Version: 1.0.7
+Summary: A matplotlib toolbox dedicated to quick start and easy expansion, based on pyqt.
+Home-page: https://github.com/PythonnotJava/MTBOX
+Author: PythonnotJava
+Author-email: 
+License: MIT
+Requires-Dist: PyQt5
+Requires-Dist: qutepart
+Requires-Dist: pyyaml
+Requires-Dist: qt-material
+Requires-Dist: numpy
+Requires-Dist: matplotlib
+Requires-Dist: PyQtWebEngine
+
