@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: relation-validator
+Version: 0.1.0
+Summary: This package validates a list of relationships between two terms against the specified ontologies.
+Author: Anita Caron
+Author-email: anitacaron@users.noreply.github.com
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: oaklib (==0.1.73)
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Requires-Dist: pyaml (>=21.10.1,<22.0.0)
+Requires-Dist: ruamel-yaml (>=0.17.21,<0.18.0)
+Description-Content-Type: text/markdown
+
+# Relationship validation
