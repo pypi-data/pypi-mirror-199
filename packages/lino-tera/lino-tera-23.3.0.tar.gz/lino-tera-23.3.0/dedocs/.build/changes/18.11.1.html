@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="de" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="de" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>18.11.1 (2018-11-30) &mdash; Lino Tera Benutzerhandbuch</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+  
+  
+  
+
+  
+  <script type="text/javascript" src="../_static/js/modernizr.min.js"></script>
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/translations.js"></script>
+    
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+
+    
+
+  
+  <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/linodocs.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/myalabaster.css" type="text/css" />
+  <link rel="stylesheet" href="../_static/tzverses.css" type="text/css" />
+    <link rel="author" title="Über dieses Dokument" href="../about.html" />
+    <link rel="search" title="Suche" href="../search.html" />
+    <link rel="next" title="18.11.0 (2018-11-06)" href="18.11.0.html" />
+    <link rel="prev" title="18.12.0 (2018-12-22)" href="18.12.0.html" />
+   
+
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search"  style="background: #dddddd" >
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> Lino Tera Benutzerhandbuch
+          
+
+          
+            
+            <img src="../_static/logo_web3.png" class="logo" alt="Logo"/>
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                20.10.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../about.html">Über Lino Tera</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../basics/index.html">Grundkurs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../em/index.html">Empfang</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../th/index.html">Therapeuten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../bh/index.html">Buchhaltung</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sa/index.html">Verwaltung</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Releasenotizen</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="19.2.0.html">19.2.0 (WIP)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="19.1.0.html">19.1.0 (2019-01-08)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="18.12.0.html">18.12.0 (2018-12-22)</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">18.11.1 (2018-11-30)</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#testanweisungen">Testanweisungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ubersicht-der-anderungen">Übersicht der Änderungen</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zu-klaren-vor-dem-umstieg">Zu klären vor dem Umstieg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#zu-klaren-nach-dem-umstieg">Zu klären nach dem Umstieg</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#roadmap">Roadmap</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#technical-notes">Technical notes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="18.11.0.html">18.11.0 (2018-11-06)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="18.10.0.html">18.10.0 (2018-10-09)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="18.8.0.html">18.8.0 (2018-08-16)</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Lino Tera Benutzerhandbuch</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Release-Notizen</a> &raquo;</li>
+        
+      <li>18.11.1 (2018-11-30)</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/changes/18.11.1.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <div class="rst-breadcrumbs-buttons" role="navigation" aria-label="breadcrumb navigation">
+      
+        <a href="18.11.0.html" class="btn btn-neutral float-right" title="18.11.0 (2018-11-06)" accesskey="n">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="18.12.0.html" class="btn btn-neutral float-left" title="18.12.0 (2018-12-22)" accesskey="p"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+  </div>
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="tera-18-11-1">
+<span id="id1"></span><h1>18.11.1 (2018-11-30)<a class="headerlink" href="#tera-18-11-1" title="Link zu dieser Überschrift">¶</a></h1>
+<p>Liste von Optimierungen für Therapeuten besprochen am 6.11.2018 und
+danach.  Fakturierung mit der neuen Tarifordnung.</p>
+<p>Zur Testphase freigegeben ab 30.11.2018 um 8 Uhr.</p>
+<p>Alle auftretenden Probleme bitte per E-Mail an mich mit Kopie an alle anderen.
+Vertrauliche Informationen sollten nie per E-Mail verschickt werden.  Wenn
+möglich lieber mit Worten und Aktennummern arbeiten.</p>
+<p>Benutzt auch das Handbuch, ich habe da viel Arbeit reingesteckt:
+<a class="reference external" href="http://de.tera.lino-framework.org">http://de.tera.lino-framework.org</a></p>
+<div class="contents local topic" id="inhalt">
+<ul class="simple">
+<li><p><a class="reference internal" href="#testanweisungen" id="id2">Testanweisungen</a></p></li>
+<li><p><a class="reference internal" href="#ubersicht-der-anderungen" id="id3">Übersicht der Änderungen</a></p></li>
+<li><p><a class="reference internal" href="#zu-klaren-vor-dem-umstieg" id="id4">Zu klären vor dem Umstieg</a></p></li>
+<li><p><a class="reference internal" href="#zu-klaren-nach-dem-umstieg" id="id5">Zu klären nach dem Umstieg</a></p></li>
+<li><p><a class="reference internal" href="#roadmap" id="id6">Roadmap</a></p></li>
+<li><p><a class="reference internal" href="#technical-notes" id="id7">Technical notes</a></p></li>
+</ul>
+</div>
+<div class="section" id="testanweisungen">
+<h2><a class="toc-backref" href="#id2">Testanweisungen</a><a class="headerlink" href="#testanweisungen" title="Link zu dieser Überschrift">¶</a></h2>
+<p>Ziele der Testphase:</p>
+<p>1) Ist alle Info aus TIM importiert worden? Findet ihr die Infos
+wieder?</p>
+<p>2) Was muss noch verbessert werden bei der Erfassung? Bitte unterscheiden
+zwischen „notwendig“ und „darf bis nach dem Umstieg warten“.</p>
+<p>3) Funktioniert die Automatikfakturierung?  Wenn die Termine erfasst sind,
+lassen wir die AF laufen und schauen was raus kommt.</p>
+<p>Bitte gebt während der Testphase realistische Termine und Notizen ein, die sich
+auf 2018 beziehen.  Es dürfen ruhig iktive Angaben dabei sein. Eure Eingaben
+werden beim Umstieg wieder gelöscht. Beim Erfassen neuer Patienten ist zu
+beachten, dass die <em>Patienten</em> in Lino schon definitiv sind: wenn ihr einen
+Patienten eingebt, bleibt der auch nach dem Umstieg drin. Nehmt für neue
+Patienten Namen wie Max Mustermann.</p>
+<p>Auch Anzahlungen erfassen. Therapeutische Gruppen nicht vergessen. Kinder, die
+mehr als 20 mal kommen und dann nur 20 fakturiert kriegen sollen. Patienten,
+die parallel zum Therapeuten und Psychiater gehen.</p>
+<p>NB Lino kann Termine schon jetzt automatisch generieren.  Siehe Handbuch.</p>
+</div>
+<div class="section" id="ubersicht-der-anderungen">
+<h2><a class="toc-backref" href="#id3">Übersicht der Änderungen</a><a class="headerlink" href="#ubersicht-der-anderungen" title="Link zu dieser Überschrift">¶</a></h2>
+<ul class="simple">
+<li><p>Fakturierung mit der neuen Tarifordnung.
+Die Fakturierung basiert auf den <em>Anwesenheiten</em>, Abonnements (eine Rechnung pro Monat unabhängig von
+den Anwesenheiten) werden bis auf Weiteres <em>nicht</em> eingeführt.  Es
+werden monatliche Rechnungen geschrieben, die detailliert jede
+Anwesenheit auflisten.  Eine neue Sonderregel: für Kinder kann man
+eine Obergrenze (Pauschale) angeben: es werden maximal soundsoviel Stunden im
+Monat fakturiert, wenn das Kind häufiger da war, zahlt es nicht mehr.</p></li>
+<li><p><a class="reference internal" href="../th/barzahlungen.html"><span class="doc">Bargeldkasse der Therapeuten</span></a></p></li>
+<li><p>Auswahl Uhrzeit : von 7:00 bis 20:00</p></li>
+<li><p>„Meine Akten“ zeigt jetzt nur <em>exponierte</em> Akten an.</p></li>
+<li><p>Bezeichnungen:
+„Storniert“ –&gt; „Abgesagt“
+„Entwurf“ –&gt; „Geplant“</p></li>
+<li><p>Wenn man versehentlich auf einen Status eines Termins geklickt hat,
+sollte man das immer auch noch wieder ändern können.</p></li>
+<li><p>Optimierungen in <em>Meine Termine</em> :</p>
+<ul>
+<li><p>rückblickend bis heute. Akte anklickbar. Absteigend sortiert.</p></li>
+<li><p>Kolonnen : Datum, Uhrzeit, Akte, DL-Art, Kurzbeschreibung</p></li>
+<li><p>ab heute</p></li>
+<li><p>bis in 7 Tagen (?)</p></li>
+<li><p>Kolonne „overview“ raus</p></li>
+<li><p>Button „Neuer Termin“ unter der Tabelle, nicht als quicklink</p></li>
+<li><p>Kolonne „Workflow“ raus.</p></li>
+<li><p>Nach insert Termin nicht ins Detail springen (stay in grid)</p></li>
+</ul>
+</li>
+<li><p>Save-Button steht jetzt immer ganz am Ende der Werkzeugleiste.</p></li>
+<li><p>Duplicate und Fusionieren : nicht mehr sichtbar für normale Benutzer. Wohl
+für Verwalter.</p></li>
+<li><p>Blitz-Button auf einem Termin nur, wenn es sich um eine Serie
+handelt.</p></li>
+<li><p>„Therapeuten wollen nur den Namen der Akte ohne Aktenart und
+Aktennummer sehen“ –&gt; Ich zweifle noch daran, ob ihr das wollt.
+Aktenart und -nummer stehen jetzt in Klammern hinter dem Namen.</p></li>
+<li><p>Die Krankenkassen stehen an zwei Stellen: als Klientenkontakt pro Akte soll
+man die „Krankenversicherung“ auswählen. Insbesondere, weil wir ja später auch
+Rechnungen an die Krankenkassen schicken wollen.
+Neues Feld Course.health_insurance und neues Plugin health mit einem
+Modell „Insurance“ (description, company, project, contrib_account).</p></li>
+<li><p>Standardwert für Dienstleistungsart in Benutzereinstellungen.</p></li>
+<li><p>In „Meine Akten“ funktionierte [Einfügen] nicht. Fenster öffnet sich, aber man
+kann es nicht bestätigen.</p></li>
+<li><p>Meine Notizen : Feld „Ereignisart“ kann weg.</p></li>
+<li><p>Feldbezeichnung auf Notizen wie in TIM : „Betreff“ –&gt;
+„Kurzbeschreibung“ und „Inhalt“ –&gt; „Ausführliche Beschreibung“</p></li>
+<li><p>Anwesenheiten pro Person und pro Akte: Monate chronologisch
+rückwärts anzeigen statt vorwärts.</p></li>
+<li><p>Ich habe weiter am Handbuch gearbeitet. Siehe
+z.B. <a class="reference internal" href="../basics/index.html"><span class="doc">Grundkurs</span></a>, <a class="reference internal" href="../th/index.html"><span class="doc">Therapeuten</span></a> und <a class="reference internal" href="../bh/index.html"><span class="doc">Buchhaltung</span></a>.
+Falls ihr noch irgendwo eine pdf-Datei rumhängen habt, solltet ihr die
+löschen und bitte nicht ausdrucken.</p></li>
+<li><p>Meine Akten jetzt sortiert nach Datum der letzten Änderung</p></li>
+<li><p>Panel „Teilnehmer“ einer Gruppenakte:</p>
+<ul>
+<li><p>Teilnehmer hinzufügen : Button ist so weit unten</p></li>
+<li><p>Eigener Button für Therapeut hinzufügen.</p></li>
+</ul>
+</li>
+<li><p>Nach Erfassen Familiengespräch auf Akte 180484 waren die Teilnehmer
+nicht ausgefüllt. (Es fehlte Konfigurierung der DL-Art)</p></li>
+</ul>
+</div>
+<div class="section" id="zu-klaren-vor-dem-umstieg">
+<h2><a class="toc-backref" href="#id4">Zu klären vor dem Umstieg</a><a class="headerlink" href="#zu-klaren-vor-dem-umstieg" title="Link zu dieser Überschrift">¶</a></h2>
+<ul class="simple">
+<li><p>DL-Art und Kassenbuch in den Benutzereinstellungen eintragen. Siehe Handbuch.</p></li>
+<li><p>Benutzerliste muss noch aufgeräumt werden (kann schon vor dem Umstieg gemacht
+werden, aber Benutzernamen dürfen noch nicht geändert werden).</p></li>
+<li><p>Gebührenordnung konfigurieren und Fakturierung testen. Layout Rechnung
+besprechen. Die Pauschale „Max. 10 pro Monat“ ist momentan auf 10, um Tests zu
+vereinfachen.</p></li>
+<li><p>Die <em>Vermittler</em> werden noch nicht korrekt importiert.</p></li>
+<li><p>Einzeltherapien mit Psychiater (Akte E060452) : muss Import angepasst werden?</p></li>
+</ul>
+</div>
+<div class="section" id="zu-klaren-nach-dem-umstieg">
+<h2><a class="toc-backref" href="#id5">Zu klären nach dem Umstieg</a><a class="headerlink" href="#zu-klaren-nach-dem-umstieg" title="Link zu dieser Überschrift">¶</a></h2>
+<ul class="simple">
+<li><p>Wird die <strong>Abteilung</strong> noch benutzt?</p></li>
+<li><p>Ansicht als Partner, Person, Patient : verwirrend.</p></li>
+<li><p>Eine Liste von Terminen kann man nicht nach dem Verantwortlichen sortieren.
+Workaround: in den Filterparametern einen bestimmten Verantwortlichen
+auswählen.</p></li>
+<li><p>Kassenrolle</p></li>
+<li><p>Wäre es nicht besser „Workflow“ durch „Status“ zu ersetzen?</p></li>
+<li><p>Unterscheidung zwischen „Verwalter“ und „Therapeut“ einer Akte.</p></li>
+<li><p>„Endet um“ ausfüllen –&gt; zu besprechen. Nicht dringend.</p></li>
+<li><p>„Alle Termine am gleichen Tag zeigen“ –&gt;</p></li>
+<li><p>Ein kombinierter Button für „Speichern und Fenster schließen“</p></li>
+<li><p>Sollte das Feld „Therapieart“ schreibgeschützt sein?</p></li>
+<li><p>Anwesenheiten pro Person und pro Akte: „tabular“ view (wenn mehr als
+ein Jahr) wieder raus, denn die braucht zu viel Platz. Das Panel
+sollte auf einen halben Bildschirm passen,</p></li>
+<li><p>invoicing.OrderTypes: once, monthly, yearly, number gives additional
+information about how to understand what the InvoiceGenerator says.
+„once“ is as it was now. „number“ is similar to what we have in Voga
+for what they call „Abo-Kurse“. Monthly means one invoice per month.</p></li>
+<li><p>Jeder Therapeut, der eine Bargeldkasse macht, ist ein POS (Point of
+sale). Neues Plugin <cite>posale</cite> mit einem voucher type „Transaction“.
+A transaction is similar to a finan.BankStatement</p></li>
+<li><p>Eigener Button „Termin ändern“ in „Meine Termine“?</p></li>
+<li><p>Wenn man auf Seite 4 einer Tabelle steht und dann einen Filter setzt, so dass
+die Tabelle weniger als 4 Seiten hat, zeigt Lino Seite 4 von 2 (=
+leere Seite). Hier müsste Lino auf die erste Seite springen.</p></li>
+<li><p>Es gibt mehrere Anzeigemöglichkeiten für die Liste der Kalendereinträge.
+Interessant ist die Tabellenform (Seite 7 unten) Die Ansicht als Aufzählungpro
+Monat Monat horizontal (Seite 7 oben) kann entfallen.</p></li>
+<li><p>Anzeige der Anwesenheiten pro Patient ist noch zu analysieren.
+Beispiel Patient 1180528.
+Obwohl der Termin verpasst/abgesagt wurde, ist der Patient als „anwesend“
+vermerkt. Es fehlt die Dienstleistungsart. Sinn und Zweck dieser Liste ist
+nicht ganz klar…</p></li>
+<li><p>Wir möchten die Anwesenheitsrate eines Patienten überprüfen: dazu müssten die
+Dienstleistungen, die nicht zu den Therapiesitzungen gehören (Berichte
+schreiben, Absprache, Kontakte mit Dritten, …) herausgefiltert werden. Kann
+eine solche Möglichkeit eingebaut werden?</p></li>
+</ul>
+</div>
+<div class="section" id="roadmap">
+<h2><a class="toc-backref" href="#id6">Roadmap</a><a class="headerlink" href="#roadmap" title="Link zu dieser Überschrift">¶</a></h2>
+<ul class="simple">
+<li><p><strong>November 2018</strong> : letzte Arbeiten.  Ziel ist, dass die Therapeuten
+ihre alltägliche Arbeit in Lino erledigen können wie bisher in TIM:
+Akten, Termine und Notizen erfassen und verwalten.</p></li>
+<li><p><strong>Dezember 2018</strong> :  Letzte Optimierungen des Datenimports. Schulung aller
+Therapeuten.  Zumindest das Erfassen und Verwalten ihrer Akten und
+Termine in Lino sollten alle verstanden haben.</p></li>
+<li><p><strong>1. Januar 2019</strong> : Umstieg auf Produktionsbetrieb. Ab jetzt werden
+keine Daten mehr aus TIM importiert.</p></li>
+<li><p><strong>Januar 2019</strong> : Das Sekretariat kann Verkaufsrechnungen
+generieren.</p></li>
+<li><p>Weiterentwicklungsprojekt <strong>Kalenderplanung</strong> : Lino könnte dann
+Terminvorschläge generieren und hilft bei der Erstellung des
+Wochenplans.  Wichtig insbesondere für die Termine im KITZ.  Es gäbe
+einen Stundenplan und Ausnahmeregelungen.  Dazu gehört auch
+eventuelle Integration mit Kopano und Hochladen von Dateien.  Die
+Kalenderfunktionen soll entweder in Lino so gut werden, dass Kopano
+nicht mehr nötig ist oder mit Kopano synchronisiert sein.</p></li>
+</ul>
+</div>
+<div class="section" id="technical-notes">
+<h2><a class="toc-backref" href="#id7">Technical notes</a><a class="headerlink" href="#technical-notes" title="Link zu dieser Überschrift">¶</a></h2>
+<p>These are instructions for migrating from previous version to this
+one.</p>
+<ul>
+<li><p>Check that nobody is working on it.</p></li>
+<li><p>Stop Apache and Supervisor.</p></li>
+<li><p>Make a snapshot of the database:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ go prod
+$ a
+$ python manage.py dump2py -o snapshot2testing
+</pre></div>
+</div>
+</li>
+<li><p>Create and adapt the <code class="xref std std-xfile docutils literal notranslate"><span class="pre">restore2preview.py</span></code> file:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ cd snapshot2testing
+$ cp restore.py restore2preview.py
+$ nano snapshot2testing/restore2preview.py
+</pre></div>
+</div>
+<p>In <code class="xref std std-xfile docutils literal notranslate"><span class="pre">restore2preview.py</span></code> I deactivate all models whose data
+will be deleted by <code class="xref py py-mod docutils literal notranslate"><span class="pre">spzloader2</span></code>.</p>
+</li>
+<li><p>Update the source code and restore from snapshot:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ ./pull.sh
+$ nohup python manage.py run snapshot2testing/restore2preview.py --noinput &amp;
+</pre></div>
+</div>
+<p>This takes some time…</p>
+</li>
+<li><p>Run <code class="xref py py-mod docutils literal notranslate"><span class="pre">spzloader2</span></code> to import
+data from TIM:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>$ nohup python manage.py run tl2.py --noinput &amp;
+</pre></div>
+</div>
+</li>
+<li><p>Manual changes in config:
+set force_guest_states of event types</p></li>
+</ul>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="18.11.0.html" class="btn btn-neutral float-right" title="18.11.0 (2018-11-06)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="18.12.0.html" class="btn btn-neutral float-left" title="18.12.0 (2018-12-22)" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2018-2021 Rumma &amp; Ko Ltd
+      <span class="lastupdated">
+        Zuletzt aktualisiert am 24.04.2021.
+      </span>
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+  
+    <div class="footer">
+      Zuletzt aktualisiert am 24.04.2021.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 3.5.4.
+<a href="../_sources/changes/18.11.1.rst.txt">Quellcode anzeigen</a> 
+    <a href="http://de.tera.lino-framework.org/changes/18.11.1.html">Online Link</a>
+      <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons Lizenzvertrag" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a><br />Dieses Werk ist lizenziert unter einer <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons Namensnennung - Weitergabe unter gleichen Bedingungen 4.0 International Lizenz</a>.
+      <br />
+    </div>
+
+</body>
+</html>

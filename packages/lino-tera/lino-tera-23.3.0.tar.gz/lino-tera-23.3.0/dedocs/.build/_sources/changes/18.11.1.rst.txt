@@ -1,0 +1,271 @@
+.. _tera.18.11.1:
+
+====================
+18.11.1 (2018-11-30)
+====================
+
+Liste von Optimierungen für Therapeuten besprochen am 6.11.2018 und
+danach.  Fakturierung mit der neuen Tarifordnung.
+
+Zur Testphase freigegeben ab 30.11.2018 um 8 Uhr.
+
+Alle auftretenden Probleme bitte per E-Mail an mich mit Kopie an alle anderen.
+Vertrauliche Informationen sollten nie per E-Mail verschickt werden.  Wenn
+möglich lieber mit Worten und Aktennummern arbeiten.
+
+Benutzt auch das Handbuch, ich habe da viel Arbeit reingesteckt:
+http://de.tera.lino-framework.org
+
+
+.. contents::
+  :local:
+
+Testanweisungen
+===============
+
+Ziele der Testphase:
+
+1) Ist alle Info aus TIM importiert worden? Findet ihr die Infos
+wieder?
+
+2) Was muss noch verbessert werden bei der Erfassung? Bitte unterscheiden
+zwischen "notwendig" und "darf bis nach dem Umstieg warten".
+
+3) Funktioniert die Automatikfakturierung?  Wenn die Termine erfasst sind,
+lassen wir die AF laufen und schauen was raus kommt.
+
+Bitte gebt während der Testphase realistische Termine und Notizen ein, die sich
+auf 2018 beziehen.  Es dürfen ruhig iktive Angaben dabei sein. Eure Eingaben
+werden beim Umstieg wieder gelöscht. Beim Erfassen neuer Patienten ist zu
+beachten, dass die *Patienten* in Lino schon definitiv sind: wenn ihr einen
+Patienten eingebt, bleibt der auch nach dem Umstieg drin. Nehmt für neue
+Patienten Namen wie Max Mustermann.
+
+Auch Anzahlungen erfassen. Therapeutische Gruppen nicht vergessen. Kinder, die
+mehr als 20 mal kommen und dann nur 20 fakturiert kriegen sollen. Patienten,
+die parallel zum Therapeuten und Psychiater gehen.
+
+NB Lino kann Termine schon jetzt automatisch generieren.  Siehe Handbuch.
+
+
+Übersicht der Änderungen
+========================
+
+- Fakturierung mit der neuen Tarifordnung.
+  Die Fakturierung basiert auf den *Anwesenheiten*, Abonnements (eine Rechnung pro Monat unabhängig von
+  den Anwesenheiten) werden bis auf Weiteres *nicht* eingeführt.  Es
+  werden monatliche Rechnungen geschrieben, die detailliert jede
+  Anwesenheit auflisten.  Eine neue Sonderregel: für Kinder kann man
+  eine Obergrenze (Pauschale) angeben: es werden maximal soundsoviel Stunden im
+  Monat fakturiert, wenn das Kind häufiger da war, zahlt es nicht mehr.
+
+- :doc:`Bargeldkasse der Therapeuten </th/barzahlungen>`
+
+- Auswahl Uhrzeit : von 7:00 bis 20:00
+  
+- "Meine Akten" zeigt jetzt nur *exponierte* Akten an.
+
+- Bezeichnungen:
+  "Storniert" --> "Abgesagt"
+  "Entwurf" --> "Geplant"
+
+- Wenn man versehentlich auf einen Status eines Termins geklickt hat,
+  sollte man das immer auch noch wieder ändern können.
+
+- Optimierungen in *Meine Termine* :
+  
+  - rückblickend bis heute. Akte anklickbar. Absteigend sortiert.
+  - Kolonnen : Datum, Uhrzeit, Akte, DL-Art, Kurzbeschreibung
+  - ab heute
+  - bis in 7 Tagen (?)
+  - Kolonne "overview" raus
+  - Button "Neuer Termin" unter der Tabelle, nicht als quicklink
+  - Kolonne "Workflow" raus.
+  - Nach insert Termin nicht ins Detail springen (stay in grid)
+  
+- Save-Button steht jetzt immer ganz am Ende der Werkzeugleiste.
+
+- Duplicate und Fusionieren : nicht mehr sichtbar für normale Benutzer. Wohl
+  für Verwalter.
+  
+- Blitz-Button auf einem Termin nur, wenn es sich um eine Serie
+  handelt.
+  
+- "Therapeuten wollen nur den Namen der Akte ohne Aktenart und
+  Aktennummer sehen" --> Ich zweifle noch daran, ob ihr das wollt.
+  Aktenart und -nummer stehen jetzt in Klammern hinter dem Namen.
+  
+- Die Krankenkassen stehen an zwei Stellen: als Klientenkontakt pro Akte soll
+  man die "Krankenversicherung" auswählen. Insbesondere, weil wir ja später auch
+  Rechnungen an die Krankenkassen schicken wollen.
+  Neues Feld Course.health_insurance und neues Plugin health mit einem
+  Modell "Insurance" (description, company, project, contrib_account).
+
+- Standardwert für Dienstleistungsart in Benutzereinstellungen.
+
+- In "Meine Akten" funktionierte [Einfügen] nicht. Fenster öffnet sich, aber man
+  kann es nicht bestätigen.
+
+- Meine Notizen : Feld "Ereignisart" kann weg.
+
+- Feldbezeichnung auf Notizen wie in TIM : "Betreff" -->
+  "Kurzbeschreibung" und "Inhalt" --> "Ausführliche Beschreibung"
+
+- Anwesenheiten pro Person und pro Akte: Monate chronologisch
+  rückwärts anzeigen statt vorwärts.
+
+- Ich habe weiter am Handbuch gearbeitet. Siehe
+  z.B. :doc:`/basics/index`, :doc:`/th/index` und :doc:`/bh/index`.
+  Falls ihr noch irgendwo eine pdf-Datei rumhängen habt, solltet ihr die
+  löschen und bitte nicht ausdrucken.
+
+- Meine Akten jetzt sortiert nach Datum der letzten Änderung
+
+- Panel "Teilnehmer" einer Gruppenakte:
+
+  - Teilnehmer hinzufügen : Button ist so weit unten
+  - Eigener Button für Therapeut hinzufügen.
+
+- Nach Erfassen Familiengespräch auf Akte 180484 waren die Teilnehmer
+  nicht ausgefüllt. (Es fehlte Konfigurierung der DL-Art)
+
+Zu klären vor dem Umstieg
+==========================
+
+- DL-Art und Kassenbuch in den Benutzereinstellungen eintragen. Siehe Handbuch.
+- Benutzerliste muss noch aufgeräumt werden (kann schon vor dem Umstieg gemacht
+  werden, aber Benutzernamen dürfen noch nicht geändert werden).
+
+- Gebührenordnung konfigurieren und Fakturierung testen. Layout Rechnung
+  besprechen. Die Pauschale "Max. 10 pro Monat" ist momentan auf 10, um Tests zu
+  vereinfachen.
+
+- Die *Vermittler* werden noch nicht korrekt importiert.
+- Einzeltherapien mit Psychiater (Akte E060452) : muss Import angepasst werden?
+
+.. - Lino zeigt momentan OG statt TG für therapeuteische Gruppen an, und IT statt ET für Einzeltherapien.
+
+Zu klären nach dem Umstieg
+==========================
+
+- Wird die **Abteilung** noch benutzt?
+
+- Ansicht als Partner, Person, Patient : verwirrend.
+
+- Eine Liste von Terminen kann man nicht nach dem Verantwortlichen sortieren.
+  Workaround: in den Filterparametern einen bestimmten Verantwortlichen
+  auswählen.
+
+- Kassenrolle
+
+- Wäre es nicht besser "Workflow" durch "Status" zu ersetzen?
+
+- Unterscheidung zwischen "Verwalter" und "Therapeut" einer Akte.
+
+- "Endet um" ausfüllen --> zu besprechen. Nicht dringend.
+
+- "Alle Termine am gleichen Tag zeigen" -->
+
+- Ein kombinierter Button für "Speichern und Fenster schließen"
+
+- Sollte das Feld "Therapieart" schreibgeschützt sein?
+
+- Anwesenheiten pro Person und pro Akte: "tabular" view (wenn mehr als
+  ein Jahr) wieder raus, denn die braucht zu viel Platz. Das Panel
+  sollte auf einen halben Bildschirm passen,
+  
+- invoicing.OrderTypes: once, monthly, yearly, number gives additional
+  information about how to understand what the InvoiceGenerator says.
+  "once" is as it was now. "number" is similar to what we have in Voga
+  for what they call "Abo-Kurse". Monthly means one invoice per month.
+  
+- Jeder Therapeut, der eine Bargeldkasse macht, ist ein POS (Point of
+  sale). Neues Plugin `posale` mit einem voucher type "Transaction".
+  A transaction is similar to a finan.BankStatement
+
+- Eigener Button "Termin ändern" in "Meine Termine"?
+
+- Wenn man auf Seite 4 einer Tabelle steht und dann einen Filter setzt, so dass
+  die Tabelle weniger als 4 Seiten hat, zeigt Lino Seite 4 von 2 (=
+  leere Seite). Hier müsste Lino auf die erste Seite springen.
+
+- Es gibt mehrere Anzeigemöglichkeiten für die Liste der Kalendereinträge.
+  Interessant ist die Tabellenform (Seite 7 unten) Die Ansicht als Aufzählungpro
+  Monat Monat horizontal (Seite 7 oben) kann entfallen.
+
+- Anzeige der Anwesenheiten pro Patient ist noch zu analysieren.
+  Beispiel Patient 1180528.
+  Obwohl der Termin verpasst/abgesagt wurde, ist der Patient als "anwesend"
+  vermerkt. Es fehlt die Dienstleistungsart. Sinn und Zweck dieser Liste ist
+  nicht ganz klar...
+
+- Wir möchten die Anwesenheitsrate eines Patienten überprüfen: dazu müssten die
+  Dienstleistungen, die nicht zu den Therapiesitzungen gehören (Berichte
+  schreiben, Absprache, Kontakte mit Dritten, ...) herausgefiltert werden. Kann
+  eine solche Möglichkeit eingebaut werden?
+
+Roadmap
+========
+
+- **November 2018** : letzte Arbeiten.  Ziel ist, dass die Therapeuten
+  ihre alltägliche Arbeit in Lino erledigen können wie bisher in TIM:
+  Akten, Termine und Notizen erfassen und verwalten.
+
+- **Dezember 2018** :  Letzte Optimierungen des Datenimports. Schulung aller
+  Therapeuten.  Zumindest das Erfassen und Verwalten ihrer Akten und
+  Termine in Lino sollten alle verstanden haben.
+
+- **1. Januar 2019** : Umstieg auf Produktionsbetrieb. Ab jetzt werden
+  keine Daten mehr aus TIM importiert.
+
+- **Januar 2019** : Das Sekretariat kann Verkaufsrechnungen
+  generieren.
+
+- Weiterentwicklungsprojekt **Kalenderplanung** : Lino könnte dann
+  Terminvorschläge generieren und hilft bei der Erstellung des
+  Wochenplans.  Wichtig insbesondere für die Termine im KITZ.  Es gäbe
+  einen Stundenplan und Ausnahmeregelungen.  Dazu gehört auch
+  eventuelle Integration mit Kopano und Hochladen von Dateien.  Die
+  Kalenderfunktionen soll entweder in Lino so gut werden, dass Kopano
+  nicht mehr nötig ist oder mit Kopano synchronisiert sein.
+
+
+Technical notes
+===============
+
+These are instructions for migrating from previous version to this
+one.
+
+- Check that nobody is working on it.
+- Stop Apache and Supervisor.
+  
+- Make a snapshot of the database::
+   
+    $ go prod
+    $ a
+    $ python manage.py dump2py -o snapshot2testing
+
+- Create and adapt the :xfile:`restore2preview.py` file::
+  
+    $ cd snapshot2testing
+    $ cp restore.py restore2preview.py
+    $ nano snapshot2testing/restore2preview.py
+
+  In :xfile:`restore2preview.py` I deactivate all models whose data
+  will be deleted by :mod:`spzloader2
+  <lino_xl.lib.tim2lino.spzloader2>`.
+         
+- Update the source code and restore from snapshot::
+  
+    $ ./pull.sh
+    $ nohup python manage.py run snapshot2testing/restore2preview.py --noinput &
+
+  This takes some time...
+  
+- Run :mod:`spzloader2 <lino_xl.lib.tim2lino.spzloader2>` to import
+  data from TIM::
+
+    $ nohup python manage.py run tl2.py --noinput &
+
+- Manual changes in config:
+  set force_guest_states of event types

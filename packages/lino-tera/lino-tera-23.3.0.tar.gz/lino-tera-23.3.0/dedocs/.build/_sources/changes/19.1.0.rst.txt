@@ -1,0 +1,259 @@
+.. include:: /../docs/shared/include/defs.rst
+.. _tera.19.1.0:
+
+=======================
+19.1.0 (2019-01-08)
+=======================
+
+Liste von Optimierungen besprochen ab 02.01.2019.
+
+Zur Testphase freigegeben ab 08.01.2019 um 8 Uhr.
+
+.. Alle auftretenden Probleme bitte an den Koordinator melden.
+
+
+.. contents::
+  :local:
+
+
+Änderungen seit der letzten Version
+===================================
+
+- In der Umsetzung der Tarifordnung war noch ein Missverständnis.
+  Mit **Haushaltszusammensetzung** meint Lino jetzt nicht mehr die Anzahl
+  der "Mitglieder im Haushalt" sondern die "Kinder unter 18", m.a.W. die
+  drei Möglichkeiten "Keine Kinder", "Ein Kind einer Familie" und "Mehr als ein
+  Kind einer Familie" aus der Tarifordnung.
+
+  Die **Familiensituation** der Tarifordnung ("Alleinlebend", "2
+  Personenhaushalt" und "> 2 Personenhaushalt") braucht Lino nicht zu kennen,
+  sondern die Therapeuten müssen die Einkommenskategorie anhand folgender Tabelle
+  selber ermitteln:
+
+    =============== =================== ==================== ===================
+    Alleinlebend    2 Personenhaushalt  > 2 Personenhaushalt Einkommenskategorie
+    =============== =================== ==================== ===================
+    < 900€          < 1.300€            < 550€ / Mitglied    A
+    900€ - 1.100€   1.300€ - 1.700€     < 650€ / Mitglied    B
+    1.100€ - 1.300€ 1.700€ - 2.000€     < 800€ / Mitglied    C
+    1.300€-1.800€   2.000€ - 2.500€     < 900€ / Mitglied    D
+    > 1.800€        > 2.500€            > 900€ / Mitglied    E
+    =============== =================== ==================== ===================
+
+  Also die drei **Preisfaktoren** (Wohnort, HZ, Einkommenskategorie) werden auf
+  dem Rechnungsempfänger erfasst, und die sich daraus automatisch ergebende
+  **Fakturierbare Gebühr** einer Einschreibung bzw. Akte steht jetzt im neuen
+  virtuellen Feld *Fakturierbare Gebühr*.  Dieses Feld steht für Gruppenakten
+  *im unteren Teil* (d.h. pro Teilnehmer) und für Lebensgruppen und
+  Einzeltherapien *im oberen Teil* (d.h. pro Akte).
+  Die fakturierbare Gebühr versteht sich für Termine mit der für diesen Therapeuten
+  vorgesehenen DL-Art. Die tatsächlich fakturierte Gebühr könnte sich für
+  einzelne Termine noch ändern, falls dort eine andere DL-Art benutzt wird. Von
+  diesem Feld aus kann man auch direkt auf den Rechnungsempfänger der Akte
+  springen.
+
+- Die Reihenfolge der Felder "Einkommenskategorie" und
+  "Haushaltszusammensetzung" im Reiter *Fakturierung* der verschiedenen
+  Partneransichten wurde ausgetauscht.
+
+- Die Regeln der Gebührenordnung sind jetzt nach Nummer sortiert.  Für EK A und
+  B habe ich Regeln konfiguriert.  Die übrigen EK sollten nach dem gleichen
+  Prinzip konfiguriert werden.
+
+  Zu beachten : Lino nimmt die **erste** Regel, die passt.  Also muss man
+  mit der spezifischsten Regel (die mit den meisten Bedingungen) anfangen. Im
+  Feld Nummer* der Gebührenordnung kann man F2 drücken um eine andere Nummer
+  einzugeben. Wenn das die Nummer einer bereits existierenden Regel ist, setzt
+  sich die bearbeitete Regel vor die existierende Regel und nummeriert Lino
+  alle Regeln neu.
+
+- Das Feld *Abteilung* einer Akte ist jetzt im Reiter *Mehr*.
+
+- Der Polymorphie-Navigator zeigt jetzt nicht mehr die Form "Partner" an, die
+  für normale Benutzer verwirrend war. Also das Feld "Ansicht als" ist jetzt nur
+  noch sichtbar, um zwischen Person und Patient umzuschalten.  Die Tabelle der
+  Partner ist jetzt nur noch sichtbar über das Menü
+  :menuselection:`Explorer --> Kontakte --> Partner`.
+
+- Im Feld *Rechnungsempfänger* einer Akte kann man jetzt nicht mehr einfügen.
+  Um einen Rechnungsempfänger zu erstellen, muss man sich zuerst entscheiden, ob
+  es ein Haushalt, eine Organisation, eine externe Person oder ein Patient ist
+  und den Partner dann in einer dieser Listen erstellen.
+
+- Stammdaten Partner : *Präfix* und *Addresszeile nach Straße* wurden rausgeholt.
+  *Adresszeile vor Straße* habe ich noch dringelassen, bin noch nicht sicher, ob das weg kann.
+  *Box* wurde nicht durch "Postfach" ersetzt sondern das Feld wurde
+  komplett entfernt.
+
+- Im Panel *Einschreibungen in Akten* eines Patienten wird jetzt nach |insert|
+  eine Einzeltherapie gemacht statt eine neue TG)
+
+TODO (gemeinsam)
+================
+
+- Wie sollen die kassierten Anzahlungen in der Rechnung vermerkt werden?
+
+- Konfigurierung der Therapeutenkassen. Welches Generalkonto? Schulung und Dokumentastion.
+
+- Im Januar müssen die Preisfaktoren für alle Akten erfasst werden.
+
+- Macht es Sinn, die Liste der Dienstleistungsarten zu reduzieren? Wenn wir die DLA
+  so detailliert wie bisher in TIM belassen ("Einzelgespräch", "Paargespräch",
+  "Elterngespräch" etc), dann kriegen wir das Problem, dass
+  die Standard-DL-Art bisher immer vom Therapeuten ausgeht.
+  Wir könnten machen, dass die DLA der Aktenart
+  die des Therapeuten überschreibt.  Zu besprechen.
+
+- Namen der Benutzer eingeben (jd, etc)
+
+- Hilfetexte und Handbuch sind noch nicht fertig.
+
+- Der Button |insert| im Toolbar des Detail-Fensters einer Akte ist verwirrend.
+  Vielleicht einfach das Erstellen neuer Akten für normale Therapeuten sperren?
+
+- DL-Art und Kassenbuch in den Benutzereinstellungen eintragen. Siehe Handbuch.
+
+- Benutzerliste muss noch aufgeräumt werden (kann schon vor dem Umstieg gemacht
+  werden, aber Benutzernamen dürfen noch nicht geändert werden).
+
+- Einzeltherapien mit Psychiater (Akte E060452) : muss Import angepasst werden?
+
+- Krankenversicherung : wird momentan pro Akte importiert. Muss aber entweder
+  auch pro Einschreibung, oder nur pro Client.
+
+Handbuch
+========
+
+- Konfiguration des Browsers : Wenn man in Lino etwas ausdruckt, öffnet Lino
+  das generierte pdf-Datei in einem neuen Fenster.  Damit das funktioniert, muss
+  der Browser Popup-Windows erlauben (für die URL, unter der Lino läuft)
+
+- Wie kann ich die Termine eines bestimmten Therapeuten sehen?
+
+
+Zu klären nach dem Umstieg
+==========================
+
+- Inhalt und Layout der Rechnungen.
+
+- Das `Benutzerhandbuch <http://de.tera.lino-framework.org>`__ wurde noch nicht
+  weiter aktualisiert.
+
+- Wird die **Abteilung** noch benutzt? Benutzer x@Eupen etc rausholen aus
+  Benutzerliste.
+
+- Ansicht als Partner, Person, Patient : verwirrend.
+
+- Eine Liste von Terminen kann man nicht nach dem Verantwortlichen sortieren.
+  Workaround: in den Filterparametern einen bestimmten Verantwortlichen
+  auswählen.
+
+- Kassenrolle
+
+- Wäre es nicht besser "Workflow" durch "Status" zu ersetzen?
+
+- Unterscheidung zwischen "Verwalter" und "Therapeut" einer Akte.
+
+- "Endet um" ausfüllen --> zu besprechen. Nicht dringend.
+
+- "Alle Termine am gleichen Tag zeigen" -->
+
+- Ein kombinierter Button für "Speichern und Fenster schließen"
+
+- Sollte das Feld "Therapieart" schreibgeschützt sein?
+
+- Anwesenheiten pro Person und pro Akte: "tabular" view (wenn mehr als
+  ein Jahr) wieder raus, denn die braucht zu viel Platz. Das Panel
+  sollte auf einen halben Bildschirm passen,
+
+- invoicing.OrderTypes: once, monthly, yearly, number gives additional
+  information about how to understand what the InvoiceGenerator says.
+  "once" is as it was now. "number" is similar to what we have in Voga
+  for what they call "Abo-Kurse". Monthly means one invoice per month.
+
+- Jeder Therapeut, der eine Bargeldkasse macht, ist ein POS (Point of
+  sale). Neues Plugin `posale` mit einem voucher type "Transaction".
+  A transaction is similar to a finan.BankStatement
+
+- Eigener Button "Termin ändern" in "Meine Termine"?
+
+- Wenn man auf Seite 4 einer Tabelle steht und dann einen Filter setzt, so dass
+  die Tabelle weniger als 4 Seiten hat, zeigt Lino Seite 4 von 2 (=
+  leere Seite). Hier müsste Lino auf die erste Seite springen.
+
+- Es gibt mehrere Anzeigemöglichkeiten für die Liste der Kalendereinträge.
+  Interessant ist die Tabellenform (Seite 7 unten) Die Ansicht als Aufzählungpro
+  Monat Monat horizontal (Seite 7 oben) kann entfallen.
+
+- Anzeige der Anwesenheiten pro Patient ist noch zu analysieren.
+  Beispiel Patient 1180528.
+  Obwohl der Termin verpasst/abgesagt wurde, ist der Patient als "anwesend"
+  vermerkt. Es fehlt die Dienstleistungsart. Sinn und Zweck dieser Liste ist
+  nicht ganz klar...
+
+- Wir möchten die Anwesenheitsrate eines Patienten überprüfen: dazu müssten die
+  Dienstleistungen, die nicht zu den Therapiesitzungen gehören (Berichte
+  schreiben, Absprache, Kontakte mit Dritten, ...) herausgefiltert werden. Kann
+  eine solche Möglichkeit eingebaut werden?
+
+- GuestRole : unterscheiden zwischen m und w
+
+Roadmap
+========
+
+- **Vorbereitung Umstieg** :  Letzte Optimierungen des Datenimports. Schulung der
+  Therapeuten.
+
+- **Umstieg auf Produktionsbetrieb**. Ab jetzt werden
+  keine Daten mehr aus TIM importiert.  Die Therapeuten
+  können ihre alltägliche Arbeit in Lino erledigen wie bisher in TIM:
+  Akten, Termine und Notizen erfassen und verwalten.
+
+- **Nach dem Umstieg** : Das Sekretariat kann Verkaufsrechnungen
+  generieren.
+
+- Weiterentwicklungsprojekt **Kalenderplanung** : Lino könnte dann
+  Terminvorschläge generieren und hilft bei der Erstellung des
+  Wochenplans.  Wichtig insbesondere für die Termine im KITZ.  Es gäbe
+  einen Stundenplan und Ausnahmeregelungen.  Dazu gehört auch
+  eventuelle Integration mit Kopano und Hochladen von Dateien.  Die
+  Kalenderfunktionen soll entweder in Lino so gut werden, dass Kopano
+  nicht mehr nötig ist oder mit Kopano synchronisiert sein.
+
+
+Technical notes
+===============
+
+Instructions for migrating from previous version to this one.
+
+- Stop Apache and Supervisor.
+  
+- Make a snapshot of the database::
+   
+    $ go prod
+    $ a
+    $ python manage.py dump2py -o snapshot2testing
+
+- Create and adapt the :xfile:`restore2preview.py` file::
+  
+    $ cd snapshot2testing
+    $ cp restore.py restore2preview.py
+    $ nano snapshot2testing/restore2preview.py
+
+  In :xfile:`restore2preview.py` deactivate all models whose data will be
+  deleted by :mod:`spzloader2 <lino_xl.lib.tim2lino.spzloader2>`.
+         
+- Update the source code and restore from snapshot::
+  
+    $ ./pull.sh
+    $ nohup python manage.py run snapshot2testing/restore2preview.py --noinput &
+
+- Run :mod:`spzloader2 <lino_xl.lib.tim2lino.spzloader2>` to import
+  data from TIM::
+
+    $ nohup python manage.py run tl2.py --noinput &
+
+- Run checkdata to force guest states::
+
+      $ python manage.py checkdata -f cal.EventGuestChecker
+

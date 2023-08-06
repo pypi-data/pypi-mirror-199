@@ -1,0 +1,227 @@
+.. _tera.18.12.0:
+
+====================
+18.12.0 (2018-12-22)
+====================
+
+Liste von Optimierungen besprochen am 19.12.2018.
+
+Zur Testphase freigegeben ab 22.12.2018 um 18 Uhr.
+
+Alle auftretenden Probleme bitte an den Koordinator melden.
+
+
+.. contents::
+  :local:
+
+
+
+Änderungen
+==========
+
+DONE:
+
+- Die Gebühr ("Fee") wird gar nicht mehr pro Akte oder Teilnehmer gesetzt.
+
+- Anwesenheiten pro Klient :
+  Kolonne "Veranstaltung" raus (und stattdessen Kolonne Datum anklickbar).
+  Kolonne Rolle raus.
+  Kolonne Dienstleistungsart rein.
+
+- Beim Import werden alle Guest.state scheinbar auf Anwesend gesetzt. Aber wenn
+  der Termin Verpasst ist (und es eine LG oder ET ist), dann muss
+  force_guest_states angewendet werden.  --> EventChecker, der das meldet und
+  korrigiert.
+
+  --> EventGuestChecker hat jetzt eine neue Meldung "Some guests have another state than {0}"
+
+- Die *Vermittler* wurden noch nicht korrekt importiert.
+
+- ``__str__`` einer Akte : Alte Aktennnummer raus
+
+- Einkommenskategorien : hier habe ich bewusst nicht
+  weitere Kategorien erstellt, sondern es bleibt bei 5 Kategorieen, lediglich die
+  Zahlen ändern sich je nach Zusammensetzung
+
+- Einfügen Termin : Layout
+
+- Lino verweigerte das Löschen eines Partners, wenn "noch X Interessen darauf
+  verweisen". Das war aber Unsinn, denn die Interessen eines Partners können ohne
+  Zweifel mit dem Partner gelöscht werden.
+
+- Die **Pauschale** steht jetzt für Gruppenakten  **im
+  unteren Teil** (d.h. pro Teilnehmer) und für Lebensgruppen und Einzeltherapien **im
+  oberen Teil** (d.h. pro Akte).
+
+- Beispiel Patient Ajla 29.10.2018 : JD = Logopädie, JL = Ergo, beide verpasst. OK.
+
+- show internal field names : abschalten
+
+TODO (Gemeinsam)
+
+- Konfigurierung Therapeutenkassen
+
+TODO (Handbuch):
+
+- Dokument ausdrucken und Popup-Windows
+
+- Namen der Benutzer eingeben (jd, etc)
+
+- Die Pauschale wird pro Akte erfasst, die anderen Preisfaktoren (Wohnort, HZ,
+  Einkommenskategorie) werden auf dem Rechnungsempfänger erfasst.
+  Die **Pauschale** steht für Gruppenakten  **im
+  unteren Teil** (d.h. pro Teilnehmer) und für Lebensgruppen und Einzeltherapien **im
+  oberen Teil** (d.h. pro Akte).
+
+- Im Januar müssen dioese Angaben für alle Akten erfasst werden.
+
+- Gebührenordnung : Lino nimmt die **erste** Regel, die passt.
+
+- Wie kann ich die Termine eines bestimmten Therapeuten sehen? z.B. Dr. iedler
+
+
+
+
+Zu klären vor dem Umstieg
+==========================
+
+- DL-Art und Kassenbuch in den Benutzereinstellungen eintragen. Siehe Handbuch.
+
+- Benutzerliste muss noch aufgeräumt werden (kann schon vor dem Umstieg gemacht
+  werden, aber Benutzernamen dürfen noch nicht geändert werden).
+
+- Gebührenordnung konfigurieren und Fakturierung testen. Die Pauschale "Max. 10
+  pro Monat" ist momentan auf 10, um Tests zu vereinfachen.
+
+- Einzeltherapien mit Psychiater (Akte E060452) : muss Import angepasst werden?
+
+- Krankenversicherung : wird momentan pro Akte importiert. Muss aber entweder
+  auch pro Einschreibung, oder nur pro Client.
+
+
+Zu klären nach dem Umstieg
+==========================
+
+- Inhalt und Layout der Rechnungen.
+
+- Das `Benutzerhandbuch <http://de.tera.lino-framework.org>`__ wurde noch nicht
+  weiter aktualisiert.
+
+- Wird die **Abteilung** noch benutzt? Bentzer x@Eupen etc rausholen aus
+  Benutzerliste.
+
+- Ansicht als Partner, Person, Patient : verwirrend.
+
+- Eine Liste von Terminen kann man nicht nach dem Verantwortlichen sortieren.
+  Workaround: in den Filterparametern einen bestimmten Verantwortlichen
+  auswählen.
+
+- Kassenrolle
+
+- Wäre es nicht besser "Workflow" durch "Status" zu ersetzen?
+
+- Unterscheidung zwischen "Verwalter" und "Therapeut" einer Akte.
+
+- "Endet um" ausfüllen --> zu besprechen. Nicht dringend.
+
+- "Alle Termine am gleichen Tag zeigen" -->
+
+- Ein kombinierter Button für "Speichern und Fenster schließen"
+
+- Sollte das Feld "Therapieart" schreibgeschützt sein?
+
+- Anwesenheiten pro Person und pro Akte: "tabular" view (wenn mehr als
+  ein Jahr) wieder raus, denn die braucht zu viel Platz. Das Panel
+  sollte auf einen halben Bildschirm passen,
+
+- invoicing.OrderTypes: once, monthly, yearly, number gives additional
+  information about how to understand what the InvoiceGenerator says.
+  "once" is as it was now. "number" is similar to what we have in Voga
+  for what they call "Abo-Kurse". Monthly means one invoice per month.
+
+- Jeder Therapeut, der eine Bargeldkasse macht, ist ein POS (Point of
+  sale). Neues Plugin `posale` mit einem voucher type "Transaction".
+  A transaction is similar to a finan.BankStatement
+
+- Eigener Button "Termin ändern" in "Meine Termine"?
+
+- Wenn man auf Seite 4 einer Tabelle steht und dann einen Filter setzt, so dass
+  die Tabelle weniger als 4 Seiten hat, zeigt Lino Seite 4 von 2 (=
+  leere Seite). Hier müsste Lino auf die erste Seite springen.
+
+- Es gibt mehrere Anzeigemöglichkeiten für die Liste der Kalendereinträge.
+  Interessant ist die Tabellenform (Seite 7 unten) Die Ansicht als Aufzählungpro
+  Monat Monat horizontal (Seite 7 oben) kann entfallen.
+
+- Anzeige der Anwesenheiten pro Patient ist noch zu analysieren.
+  Beispiel Patient 1180528.
+  Obwohl der Termin verpasst/abgesagt wurde, ist der Patient als "anwesend"
+  vermerkt. Es fehlt die Dienstleistungsart. Sinn und Zweck dieser Liste ist
+  nicht ganz klar...
+
+- Wir möchten die Anwesenheitsrate eines Patienten überprüfen: dazu müssten die
+  Dienstleistungen, die nicht zu den Therapiesitzungen gehören (Berichte
+  schreiben, Absprache, Kontakte mit Dritten, ...) herausgefiltert werden. Kann
+  eine solche Möglichkeit eingebaut werden?
+
+- GuestRole : unterscheiden zwischen m und w
+
+Roadmap
+========
+
+- **Dezember 2018** :  Letzte Optimierungen des Datenimports. Schulung der
+  Therapeuten.
+
+- **1. Januar 2019** : Umstieg auf Produktionsbetrieb. Ab jetzt werden
+  keine Daten mehr aus TIM importiert.  Die Therapeuten
+  können ihre alltägliche Arbeit in Lino erledigen wie bisher in TIM:
+  Akten, Termine und Notizen erfassen und verwalten.
+
+- **Januar 2019** : Das Sekretariat kann Verkaufsrechnungen
+  generieren.
+
+- Weiterentwicklungsprojekt **Kalenderplanung** : Lino könnte dann
+  Terminvorschläge generieren und hilft bei der Erstellung des
+  Wochenplans.  Wichtig insbesondere für die Termine im KITZ.  Es gäbe
+  einen Stundenplan und Ausnahmeregelungen.  Dazu gehört auch
+  eventuelle Integration mit Kopano und Hochladen von Dateien.  Die
+  Kalenderfunktionen soll entweder in Lino so gut werden, dass Kopano
+  nicht mehr nötig ist oder mit Kopano synchronisiert sein.
+
+
+Technical notes
+===============
+
+Instructions for migrating from previous version to this one.
+
+- Stop Apache and Supervisor.
+  
+- Make a snapshot of the database::
+   
+    $ go prod
+    $ a
+    $ python manage.py dump2py -o snapshot2testing
+
+- Create and adapt the :xfile:`restore2preview.py` file::
+  
+    $ cd snapshot2testing
+    $ cp restore.py restore2preview.py
+    $ nano snapshot2testing/restore2preview.py
+
+  In :xfile:`restore2preview.py` deactivate all models whose data will be
+  deleted by :mod:`spzloader2 <lino_xl.lib.tim2lino.spzloader2>`.
+         
+- Update the source code and restore from snapshot::
+  
+    $ ./pull.sh
+    $ nohup python manage.py run snapshot2testing/restore2preview.py --noinput &
+
+- Run :mod:`spzloader2 <lino_xl.lib.tim2lino.spzloader2>` to import
+  data from TIM::
+
+    $ nohup python manage.py run tl2.py --noinput &
+
+- Run checkdata force_guest_state::
+
+      $ python manage.py checkdata -f cal.EventGuestChecker
+
