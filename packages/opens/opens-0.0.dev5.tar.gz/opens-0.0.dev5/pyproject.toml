@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "opens"
+version = "0.0.dev5"
+description = "OpenShell is a feature-rich, open-source shell with all the functionality of Python!"
+authors = ["The Open Project <opendylan@proton.me>"]
+readme = "README.md"
+[tool.poetry.dependencies]
+python = "^3"
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+o = 'entry:main'
