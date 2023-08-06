@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: Brian2Lava
+Version: 1.0.0a1
+Summary: An open source Brian2 interface for the neuromorphic computing framework Lava
+Home-page: https://gitlab.com/tetzlab/brian2lava
+Author: Carlo Michaelis, Francesco Negri, Winfried Oed, Jannik Luboeinski, Andrew Lehr, Tristan Stöber
+Author-email: carlo.michaelis@gmail.com
+License: MIT
+Platform: UNKNOWN
+Requires-Python: >3.8
+Description-Content-Type: text/markdown
+Requires-Dist: brian2 (>=2.5.1)
+Requires-Dist: jinja2 (>=2.7)
+Requires-Dist: lava-nc (>=0.6.0)
+Requires-Dist: markupsafe (==2.0.1)
+Requires-Dist: matplotlib
+Requires-Dist: numpy (==1.23.5)
+Requires-Dist: pytest
+Requires-Dist: regex (>=2022.10.31)
+Requires-Dist: scipy
+
+# Brian2Lava
+
+
+The goal of this open source project is to develop a [Brian2](https://github.com/brian-team/brian2) interface for the neuromorphic computing framework [Lava](https://github.com/lava-nc/lava), called Brian2Lava, to facilitate deployment of brain-inspired algorithms on Lava-supported neuromorphic hardware and emulator backends. Brian2 is an open source Python package developed and used by the computational neuroscience community to simulate spiking neural networks.
+
+The readme contain a quick introduction. For more detailed information visit our website and our documentation.
+
+* [Website](https://brian2lava.gitlab.io/)
+* [Documentation](https://brian2lava.gitlab.io/docs)
+## Installation
+
+Brian2Lava currently supports Lava with `CPU` backend. We’re working on `Loihi` support. Please feel free to test Brian2Lava and report issues.
+
+`Brian2Lava` requires that `Lava` is installed. Since `Lava` is currently not available on `pypi.org`, you need to install it from the the `Lava` GitHub repository via:
+
+```
+pip install https://github.com/lava-nc/lava/releases/download/v0.6.0/lava_nc-0.6.0.tar.gz
+```
+
+The installation of `Brian2Lava` is provided via the the Python Package Index (`pip`):
+
+```
+pip install brian2lava
+```
+
+Note: perhaps also `conda` will be supported later.
+
+## Getting started
+
+Using Brian2Lava requires only two steps.
+
+First, import the package:
+
+```
+import brian2lava
+```
+
+Second, set the lava device and your hardware backend (currently only `CPU` is supported, we’re actively working on `Loihi`):
+
+```
+set_device('lava', hardware='CPU')
+```
+
+For a full example visit the ['Getting Started' page on our website](https://brian2lava.gitlab.io/).
+
+
+

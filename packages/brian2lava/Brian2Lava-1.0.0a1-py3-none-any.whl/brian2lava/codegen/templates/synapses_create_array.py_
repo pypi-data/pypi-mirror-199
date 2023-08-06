@@ -1,0 +1,37 @@
+{#
+USES_VARIABLES { _synaptic_pre, _synaptic_post, sources, targets, N,
+                  N_pre, N_post, _source_offset, _target_offset }
+#}
+{# WRITES_TO_READ_ONLY_VARIABLES { _synaptic_pre, _synaptic_post, N}
+#}
+{# This is to show that we don't need to index the sources/targets #}
+{# ITERATE_ALL { _idx } #}
+{% extends 'common_group.py_' %}
+
+{% block maincode %}
+{# After this code has been executed, the arrays _real_sources and
+    _real_variables contain the final indices. Having any code here at all is
+    only necessary for supporting subgroups #}
+    {{vector_code|autoindent}}
+
+    _old_num_synapses = {{N_init}}
+    _new_num_synapses = _old_num_synapses + len({{sources_init}})
+
+    # Resize all dependent dynamic arrays (synaptic weights, delays, etc.) and set
+    # the total number of synapses
+    # TODO: when we implement a separate synapses process we could just use owner._resize() as shown below
+    {% for var in owner._registered_variables %}
+    {# We have to set the varnames manually instead of using filters because we need a special naming for this template #}
+    {% set varname = get_array_name(var,access_data = False, template_name = 'synapses_create_array') %}
+    {{varname}} = _numpy.resize({{varname}}, _new_num_synapses)
+    {% endfor %}
+
+    {{_dynamic__synaptic_pre_init}}[_old_num_synapses:] = _real_sources
+    {{_dynamic__synaptic_post_init}}[_old_num_synapses:] = _real_targets
+
+    {{N_init}} = _new_num_synapses
+    #_owner._resize(_new_num_synapses) #For now we keep this but should be deleted
+
+    # And update N_incoming, N_outgoing and synapse_number
+    #_owner._update_synapse_numbers(_old_num_synapses) #For now we keep this but should be deleted
+{% endblock %}

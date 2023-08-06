@@ -1,0 +1,29 @@
+{# USES_VARIABLES {N} #}
+{% extends 'common_group.py_' %}
+
+{% block maincode %}
+    # Collect all the incoming variables from the synapses
+    # We could have multiple inputs depending on the synaptic model:
+    # e.g. if we have v += w + g*I and both w and g are synaptic variables, but I is a neuronal variable.
+    # This allows for more generalizable models. 
+    # TODO: handle the case in which no neuronal variable is on the right of the equation (i.e. just send the result of the operation).
+    {% for var in read_port_input %}
+    {{var}}
+    {% endfor %}
+
+    # We assume there is always one InPort in the NeuronGroup 
+    # TODO: The next line takes care of the case in which an 'int' or 'bool' port is at index zero of neur_input_vars
+    # np.nan gets translated to this number, so we convert it back. Probably in future implementations we can avoid this.
+    _activation_indices = np.where({{neur_input_vars[0]}} == -9223372036854775808,_numpy.nan,{{neur_input_vars[0]}})[0]
+    _activation_indices = np.where(~_numpy.isnan({{neur_input_vars[0]}}))[0]
+
+    # scalar code
+    _vectorisation_idx = 1
+    {{scalar_code|autoindent}}
+
+    # vector code
+    _idx = _activation_indices
+    _vectorisation_idx = _idx
+    {{vector_code|autoindent}}
+
+{% endblock %}
