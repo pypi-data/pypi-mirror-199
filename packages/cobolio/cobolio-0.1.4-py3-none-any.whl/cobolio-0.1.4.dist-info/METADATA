@@ -1,0 +1,90 @@
+Metadata-Version: 2.1
+Name: cobolio
+Version: 0.1.4
+Summary: 'Package for working with mainframe COBOL files'
+Home-page: https://github.com/adelosa/cobolio
+Author: Anthony Delosa
+Author-email: adelosa@gmail.com
+License: MIT
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+Provides-Extra: docs
+Requires-Dist: sphinx ; extra == 'docs'
+Requires-Dist: sphinx-rtd-theme ; extra == 'docs'
+Provides-Extra: test
+Requires-Dist: flake8 ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: bump2version ; extra == 'test'
+Requires-Dist: coverage ; extra == 'test'
+
+=======
+cobolio
+=======
+
+A Python package for processing mainframe data files using COBOL copybooks.
+
+.. image:: https://img.shields.io/pypi/l/cobolio.svg
+        :target: https://pypi.org/project/cobolio
+        :alt: License
+.. image:: https://img.shields.io/pypi/v/cobolio.svg
+        :target: https://pypi.org/project/cobolio
+        :alt: Version
+.. image:: https://img.shields.io/pypi/wheel/cobolio.svg
+        :target: https://pypi.org/project/cobolio
+        :alt: Wheel
+.. image:: https://img.shields.io/pypi/implementation/cobolio.svg
+        :target: https://pypi.org/project/cobolio
+        :alt: Implementation
+.. image:: https://img.shields.io/github/issues/adelosa/cobolio
+        :target: https://github.com/adelosa/cobolio/issues
+        :alt: Status
+.. image:: https://img.shields.io/pypi/dm/cobolio.svg
+        :target: https://pypi.org/project/cobolio
+        :alt: Downloads per month
+.. image:: https://img.shields.io/pypi/pyversions/cobolio.svg
+        :target: https://pypi.org/project/cobolio
+        :alt: Python versions
+
+.. readme_install
+
+Install
+=======
+Install using pip::
+
+    pip install cobolio
+
+
+Usage
+=====
+
+If you just want to convert a file from a mainframe
+using a copybook layout use the command line tool :code:`cob_to_csv`
+
+Roadmap
+=======
+* GitHub action to publish package to Pypi
+* dumps function -- reverse processing (dict -> bytes)
+
+Limitations
+===========
+
+No support for :code:`OCCURS DEPENDING ON` clause in copybook.
+
+Acknowledgements
+================
+
+The original code was taken from AWS samples repo called 
+`unlock mainframe data files on aws <https://github.com/aws-samples/unlock-mainframe-data-files-on-aws>`_.
+
+This project repackages this functionality as a python package
+and provide pythonic interfaces for programmatic use.
+
+It also provides a CLI for processing files for end users.
+
