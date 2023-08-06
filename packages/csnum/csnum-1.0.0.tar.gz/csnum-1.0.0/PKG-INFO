@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: csnum
+Version: 1.0.0
+Summary: csnum - a highly Composable and type Safe NUMerical analysis package 
+Author: Yifeng He
+Author-email: yfhe@ucdavis.edu
+Project-URL: Bug Tracker, https://github.com/EYH0602/csnum/issues
+Project-URL: Documentation, https://github.com/EYH0602/csnum/blob/main/README.md
+Project-URL: Source Code, https://github.com/EYH0602/csnum
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# csnum
+
+## Requirements
+
+* [Python3.10.0](https://www.python.org/downloads/release/python-3100/) or higher
+* [requirements.txt](./requirements.txt)
+
+```
+pip3 install -r requirements.txt
+```
+
+## Install
+
+```sh
+pip3 install csnum
+```
+
+## Usage
+
+see [doc](doc/README.md)
