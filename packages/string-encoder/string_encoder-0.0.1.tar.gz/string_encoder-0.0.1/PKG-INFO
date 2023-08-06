@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: string_encoder
+Version: 0.0.1
+Summary: Encode/Decode Strings
+Author-email: David Espinosa <david.espinosa0327@gmail.com>
+License-File: LICENSE.txt
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.2
+Description-Content-Type: text/markdown
+
+
+
+String Encrypt & Decrypt
+===============
+This is an Encryption project that is used to encrypt/decrypt strings.
+
+Installing
+============
+
+.. code-block:: bash
+
+    pip install string_encoder
+
+Usage
+=====
+
+.. code-block:: bash
+
+    >>> from string_encoder import encode, decode
+    >>> encode("Hello World")
+    >>> decode("SGVsbG8gV29ybGQ=")
