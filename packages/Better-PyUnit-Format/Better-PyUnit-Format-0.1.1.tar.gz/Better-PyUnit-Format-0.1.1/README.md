@@ -1,0 +1,100 @@
+# Better PyUnit Format
+#### A more readable text output for Python's built in unittest framework
+
+
+### Overview
+
+This package simply is an implementation of the `unittest.TestResult` class that sits on
+top of the `unittest.TextTestRunner` test runner. It is designed to provide a more understandable
+output to students that are just getting started with Python. It also has pretty colors.
+
+### Using Better PyUnit Format
+
+1. Install the package via pip with `pip install Better-PyUnit-Format`
+2. Replace the test result in your `TextTestRunner` with BetterPyUnitFormat
+3. Run your testsuite!
+
+
+### Example code
+
+```python
+
+import unittest
+
+from BetterPyUnitFormat.BetterPyUnitFormat import BetterPyunitFormatResult
+import test
+
+if __name__ == "__main__":
+    testSuite = unittest.loader.makeSuite(test.Test)
+    runner = unittest.TextTestRunner(resultclass=BetterPyunitFormatResult)
+    runner.run(testSuite)
+```
+
+### Example Execution
+
+```python
+# test.py
+
+import unittest
+
+
+class Test(unittest.TestCase):
+    def test_failure(self):
+        """This test should fail"""
+        self.assertEquals(1, 2)
+
+    def test_success(self):
+        """This test should pass"""
+        self.assertEquals(1, 1)
+
+    def test_error(self):
+        """This test will error"""
+        0/0
+
+    @unittest.skip("Skipping this test :)")
+    def test_skip(self):
+        """This test will be skipped"""
+        self.assertEquals(1, 2)
+```
+```text
+
+====================
+--------------------
+[ RUN      ] This test will error (test.Test.test_error)
+[    ERROR ] This test will error
+A(n) ZeroDivisionError occurred:
+[ZeroDivisionError] division by zero
+
+-------------------- 
+
+--------------------
+[ RUN      ] This test should fail (test.Test.test_failure)
+[     FAIL ] This test should fail
+Failure reason:
+1 != 2
+
+-------------------- 
+
+--------------------
+[ RUN      ] This test will be skipped (test.Test.test_skip)
+[     SKIP ] This test will be skipped
+Skip Reason: Skipping this test :)
+-------------------- 
+
+--------------------
+[ RUN      ] This test should pass (test.Test.test_success)
+[       OK ] This test should pass
+-------------------- 
+
+====================
+[  FAILED  ] 
+1 tests passed.
+1 tests failed.
+1 tests errored.
+1 tests skipped.
+1 / 4
+====================
+Ran 4 tests in 0.001s
+
+FAILED (failures=1, errors=1, skipped=1)
+```
