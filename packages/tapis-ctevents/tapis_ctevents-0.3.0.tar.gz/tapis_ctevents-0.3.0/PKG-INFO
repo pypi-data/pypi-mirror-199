@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: tapis-ctevents
+Version: 0.3.0
+Summary: A module for working with Camera Traps events in Python.
+License: BSD 3-Clause
+Author: Serena Shah
+Author-email: serena.shah@utexas.edu
+Requires-Python: >=3.8,<4.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: flatbuffers (>=23.3.3,<24.0.0)
+Description-Content-Type: text/markdown
+
+ctevents
+========
+A python library for working with the Camera Traps events messages. This library provided
+high-level convenience functions for easily sending and receiving Camera Traps events. 
