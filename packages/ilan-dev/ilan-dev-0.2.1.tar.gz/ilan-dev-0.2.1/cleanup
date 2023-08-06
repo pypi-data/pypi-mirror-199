@@ -1,0 +1,110 @@
+#!/usr/bin/env python
+import os
+import string
+from os.path import basename, join, isfile, isdir
+from optparse import OptionParser
+
+
+ASCII_ONLY = False
+
+# file extensions which are cleaned when using the -r option
+FILE_EXT = ('.py', '.txt', '.c', '.h', '.pyx', '.pyi', '.json',
+            '.yml', '.yaml', '.md', '.rst', '.md', '.xml')
+
+
+def cleanup(data, expand_tabs=True):
+    if data == '':
+        return ''
+
+    data = data.replace('\r', '')
+    data = '\n'.join(line.rstrip() for line in data.split('\n'))
+    if expand_tabs:
+        data = data.expandtabs()
+
+    if ASCII_ONLY:
+        allowed = set(string.printable)
+        data = ''.join(c for c in data if c in allowed)
+
+    # make sure we have newline at the end
+    if not data.endswith('\n'):
+        data += '\n'
+
+    return data
+
+
+def clean_file(path):
+    if not isfile(path):
+        print("Ignoring non-existing file: %s" % path)
+        return
+
+    with open(path, 'r') as fi:
+        old_data = fi.read()
+
+    new_data = cleanup(old_data, 'makefile' not in basename(path).lower())
+
+    if new_data == old_data:
+        return
+
+    print("Rewriting %s" % path)
+    with open(path, 'w') as fo:
+        fo.write(new_data)
+
+
+def clean_dir(dir_path):
+    if not isdir(dir_path):
+        print("Not a directory: %s" % dir_path)
+        return
+
+    for root, dirs, files in os.walk(dir_path):
+        parts = root.split(os.sep)
+        if '.git' in parts:
+            continue
+
+        for fn in files:
+            if fn.endswith(FILE_EXT):
+                path = join(root, fn)
+                clean_file(path)
+
+
+def main():
+    p = OptionParser(
+        usage="usage: %prog [options] FILE [FILE ...]",
+        description=("Cleanup whitespace in FILE, that is: "
+                     "remove carriage returns; "
+                     "remove excess whitespace at the end of each line; "
+                     "expand tabs (to 8 spaces), but not a Makefile; "
+                     "make sure file has a newline at the end"))
+
+    p.add_option("--ascii-only",
+                 action="store_true",
+                 help="allow only ASCII bytes (removes others)")
+
+    p.add_option('-r', "--recur",
+                 action="store_true",
+                 help="cleanup recursively")
+
+    p.add_option("--version",
+                 action="store_true")
+
+    opts, args = p.parse_args()
+
+    if opts.version:
+        import ilan_dev
+        print("ilan-dev: %s" % ilan_dev.__version__)
+        return
+
+    global ASCII_ONLY
+    ASCII_ONLY = opts.ascii_only
+
+    if opts.recur:
+        if len(args) == 0:
+            args = ['.']
+        for path in args:
+            clean_dir(path)
+    else:
+        for path in args:
+            clean_file(path)
+
+
+if __name__ == '__main__':
+    main()
