@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: artemis-common
+Version: 0.1.17b0
+Summary: Artemis common project utilities
+Author: 0xArti
+Author-email: contact@hunters-of-artemis.com
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: aiohttp
+Requires-Dist: async-lru
+Requires-Dist: fastapi
+Requires-Dist: pydantic
+Requires-Dist: python-dateutil
+Requires-Dist: python-json-logger
+Requires-Dist: pytz
+Requires-Dist: requests
+Requires-Dist: uvicorn
+
