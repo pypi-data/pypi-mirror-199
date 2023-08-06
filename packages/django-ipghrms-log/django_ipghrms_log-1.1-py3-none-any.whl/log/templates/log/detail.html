@@ -1,0 +1,109 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'log-list' %}">LISTA LOG</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <!-- <h4>Informasaun Pessoal</h4> -->
+                                    <table class="table table-sm table-striped table-bordered">
+                                        <thead>
+                                            <tr align="center">
+                                                <th colspan="10">INFOMASAUN LOG</th>
+                                            </tr>
+                                        </thead>
+                                        <tr>
+                                            <th>Public IP Address</th><th>Country/City</th> <th>Username</th><th>Model/Table</th> <th>Data ID</th> <th>Action</th> <th>Datetime</th> <th>Lat.</th> <th>Lon.</th>
+                                        </tr>
+                                        <tr>
+                                            <td>{{objects.ip_address}}</td>
+                                            <td>{{objects.country}} 
+                                                {% if objects.city %} /  
+                                                {{objects.city}}
+                                                {% else %}
+                                                -
+                                                {% endif %}
+                                                </td>
+                                            <td>{{objects.username}}</td>
+                                            <td>{{objects.model}}</td>
+                                            <td>{{objects.field_id}}</td>
+                                            <td>{{objects.action}}</td>
+                                            <td>{{objects.timestamp}}</td>
+                                            <td>{{objects.latitude}}</td>
+                                            <td>{{objects.longitude}}</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                            </div><!--end row-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card  shadow-lg rounded">
+                                <div class="card-header border-primary">
+                                    <center>
+                                        <h4 align="center">MAPA</h4>
+                                    </center>
+                                </div>
+                                <div class="card-body">
+                                    <div id="mapid" style="width: 100%; height: 250px;"></div>
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<script>
+		var mymap = L.map('mapid').setView([{{ objects.latitude }}, {{ objects.longitude }}], 15);
+
+		L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+				'<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+			id: 'mapbox/satellite-v9',
+			tileSize: 512,
+			zoomOffset: -1
+		}).addTo(mymap);
+
+		L.marker([{{ objects.latitude }}, {{ objects.longitude }}]).addTo(mymap)
+			.bindPopup("{{ objects.username|upper }}").openPopup();
+
+		var popup = L.popup();
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("You clicked the map at " + e.latlng.toString())
+				.openOn(mymap);
+		}
+
+		mymap.on('click', onMapClick);
+
+	</script>
+{% endblock %}
