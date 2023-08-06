@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "asynct"
+version = "0.0.1"
+authors = [
+  { name="Daniel FH", email="danifhpublic@gmail.com" },
+]
+description = "This package uses threading to create a simple future-like async interface for functions."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+homepage = "https://scipy.org/"
+documentation = "https://docs.scipy.org/doc/scipy/"
+source = "https://github.com/scipy/scipy"
+download = "https://github.com/scipy/scipy/releases"
+tracker = "https://github.com/scipy/scipy/issues"
