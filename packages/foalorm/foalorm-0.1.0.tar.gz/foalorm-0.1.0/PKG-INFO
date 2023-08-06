@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: foalorm
+Version: 0.1.0
+Summary: Foal Object-Relational Mapper
+Download-URL: http://pypi.python.org/pypi/pony/
+Author: frodo821 <me@frodo821.me>
+Author-email: me@frodo821.me
+License: MIT License
+Project-URL: Source, https://github.com/frodo821/foalorm
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Database
+
+
+About
+=========
+FoalORM is an advanced object-relational mapper forked from PonyORM.
+
+Installation
+=================
+::
+
+    pip install foalorm
+
