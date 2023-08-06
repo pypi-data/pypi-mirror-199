@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "ecoindex"
+version = "5.4.2"
+description = "Ecoindex module provides a simple way to measure the Ecoindex score based on the 3 parameters: The DOM elements of the page, the size of the page and the number of external requests of the page"
+authors = ["Vincent Vatelot <vincent.vatelot@ik.me>"]
+license = "MIT"
+readme = "README.md"
+homepage = "http://www.ecoindex.fr"
+repository = "https://github.com/cnumr/ecoindex_python"
+include = [
+    "LICENSE",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = "^1.10.2"
+requests = "^2.28.2"
+aiofile = "^3.8.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2"
+black = "^23.1"
+pytest-asyncio = "^0.21.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+update-values = "ecoindex:utils.update_values"
