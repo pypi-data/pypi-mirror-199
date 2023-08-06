@@ -1,0 +1,100 @@
+[build-system]
+requires = [
+    "pdm-backend ~= 2.0",
+]
+build-backend = "pdm.backend"
+
+[project]
+name = "types-lxml"
+dynamic = []
+description = "Complete lxml external type annotation"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = [
+    "types-beautifulsoup4",
+]
+keywords = [
+    "lxml",
+    "typing",
+    "stubs",
+    "annotation",
+]
+authors = [
+    { name = "Abel Cheung", email = "abelcheung@gmail.com" },
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Typing :: Stubs Only",
+]
+version = "2023.3.28"
+
+[project.license]
+text = "Apache-2.0"
+
+[project.urls]
+homepage = "https://github.com/abelcheung/types-lxml"
+
+[project.optional-dependencies]
+dev = [
+    "pytest-mypy-plugins ~= 1.10, != 1.10.0",
+    "black",
+    "isort",
+    "mypy == 1.1.*",
+    "pyright >= 1.1.288",
+    "lxml ~= 4.9",
+]
+
+[tool.pdm.version]
+source = "scm"
+
+[tool.pdm.build]
+includes = [
+    "lxml-stubs/",
+]
+excludes = [
+    "**/*.bak",
+]
+source-includes = [
+    "test-data/",
+    "LICENSE",
+    "README.md",
+    "tox.ini",
+]
+
+[tool.pytest.ini_options]
+testpaths = [
+    "test-data",
+]
+
+[tool.isort]
+profile = "black"
+combine_as_imports = true
+skip = [
+    ".git",
+    ".github",
+    ".venv",
+    ".tox",
+]
+extra_standard_library = [
+    "typing_extensions",
+    "_typeshed",
+]
+
+[tool.pyright]
+include = [
+    "lxml-stubs",
+]
+reportPrivateUsage = false
+
+[tool.mypy]
+packages = "lxml-stubs"
+strict = true
+show_error_context = true
+pretty = true
