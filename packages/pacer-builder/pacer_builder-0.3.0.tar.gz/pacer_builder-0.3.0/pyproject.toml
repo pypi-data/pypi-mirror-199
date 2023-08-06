@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "pacer_builder"
+version = "0.3.0"
+description = "Asynchronous backend crawler framework"
+authors = ["yuanshaohang <ysh17600824539@163.com>"]
+readme = "README.md"
+repository = "https://github.com/YSH0313/pacer"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+
+[tool.poetry.scripts]
+pacer = 'pacer_builder.pacer:main'
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
