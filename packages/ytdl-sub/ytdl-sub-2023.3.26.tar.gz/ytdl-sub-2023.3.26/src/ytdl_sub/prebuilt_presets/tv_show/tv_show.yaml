@@ -1,0 +1,57 @@
+presets:
+
+  _plex_tv_show:
+    preset:
+      - "_plex_base"
+      - "_episode_base"
+      - "_episode_video_tags"
+    ytdl_options:
+      format: "bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best"
+    overrides:
+      tv_show_poster_file_name: "poster.jpg"
+      tv_show_fanart_file_name: "fanart.jpg"
+      season_poster_file_name: "Season {season_number_padded}/Season{season_number_padded}.jpg"
+    file_convert:  # Plex currently does not support webm
+      convert_to: "mp4"
+
+  _jellyfin_tv_show:
+    preset:
+      - "_base"
+      - "_episode_base"
+      - "_episode_video_tags"
+      - "_episode_nfo_tags"
+    overrides:
+      tv_show_poster_file_name: "poster.jpg"
+      tv_show_fanart_file_name: "fanart.jpg"
+      season_poster_file_name: "season{season_number_padded}-poster.jpg"
+
+  _kodi_tv_show:
+    preset:
+      - "_kodi_base"
+      - "_jellyfin_tv_show"
+
+####################################################################################################
+
+  # TV show from one or more sources. Uses {url}'s avatar and banner as poster and fanart
+  _tv_show_by_date:
+    download:
+      download_strategy: "multi_url"
+      urls:
+        - url: "{url}"
+          playlist_thumbnails:
+            - name: "{tv_show_poster_file_name}"
+              uid: "avatar_uncropped"
+            - name: "{tv_show_fanart_file_name}"
+              uid: "banner_uncropped"
+
+####################################################################################################
+
+  # TV show from a collection. Must specify additional `tv_show_collection_season` presets in
+  # addition. Each season sets its own `collection_season_number/_padded`
+  _tv_show_collection:
+    download:
+      download_strategy: "multi_url"
+
+    overrides:
+      season_number: "{collection_season_number}"
+      season_number_padded: "{collection_season_number_padded}"
