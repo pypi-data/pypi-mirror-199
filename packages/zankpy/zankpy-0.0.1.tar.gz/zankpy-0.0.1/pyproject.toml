@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "zankpy"
+version = "0.0.1"
+authors = [
+  { name="Zimmra", email="payton@zimmerer.io" },
+]
+description = "A client library to interface with the Zank Android TV Remote API"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/zimmra/zankpy"
+"Bug Tracker" = "https://github.com/zimmra/zankpy/issues"
