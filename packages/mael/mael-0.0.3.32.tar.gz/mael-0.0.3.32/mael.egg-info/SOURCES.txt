@@ -1,0 +1,31 @@
+LICENSE
+MANIFEST.in
+README.rst
+setup.py
+mael/__init__.py
+mael/column_config.py
+mael/composer.py
+mael/excel_builder.py
+mael/initializer.py
+mael/inspector.py
+mael/main.py
+mael.egg-info/PKG-INFO
+mael.egg-info/SOURCES.txt
+mael.egg-info/dependency_links.txt
+mael.egg-info/entry_points.txt
+mael.egg-info/requires.txt
+mael.egg-info/top_level.txt
+mael/templates/normal/.gitignore
+mael/templates/normal/README.md
+mael/templates/normal/Sample 1.md
+mael/templates/normal/Sample 2.md
+mael/templates/normal/config/columns.yml
+mael/templates/normal/config/ignore.txt
+mael/templates/normal/config/variables.ini
+mael/templates/test_case/.gitignore
+mael/templates/test_case/README.md
+mael/templates/test_case/Scenario 1.md
+mael/templates/test_case/Scenario 2.md
+mael/templates/test_case/config/columns.yml
+mael/templates/test_case/config/ignore.txt
+mael/templates/test_case/config/variables.ini
