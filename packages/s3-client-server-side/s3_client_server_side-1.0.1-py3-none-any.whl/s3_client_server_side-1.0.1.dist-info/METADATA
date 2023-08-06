@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: s3-client-server-side
+Version: 1.0.1
+Summary: A library that makes it easy to upload and load data using the server-side data storage method using AWS S3 buckets.
+Home-page: https://github.com/CheonSunggil/s3_client_server_side
+Author: 1000star
+Author-email: chkrdp@gmail.com
+Keywords: s3,s3 client,server side
+Requires-Python: >=3.*
+Requires-Dist: boto3
+Requires-Dist: h5py
+
