@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: unfancy
+Version: 1.0
+Summary: Translate fancy text to regular text
+Author-email: Ngô Ngọc Đức Huy <huyngo@disroot.org>
+Description-Content-Type: text/markdown
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Text Processing
+Classifier: Typing :: Typed
+Project-URL: Home, https://git.sr.ht/~huyngo/unfancy
+
+<!--
+SPDX-FileCopyrightText: 2023 Ngô Ngọc Đức Huy <huyngo@disroot.org>
+
+SPDX-License-Identifier: MPL-2.0
+-->
+
+# Unfancy text
+
+This program converts "fancy text", that is, text written with an alternative
+set of Latin characters, such as [mathematical alphabet][math-alpha] to plain
+Latin characters.
+
+## Usage
+
+Use as commandline interface:
+
+```
+$ python unfancy.py
+Press Ctrl+C or Ctrl+D to exit
+𝐓𝐡𝐞 𝐪𝐮𝐢𝐜𝐤 𝐛𝐫𝐨𝐰𝐧 𝐟𝐨𝐱 𝐣𝐮𝐦𝐩𝐬 𝐨𝐯𝐞𝐫 𝐭𝐡𝐞 𝐥𝐚𝐳𝐲 𝐝𝐨𝐠
+Fancy type: mathematical bold
+The quick brown fox jumps over the lazy dog
+```
+
+Use as a library
+
+```python
+from unfancy import create_multi_alphabet_map, translate_text
+
+alphabet_map = create_multi_alphabet_map()
+# alphabet_map parameter is optional,
+# but it is recommended to create it separately to avoid repetition
+fancy_text = "𝐓𝐡𝐞 𝐪𝐮𝐢𝐜𝐤 𝐛𝐫𝐨𝐰𝐧 𝐟𝐨𝐱 𝐣𝐮𝐦𝐩𝐬 𝐨𝐯𝐞𝐫 𝐭𝐡𝐞 𝐥𝐚𝐳𝐲 𝐝𝐨𝐠"
+unfancy_text, label = translate_text(fancy_text, alphabet_map)
+```
+
+## To do
+
+- Support Greek mathematical alphabets
+- Allow select specific character sets to make translation
+- Package the thing
+
+[math-alpha]: https://en.wikipedia.org/wiki/Mathematical_Alphanumeric_Symbols
+

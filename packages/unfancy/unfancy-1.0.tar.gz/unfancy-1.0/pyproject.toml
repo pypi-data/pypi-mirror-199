@@ -1,0 +1,26 @@
+# SPDX-FileCopyrightText: 2023 Ngô Ngọc Đức Huy <huyngo@disroot.org>
+#
+# SPDX-License-Identifier: MPL-2.0
+
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "unfancy"
+description = "Translate fancy text to regular text"
+authors = [{name = "Ngô Ngọc Đức Huy", email = "huyngo@disroot.org"}]
+readme = "README.md"
+dynamic = ["version"]
+classifiers=[
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: Mozilla Public License 2.0 (MPL 2.0)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Text Processing",
+    "Typing :: Typed",
+]
+
+[project.urls]
+Home = "https://git.sr.ht/~huyngo/unfancy"
