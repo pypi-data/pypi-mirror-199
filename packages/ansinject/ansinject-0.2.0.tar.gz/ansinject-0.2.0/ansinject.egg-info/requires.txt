@@ -1,0 +1,15 @@
+typer[all]>=0.7.0
+
+[dev]
+autopep8
+black
+build
+bumpver
+coverage
+flake8
+isort
+mypy
+pip-tools
+pre-commit
+pytest
+twine
