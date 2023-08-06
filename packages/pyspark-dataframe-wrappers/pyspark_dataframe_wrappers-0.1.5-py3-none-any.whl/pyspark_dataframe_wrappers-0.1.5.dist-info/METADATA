@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: pyspark-dataframe-wrappers
+Version: 0.1.5
+Summary: Sample Python Project for creating a new Python Module
+Author-email: Jacqueline Bilston <jmasonlee@gmail.com>, Balazs Reho <balazs.reho@gmail.com>, Brian Berzins <brianberzins@gmail.com>
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: pyspark>=3.0.0
+Requires-Dist: bandit[toml] ; extra == "test"
+Requires-Dist: black ; extra == "test"
+Requires-Dist: check-manifest==0.48 ; extra == "test"
+Requires-Dist: chispa ; extra == "test"
+Requires-Dist: flake8-bugbear ; extra == "test"
+Requires-Dist: flake8-docstrings ; extra == "test"
+Requires-Dist: flake8-formatter_junit_xml ; extra == "test"
+Requires-Dist: flake8 ; extra == "test"
+Requires-Dist: pre-commit==2.17.0 ; extra == "test"
+Requires-Dist: pylint ; extra == "test"
+Requires-Dist: pylint_junit ; extra == "test"
+Requires-Dist: pyright ; extra == "test"
+Requires-Dist: pytest-cov ; extra == "test"
+Requires-Dist: pytest-mock ; extra == "test"
+Requires-Dist: pytest-runner ; extra == "test"
+Requires-Dist: pytest ; extra == "test"
+Requires-Dist: pytest-github-actions-annotate-failures ; extra == "test"
+Requires-Dist: shellcheck-py==0.8.0.4 ; extra == "test"
+Project-URL: Documentation, https://github.com/jmasonlee/pyspark-dataframe-wrappers/tree/main#readme
+Project-URL: Source, https://github.com/jmasonlee/pyspark-dataframe-wrappers
+Project-URL: Tracker, https://github.com/jmasonlee/pyspark-dataframe-wrappers/issues
+Provides-Extra: test
+
+This is for dataframe wrapping in legacy code
+
