@@ -1,0 +1,14 @@
+numpy
+matplotlib
+scipy
+pandas
+xarray
+filelock
+qcodes
+pyqtgraph
+pyqt5
+quantify-core
+
+[test]
+black
+pytest
