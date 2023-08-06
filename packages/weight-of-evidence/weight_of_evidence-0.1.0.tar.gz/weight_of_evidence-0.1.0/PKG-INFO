@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: weight-of-evidence
+Version: 0.1.0
+Summary: 
+Author: oli5679
+Author-email: olicairns93@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: category-encoders (>=2.6.0,<3.0.0)
+Requires-Dist: numpy (>=1.24.2,<2.0.0)
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Requires-Dist: scikit-learn (>=1.2.2,<2.0.0)
+Description-Content-Type: text/markdown
+
+# Weight of Evidence
+
+Package to automatically tree-bin and weight-of-evidence-encode numerical features, to make explainable models that accurately represent feature non-linearities.
+
+## Installing
+
+Todo add
+
+## Examples
+
+Todo add
+
+## Getting setup
+
+1. Install Poetry
+
+2. create a venv with Python=3.10
+
+3. Install poetry packages.
+
+`poetry install`
+
