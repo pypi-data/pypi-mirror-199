@@ -1,0 +1,28 @@
+mutation addStepWithAttachment ($issue_id: String!, $action: String!, $data: String!, $result: String!, $filename: String!, $filedata: String!) {
+    addTestStep(
+        issueId: "$issue_id",
+        step: {
+            action: "$action",
+            data: "$data"
+            result: "$result",
+            attachments:[
+                {
+                    data:"$filedata",
+                    filename:"$filename",
+                    mimeType:"text/plain"
+                }
+            ]
+        }
+    ) {
+        id
+        action
+        data
+        result
+        attachments {
+            id
+            filename
+            storedInJira
+            downloadLink
+        }
+    }
+}

@@ -1,0 +1,9 @@
+mutation addTestToTestSet ($testset_id: String!, $test_ids: [String]!) {
+    addTestsToTestSet(
+        issueId: $testset_id,
+        testIssueIds: $test_ids
+    ) {
+        addedTests
+        warning
+    }
+}
