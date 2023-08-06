@@ -1,0 +1,1 @@
+This is a basic calculator for practincing creating a library in python.
