@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: ucsd_ece_courses
+Version: 0.0.1
+Summary: UCSD ECE Department's course catalog
+Author: kendrick010
+Author-email: ken010@ucsd.edu
+Keywords: python,ucsd,web-scraping
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Provides-Extra: dev
+License-File: LICENSE
+
+# ucsd-ece-courses
+
+A neat package to scrape, organize, and filter for UCSD ECE Department's course catalog. Under construction!
+
+Developed by Kendrick Nguyen, who is currently experimenting with packaging.
+
+## Installation
+
+```python
+pip3 install ucsd_ece_courses
+```
+
+## Examples of How To Use
+
+Get course descriptions
+
+```python
+from ucsd_ece_courses import ECECatalog
+
+catalog = ECECatalog()
+
+# Get ECE 5 courage descriptions, try also 'ece 5', 'ece_5', '5', etc.
+course = 'ece_5'
+print(catalog.course_title(course))
+print(catalog.course_credit(course))
+print(catalog.course_summary(course))
+print(catalog.course_prerequisite(course))
+```
+
+Get all course numbers and titles
+
+```python
+from ucsd_ece_courses import ECECatalog
+
+catalog = ECECatalog()
+
+# Get all course numbers and titles
+print(catalog.course_numbers)
+print(catalog.course_titles)
+```
