@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: kultools
+Version: 0.0.1
+Summary: Utility package for atomistic simulations using ASE and VASP
+Author-email: Kulkarni Research Group <arkulkarni@ucdavis.edu>
+Project-URL: Homepage, https://github.com/kul-group/kultools
+Project-URL: Bug Tracker, https://github.com/kul-group/kultools/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# VASP Test
+Instructions
+1. add `module load vasp/5.4.4` to your `.bashrc` file and reload it or reconnect 
+2. run file `00_make_molecule.py` by running `python3 00_make_molecule.py`
+3. verify that the file `start.traj` was created 
+4. run the second file with slurm by typing `sbatch 01_submit_job.py` (you might need a __init__.py file for kultools.py to be recognized as a module). 
+5. Check the `job.out` and `job.err` files for errors

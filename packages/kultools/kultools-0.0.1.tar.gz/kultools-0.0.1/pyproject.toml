@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0", "numpy", "scipy", "ase"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kultools"
+version = "0.0.1"
+authors = [
+  { name="Kulkarni Research Group", email="arkulkarni@ucdavis.edu" },
+]
+description = "Utility package for atomistic simulations using ASE and VASP"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: Chemistry"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/kul-group/kultools"
+"Bug Tracker" = "https://github.com/kul-group/kultools/issues"
