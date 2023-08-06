@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: datachain
+Version: 0.1.0
+Summary: Tools to build data pipelines.
+License: GPL-3.0-or-later
+Author: Rayane AMROUCHE
+Author-email: rayaneamrouche@gmail.com
+Requires-Python: >=3.8
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: jupyter (>=1.0.0,<2.0.0)
+Requires-Dist: notebook (>=6.5.3,<7.0.0)
+Description-Content-Type: text/markdown
+
+

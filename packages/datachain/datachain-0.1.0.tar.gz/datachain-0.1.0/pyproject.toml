@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "datachain"
+version = "0.1.0"
+description = "Tools to build data pipelines."
+authors = ["Rayane AMROUCHE <rayaneamrouche@gmail.com>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+
+packages = [{ include = "datachain" }, { include = "datachain/**/*.py" }]
+
+[tool.poetry.dependencies]
+python = ">=3.8"
+jupyter = "^1.0.0"
+notebook = "^6.5.3"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.21.3"
+black = "^23.1.0"
+pylint = "^2.17.1"
+mypy = "^1.1.1"
+notebook = "^6.5.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pylint.messages_control]
+max-line-length = 88
