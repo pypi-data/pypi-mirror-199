@@ -1,0 +1,17 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.cfg
+slim_trees/__init__.py
+slim_trees/_version.py
+slim_trees/compression_utils.py
+slim_trees/lgbm_booster.py
+slim_trees/pickling.py
+slim_trees/sklearn_tree.py
+slim_trees/utils.py
+slim_trees.egg-info/PKG-INFO
+slim_trees.egg-info/SOURCES.txt
+slim_trees.egg-info/dependency_links.txt
+slim_trees.egg-info/requires.txt
+slim_trees.egg-info/top_level.txt
