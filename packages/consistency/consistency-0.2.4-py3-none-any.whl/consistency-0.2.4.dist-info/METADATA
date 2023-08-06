@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: consistency
+Version: 0.2.4
+Summary: Consistency Model - Pytorch
+Home-page: https://github.com/junhsss/consistency-models
+Author: junhsss
+Author-email: junhsssr@gmail.com
+License: MIT
+Keywords: artificial intelligence,diffusion models
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+Requires-Dist: pillow
+Requires-Dist: torch
+Requires-Dist: torchvision
+Requires-Dist: pytorch-lightning
+Requires-Dist: diffusers
+Requires-Dist: torchmetrics
+Requires-Dist: lpips
+
