@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: copy-static-website
+Version: 0.0.5
+Summary: A hopefully simple tool to copy a static website, with all local resources included.
+License: MIT
+Author: Federico Giancarelli
+Author-email: hello@federicogiancarelli.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: beautifulsoup4 (>=4.11.2,<5.0.0)
+Requires-Dist: ftputil (>=5.0.4,<6.0.0)
+Requires-Dist: requests (>=2.28.2,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Copy a static website easily
+
+This tool will help you by downloading a static website, together with all it's local resources.
+
+This project is in its early development stages, so avoid it for production environments.
+
+Feel free to report issues and send pull requests.
+

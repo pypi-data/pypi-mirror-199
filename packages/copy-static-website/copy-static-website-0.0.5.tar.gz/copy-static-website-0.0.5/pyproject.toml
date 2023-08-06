@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "copy-static-website"
+version = "0.0.5"
+description = "A hopefully simple tool to copy a static website, with all local resources included."
+authors = ["Federico Giancarelli <hello@federicogiancarelli.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "copy_static_website"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.28.2"
+beautifulsoup4 = "^4.11.2"
+ftputil = "^5.0.4"
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
