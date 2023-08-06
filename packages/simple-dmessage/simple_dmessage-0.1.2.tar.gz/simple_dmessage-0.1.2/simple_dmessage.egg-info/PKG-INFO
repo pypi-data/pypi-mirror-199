@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: simple-dmessage
+Version: 0.1.2
+Summary: A package for sending direct messages via Discord
+Home-page: https://github.com/nooooaaaaah/simple_discord_message
+Author: Lee Kin Emree
+Author-email: nspielman@live.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+
+# Simple Message Bot
+
+This bot is designed to send a custom direct message to a user on discord.
+
+## Example
+
+```python
+import asyncio
+from message import send_direct_message
+
+
+async def my_script():
+    # Your script code goes here
+    await send_direct_message(TOKEN, USER_ID, "Hello, World!")
+
+
+async def main():
+    await my_script()
+
+asyncio.run(main())
+
+```
+
+### Why
+I wanted an easy way to get remote notfications from scripts 
