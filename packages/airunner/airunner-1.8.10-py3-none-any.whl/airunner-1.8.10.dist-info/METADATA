@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: airunner
+Version: 1.8.10
+Summary: A Stable Diffusion GUI
+Home-page: https://github.com/w4ffl35/airunner
+Author: Capsize LLC
+Author-email: contact@capsize.gg
+License: AGPL-3.0
+Keywords: ai,chatbot,chat,ai
+Requires-Python: >=3.10.0
+License-File: LICENSE
+Requires-Dist: aihandler (==1.8.11)
+
+[![Banner](banner.png)](https://capsizegames.itch.io/ai-runner)
+
+AI Runner official repository which houses the templates and primary client code for AI Runner.
+
+---
+
+## Installation
+
+`pip install aihandler`
+
+---
+
+## Development setup
