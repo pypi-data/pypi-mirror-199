@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: pymaxed
+Version: 0.1.6
+Summary: Python package for the maximum entroy distribution.
+Author: Kyoungseoun Chung
+Author-email: kyoungseoun.chung@gmail.com
+Requires-Python: >=3.10,<3.12
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: pyapes (>=0.2.0,<0.3.0)
