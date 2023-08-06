@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: baddrop
+Version: 1.0.0
+Summary: Rebuild Airdrop
+Home-page: http://89.207.90.60:3000/dvurechensky/STM.git
+Author: Dvurechensky
+Author-email: dvurechensky_pro@mail.com
+License: UNKNOWN
+Project-URL: Documentation, http://89.207.90.60:3000/dvurechensky/STM/src/branch/master/README.md
+Keywords: airdrop smk
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=2.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: setuptools (~=57.5.0)
+Requires-Dist: bs4
+Requires-Dist: lxml
+Requires-Dist: fleep
+Requires-Dist: Pillow
+Requires-Dist: pybluez
+Requires-Dist: requests
+Requires-Dist: pycrypto
+Requires-Dist: netifaces
+Requires-Dist: prettytable
+Requires-Dist: libarchive-c
+Requires-Dist: ctypescrypto
+
+READ ME
+
