@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: AnumbyRobotSJ
+Version: 2.4.6
+Summary: Software du Robot Anumby pour le Service Jeunesse de Bures sur Yvette 
+Home-page: https://github.com/anumby-source/RobotServiceJeunesse2023/tree/main/MasterMind
+Author: Chris Arnault
+Author-email: chris.arnault@gmail.com
+License: CeCILL-B
+Classifier: License :: CeCILL-B Free Software License Agreement (CECILL-B)
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# MasterMind
+
+## AnumbyFormes
+
+- construit les figures pour le jeu MasterMind
+- produit des donnÃ©es d'apprentissage pour le rÃ©seau de neurones artificiel (KÃ©ras)
+- entraÃ®ne le RdN sur ces donnÃ©es
+
+
+- `AnumbyFormes -h`
+- `AnumbyFormes -figures [-f <numÃ©ro>] [-cell <int=40>] [-formes <int=8>]` construit les figures de base
+- `AnumbyFormes -run [-build_data] [-data <int=100>]` reconstruit les donnÃ©es d'entraÃ®nement et lance l'apprentissage
+- `AnumbyFormes -run [-build_model]` reconstruit le modÃ¨le et lance l'apprentissage sur des donnÃ©es existantes
+
+## AnumbyVehicule
+
+- Simule l'installation d'un vÃ©hicule robotisÃ© pour opÃ©rer un jeu de MasterMind avec une camÃ©ra capable de reconnaÃ®tre les figures
+
+`AnumbyVehicule`
+
+![Ecran](Ecran.GIF)
+
+![ContrÃ´le](ContrÃ´le.GIF)
+
+## Installation
+
+``pip install AnumbyRobotSJ==<version>``
+
+# Reconstruction du package.
+
+- incrÃ©menter le numÃ©ro de version => modifier VERSION
+- lancer `build.bat`
+
+# License
+
+Copyright 2023 Chris Arnault
+
+License CECILL
