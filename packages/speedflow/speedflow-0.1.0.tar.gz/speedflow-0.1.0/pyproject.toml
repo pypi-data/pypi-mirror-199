@@ -1,0 +1,17 @@
+[tool.pdm]
+
+[project]
+name = "speedflow"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "dwpeng", email = "1732889554@qq.com"},
+]
+dependencies = []
+requires-python = ">=3.8"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
