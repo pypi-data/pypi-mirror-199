@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: phawd
+Version: 0.1
+Summary: python binding for phawd
+Home-page: UNKNOWN
+Author: HuNing-He
+Author-email: 957278968@qq.com
+License: UNKNOWN
+Platform: UNKNOWN
+Requires-Python: >=3.6
+License-File: LICENSE
+Provides-Extra: test
+Requires-Dist: pytest (>=6.0) ; extra == 'test'
+
+UNKNOWN
+
