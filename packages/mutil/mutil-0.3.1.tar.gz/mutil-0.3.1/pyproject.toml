@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mutil"
+version = "0.3.1"
+authors = [
+  { name="Anthony Aylward", email="aaylward@salk.edu" },
+]
+description = "Utility for managing memory with cgroup"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["psutil"]
+
+[project.urls]
+"Homepage" = "https://gitlab.com/salk-tm/mutil"
+"Documentation" = "https://salk-tm.gitlab.io/mutil"
+
+[project.scripts]
+mutil = "mutil.mutil:main"
+
+[tool.setuptools]
+package-dir = {mutil="src/mutil"}
