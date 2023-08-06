@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: dblur
+Version: 0.0.3
+Summary: An extensive, highly customisable python package for single image deblurring
+Home-page: https://github.com/Jishnu8/dblur_jishnu8
+Author: Jishnu Parayil Shibu
+Author-email: jishnu82003@gmail.com
+Project-URL: Bug Tracker, https://github.com/Jishnu8/dblur_jishnu8/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: scipy
+Requires-Dist: numpy
+Requires-Dist: torch
+Requires-Dist: tensorboard
+Requires-Dist: torchmetrics
+Requires-Dist: piq
+
+# DBlur
+
+An extensive, highly customisable python package for single image deblurring.
+Still under development!
