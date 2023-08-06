@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: sphinx-tfdoc
+Version: 0.1.0
+Summary: Sphinx API documentation for Terraform Modules
+Home-page: https://github.com/twang817/sphinx-tfdoc
+Author: Tommy Wang
+Author-email: twang@august8.net
+Requires-Python: >=3.9
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: Jinja2
+Requires-Dist: sphinx
+Requires-Dist: tabulate
+Project-URL: Repository, https://github.com/twang817/sphinx-tfdoc
