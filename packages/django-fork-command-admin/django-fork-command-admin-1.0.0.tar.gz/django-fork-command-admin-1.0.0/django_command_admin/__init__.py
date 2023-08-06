@@ -1,0 +1,1 @@
+default_app_config = 'django_command_admin.apps.Config'
