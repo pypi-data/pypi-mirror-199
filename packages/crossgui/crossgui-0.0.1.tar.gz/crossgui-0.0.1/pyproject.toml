@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "crossgui"
+version = "0.0.1"
+description = "Сommon widgets between different graphical environments."
+authors = ["Andrew Shteren <dank.txt@gmail.com>"]
+readme = "README.md"
+license = "BSD-2-Clause"
+homepage = "https://github.com/2trvl/dotfiles/tree/master/scripts/crossgui"
+keywords = ["dmenu", "qt", "rofi", "tui", "widgets"]
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Console",
+    "Environment :: X11 Applications :: Qt",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Topic :: Software Development :: Internationalization",
+    "Topic :: Software Development :: User Interfaces",
+    "Topic :: Software Development :: Widget Sets"
+]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
