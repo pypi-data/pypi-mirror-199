@@ -1,0 +1,6 @@
+[console_scripts]
+duplo-cli = duplocloud.cli:main
+
+[duplocloud.net]
+service = duplo_resource.service:DuploService
+tenant = duplo_resource.tenant:DuploTenant
