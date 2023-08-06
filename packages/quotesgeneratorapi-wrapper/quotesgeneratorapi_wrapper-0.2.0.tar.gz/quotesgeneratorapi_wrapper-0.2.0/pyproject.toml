@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "quotesgeneratorapi-wrapper"
+version = "0.2.0"
+description = ""
+authors = ["tct123 <42028373+tct123@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "quotesgeneratorapi_wrapper"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+requests = "^2.28.2"
+
+[tool.poetry.group.dev.dependencies]
+requests = "^2.28.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
