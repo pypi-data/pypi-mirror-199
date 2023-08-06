@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "mltkt"
+version = "0.1.0"
+description = ""
+authors = ["Zhengyu Yang <25852061+zhengyu-yang@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.group.dev.dependencies]
+structlog = "^22.3.0"
+torch = "^2.0.0"
+lightning = "^2.0.0"
+numpy = "^1.24.2"
+rich = "^13.3.2"
+varname = "^0.11.0"
+pyyaml = "^6.0"
+joblib = "^1.2.0"
+tqdm = "^4.65.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
