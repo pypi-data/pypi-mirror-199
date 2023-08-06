@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: phonenumbersapi
+Version: 3
+Summary: Un module qui regroupe toutes les fonctionnalités dédiés au numéro de téléphone (generateur,checker HLR, tous les pays du monde !
+Home-page: https://github.com/phoneapinumbers/phoneapinumbers
+Author: phoneAPInumbers
+Author-email: testibanxiosis@hotmail.com
+Requires-Python: >=3.6
+Requires-Dist: colorama
+Requires-Dist: httpx
+Requires-Dist: pyautogui
+Requires-Dist: pycountry
+Requires-Dist: requests
+Requires-Dist: telegram
+
