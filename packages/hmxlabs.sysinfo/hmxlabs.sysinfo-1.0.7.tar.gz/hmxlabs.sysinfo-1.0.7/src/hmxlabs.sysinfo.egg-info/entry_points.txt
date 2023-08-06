@@ -1,0 +1,5 @@
+[console_scripts]
+sysinfo = sysinfo:main
+
+[hmxlabs.sysinfo]
+sysinfo = hmxlabs.sysinfo.sysinfo:main
