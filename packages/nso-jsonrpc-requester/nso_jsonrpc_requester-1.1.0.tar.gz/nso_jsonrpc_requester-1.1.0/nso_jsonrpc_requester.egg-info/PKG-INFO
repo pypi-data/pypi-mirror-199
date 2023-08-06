@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: nso-jsonrpc-requester
+Version: 1.1.0
+Summary: A simple logger that logs in a JSON format inspired by go zap
+Author-email: "Benjamin P. Trachtenberg" <e_ben_75-python@yahoo.com>
+Maintainer-email: "Benjamin P. Trachtenberg" <e_ben_75-python@yahoo.com>
+License: MIT License
+        
+        Copyright (c) 2020 - 2021 Ben Trachtenberg
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Documentation, https://nso-jsonrpc-requester.readthedocs.io/en/latest
+Project-URL: Source, https://github.com/btr1975/nso_jsonrpc_requester
+Project-URL: Tracker, https://github.com/btr1975/nso_jsonrpc_requester/issues
+Keywords: cisco,nso,json,rpc,network,engineer
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: BSD
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+| BRANCH | STATUS |
+|---|---|
+| master | [![Unit-Testing, Coverage, Linting](https://github.com/btr1975/nso_jsonrpc_requester/actions/workflows/test-coverage-lint.yml/badge.svg?branch=master)](https://github.com/btr1975/nso_jsonrpc_requester/actions/workflows/test-coverage-lint.yml) |
+| develop | [![Unit-Testing, Coverage, Linting](https://github.com/btr1975/nso_jsonrpc_requester/actions/workflows/test-coverage-lint.yml/badge.svg?branch=develop)](https://github.com/btr1975/nso_jsonrpc_requester/actions/workflows/test-coverage-lint.yml) |
+
+
+[![Downloads](https://pepy.tech/badge/nso-jsonrpc-requester)](https://pepy.tech/project/nso-jsonrpc-requester)
+[![Supported Versions](https://img.shields.io/pypi/pyversions/nso-jsonrpc-requester.svg)](https://pypi.org/project/nso-jsonrpc-requester)
+
+# nso_jsonrpc_requester
+
+* This is a library to interact with the JSON-RPC of a Cisco Network
+  Services Orchestrator server.
+
+* This is not a 100% complete library it contains what I use most.
+
+* **THIS IS NOT MEANT TO BE PRODUCTION READY SO TEST WHAT YOU WANT TO USE IT FOR**
+
+### Library in Other Languages
+
+* [Python 3](https://github.com/btr1975/nso_jsonrpc_requester)
+* [Go](https://github.com/btr1975/nsojsonrpcrequestergo)
+* I try to keep the functionality the same between both, because I use
+  both.
+
+### Go Install
+
+* Install newest code
+
+```shell
+go get github.com/btr1975/nsojsonrpcrequestergo
+```
+
+* Install specific version example
+
+```shell
+go get github.com/btr1975/nsojsonrpcrequestergo@v1.0.0
+```
+
+### Python Install Source
+
+* In your requirements.txt for newest code
+
+```text
+git+https://github.com/btr1975/nso_jsonrpc_requester.git@master#egg=nso_jsonrpc_requester
+```
+
+* In your requirements.txt for specific version
+
+```text
+git+https://github.com/btr1975/nso_jsonrpc_requester.git@1.0.3#egg=nso_jsonrpc_requester
+```
+
+### Python Install pip
+
+```text
+pip install nso-jsonrpc-requester
+```
+
