@@ -1,0 +1,10 @@
+numpy>=1.22.0
+
+[:platform_system == "Windows"]
+tensorflow
+
+[:platform_system == "darwin"]
+tensorflow-macos
+
+[:platform_system == "linux"]
+tensorflow
