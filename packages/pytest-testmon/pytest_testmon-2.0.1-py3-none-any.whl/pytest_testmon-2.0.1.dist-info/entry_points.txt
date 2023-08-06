@@ -1,0 +1,5 @@
+[console_scripts]
+tmnetc = testmon.tmnetc:main
+
+[pytest11]
+pytest-testmon = testmon.pytest_testmon
