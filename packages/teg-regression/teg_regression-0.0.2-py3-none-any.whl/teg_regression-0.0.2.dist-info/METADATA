@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: teg_regression
+Version: 0.0.2
+Summary: Linear regression, with F-tests, AIC, and linear constraints.
+Project-URL: Homepage, https://tegladwin.com
+Project-URL: Bug Tracker, https://github.com/thomasgladwin/teg_regr_tests
+Author-email: "Thomas E. Gladwin" <thomasgladwin@hotmail.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+Function for tests of linear constraints on regression coefficients.
