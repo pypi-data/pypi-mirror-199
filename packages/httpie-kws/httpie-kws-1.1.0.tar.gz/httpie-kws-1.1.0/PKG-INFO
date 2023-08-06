@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: httpie-kws
+Version: 1.1.0
+Summary: KWS plugin for HTTPie.
+Home-page: https://github.com/windtail/httpie-kws
+Download-URL: https://github.com/windtail/httpie-kws
+Author: Luo Jiejun
+Author-email: ljj@knd.com.cn
+License: Apache 2.0
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# KWS app auth plugin for httpie
+
+## Using command line arguments
+
+```shell
+https -A kws -u $appid:$appsecret https://kws.knd.com.cn/api/v4/manufacturers/
+```
+
+## Using environment variables
+
+```shell script
+export KWS_APP_ID=$appid
+export KWS_APP_SECRET=$appsecret
+
+https -A kws https://kws.knd.com.cn/api/v4/manufacturers/
+```
+
+## Using configuration file
+
+Download app auth file to `$HOME/.kws-auth`
+
+```shell script
+https -A kws https://kws.knd.com.cn/api/v4/manufacturers/
+```
