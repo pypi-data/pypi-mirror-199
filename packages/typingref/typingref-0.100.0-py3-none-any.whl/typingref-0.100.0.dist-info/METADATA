@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: typingref
+Version: 0.100.0
+Summary: Introspect Python type annotation, with ease.
+License: MIT
+Author: Nir
+Author-email: 88795475+nrbnlulu@users.noreply.github.com
+Maintainer: Nir.J Benlulu
+Maintainer-email: nrbnlulu@gmail.com
+Requires-Python: >=3.9,<3.12
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Project-URL: Documentation, https://nrbnlulu.github.io/typingref/
+Project-URL: Homepage, https://github.com/nrbnlulu/typingref
+Description-Content-Type: text/markdown
+
+![logo.png](docs%2Fassets%2Flogo.png)
+*Introspect Python type annotation, with ease.*
+
+Modern Python libraries often use type annotations,
+this library is intended to help "de/serialize" Python type hints to something
+you can work with.
+
+
+### Sample Usage:
+
+```python
+from typingref import TypeHinter
+from typing import Union
+
+class MyType:
+    ...
+
+def foo(p: Union[int, str, float]) -> MyType:
+    ...
+
+p_type = TypeHinter.from_annotations(foo.__annotations__['p'])
+
+if p_type.is_union():
+    for t in p_type.of_type:
+        ...
+
+assert Union[int, str, float] == TypeHinter.as_annotation()
+```
+
