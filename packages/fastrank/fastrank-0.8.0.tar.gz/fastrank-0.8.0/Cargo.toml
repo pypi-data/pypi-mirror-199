@@ -1,0 +1,27 @@
+[package]
+name = "fastrank"
+version = "0.8.0"
+authors = ["John Foley <johnf@middlebury.edu>"]
+edition = "2018"
+readme = "README.md"
+description = "FastRank Learning to Rank Library written in Rust."
+homepage = "https://github.com/jjfiv/fastrank"
+license = "MIT"
+publish = false
+
+[lib]
+name = "fastrank"
+crate-type = ["cdylib"]
+
+[dependencies]
+libc = "0.2"
+oorandom = "=11.1.0"
+bzip2 = "0.4"
+flate2 = "1.0"
+zstd = "0.12"
+rayon = "1.2"
+serde = { version = "1", features = ["rc"] }
+serde_json = "1"
+serde_derive = "1"
+ordered-float = { version = "3.0", features = ["serde"] }
+fast-float = "0.2"
