@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: intnan
+Version: 0.1.3
+Summary: Function collection for handling integers with NaNs
+Home-page: https://github.com/ml31415/intnan
+Download-URL: https://github.com/ml31415/intnan/archive/master.zip
+Author: Michael Loeffler
+Author-email: ml@occam.com.ua
+License: BSD
+Project-URL: Source, https://github.com/ml31415/intnan
+Keywords: integer,nan,missing values,intnan
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE
+
+
+Integer data types lack special values for -inf, inf and NaN. Especially
+NaN as an indication for missing data would be useful in many scientific contexts.
+
+Of course there is numpy.ma.MaskedArray around for the very same reason. Nevertheless,
+it might sometimes be annoying to carry a separate mask array around. And in those cases,
+using a set of numpy-compatible functions for the same job will do just fine.
+
+This package provides such an implementation for several standard numpy functions, that 
+treat integer arrays in such a way, that the lowest negative integer resembles NaN.
