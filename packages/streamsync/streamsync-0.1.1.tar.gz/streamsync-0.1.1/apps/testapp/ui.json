@@ -1,0 +1,1078 @@
+{
+    "metadata": {
+        "streamsync_version": "0.1.0"
+    },
+    "components": {
+        "root": {
+            "id": "root",
+            "type": "root",
+            "content": {
+                "appName": "A standard app",
+                "containerShadow": "0px 2px 6px -2px #897089"
+            },
+            "parentId": null,
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "19b19a22-5444-4863-9dd0-483addd5542a": {
+            "id": "19b19a22-5444-4863-9dd0-483addd5542a",
+            "type": "page",
+            "content": {
+                "pageMode": "compact",
+                "emptinessColor": "#2e350d",
+                "containerBackgroundColor": "#8eb931",
+                "containerShadow": "0px 4px 24px -1px #30eb2d",
+                "accentColor": "#ffd129",
+                "primaryTextColor": "#ffffff",
+                "separatorColor": "#43a441"
+            },
+            "parentId": "root",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "05be961c-6ba4-4884-84b5-292bc2c22550": {
+            "id": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "type": "page",
+            "content": {
+                "pageMode": "compact",
+                "key": "pink",
+                "emptinessColor": "#f8cce3"
+            },
+            "parentId": "root",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "203b1317-e42f-408b-b12e-ff84f48349e2": {
+            "id": "203b1317-e42f-408b-b12e-ff84f48349e2",
+            "type": "section",
+            "content": {
+                "title": "",
+                "primaryTextColor": "#000000"
+            },
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "a3db6769-b4cd-45a2-8302-1d3b80734780": {
+            "id": "a3db6769-b4cd-45a2-8302-1d3b80734780",
+            "type": "columns",
+            "content": {},
+            "parentId": "203b1317-e42f-408b-b12e-ff84f48349e2",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "2e327498-2ce8-4102-98a2-7c6b35849578": {
+            "id": "2e327498-2ce8-4102-98a2-7c6b35849578",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "yes",
+                "title": "Gatuno"
+            },
+            "parentId": "a3db6769-b4cd-45a2-8302-1d3b80734780",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "e1dddbd0-e45e-4855-bb69-41357d904c0a": {
+            "id": "e1dddbd0-e45e-4855-bb69-41357d904c0a",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "@{collapsible}",
+                "title": "Perruno"
+            },
+            "parentId": "a3db6769-b4cd-45a2-8302-1d3b80734780",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "a962dfb5-f7a4-456c-b25b-3d92f4404f6d": {
+            "id": "a962dfb5-f7a4-456c-b25b-3d92f4404f6d",
+            "type": "image",
+            "content": {
+                "src": "https://images.unsplash.com/photo-1490367605959-06955305859b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+                "caption": ""
+            },
+            "parentId": "2e327498-2ce8-4102-98a2-7c6b35849578",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "27ea6434-172d-4b8f-8802-cb54b6a596ae": {
+            "id": "27ea6434-172d-4b8f-8802-cb54b6a596ae",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "e1dddbd0-e45e-4855-bb69-41357d904c0a",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "b48381f8-770c-470e-b976-c1a26e6d81bb": {
+            "id": "b48381f8-770c-470e-b976-c1a26e6d81bb",
+            "type": "header",
+            "content": {
+                "text": "Streamsync's Pink App",
+                "accentColor": "#3e323e"
+            },
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "da5c4ada-a127-491f-862c-2ab8b183edcf": {
+            "id": "da5c4ada-a127-491f-862c-2ab8b183edcf",
+            "type": "button",
+            "content": {
+                "text": "Toggle collapsible"
+            },
+            "parentId": "e1dddbd0-e45e-4855-bb69-41357d904c0a",
+            "handlers": {
+                "click": "toggle_collapsible"
+            },
+            "position": 4,
+            "visible": true
+        },
+        "2451bfe5-d0b3-42c0-850a-ae6064a7c929": {
+            "id": "2451bfe5-d0b3-42c0-850a-ae6064a7c929",
+            "type": "button",
+            "content": {
+                "text": "Button Text",
+                "buttonColor": "#f6e5f5"
+            },
+            "parentId": "b48381f8-770c-470e-b976-c1a26e6d81bb",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "02b6e807-854a-434d-b59f-273809caa73e": {
+            "id": "02b6e807-854a-434d-b59f-273809caa73e",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "e1dddbd0-e45e-4855-bb69-41357d904c0a",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "58f03670-a743-423e-b95c-b4707001500a": {
+            "id": "58f03670-a743-423e-b95c-b4707001500a",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "e1dddbd0-e45e-4855-bb69-41357d904c0a",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "aed30fe8-0f14-4fe3-bea4-2a0a0cc0aac2": {
+            "id": "aed30fe8-0f14-4fe3-bea4-2a0a0cc0aac2",
+            "type": "sidebar",
+            "content": {},
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": -2,
+            "visible": true
+        },
+        "dee0687a-3426-45b8-841d-8832e425bceb": {
+            "id": "dee0687a-3426-45b8-841d-8832e425bceb",
+            "type": "checkboxinput",
+            "content": {
+                "label": "Input Label"
+            },
+            "parentId": "aed30fe8-0f14-4fe3-bea4-2a0a0cc0aac2",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "558578d6-8e41-41b5-b274-c91181bfd6cd": {
+            "id": "558578d6-8e41-41b5-b274-c91181bfd6cd",
+            "type": "heading",
+            "content": {
+                "text": "The count is @{counter}",
+                "alignment": "left"
+            },
+            "parentId": "e1dddbd0-e45e-4855-bb69-41357d904c0a",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "7c98bb49-2a2b-4c59-a15c-2444f21a713f": {
+            "id": "7c98bb49-2a2b-4c59-a15c-2444f21a713f",
+            "type": "form",
+            "content": {
+                "submitDesc": "Submit",
+                "clearFormAfterSubmission": "yes"
+            },
+            "parentId": "aed30fe8-0f14-4fe3-bea4-2a0a0cc0aac2",
+            "handlers": {
+                "ss-submit": "slow_op"
+            },
+            "position": 2,
+            "visible": true
+        },
+        "ff8b35e8-bac0-4520-8f87-654bea16a76e": {
+            "id": "ff8b35e8-bac0-4520-8f87-654bea16a76e",
+            "type": "textinput",
+            "content": {
+                "label": "Input Label"
+            },
+            "parentId": "7c98bb49-2a2b-4c59-a15c-2444f21a713f",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "69cdbb5d-34ee-4d4d-adc5-1fd8801089a5": {
+            "id": "69cdbb5d-34ee-4d4d-adc5-1fd8801089a5",
+            "type": "separator",
+            "content": {},
+            "parentId": "aed30fe8-0f14-4fe3-bea4-2a0a0cc0aac2",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "1a898531-ba5b-4127-90f9-613a21a90b34": {
+            "id": "1a898531-ba5b-4127-90f9-613a21a90b34",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "",
+                "title": "Dataset"
+            },
+            "parentId": "a3db6769-b4cd-45a2-8302-1d3b80734780",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "473c8deb-fdd2-4d4b-abdd-fb85b34a1864": {
+            "id": "473c8deb-fdd2-4d4b-abdd-fb85b34a1864",
+            "type": "checkboxinput",
+            "content": {
+                "label": "Choose which things"
+            },
+            "parentId": "1a898531-ba5b-4127-90f9-613a21a90b34",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "89e5eb8f-20e0-4db7-9b9c-8afaca1b9798": {
+            "id": "89e5eb8f-20e0-4db7-9b9c-8afaca1b9798",
+            "type": "separator",
+            "content": {},
+            "parentId": "a3db6769-b4cd-45a2-8302-1d3b80734780",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "6ffcd635-e4b1-4c09-a6ac-b88d7d19d08f": {
+            "id": "6ffcd635-e4b1-4c09-a6ac-b88d7d19d08f",
+            "type": "separator",
+            "content": {},
+            "parentId": "a3db6769-b4cd-45a2-8302-1d3b80734780",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "78ae87a7-f08c-4d83-83f7-03e8cfaa8b96": {
+            "id": "78ae87a7-f08c-4d83-83f7-03e8cfaa8b96",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "2e327498-2ce8-4102-98a2-7c6b35849578",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "76c4b9b3-fcde-4694-b377-6dc2402d54ef": {
+            "id": "76c4b9b3-fcde-4694-b377-6dc2402d54ef",
+            "type": "separator",
+            "content": {},
+            "parentId": "aed30fe8-0f14-4fe3-bea4-2a0a0cc0aac2",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "e7296919-125f-4a06-93ba-ebb02747749a": {
+            "id": "e7296919-125f-4a06-93ba-ebb02747749a",
+            "type": "tabs",
+            "content": {},
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "923711c8-56a5-48a6-955a-43c1e5db7a27": {
+            "id": "923711c8-56a5-48a6-955a-43c1e5db7a27",
+            "type": "tab",
+            "content": {
+                "name": "Tab Name"
+            },
+            "parentId": "e7296919-125f-4a06-93ba-ebb02747749a",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "84b30bf0-6da6-49e9-9a8f-d6548226a422": {
+            "id": "84b30bf0-6da6-49e9-9a8f-d6548226a422",
+            "type": "webcamcapture",
+            "content": {
+                "refreshRate": "200"
+            },
+            "parentId": "923711c8-56a5-48a6-955a-43c1e5db7a27",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "a668286f-50c6-4e65-9afc-e9817c43788a": {
+            "id": "a668286f-50c6-4e65-9afc-e9817c43788a",
+            "type": "tab",
+            "content": {
+                "name": "Tab Name"
+            },
+            "parentId": "e7296919-125f-4a06-93ba-ebb02747749a",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "fb67eaf7-0d52-4dae-a720-9d8f96d9e5eb": {
+            "id": "fb67eaf7-0d52-4dae-a720-9d8f96d9e5eb",
+            "type": "columns",
+            "content": {},
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "06c24648-ebd7-4278-84de-616de7be45fe": {
+            "id": "06c24648-ebd7-4278-84de-616de7be45fe",
+            "type": "section",
+            "content": {
+                "title": "",
+                "primaryTextColor": "#000000"
+            },
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "5a551dfc-6ef5-4a75-a657-b159b7a2222c": {
+            "id": "5a551dfc-6ef5-4a75-a657-b159b7a2222c",
+            "type": "columns",
+            "content": {},
+            "parentId": "06c24648-ebd7-4278-84de-616de7be45fe",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "7c5fe3fe-47ad-49f9-8f48-f746ad04ad0b": {
+            "id": "7c5fe3fe-47ad-49f9-8f48-f746ad04ad0b",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "yes",
+                "title": ""
+            },
+            "parentId": "5a551dfc-6ef5-4a75-a657-b159b7a2222c",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "ced9bf31-504b-4434-89ef-6e762498eea6": {
+            "id": "ced9bf31-504b-4434-89ef-6e762498eea6",
+            "type": "image",
+            "content": {
+                "src": "https://images.unsplash.com/photo-1490367605959-06955305859b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+                "caption": ""
+            },
+            "parentId": "7c5fe3fe-47ad-49f9-8f48-f746ad04ad0b",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "93e66f6e-1584-48fc-b522-b3f88d4d192c": {
+            "id": "93e66f6e-1584-48fc-b522-b3f88d4d192c",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "7c5fe3fe-47ad-49f9-8f48-f746ad04ad0b",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "16418697-db1a-425d-bcc7-e02dd6334be7": {
+            "id": "16418697-db1a-425d-bcc7-e02dd6334be7",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "@{collapsible}",
+                "title": "Perruno"
+            },
+            "parentId": "5a551dfc-6ef5-4a75-a657-b159b7a2222c",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "87f6412a-32b6-4b0e-8dd6-ca81e6efb81e": {
+            "id": "87f6412a-32b6-4b0e-8dd6-ca81e6efb81e",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "16418697-db1a-425d-bcc7-e02dd6334be7",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "541f38da-1b30-4899-922e-7c5e90fc2579": {
+            "id": "541f38da-1b30-4899-922e-7c5e90fc2579",
+            "type": "button",
+            "content": {
+                "text": "Toggle collapsible"
+            },
+            "parentId": "16418697-db1a-425d-bcc7-e02dd6334be7",
+            "handlers": {
+                "click": "toggle_collapsible"
+            },
+            "position": 4,
+            "visible": true
+        },
+        "4cb96c9d-61f0-4305-97da-a8678edbd4d2": {
+            "id": "4cb96c9d-61f0-4305-97da-a8678edbd4d2",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "16418697-db1a-425d-bcc7-e02dd6334be7",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "8a56e718-a065-4c0f-8487-08db3544aa97": {
+            "id": "8a56e718-a065-4c0f-8487-08db3544aa97",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "16418697-db1a-425d-bcc7-e02dd6334be7",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "0961b7d0-23a6-4014-a823-e0d187f9da9a": {
+            "id": "0961b7d0-23a6-4014-a823-e0d187f9da9a",
+            "type": "heading",
+            "content": {
+                "text": "The count is @{counter}",
+                "alignment": "left"
+            },
+            "parentId": "16418697-db1a-425d-bcc7-e02dd6334be7",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "38fd568f-5ae6-4bac-9f44-f81505e489fd": {
+            "id": "38fd568f-5ae6-4bac-9f44-f81505e489fd",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "",
+                "title": "Dataset"
+            },
+            "parentId": "5a551dfc-6ef5-4a75-a657-b159b7a2222c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "e6e2a43a-7b78-437f-bcde-280b0553fe8c": {
+            "id": "e6e2a43a-7b78-437f-bcde-280b0553fe8c",
+            "type": "checkboxinput",
+            "content": {
+                "label": "Choose which things"
+            },
+            "parentId": "38fd568f-5ae6-4bac-9f44-f81505e489fd",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "f42a1a5e-60a8-4cda-9ca9-21b3d9217ab4": {
+            "id": "f42a1a5e-60a8-4cda-9ca9-21b3d9217ab4",
+            "type": "separator",
+            "content": {},
+            "parentId": "5a551dfc-6ef5-4a75-a657-b159b7a2222c",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "b5824b19-a799-4f3f-9d8e-c7e4c69b3719": {
+            "id": "b5824b19-a799-4f3f-9d8e-c7e4c69b3719",
+            "type": "separator",
+            "content": {},
+            "parentId": "5a551dfc-6ef5-4a75-a657-b159b7a2222c",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "61b11cbc-3fa2-4afc-bb39-431de24c9788": {
+            "id": "61b11cbc-3fa2-4afc-bb39-431de24c9788",
+            "type": "section",
+            "content": {
+                "title": "",
+                "primaryTextColor": "#000000"
+            },
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 5,
+            "visible": true
+        },
+        "54111cca-4690-49f1-bcbb-ecccbe54d5a3": {
+            "id": "54111cca-4690-49f1-bcbb-ecccbe54d5a3",
+            "type": "columns",
+            "content": {},
+            "parentId": "61b11cbc-3fa2-4afc-bb39-431de24c9788",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "55757a26-0a3b-4585-9320-bd7889dcd3b5": {
+            "id": "55757a26-0a3b-4585-9320-bd7889dcd3b5",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "yes",
+                "title": ""
+            },
+            "parentId": "54111cca-4690-49f1-bcbb-ecccbe54d5a3",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "52de4012-4177-4cc4-a9c6-75e5054fa3dd": {
+            "id": "52de4012-4177-4cc4-a9c6-75e5054fa3dd",
+            "type": "image",
+            "content": {
+                "src": "https://images.unsplash.com/photo-1490367605959-06955305859b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+                "caption": ""
+            },
+            "parentId": "55757a26-0a3b-4585-9320-bd7889dcd3b5",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "f0edc88b-7ada-4e8d-ad3c-829830b91f9c": {
+            "id": "f0edc88b-7ada-4e8d-ad3c-829830b91f9c",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "55757a26-0a3b-4585-9320-bd7889dcd3b5",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "52fc93b3-942b-4851-a3e2-884a517c478e": {
+            "id": "52fc93b3-942b-4851-a3e2-884a517c478e",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "@{collapsible}",
+                "title": "Perruno"
+            },
+            "parentId": "54111cca-4690-49f1-bcbb-ecccbe54d5a3",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "cb2b6b82-c4e8-4e7c-ae51-80a08be10365": {
+            "id": "cb2b6b82-c4e8-4e7c-ae51-80a08be10365",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "52fc93b3-942b-4851-a3e2-884a517c478e",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "832ae0e5-f2f9-4e07-bab1-06fdefb1bacb": {
+            "id": "832ae0e5-f2f9-4e07-bab1-06fdefb1bacb",
+            "type": "button",
+            "content": {
+                "text": "Toggle collapsible"
+            },
+            "parentId": "52fc93b3-942b-4851-a3e2-884a517c478e",
+            "handlers": {
+                "click": "toggle_collapsible"
+            },
+            "position": 4,
+            "visible": true
+        },
+        "23fa453b-be4d-4530-a14a-1bd5f39953b8": {
+            "id": "23fa453b-be4d-4530-a14a-1bd5f39953b8",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "52fc93b3-942b-4851-a3e2-884a517c478e",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "2dfc0414-52ad-45bc-b273-03239a747645": {
+            "id": "2dfc0414-52ad-45bc-b273-03239a747645",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "52fc93b3-942b-4851-a3e2-884a517c478e",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "399a9c63-fa43-4dcd-b23f-cfea4df13953": {
+            "id": "399a9c63-fa43-4dcd-b23f-cfea4df13953",
+            "type": "heading",
+            "content": {
+                "text": "The count is @{counter}",
+                "alignment": "left"
+            },
+            "parentId": "52fc93b3-942b-4851-a3e2-884a517c478e",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "1c901e90-2386-4086-ad95-f500b06b1894": {
+            "id": "1c901e90-2386-4086-ad95-f500b06b1894",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "",
+                "title": "Dataset"
+            },
+            "parentId": "54111cca-4690-49f1-bcbb-ecccbe54d5a3",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "e9b3bdd8-3d61-4616-af31-dda042cfb5bd": {
+            "id": "e9b3bdd8-3d61-4616-af31-dda042cfb5bd",
+            "type": "checkboxinput",
+            "content": {
+                "label": "Choose which things"
+            },
+            "parentId": "1c901e90-2386-4086-ad95-f500b06b1894",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "8da0126c-9baf-4d30-a6bd-24b66a0decae": {
+            "id": "8da0126c-9baf-4d30-a6bd-24b66a0decae",
+            "type": "separator",
+            "content": {},
+            "parentId": "54111cca-4690-49f1-bcbb-ecccbe54d5a3",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "d89a651b-4b60-46b8-a732-7a7847954830": {
+            "id": "d89a651b-4b60-46b8-a732-7a7847954830",
+            "type": "separator",
+            "content": {},
+            "parentId": "54111cca-4690-49f1-bcbb-ecccbe54d5a3",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "e3aa29b9-6443-4268-b1f8-edd579fe054f": {
+            "id": "e3aa29b9-6443-4268-b1f8-edd579fe054f",
+            "type": "section",
+            "content": {
+                "title": "",
+                "primaryTextColor": "#000000"
+            },
+            "parentId": "05be961c-6ba4-4884-84b5-292bc2c22550",
+            "handlers": {},
+            "position": 6,
+            "visible": true
+        },
+        "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c": {
+            "id": "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c",
+            "type": "columns",
+            "content": {},
+            "parentId": "e3aa29b9-6443-4268-b1f8-edd579fe054f",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "0096e714-e925-47b4-a3a1-583d8765e438": {
+            "id": "0096e714-e925-47b4-a3a1-583d8765e438",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "yes",
+                "title": ""
+            },
+            "parentId": "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "3ef45bc9-aa1e-41d1-88ea-b915b290ce67": {
+            "id": "3ef45bc9-aa1e-41d1-88ea-b915b290ce67",
+            "type": "image",
+            "content": {
+                "src": "https://images.unsplash.com/photo-1490367605959-06955305859b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+                "caption": ""
+            },
+            "parentId": "0096e714-e925-47b4-a3a1-583d8765e438",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "10f585ec-4b81-46ea-9565-f0256e54bad6": {
+            "id": "10f585ec-4b81-46ea-9565-f0256e54bad6",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "0096e714-e925-47b4-a3a1-583d8765e438",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "02200183-f440-44ff-808e-4a52eaf84d73": {
+            "id": "02200183-f440-44ff-808e-4a52eaf84d73",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "@{collapsible}",
+                "title": "Perruno"
+            },
+            "parentId": "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "d84963a8-ab0c-45c7-9c7d-8febcf4817fe": {
+            "id": "d84963a8-ab0c-45c7-9c7d-8febcf4817fe",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "02200183-f440-44ff-808e-4a52eaf84d73",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "996c648c-e425-4df6-8103-f81533d64873": {
+            "id": "996c648c-e425-4df6-8103-f81533d64873",
+            "type": "button",
+            "content": {
+                "text": "Toggle collapsible"
+            },
+            "parentId": "02200183-f440-44ff-808e-4a52eaf84d73",
+            "handlers": {
+                "click": "toggle_collapsible"
+            },
+            "position": 4,
+            "visible": true
+        },
+        "e04fc504-1183-4317-8eea-8165ee0ca9ac": {
+            "id": "e04fc504-1183-4317-8eea-8165ee0ca9ac",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "02200183-f440-44ff-808e-4a52eaf84d73",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "5c1ad561-2dc3-48f2-a303-773cfc95e5fe": {
+            "id": "5c1ad561-2dc3-48f2-a303-773cfc95e5fe",
+            "type": "text",
+            "content": {
+                "text": "The data above shows the evolution of pink colour usage.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "02200183-f440-44ff-808e-4a52eaf84d73",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "4c00b02b-088b-4c11-961d-b07dff1c0a1b": {
+            "id": "4c00b02b-088b-4c11-961d-b07dff1c0a1b",
+            "type": "heading",
+            "content": {
+                "text": "The count is @{counter}",
+                "alignment": "left"
+            },
+            "parentId": "02200183-f440-44ff-808e-4a52eaf84d73",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "d41472b9-60de-400a-a9f0-ae1d9fc0bd2c": {
+            "id": "d41472b9-60de-400a-a9f0-ae1d9fc0bd2c",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "isCollapsible": "",
+                "title": "Dataset"
+            },
+            "parentId": "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "5c9ad235-676c-426c-b56b-e4c4e8279593": {
+            "id": "5c9ad235-676c-426c-b56b-e4c4e8279593",
+            "type": "checkboxinput",
+            "content": {
+                "label": "Choose which things"
+            },
+            "parentId": "d41472b9-60de-400a-a9f0-ae1d9fc0bd2c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "ce692a33-6626-4b66-972b-5600866bef72": {
+            "id": "ce692a33-6626-4b66-972b-5600866bef72",
+            "type": "separator",
+            "content": {},
+            "parentId": "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "a7cf805c-158d-4dda-96aa-dd653aa7a8d7": {
+            "id": "a7cf805c-158d-4dda-96aa-dd653aa7a8d7",
+            "type": "separator",
+            "content": {},
+            "parentId": "48aee7ad-e542-46a6-9c4f-cc2fd2f63c6c",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "29ff0566-f9fd-4b00-bf6e-2d7f67d1ad94": {
+            "id": "29ff0566-f9fd-4b00-bf6e-2d7f67d1ad94",
+            "type": "section",
+            "content": {
+                "title": "",
+                "snapMode": ""
+            },
+            "parentId": "19b19a22-5444-4863-9dd0-483addd5542a",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "c22e1531-46c9-4995-a638-d3275bdc6be0": {
+            "id": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "type": "columns",
+            "content": {},
+            "parentId": "29ff0566-f9fd-4b00-bf6e-2d7f67d1ad94",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "2cf60a56-0f97-4ef5-949d-14276e1f191e": {
+            "id": "2cf60a56-0f97-4ef5-949d-14276e1f191e",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "ce52970f-c19d-4785-abf2-96e814e7d61e": {
+            "id": "ce52970f-c19d-4785-abf2-96e814e7d61e",
+            "type": "heading",
+            "content": {
+                "text": "We choose to make Streamsync",
+                "alignment": "left"
+            },
+            "parentId": "2cf60a56-0f97-4ef5-949d-14276e1f191e",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "7de66cc7-238d-45f7-a935-dc1a6f7f9a73": {
+            "id": "7de66cc7-238d-45f7-a935-dc1a6f7f9a73",
+            "type": "webcamcapture",
+            "content": {
+                "refreshRate": "200"
+            },
+            "parentId": "2cf60a56-0f97-4ef5-949d-14276e1f191e",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "86537218-0c45-4fb3-b2f9-c6fac55d914e": {
+            "id": "86537218-0c45-4fb3-b2f9-c6fac55d914e",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "title": "We do these things",
+                "isCollapsible": "yes"
+            },
+            "parentId": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "handlers": {},
+            "position": 5,
+            "visible": true
+        },
+        "62b6539d-83ed-4007-b11e-cc7839e3a334": {
+            "id": "62b6539d-83ed-4007-b11e-cc7839e3a334",
+            "type": "dataframe",
+            "content": {},
+            "parentId": "86537218-0c45-4fb3-b2f9-c6fac55d914e",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "9377c83b-d261-4603-a915-c53254e820fd": {
+            "id": "9377c83b-d261-4603-a915-c53254e820fd",
+            "type": "separator",
+            "content": {},
+            "parentId": "86537218-0c45-4fb3-b2f9-c6fac55d914e",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "b9d31a8b-b405-45f9-a100-64d278f21c62": {
+            "id": "b9d31a8b-b405-45f9-a100-64d278f21c62",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "title": "But because they're hard",
+                "isCollapsible": "yes"
+            },
+            "parentId": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "82069fc9-2505-4209-9b20-3bec6a48a7c6": {
+            "id": "82069fc9-2505-4209-9b20-3bec6a48a7c6",
+            "type": "dataframe",
+            "content": {},
+            "parentId": "b9d31a8b-b405-45f9-a100-64d278f21c62",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "c3e8c2a3-bf36-45a7-a91e-14d8b35cfb04": {
+            "id": "c3e8c2a3-bf36-45a7-a91e-14d8b35cfb04",
+            "type": "separator",
+            "content": {},
+            "parentId": "b9d31a8b-b405-45f9-a100-64d278f21c62",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "875a8d26-0abf-4f82-9ba9-938098135395": {
+            "id": "875a8d26-0abf-4f82-9ba9-938098135395",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "title": "Not because they're easy",
+                "isCollapsible": "yes"
+            },
+            "parentId": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "4fde8f3a-7cfa-44e2-8c26-5c650e9c4f90": {
+            "id": "4fde8f3a-7cfa-44e2-8c26-5c650e9c4f90",
+            "type": "dataframe",
+            "content": {},
+            "parentId": "875a8d26-0abf-4f82-9ba9-938098135395",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "d70a934e-5872-4b72-97bd-360fd6f3d657": {
+            "id": "d70a934e-5872-4b72-97bd-360fd6f3d657",
+            "type": "separator",
+            "content": {},
+            "parentId": "875a8d26-0abf-4f82-9ba9-938098135395",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "401f8c2b-9963-42af-9d07-79b82c52a1b2": {
+            "id": "401f8c2b-9963-42af-9d07-79b82c52a1b2",
+            "type": "separator",
+            "content": {},
+            "parentId": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "1aa4155a-a7d5-4815-a6bb-7a98d03e9264": {
+            "id": "1aa4155a-a7d5-4815-a6bb-7a98d03e9264",
+            "type": "separator",
+            "content": {},
+            "parentId": "c22e1531-46c9-4995-a638-d3275bdc6be0",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "f5410dad-8cdc-4885-9814-e25213b9ce7c": {
+            "id": "f5410dad-8cdc-4885-9814-e25213b9ce7c",
+            "type": "header",
+            "content": {
+                "text": "Radioactive Waste Statistics",
+                "emptinessColor": "#ffffff",
+                "accentColor": "#8eba31"
+            },
+            "parentId": "19b19a22-5444-4863-9dd0-483addd5542a",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        }
+    }
+}

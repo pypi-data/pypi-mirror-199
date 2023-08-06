@@ -1,0 +1,82 @@
+{
+  "page-1": {
+    "id": "page-1",
+    "type": "page",
+    "content": {},
+    "container": null,
+    "handlers": {},
+    "position": 0
+  },
+  "6bebf434-80ac-4530-a1b4-24c0d8977357": {
+    "id": "6bebf434-80ac-4530-a1b4-24c0d8977357",
+    "type": "header",
+    "content": {
+      "text": "YOLOv4 demo"
+    },
+    "container": "page-1",
+    "handlers": {},
+    "position": 0
+  },
+  "32b18a76-9de1-4972-8069-5f63affc5ffb": {
+    "id": "32b18a76-9de1-4972-8069-5f63affc5ffb",
+    "type": "columns",
+    "content": {},
+    "container": "page-1",
+    "handlers": {},
+    "position": 1
+  },
+  "5273605b-78d4-47c0-95b5-ceb9da411935": {
+    "id": "5273605b-78d4-47c0-95b5-ceb9da411935",
+    "type": "column",
+    "content": {
+      "width": "1"
+    },
+    "container": "32b18a76-9de1-4972-8069-5f63affc5ffb",
+    "handlers": {},
+    "position": 0
+  },
+  "32b50a99-a2c0-47ec-9303-fa11681d6410": {
+    "id": "32b50a99-a2c0-47ec-9303-fa11681d6410",
+    "type": "column",
+    "content": {
+      "width": "1"
+    },
+    "container": "32b18a76-9de1-4972-8069-5f63affc5ffb",
+    "handlers": {},
+    "position": 1
+  },
+  "4bc8c14d-cf5e-4596-91e5-5204e2e6c657": {
+    "id": "4bc8c14d-cf5e-4596-91e5-5204e2e6c657",
+    "type": "webcamcapture",
+    "content": {
+      "title": "Webcam Capture",
+      "refreshRate": "200"
+    },
+    "container": "5273605b-78d4-47c0-95b5-ceb9da411935",
+    "handlers": {
+      "ss-webcam": "image_rec"
+    },
+    "position": 0
+  },
+  "5f9c4767-f211-4350-9d45-4e27395fef8e": {
+    "id": "5f9c4767-f211-4350-9d45-4e27395fef8e",
+    "type": "section",
+    "content": {
+      "title": "Processed Image"
+    },
+    "container": "32b50a99-a2c0-47ec-9303-fa11681d6410",
+    "handlers": {},
+    "position": 0
+  },
+  "21616f64-0910-41e2-aebf-f4c884524c0e": {
+    "id": "21616f64-0910-41e2-aebf-f4c884524c0e",
+    "type": "image",
+    "content": {
+      "src": "@{detected}",
+      "caption": "Webcam image annotated with YOLOv4"
+    },
+    "container": "5f9c4767-f211-4350-9d45-4e27395fef8e",
+    "handlers": {},
+    "position": 0
+  }
+}

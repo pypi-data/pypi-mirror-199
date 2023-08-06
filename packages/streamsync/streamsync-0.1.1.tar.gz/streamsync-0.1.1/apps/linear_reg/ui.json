@@ -1,0 +1,154 @@
+{
+    "root": {
+        "id": "root",
+        "type": "root",
+        "content": {
+            "emptinessColor": "#2c2244",
+            "containerBackgroundColor": "#151e32",
+            "primaryTextColor": "#ebebeb"
+        },
+        "parentId": null,
+        "handlers": {},
+        "position": 0,
+        "visible": true
+    },
+    "f5945181-62c2-4052-9b76-19f91cdb9a19": {
+        "id": "f5945181-62c2-4052-9b76-19f91cdb9a19",
+        "type": "page",
+        "content": {
+            "key": "First page",
+            "pageMode": "compact"
+        },
+        "parentId": "root",
+        "handlers": {},
+        "position": 0,
+        "visible": true
+    },
+    "38754edf-3359-4989-9ea2-290de6a5bd3d": {
+        "id": "38754edf-3359-4989-9ea2-290de6a5bd3d",
+        "type": "image",
+        "content": {
+            "src": "@{reg_chart}",
+            "caption": "Regression  Chart"
+        },
+        "parentId": "f5945181-62c2-4052-9b76-19f91cdb9a19",
+        "handlers": {
+            "click": "(No handler)"
+        },
+        "position": 0,
+        "visible": true
+    },
+    "fdb2f1c0-0823-4e01-94af-4a92cafab6cb": {
+        "id": "fdb2f1c0-0823-4e01-94af-4a92cafab6cb",
+        "type": "horizontalstack",
+        "content": {
+            "alignment": "left"
+        },
+        "parentId": "f5945181-62c2-4052-9b76-19f91cdb9a19",
+        "handlers": {},
+        "position": 1,
+        "visible": true
+    },
+    "90f8cca3-89c4-46d7-95ff-3d0a7ae3db5a": {
+        "id": "90f8cca3-89c4-46d7-95ff-3d0a7ae3db5a",
+        "type": "button",
+        "content": {
+            "text": "@{buttons.show_error.text}"
+        },
+        "parentId": "fdb2f1c0-0823-4e01-94af-4a92cafab6cb",
+        "handlers": {
+            "click": "show_error"
+        },
+        "position": 0,
+        "visible": true
+    },
+    "3cc4b74f-2db5-413a-9960-b38ae89af4b8": {
+        "id": "3cc4b74f-2db5-413a-9960-b38ae89af4b8",
+        "type": "horizontalstack",
+        "content": {
+            "alignment": "left"
+        },
+        "parentId": "f5945181-62c2-4052-9b76-19f91cdb9a19",
+        "handlers": {},
+        "position": 2,
+        "visible": true
+    },
+    "661dd19f-fafe-4623-be15-a1089757f7f4": {
+        "id": "661dd19f-fafe-4623-be15-a1089757f7f4",
+        "type": "button",
+        "content": {
+            "text": "Alpha + 0.1"
+        },
+        "parentId": "3cc4b74f-2db5-413a-9960-b38ae89af4b8",
+        "handlers": {
+            "click": "alpha_increment"
+        },
+        "position": 0,
+        "visible": true
+    },
+    "090adf0d-a618-4363-8893-084e3b9779dc": {
+        "id": "090adf0d-a618-4363-8893-084e3b9779dc",
+        "type": "button",
+        "content": {
+            "text": "Alpha - 0.1"
+        },
+        "parentId": "3cc4b74f-2db5-413a-9960-b38ae89af4b8",
+        "handlers": {
+            "click": "alpha_decrement"
+        },
+        "position": 1,
+        "visible": true
+    },
+    "65978726-b8d2-4eff-b5e6-3022902ba7e9": {
+        "id": "65978726-b8d2-4eff-b5e6-3022902ba7e9",
+        "type": "button",
+        "content": {
+            "text": "Beta + 10"
+        },
+        "parentId": "3cc4b74f-2db5-413a-9960-b38ae89af4b8",
+        "handlers": {
+            "click": "beta_increment"
+        },
+        "position": 2,
+        "visible": true
+    },
+    "9a7099e3-4a3f-4610-83dd-750add8c9f91": {
+        "id": "9a7099e3-4a3f-4610-83dd-750add8c9f91",
+        "type": "button",
+        "content": {
+            "text": "Beta - 10"
+        },
+        "parentId": "3cc4b74f-2db5-413a-9960-b38ae89af4b8",
+        "handlers": {
+            "click": "beta_decrement"
+        },
+        "position": 3,
+        "visible": true
+    },
+    "4b11c874-c8d3-4e3b-84ec-daf888b361ef": {
+        "id": "4b11c874-c8d3-4e3b-84ec-daf888b361ef",
+        "type": "button",
+        "content": {
+            "text": "@{buttons.show_formula.text}"
+        },
+        "parentId": "fdb2f1c0-0823-4e01-94af-4a92cafab6cb",
+        "handlers": {
+            "click": "show_formula"
+        },
+        "position": 1,
+        "visible": true
+    },
+    "fbf94f88-d8e1-4921-9982-0f381b146901": {
+        "id": "fbf94f88-d8e1-4921-9982-0f381b146901",
+        "type": "button",
+        "parentId": "fdb2f1c0-0823-4e01-94af-4a92cafab6cb",
+        "content": {
+            "text": "Make Chart"
+        },
+        "handlers": {
+            "click": "make_chart"
+        },
+        "position": 2,
+        "visible": true
+    }
+}

@@ -1,0 +1,12 @@
+**/.venv/
+*.pyc
+**/__pycache__
+**/.mypy_cache
+ui/node_modules/
+ui/dist/
+docs/node_modules
+*:Zone.Identifier
+build/
+dist/
+streamsync.egg-info/
+**/.DS_Store
