@@ -1,0 +1,16 @@
+LICENSE
+README.md
+pyproject.toml
+src/fia/__init__.py
+src/fia/cli_args.py
+src/fia/constants.py
+src/fia/main.py
+src/fia.egg-info/PKG-INFO
+src/fia.egg-info/SOURCES.txt
+src/fia.egg-info/dependency_links.txt
+src/fia.egg-info/entry_points.txt
+src/fia.egg-info/requires.txt
+src/fia.egg-info/top_level.txt
+src/fia/utils/create_property.py
+src/fia/utils/set_logger.py
+tests/test_cli_args.py
