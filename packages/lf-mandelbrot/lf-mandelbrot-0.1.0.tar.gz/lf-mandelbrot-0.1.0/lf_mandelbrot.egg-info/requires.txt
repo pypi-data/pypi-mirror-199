@@ -1,0 +1,14 @@
+matplotlib
+numpy
+Pillow
+
+[build]
+build
+twine
+
+[dev]
+black
+bumpver
+isort
+pip-tools
+pytest

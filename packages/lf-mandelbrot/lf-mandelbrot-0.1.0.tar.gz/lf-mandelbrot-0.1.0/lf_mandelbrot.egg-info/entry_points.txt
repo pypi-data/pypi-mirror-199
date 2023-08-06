@@ -1,0 +1,5 @@
+[console_scripts]
+mandelbrot = mandelbrot.__main__:main
+mandelbrot-plot = mandelbrot.plot:main
+mb = mandelbrot.__main__:main
+mb-plot = mandelbrot.plot:main
