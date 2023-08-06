@@ -1,0 +1,31 @@
+[build-system]
+requires = ["black", "flit", "isort"]
+build-backend = "flit.buildapi"
+
+[tool.flit.metadata]
+module = "svdtools"
+# dist-name = "svdtools"
+author = "Adam Greig"
+author-email = "adam@adamgreig.com"
+maintainer = "Nicolas Stalder"
+maintainer-email = "n@stalder.io"
+home-page = "https://github.com/stm32-rs/svdtools"
+requires-python = ">=3.9"
+description-file = "README.md"
+requires = [
+  "click ~= 8.0",
+  "PyYAML >= 5.3, < 7",
+  "lxml ~= 4.6",
+  "braceexpand ~= 0.1.7",
+]
+classifiers=[
+    "License :: OSI Approved :: MIT License",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+]
+
+[tool.flit.scripts]
+svd = "svdtools.cli:svdtools_cli"
