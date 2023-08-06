@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: scCPEP
+Version: 1.0.0
+Summary: scCPEP
+Home-page: https://github.com/IrisQi7/scCPEP
+Author: Qi Qi
+Author-email: qiqi20@mails.jlu.edu.cn
+License: MIT
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# scCPEP
+scCPEP is a Python package containing tools for scRNA-seq cell type identifiication based on an ensemble pruning model. 
+
+# Installation Guide
+Install from PyPi:
+
+    pip install scCPEP
+       
+Before running the tool, we recommend creating an environment locally using ‘’‘conda’‘’ first, then you need to install the following packages in your environment, scMGCA mainly depends on the followinb Python packages:
+      
+python:
+
+    python=3.7.12
+    pycaret=2.3.10
+    scanpy
+    rpy2
+    r-devtools
+    
+After installing the python package, switch to '''R''' environment, and install the following tool:
+        
+R:
+
+    library(devtools)
+    install_github("suke18/FEAST")
+
+# Usage
+
+    cd scCPEP
+    mkdir MLmodels
+    mkdir tmp
+    python run.py
+
+# Data Availability
+
+The data sets we used can be download in <a href="https://figshare.com/articles/dataset/scCPEP/22333150">datas</a>.
+
+# License
+This project is covered under the MIT License.
