@@ -1,0 +1,42 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'hr-scho-list' %}">LISTA PLANU BOLSO ESTUDO</a></li>
+            {% if page == 'emp-add' %}
+			<li class="breadcrumb-item"><a href="{% url 'hr-scho-detail' hashid %}">DETALHA PLANU</a></li>
+            {% elif page == 'emp-progress-add' %}
+			<li class="breadcrumb-item"><a href="{% url 'hr-scho-detail' hashid %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'hr-scho-emp-detail' hashid hashid2 %}">DETALHA PESSOAL</a></li>
+            {% endif %}
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary text-center">
+					<h2>FORMULARIO {{ legend|upper }}</h2>
+				</div>
+				<div class="card-body">
+				    {% crispy form %}
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+<style>
+	#id_emp { width: 100%; }
+</style>
+<script>
+	$(document).ready(function() {
+    $('#id_emp').select2();
+});
+</script>
+{% endblock %}

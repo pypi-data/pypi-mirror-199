@@ -1,0 +1,6 @@
+include LICENSE
+include README.rst
+recursive-include training/templates *
+recursive-include training/migrations *
+recursive-include training/views *
+recursive-include training/api *

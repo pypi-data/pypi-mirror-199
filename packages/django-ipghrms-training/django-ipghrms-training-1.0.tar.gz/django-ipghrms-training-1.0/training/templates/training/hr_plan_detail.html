@@ -1,0 +1,158 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'train-hr-plan-list' %}">LISTA PLANU TREINAMENTO</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h3>{{ legend|upper }}</h3>
+                    </center>
+                </div>
+				<div class="card-body">
+                {% if tplan.is_approve == True %}
+                    <div class="alert alert-info">Aprova Ona <i class="fa fa-check"></i></div>
+                {% else %}
+                    <div class="alert alert-danger">Seidauk hetan aprovasaun</div>
+                {% endif %}
+                <table class="table table-sm table-bordered">
+                    <tr>
+                        <th colspan="3">Divizaun</th> <th>Tinan</th><th>Anekso Pareser</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3">{{ tplan.unit }}</td>
+                        <td>{{ tplan.year }}</td>
+                        <td>
+                            {% if tplan.file %}
+                              <a href="{{tplan.file.url}}" target="_blank" class="btn btn-sm btn-primary"> <i class="fa fa-file-pdf"></i> </a>
+                            {% else %}
+                            -
+                            {% endif %}
+                        </td>
+                    </tr>
+                    <tr>
+                        <th colspan="3">Materia Treinamento</th>  <th>Place</th><th colspan="2">Duration</th>
+                    </tr>
+                    <tr>
+                        <td colspan="3">{{ tplan.subject }}</td>
+                        <td>{{ tplan.place }}</td>
+                        <td colspan="2">{{ tplan.start_date }} - {{tplan.end_date}}</td>
+                    </tr>
+                </table>
+                    <hr/>
+                    <center>
+                        <h4>FUNSIONARIU SIRA NEBE TUIR TREINAMENTO</h4>
+                    </center>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Nu.</th>
+                            <th>Naran</th>
+                            <th>#</th>
+                        </tr>
+                        {% for temp in employee_list %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ temp }}  </td>
+                            <td>
+                                {% if tplan.is_approve and temp.traininggap.all.0.is_update == False or temp.trainingemp.all.0.is_update == False  %}                              
+                                    <a class="btn btn-sm btn-info" href="{% url 'train-hr-update-status' tplan.hashed temp.id %}">Update Status <i class="fa fa-refresh"></i></a>
+                                {% else %}
+                                        <a class="btn btn-sm btn-success disabled" href="#">Update Status <i class="fa fa-check"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                    <hr class="border-primary" />
+                    
+                    <div class="row">
+                        <div class="col-md-7">
+                            <center>
+                                <h4>FUNSIONARIU SIRA NEBE TUIR TREINAMENTO
+                                </h4>
+                                    
+                                </center>
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <th>Nu.</th>
+                                    <th>Naran</th>
+                                    <th>GAP Analysis</th>
+                                </tr>
+                                    <tr>
+                                        <td align="center" colspan="6">
+                                            <strong>LISTA FUNSIONARIO GERAL</strong>
+                                        </td>
+                                    </tr>
+                                    {% for temp in temps %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><a href="{% url 'train-c-crit-list' tplan.hashed temp.id %}"></a>{{ temp.employee }}</td>
+                                        <td>
+                                            -
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                <tr>
+                                    <td colspan="4" align="center">
+                                        <strong>LISTA FUNSIONARIO BASEIA BA TRANNING GAP ANALYSIS</strong>
+                                    </td>
+                                </tr>
+
+
+                                {% for emp, gap_items in tgap_list %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><a href="#"></a>{{ emp }} </td>
+                                        <td>
+                                            <ul>
+                                            {% for gap, comments in gap_items %}
+                                                <li>{{ gap.comment }} 
+
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <div class="col-md-5">
+                            <center>
+                                <h4>EKIPA SIRA NEBE TUIR TREINAMENTO </h4>
+                            </center>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+
+                                    <tr>
+                                        <th width="10%">Nu.</th>
+                                        <th>Naran Ekipa</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for obj in  tdep %}
+                                      <tr>
+                                        <td width="10%">{{forloop.counter}}</td>
+                                        <td>{{obj.department}}</td>
+                                      </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

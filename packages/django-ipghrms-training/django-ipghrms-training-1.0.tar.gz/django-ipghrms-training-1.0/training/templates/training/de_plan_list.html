@@ -1,0 +1,66 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'train-de-dash' %}">PAINEL FORMASAUN</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}
+                            <i class="fa fa-arrow-right"></i>
+                            <a class="btn btn-sm btn-warning mb-1" href="{% url 'train-raw-data' %}">Raw Data <i class="fa fa-list"></i></a>
+                        </h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-info">
+                        <i class="fa fa-circle-info"></i> <small>Klik iha <strong>Naran Materia</strong> hodi hare Detalha</small>
+                    </div>
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Nu.</th>
+                                <th>Materia</th>
+                                <th>Fatin Treinamento</th>
+                                <th class="text-center">Tipu Treinamento</th>
+                                <th class="text-center">Tinan</th>
+                                <th class="text-center">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td align="center">{{ forloop.counter }}</td>
+                                <td><a href="{% url 'train-de-plan-detail' obj.hashed %}">{{ obj.subject }}</a></td>
+                                <td>{{ obj.place }}</td>
+                                <td align="center">{{ obj.type }}</td>
+                                <td align="center">{{ obj.year }}</td>
+                                <td align="center">{% if obj.is_approve == True %}
+                                    <span class="badge bg-success text-white p-1">Aprovadu <i class="fa-solid fa-check-double"></i></span>
+                                    {% else %}
+                                    <span class="badge bg-danger text-white p-1">Seidauk Hetan Aprovasaun <i class="fa fa-refresh"></i></span>{% endif %}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

@@ -1,0 +1,123 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+		    <li class="breadcrumb-item"><a href="{% url 'train-c-dash' %}">PAINEL TREINAMENTO</a></li>
+		    <li class="breadcrumb-item"><a href="{% url 'train-unit-gap-list' unit.pk %}">LISTA FUNSIONARIO</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg pt-1 border-primary rounded">
+				<div class="card-header border-primary">
+					<center>
+						<h2>{{ legend|upper }}</h2>
+						<h4>{{ employee }}
+                        {% if checkgap %}
+                          <i class="fa fa-arrow-right"></i>
+                          <a href="{% url 'train-unit-gap-emp-lock' employee.hashed unit.pk %}" class="btn btn-sm btn-danger">Chave <i class="fa fa-lock"></i></a>
+                        {% endif %}
+                        </h4>
+					</center>
+				</div>
+				<div class="card-body">
+                    
+					<section id='no-more-tables'>
+						<table class="table table-sm table-bordered" id="example" width="100%" cellspacing="0">
+							<thead>
+								<tr align="center">
+									<th width="5%">Nu.</th>
+									<th class="text-left" width="40%">ToR</th>
+                                    <th width="30%">GAP Analysis</th>
+                                    <th >Trainning</th>
+                                    <th class="text-center">#</th>
+							</thead>
+							<tbody>
+                                {% if objects %}
+                                  
+                                
+                                {% for obj in objects  %}
+                                  <tr>
+                                    <td align="center">{{forloop.counter}}</td>
+                                    <td>
+                                        {{obj.0.tor}}
+                                    </td>
+                                    <td>
+                                        <table class="table table-bordered">
+
+                                            {% for obj1 in  obj.1 %}
+                                            <tr>
+                                                <td style="vertical-align: middle;">{{obj1.comment}}</td>
+                                                <td width="15%" >
+                                                    {% if obj1.is_lock == False %}
+                                                        <a href="{% url 'train-unit-gap-emp-update' employee.hashed unit.pk obj1.hashed %}" class="btn btn-sm btn-success">
+                                                            <i class="fa fa-pen-to-square"></i>
+                                                        </a>
+                                                        <a href="{% url 'train-unit-gap-emp-delete' employee.hashed unit.pk obj1.hashed %}" class="btn btn-sm btn-danger">
+                                                            <i class="fa fa-trash"></i>
+                                                        </a>
+                                                    {% else %}
+                                                        <span class="badge bg-info text-white rounded">Chave Ona <i class="fa fa-warning"></i></span>
+                                                    {% endif %}
+                                                </td>
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </td>
+                                    <td>
+                                        <table class="table table-bordered">
+
+                                            {% for obj1 in  obj.1 %}
+                                            <tr>
+                                                {% if obj1.traininggap.all.0.plan.subject %}
+                                                  
+                                                <td style="vertical-align: middle;">{{obj1.traininggap.all.0.plan.subject}}
+                                                <i class="fa-solid fa-award text-danger"></i>
+                                                </td>
+                                                {% else %}
+                                                -
+                                                {% endif %}
+                                            </tr>
+                                            {% endfor %}
+                                        </table>
+                                    </td>
+                                    <td align="center">
+                                        <a href="{% url 'train-unit-gap-emp-add' employee.hashed unit.pk obj.0.hashed %}" class="btn btn-sm btn-success">Aumenta <i class="fa fa-plus"></i></a>
+                                    </td>
+                                  </tr>
+                                {% endfor %}
+                                {% else %}
+                                    <tr align="center">
+                                         <td colspan="4">
+                                            <span class="text-danger">
+                                                HR Seidauk Kria Funsionario nia ToR <i class="fa fa-warning"></i>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+							</tbody>
+						</table>
+					</section>
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div><!--end container-->
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+	<style>
+		table td {
+			border: none;
+		}
+	</style>
+{% endblock %}

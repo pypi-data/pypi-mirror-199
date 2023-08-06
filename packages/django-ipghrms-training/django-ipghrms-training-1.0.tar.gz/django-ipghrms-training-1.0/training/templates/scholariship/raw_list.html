@@ -1,0 +1,211 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'hr-scho-list' %}">LISTA BOLSO ESTUDO</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel"></div>
+                <div class="card-body">
+                    <center>
+                        <h4>{{ legend|upper }}</h4>
+                    </center>
+                    <table class="table table-sm table-striped" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Naran</th>
+                                <th>Pozisaun</th>
+                                <th>Tipu Kontrato</th>
+                                <th>Estudo Formal Ikus</th>
+                                <th>Tipu Bolso Estudo</th>
+                                <th>Data Hahu</th>
+                                <th>Data Remata</th>
+                                <th>Titulo Bolso Estudo</th>
+                                <th>Titulo Monografia</th>
+                                <th>Universidade</th>
+                                <th>Progresu</th>
+                                <th>Komentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ obj.emp }}</td>
+                                <td>{{ obj.emp.curempposition.position.name }}</td>
+                                <td>
+                                    {% if obj.emp.contract.all.0.end_date %}
+                                      {{obj.emp.contract.all.0.start_date}} - {{obj.emp.contract.all.0.end_date}}
+                                    {% else %}
+                                        Indeterminable
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if obj.emp.formaleducation.all.last.education_level %}
+                                      {{obj.emp.formaleducation.all.last.education_level}}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {{obj.scholarship.type}}
+                                </td>
+                                <td>
+                                    {{obj.scholarship.start_date|date:"d/M/Y"}}
+                                </td>
+                                <td>
+                                    {{obj.scholarship.end_date|date:"d/M/Y"}}
+                                </td>
+                                <td>
+                                    {{obj.scholarship.subject}}
+                                </td>
+                                <td>
+                                    {{obj.thesis|title}}
+                                </td>
+                                <td>
+                                    {{obj.scholarship.university.name}}
+                                </td>
+                                <td>
+                                    {{obj.scholarshipempprogress.all.last.progress}}
+                                </td>
+                                <td>
+                                    {{obj.scholarshipempprogress.all.last.comment|safe}}
+                                </td>
+                        
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr>
+                    <ul class="breadcrumb">
+                        {% for year in years %}
+                            <li class="breadcrumb-item"><a href="{% url 'hr-raw-data-year' year.scholarship__year__year  %}">{{ year.scholarship__year__year }}</a></li>
+                        {% endfor %}
+                        </ul>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+    <link href="{% static 'main/vendor/datatables/css/searchBuilder.dataTables.min.css' %}" rel="stylesheet">
+    <link href="{% static 'main/vendor/datatables/css/searchBuilder.bootstrap4.min.css' %}" rel="stylesheet">
+    <link href="{% static 'main/vendor/datatables/css/buttons.dataTables.min.css' %}" rel="stylesheet">
+    <style type="text/css">
+        .dtsb-searchBuilder{
+            background: #b9c7e6 !important;
+            padding: 5px
+        }
+        .dt-button, .dtsb-add {
+            background: white !important;
+        }
+    </style>
+    <script src="{% static 'main/vendor/datatables/js/dataTables.searchBuilder.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/searchBuilder.bootstrap4.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/dataTables.buttons.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/jszip.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/pdfmake.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/vfs_fonts.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/buttons.print.min.js' %}"></script>
+    <script src="{% static 'main/vendor/datatables/js/buttons.colVis.min.js' %}"></script>
+    <script>
+        var doc = {
+        pageSize: config.pageSize,
+        pageOrientation: config.orientation,
+        content: [
+            {
+                table: {
+                    headerRows: 1,
+                    body: rows
+                },
+                layout: 'Borders'
+            }
+        ],
+        styles: {
+            tableHeader: {
+                bold: true,
+                fontSize: 10,
+                color: 'white',
+                fillColor: '#2d4154',
+                alignment: 'center'
+            },
+            tableBodyEven: {},
+            tableBodyOdd: {
+                fillColor: '#f3f3f3'
+            },
+            tableFooter: {
+                bold: true,
+                fontSize: 10,
+                color: 'white',
+                fillColor: '#2d4154'
+            },
+            title: {
+                alignment: 'center',
+                fontSize: 12
+            },
+            message: {}
+        },
+        defaultStyle: {
+            fontSize: 9
+        }
+    };
+    </script>
+    <script type="text/javascript">
+        $(document).ready( function () {
+            var table = $('#example').removeAttr('width').DataTable( {
+                "scrollY": "50vh",
+                "scrollX": true,
+                "scrollCollapse": true,
+                "paging": true,
+                searchBuilder: true,
+                buttons:[
+                    {
+                        extend: 'excelHtml5', autoFilter: true, sheetName: 'Exported data'
+                    },
+                    {
+                        extend: 'print', autoPrint: false, orientation: 'landscape', pageSize: 'LEGAL',
+                        exportOptions: { columns: ':visible' },
+                        messageBottom: '<br/><table border=0 width=100%>\
+                            <tr><td colspan=2>Dili, __________, Fulan ____________ 20_____<br/><br/><br/><br/></td></tr>\
+                        <tr><td>(______________________________________________)</td>\
+                            <td>(______________________________________________)</td></tr>\
+                        <tr><td><br/>CD de __________________________________________</td>\
+                            <td><br/>Ekipa RH - IPG</td></tr>\
+                            </table>',
+                        title: '<center><h5>REPÚBLICA DEMOCRÁTICA DE TIMOR-LESTE <br/>\
+                            MINISTRO DO PETRÓLEO E RECURSOS MINERAIS<br/>\
+                            EKIPA RECURSO HUMANO</h5>\
+                            <h6>Delta II, Comoro Dili, Telefone: 3312301</h6>\
+                            <h5>Dadus Funcionariu Permanente - IPG</h5></center><hr/>',
+                        customize: function ( win ) {
+                            $(win.document.body)
+                                .css( 'font-size', '10pt' )
+                                .prepend(
+                                    '<center><img src="http://localhost:8000/static/main/images/rdtl.jpg" style="width:80px;" /></center><br/>'
+                                );
+     
+                            $(win.document.body).find( 'table' )
+                                .addClass( 'compact' )
+                                .css( 'font-size', 'inherit' );
+                        }
+                    },
+                    'colvis',
+                ],
+                dom: 'Bfrtip',
+                "deferRender": true
+            });
+            table.searchBuilder.container().prependTo(table.table().container());
+        } );
+    </script>
+{% endblock %}
