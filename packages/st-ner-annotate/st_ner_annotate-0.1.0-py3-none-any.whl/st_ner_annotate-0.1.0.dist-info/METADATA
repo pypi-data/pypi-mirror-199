@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: st-ner-annotate
+Version: 0.1.0
+Summary: Streamlit Named Entity Recognition (NER) Annotation custom component
+License: MIT
+Author: Hironsan
+Author-email: hiroki.nakayama.py@gmail.com
+Requires-Python: >=3.8, !=2.7.*, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, !=3.6.*, !=3.7.*
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: streamlit (>=1.20.0,<2.0.0)
+Description-Content-Type: text/markdown
+
+# Streamlit Named Entity Recognition (NER) Annotation component
+
+This is a component to assist with the annotation of *named entities* in an unstructured piece of text. The concept for this is borrowed from what is offered by [Prodi.gy](https://prodi.gy/). This code is derived from the work done by [andfalino](https://github.com/andfanilo) in his excellent [streamlit-named-entity-svelte](https://github.com/andfanilo/streamlit-named-entity-svelte) repository.
+
+The functionality has been expanded to allow for selecting of new entities and uses the [streamlit-component-svelte-template](https://github.com/93degree/streamlit-component-svelte-template).
+
+I am also using this component as a testbed to get familiar with streamlit custom components and svelte.
+
+![Streamlit NER Annotate Demo GIF](https://github.com/Hironsan/st_ner_annotate/blob/master/docs/st_ner_annotate_demo.gif)
+
