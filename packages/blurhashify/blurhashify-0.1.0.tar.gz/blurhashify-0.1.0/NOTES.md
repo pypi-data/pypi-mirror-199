@@ -1,0 +1,51 @@
+# Notes
+
+- `hatch --version`
+- `hatch new "blurhashify"`
+- https://github.com/pypa/cibuildwheel
+- https://hatch.pypa.io/latest/cli/reference/
+- https://github.com/explosion/radicli:
+  - https://github.com/explosion/radicli#-api
+  - https://github.com/explosion/radicli#custom-types-and-converters
+- Remove all environments: `hatch env prune`
+- https://joblib.readthedocs.io/en/latest/parallel.html
+- https://www.kaggle.com/code/karanpathak/parallelize-loops-using-joblib
+- https://gist.github.com/jasimpson/b5a2306fbdfe7b1452f9
+- https://intercom.help/exposure-24ac6cf90262/en/articles/2527658-ideal-photo-dimensions
+- `hatch dep show table --lines` or `hatch -e dev dep show table --lines`
+- `hatch dep show requirements --all` or `hatch -e dev dep show requirements --all`
+- https://github.com/pypa/hatch/issues/360 + https://github.com/pypa/hatch/issues/749
+- Check all dependencies: `hatch run dev:lock`
+- https://mypy.readthedocs.io/en/stable/stubgen.html:
+  - `hatch -e dev run stubgen --help`
+  - `hatch -e dev run stubgen .hatch/dev/lib/python3.7/site-packages/blurhash`
+  - https://bobbyhadz.com/blog/python-type-hint-enum
+- Bit depth: https://pillow.readthedocs.io/en/stable/handbook/concepts.html#modes
+- https://en.wikipedia.org/wiki/Colour_banding
+- https://en.wikipedia.org/wiki/Multiplication_sign
+- https://github.com/evanw/thumbhash:
+  - _(...) 3x3 components for square images, 4x3 components for landscape images, and 3x4 components for portrait images._
+- `rm -rf output*.png`
+- https://github.com/microsoft/python-type-stubs + https://github.com/python/typeshed
+- https://stackoverflow.com/a/54506979 + https://github.com/ray-project/ray
+- Ruff:
+  - https://github.com/charliermarsh/ruff/releases + https://github.com/charliermarsh/ruff-vscode/releases
+  - https://beta.ruff.rs/docs/configuration/#command-line-interface: `hatch -e dev run ruff --version`
+  - When updating Ruff, update the `required-version` in the `ruff.toml` file as well.
+  - _By default, Ruff enables Flake8's `E` and `F` rules. Ruff supports all rules from the `F` category, and a subset of the `E` category, omitting those stylistic rules made obsolete by the use of an autoformatter, like Black._
+  - `hatch -e dev run ruff linter`
+  - `hatch -e dev run ruff config`
+  - https://github.com/charliermarsh/ruff/issues/809#issuecomment-1354243881 + https://github.com/charliermarsh/ruff/discussions/3363 + https://beta.ruff.rs/docs/configuration/#pyprojecttoml-discovery
+- https://dflook.github.io/python-minifier/ vs. https://liftoff.github.io/pyminifier/
+- https://github.com/pamelafox/python-project-template
+- https://github.com/python/mypy/issues/9620
+- `hatch -e dev run blurhashify --help > usage.txt`
+- `hatch build --clean`
+- https://github.com/ofek/hatch-showcase
+- https://hatch.pypa.io/latest/version/#supported-segments
+- https://www.junosnotes.com/git/how-to-list-git-tags/#List_Remote_Git_Tags
+- Delete a tag (e.g., `v0.1.0`):
+  - `git tag` + `git ls-remote --tags origin`
+  - `git tag -d v0.1.0`
+  - `git push origin :refs/tags/v0.1.0` or https://docs.gitlab.com/ee/user/project/protected_tags.html#delete-a-protected-tag
+  - `git tag` + `git ls-remote --tags origin`
