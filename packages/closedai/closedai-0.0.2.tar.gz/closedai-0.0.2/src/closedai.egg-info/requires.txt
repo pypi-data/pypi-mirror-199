@@ -1,0 +1,5 @@
+huggingface_hub>=0.12.0
+
+[quality]
+black~=23.1
+ruff>=0.0.241

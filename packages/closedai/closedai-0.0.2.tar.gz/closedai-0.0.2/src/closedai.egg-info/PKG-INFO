@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: closedai
+Version: 0.0.2
+Summary: ClosedAI is a drop-in replacement for OpenAI.
+Home-page: https://github.com/nateraw/closedai
+Author: Nathan Raw
+Author-email: naterawdata@gmail.com
+License: Apache
+Description-Content-Type: text/markdown
+Provides-Extra: quality
+License-File: LICENSE
+
+# Closed AI
+
+⚠️ **This project is in early development is a work in progress.** ⚠️
+
+`closedai` is a drop-in replacement for `openai`, but only with open models.
