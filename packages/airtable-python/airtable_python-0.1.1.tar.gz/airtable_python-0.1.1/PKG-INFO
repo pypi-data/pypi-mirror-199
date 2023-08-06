@@ -1,0 +1,127 @@
+Metadata-Version: 2.1
+Name: airtable-python
+Version: 0.1.1
+Summary: API wrapper for Airtable written in Python
+License: MIT
+Author: Juan Carlos Rios
+Author-email: juankrios15@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: requests (>=2.26.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+![](https://img.shields.io/badge/version-0.1.0-success) ![](https://img.shields.io/badge/code-Python-4B8BBE?logo=python&logoColor=white)
+# airtable-python
+
+*airtable-python* is an API wrapper for Airtable, written in Python
+- Use this library if you are interested in Oauth authentication and webhook notifications.
+
+## Installing
+```
+pip install airtable-python
+```
+## Usage
+```
+from airtable.client import Client
+client = Client(client_id, client_secret, redirect_uri, code_verifier)
+```
+*Note: If you already have an access token, you can initiate Client without any parameters and directly set token with the access token you have as a dictionary client.set_token({"access_token": token})*
+### Get access_token
+To get the access token using Oauth2 follow the next steps.
+Check https://airtable.com/developers/web/api/oauth-reference for more info:
+
+1. Get authorization URL to receive code
+```
+url = client.authorization_url(state)
+```
+2. Get access token using code
+```
+token = client.token_creation(code)
+```
+3. Set access token
+```
+client.set_token(access_token)
+```
+If your access token expired, you can get a new one using refresh_token:
+```
+response = client.refresh_access_token(refresh_token)
+```
+And then set access token again...  
+
+### Get current user
+```
+user = client.get_current_user()
+```
+### List Bases
+```
+bases = client.list_bases()
+```
+### List Tables
+```
+tables = client.list_base_tables(baseId)
+```
+### List records
+```
+records = client.list_records(
+    baseId, 
+    tableId, 
+    pageSize=None, 
+    maxRecords=None, 
+    filter_field=None, 
+    filter_value=None, 
+    sort_field=None, 
+    sort_direction=None
+)
+# baseId and tableId are required
+# sort_direction options are 'desc' or 'asc'
+```
+### Create Records
+```
+records = [
+    {
+        "fields": {
+          "Projects": "Project from python",
+          "Status": "In progress",
+          "Complete?": False
+        }
+    },
+]
+records = client.create_records(baseId, tableId, records)
+```
+### Update Record
+```
+data = {
+    "Status": "Complete",
+    "Complete?": True
+}
+record = client.update_record(baseId, tableId, recordId, data)
+```
+### Update Multiple Records
+```
+records = [
+    {
+        "id": "recB4UscNECOHnT7y",
+        "fields": {
+            "Number": 10000,
+        },
+    },
+    {
+        "id": "recFkktx671jlvyj8",
+        "fields": {
+            "Number": 20000,
+        },
+    },
+]
+updated_records = client.update_record(baseId, tableId, records)
+```
+### List Collaborators (needs enterprise scopes access)
+```
+collabs = client.list_collaborators(baseId)
+```
+
