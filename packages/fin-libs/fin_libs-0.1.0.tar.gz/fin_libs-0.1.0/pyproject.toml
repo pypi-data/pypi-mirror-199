@@ -1,0 +1,69 @@
+[project]
+name = "fin_libs"
+description = "Python library that exposes tools for financial analytics"
+readme = "README.md"
+version = "0.1.0"
+requires-python = ">=3.9"
+
+dependencies = [
+        "matplotlib",
+        "pandas",
+        "scikit-learn",
+        "yfinance",
+]
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+repository = "https://github.com/azepecki/fin-libs"
+
+[project.optional-dependencies]
+develop = [
+        "black",
+        "check-manifest",
+        "flake8",
+        "flake8-black",
+        "flake8-pyproject",
+        "matplotlib",
+        "pandas",
+        "pytest",
+        "pytest-cov",
+        "scikit-learn",
+        "wheel",
+        "yfinance"
+]
+
+[tool.black]
+color = true
+line-length = 120
+target-version = ["py310"]
+skip-string-normalization = true
+
+[tool.check-manifest]
+ignore = [
+]
+
+[tool.flake8]
+ignore = ['E203', 'W503']
+max-line-length=120
+exclude=[
+]
+per-file-ignores= [
+]
+
+
+[tool.isort]
+line_length = 120
+known_first_party = 'pydantic'
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+combine_as_imports = true
+
+[tool.mypy]
+python_version = '3.10'
+
+[tool.pytest.ini_options]
+asyncio_mode = 'strict'
+testpaths = 'src/test.py'
