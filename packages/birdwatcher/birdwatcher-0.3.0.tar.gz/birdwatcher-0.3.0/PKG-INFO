@@ -1,0 +1,51 @@
+Metadata-Version: 2.1
+Name: birdwatcher
+Version: 0.3.0
+Summary: A Python computer vision library for animal behavior
+Home-page: https://github.com/gbeckers/birdwatcher
+Author: Gabriel J.L. Beckers
+Author-email: gabriel@gbeckers.nl
+License: BSD-3
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Requires: numpy
+Requires: darr
+Requires: opencv
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Birdwatcher is a Python computer vision library for analyzing animal behavior
+in a Python scientific computing environment.
+
+Birdwatcher should help you getting up and running quickly when building
+analysis code or tools for specific measurements. It provides high-level
+functionality that is common in video analysis, such as reading and writing
+videos into and from numpy arrays, applying processing algorithms such as
+background subtraction, morphological transformation, resizing, drawing on
+frames etc. Much of the underlying video and image processing is based on
+`FFmpeg <https://www.ffmpeg.org/>`__ and `OpenCV <https://opencv.org/>`__,
+but Birdwatcher is a lot easier to use for many tasks because its
+higher-level implementation of functionality as compared to these tools.
+
+Despite its name, Birdwatcher is not only for birds. We also successfully
+analyzed dog behavior, and it could be used on anything that moves. It is
+being used in our lab but still under heavy development, and should be
+considered alpha software.
+
+Code can be found on GitHub: https://github.com/gbeckers/Birdwatcher .
+
+Documentation can be found at https://birdwatcher.readthedocs.io .
+
+It is developed by Gabriel Beckers and Carien Mol, at Experimental Psychology,
+Utrecht University. It is open source, freely available under the `New BSD License
+<https://opensource.org/licenses/BSD-3-Clause>`__ terms.
+
+
+
