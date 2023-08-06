@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: lecore
+Version: 0.0.3
+Summary: LE core utils
+Author-email: Jan Bartovský <jan.bartovsky@logicelements.cz>
+Project-URL: Homepage, http://www.logicelements.cz
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests
+Requires-Dist: socket
+
+# LE core package
+
+This is package of core python utils for LE.
+
+# Build
+
+In command line (not venv) run:
+
+Update PIP, build, twine
+```
+python -m pip install --upgrade build
+python -m pip install --upgrade pip
+python -m pip install --upgrade twine
+```
+
+Run Build
+````
+py -m build
+````
+
+# Upload to test
+
+Upload package to test.pypi.org server
+
+```
+py -m twine upload --repository testpypi dist/*
+```
+
+# Download from test pypi
+
