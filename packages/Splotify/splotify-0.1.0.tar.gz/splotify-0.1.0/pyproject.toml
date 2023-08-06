@@ -1,0 +1,64 @@
+[build-system]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+    "wheel",
+]
+build-backend="setuptools.build_meta"
+
+[project]
+name = "splotify"
+authors = [{name = "Cordelia Chen", email = "liachen2002@gmail.com"}]
+description="A python library for easily graphing and visualizing your Spotify data."
+readme = "README.md"
+version = "0.1.0"
+requires-python = ">=3.7"
+
+dependencies = [
+    'pandas>=1.2.4',
+    'plotly>=5.13.1',
+    'spotipy>=2.22.1',
+    'tabulate>=0.9.0',
+    'tqdm>=4.64.0',
+]
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+repository = "https://github.com/cordeliachen/splotify"
+
+[project.optional-dependencies]
+develop = [
+    "black>=23.1.0",
+    "bump2version>=1.0.0",
+    "check-manifest",
+    "flake8>=6.0.0",
+    "flake8-pyproject",
+    "pytest>=7.2.1",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "pytest-vcr>=1.0.2",
+    "twine",
+    "wheel",
+]
+
+[tool.flake8]
+ignore = ['E203']
+max-line-length=88
+exclude=[
+    'splotify/tests/conftest.py'
+]

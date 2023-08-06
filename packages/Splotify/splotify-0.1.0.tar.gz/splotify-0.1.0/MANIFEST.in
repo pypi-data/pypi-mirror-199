@@ -1,0 +1,7 @@
+include *.md
+include *.txt
+include .bumpversion.cfg
+include Makefile
+recursive-include examples *.png
+recursive-include splotify *.png
+recursive-include splotify *.yaml
