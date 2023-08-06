@@ -1,0 +1,66 @@
+Metadata-Version: 2.1
+Name: aihandler
+Version: 1.8.11
+Summary: AI Handler: An engine which wraps certain huggingface models
+Home-page: https://github.com/w4ffl35/aihandler
+Author: Capsize LLC
+Author-email: contact@capsize.gg
+License: AGPL-3.0
+Keywords: ai,chatbot,chat,ai
+Requires-Python: >=3.10.0
+License-File: LICENSE
+Requires-Dist: torch (==1.13.1)
+Requires-Dist: torchvision (==0.14.1)
+Requires-Dist: torchaudio (==0.13.1)
+Requires-Dist: lightning (==1.9.0)
+Requires-Dist: pytorch-lightning (==1.9.1)
+Requires-Dist: nvidia-pyindex
+Requires-Dist: nvidia-tensorrt (==8.4.3.1)
+Requires-Dist: tensorflow (==2.9.3)
+Requires-Dist: triton (==2.0.0.dev20221202)
+Requires-Dist: pyre-extensions (==0.0.23)
+Requires-Dist: einops (==0.6.0)
+Requires-Dist: ninja (==1.11.1)
+Requires-Dist: JIT (==0.2.7)
+Requires-Dist: xformers (==0.0.16)
+Requires-Dist: pillow (==9.4.0)
+Requires-Dist: fernet (==1.0.1)
+Requires-Dist: safetensors (==0.2.7)
+Requires-Dist: accelerate (==0.15.0)
+Requires-Dist: diffusers (==0.14.0)
+Requires-Dist: transformers (==4.26.0)
+Requires-Dist: bitsandbytes (==0.36.0.post2)
+Requires-Dist: numpy (==1.23.4)
+Requires-Dist: pyinstaller (==5.7.0)
+Requires-Dist: scipy (==1.10.0)
+Requires-Dist: opencv-python (==4.7.0.68)
+Requires-Dist: deepspeed (==0.8.0)
+Requires-Dist: zstandard
+Requires-Dist: pyqt6 (==6.4.2)
+Requires-Dist: matplotlib
+Requires-Dist: controlnet-aux
+Requires-Dist: pyqtdarktheme
+Requires-Dist: spacy (==3.5.1)
+
+# AI Handler
+
+This is a simple library which can be used to run AI models. It is a light wrapper around the huggingface API
+which gives you a queue, threading, a simple API, and the ability to run Stable Diffusion and LLMs seamlessly
+from your local hardware.
+
+It can easily be extended and used to power interfaces or it can be run from the command line.
+
+AI Handler is a work in progress. It powers two projects at the moment, but may not be ready for general use.
+
+## Installation
+
+```
+pip install aihandler
+```
+
+## Usage
+
+Examples coming soon, for now take a look at the following projects:
+
+- [AI Runner](https://github.com/Capsize-Games/airunner)
+- [Chat AI](https://github.com/Capsize-Games/chatai)
