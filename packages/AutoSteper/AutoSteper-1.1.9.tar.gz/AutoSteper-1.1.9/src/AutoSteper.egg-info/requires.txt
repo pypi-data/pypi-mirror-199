@@ -1,0 +1,16 @@
+importlib-metadata
+python_version>=3.8
+pytest-shutil
+ase
+numpy
+pandas
+networkx
+tqdm
+matplotlib
+seaborn
+dpdispatcher
+
+[testing]
+setuptools
+pytest
+pytest-cov
