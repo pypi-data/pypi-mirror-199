@@ -1,0 +1,16 @@
+CHANGES
+=======
+
+0.10.4
+------
+
+* add exception SocketError
+* add a little format
+* do not reboot device by default when enable developer mode
+* update readme
+* fix #294, suggested by @Vantermonde
+* add 赞助商信息
+* update iOSDeviceSupport  path
+* fix ios support
+* support ios 16 to auto restart to open developer mode
+* add missing, change launch kill from false to true
