@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: transformers-stream-generator
+Version: 0.0.3
+Summary: This is a text generation method which returns a generator, streaming out each token in real-time during inference, based on Huggingface/Transformers.
+Home-page: https://github.com/LowinLi/fastgpt
+Author: LowinLi
+Author-email: lowinli@outlook.com
+License: MIT License
+Project-URL: Repo, https://github.com/LowinLi/transformers-stream-generator
+Project-URL: Bug Tracker, https://github.com/LowinLi/transformers-stream-generator/issues
+Keywords: GPT,stream,transformers,NLP,model hub,transformer,text generation,summarization,translation,q&a,qg,machine learning,CausalLM
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.5
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# transformers-stream-generator
+It is a text generation based on huggingface/transformers, modified to return a generator, real-time streaming out each token.
