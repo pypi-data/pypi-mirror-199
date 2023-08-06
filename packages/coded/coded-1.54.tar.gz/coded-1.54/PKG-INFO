@@ -1,0 +1,84 @@
+Metadata-Version: 2.1
+Name: coded
+Version: 1.54
+Summary: Coded is a programming language and Python extension designed to make programming just a little bit easier
+Author: The Open Project
+Author-email: opendylan@proton.me
+Requires-Python: >=3,<4
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Description-Content-Type: text/markdown
+
+# **Coded**
+
+## Coded is a programming language and Python extension designed to make programming just a little bit easier.
+
+With Coded, you can easily build projects - no matter how complex.  
+Our libraries allow you to create whatever you can imagine, with just a few lines of code.
+
+## Documentation
+
+[View the full documentation](https://github.com/opendylan/coded.py)
+
+### Current features:
+
+* write
+* writeline
+* prompt
+* clear
+* rand
+* readf
+* writef
+* rm
+* rmdir
+* syscmd
+* envs
+* pypath
+
+And MANY more!
+
+## Changelog
+
+1.1:
+
+* Created basic project structure
+* Created Coded
+* Added `write`
+
+1.2:
+
+* Added `writeline`
+
+1.3:
+
+* Added `prompt`
+* Reconfigured program structure
+* Removed submodules (e.g. `console.write` is now just `write`)
+* Added changelog
+* Added project description
+* Added documentation link
+* Fixed `writeline` tuple bug
+
+1.4:
+
+* Use `os` module
+* Added `clear`
+* Added [current features](#current-features) view.
+
+1.5:
+
+* Added function documentation inline
+* Handles exceptions in `prompt`
+
+All newer minor versions:
+
+* Bug fixes
+* New features
+
