@@ -1,0 +1,32 @@
+Metadata-Version: 2.1
+Name: gen_log_parser
+Version: 0.0.2
+Summary: A package to parse log files
+Home-page: 
+Author: Sanil Tison
+Author-email: Sanil Tison <saniltison@gmail.com>
+License: MIT
+Project-URL: Homepage, https://github.com/pypa/sampleproject
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Keywords: log parser
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# gen_log_parser
+- This library contains a pyCLass that can be enstantiated to create log objects "log_parser()"
+- From the object various method can be used parse thru logs depending on the log format of the file
+- v0.0.2 can be used to parse thru the following log formats:
+  - json formated logs
+  - custom formated nginx log
+
+## NOTE:
+- The nginx parser works with the following nginx log format:
+  - log_format new_default $remote_addr - $remote_user - $time_local - $request - $status - $body_bytes_sent - $http_referer - $http_user_agent - $http_x_forwarded_for;
+- If the log format on the nginx server is modified, then the method from the object will not work
+- The class must be inherited and the nginx method must be modified to statisfy the log format
+
+
