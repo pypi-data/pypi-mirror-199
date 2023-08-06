@@ -1,0 +1,1 @@
+This package contains SQLAlchemy models used in the Trident bench project. They are a package so that our multiple microservices can all use them. 
