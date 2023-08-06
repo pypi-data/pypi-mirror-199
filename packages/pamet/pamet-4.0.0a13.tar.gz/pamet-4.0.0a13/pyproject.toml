@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pamet"
+version = "4.0.0.alpha13"
+description = "An app for organizing notes and thoughts"
+authors = [{ name = "Petko Dichev", email = "pditchev@gmail.com" }]
+license = { text = "GPLv3" }
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    'PySide6',
+    'python-fusion>=0.7.5',
+    'click',
+    'python-slugify',
+    'thefuzz',
+    'peewee',
+    'pillow',
+    'watchdog',
+    'fastapi',
+    'uvicorn',
+    'sqlitedict',
+    'requests'
+]
+# readme =
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+]
+
+[project.gui-scripts]
+pamet = "pamet.desktop_app.main:main"
