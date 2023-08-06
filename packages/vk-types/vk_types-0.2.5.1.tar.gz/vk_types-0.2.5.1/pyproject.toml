@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "vk-types"
+version = "0.2.5.1"
+description = ""
+authors = ["kz159 <loh@kz159.ru>"]
+readme = "README.md"
+packages = [{include = "vk_types"}]
+
+[tool.poetry.dependencies]
+python = ">3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
