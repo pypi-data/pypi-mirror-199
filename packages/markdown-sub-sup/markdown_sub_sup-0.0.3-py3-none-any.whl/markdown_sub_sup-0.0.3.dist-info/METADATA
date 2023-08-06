@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: markdown-sub-sup
+Version: 0.0.3
+Summary: A markdown python extension for use <sub> and <sup> tags with ^text^ and ~text~.
+Home-page: https://github.com/alberic89/markdown_sub_sup
+Author: alberic89
+Author-email: alberic89@gmx.com
+License: LGPLv3
+Classifier: Operating System :: OS Independent
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python
+Classifier: Topic :: Text Processing :: Filters
+Classifier: Topic :: Text Processing :: Markup :: HTML
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: markdown (>=3.0)
+
+# markdown_sub_sup
+
+Extends the [Python Markdown](https://python-markdown.github.io/).
+Adds the possibility to use `^something^` to create `<sup>something</sup>` or `~something~` to create `<sub>something</sub>`
+
+Install through pip:
+
+```bash
+pip install markdown_sub_sup
+```
+
+To enable the markdown_sub_sup package and use it in your markdown generation just add it like so:
+
+```python
+import markdown
+
+result = markdown.markdown(textToRender, extensions=["markdown_sub_sup",])
+```
