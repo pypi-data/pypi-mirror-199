@@ -1,0 +1,6 @@
+pyserial>=3.0
+iso8601
+wakepy>=0.4.0
+
+[:python_version < "3.4"]
+enum34
