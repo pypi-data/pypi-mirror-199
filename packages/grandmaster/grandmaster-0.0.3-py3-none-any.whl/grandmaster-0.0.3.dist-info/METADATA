@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: grandmaster
+Version: 0.0.3
+Description-Content-Type: text/markdown
+Requires-Dist: torch (==2.0.0)
+Requires-Dist: transformers (==4.27.3)
+Requires-Dist: pillow (==9.4.0)
+Requires-Dist: datasets (==2.10.1)
+Requires-Dist: jinja2 (==3.1.2)
+Requires-Dist: black (==23.1.0)
+
+# Grandmaster AI
+
+Our mission is to make machine learning & AI accessible to as many developers as possible. 
+
+# Core principles
+
+- Simple to use. Get started in minutes, not hours.
+- Zero-config. All models should work out-of-the box.
+- Seamless integration with the Inference API.
+
+# Install
+
+`pip install grandmaster`
+
+# Usage
+
+See [https://grandmaster.ai](https://grandmaster.ai)
+
+# Contributing
+
+See [CONTRIBUTING](./CONTRIBUTING.md)
+
+
+# License
+
+To be defined, probably MIT or similar.
