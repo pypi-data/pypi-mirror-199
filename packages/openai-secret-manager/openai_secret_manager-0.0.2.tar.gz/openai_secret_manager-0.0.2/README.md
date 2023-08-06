@@ -1,0 +1,42 @@
+Description
+openai_secret_manager is a Python package that provides easy access to the OpenAI API, allowing you to quickly integrate powerful AI capabilities into your Python applications. With mypackage, you can retrieve and set your OpenAI API key securely using OpenAI Secrets Manager, and use helper functions to interact with the OpenAI API to generate text, analyze data, and more.
+
+
+[Github-flavored Markdown](https://guides.github.com/features/mastering-markdown/)
+
+
+# openai_secret_manager
+
+The `openai_secret_manager` package is a Python module that provides a simple interface for retrieving and setting secrets from the OpenAI Secrets API. You can use this package to securely store and manage your API keys and other secrets needed in your projects.
+
+## Installation
+
+To install the `openai_secret_manager` package, run the following command:
+
+```
+pip install openai_secret_manager
+```
+
+## Usage
+
+To use the `openai_secret_manager` package in your Python code, import the `openai_secret_manager` module and use its functions to retrieve or set secrets as needed. Here's an example:
+
+```python
+import openai_secret_manager
+
+# Get a secret value
+my_secret = openai_secret_manager.get_secret("my_secret_key")
+
+# Set a secret value
+openai_secret_manager.set_secret("my_secret_key", "my_secret_value")
+```
+
+In this example, we're using the `get_secret` function to retrieve a secret value stored under the key `my_secret_key`. We can then use this value in our code as needed. We're also using the `set_secret` function to set a new secret value for the key `my_secret_key`.
+
+## Contributing
+
+If you'd like to contribute to `openai_secret_manager`, please fork the repository and make changes as you'd like. Pull requests are welcome!
+
+## License
+
+`openai_secret_manager` is licensed under the MIT license.
