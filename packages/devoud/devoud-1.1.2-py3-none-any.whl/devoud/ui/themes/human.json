@@ -1,0 +1,133 @@
+{
+    "title_buttons_color": {
+        "min": "#89867B",
+        "max": "#89867B",
+        "close": "#bb5938"
+    },
+
+    "bg": "#43423e",
+    "fg": "#c2c2bb",
+
+    "search_box": {
+        "bg": "#5e5d58",
+        "fg": "#c2c2bb",
+        "item": "#383733"
+    },
+
+    "address_panel_button": {
+        "border": "#cf633e",
+        "hover": "#4e4d49"
+    },
+
+    "address_line_frame": {
+        "bg": "#383733",
+        "fg": "#c2c2bb",
+        "border": "#bb5938",
+        "hover": "#5e5d58"
+    },
+
+    "button": {
+        "bg": "#43423e",
+        "fg": "#c2c2bb",
+        "hover": "#383733",
+        "border": "#5e5d58"
+    },
+
+    "tab_widget": {
+        "bg": "#43423e",
+        "fg": "#c2c2bb",
+        "select_bg": "#bb5938",
+        "select_fg": "#c2c2bb",
+        "hover": "#383733",
+        "button_fg": "#c2c2bb"
+    },
+
+    "tree_widget": {
+        "header_bg": "#383733",
+        "header_fg": "#c2c2bb",
+        "hover_bg": "#4a4945",
+        "hover_fg": "#c2c2bb",
+        "pressed_bg": "#69665c",
+        "pressed_fg": "#c2c2bb",
+        "button_bg": "#383733",
+        "button_fg": "#c2c2bb",
+        "button_hover_bg": "#5e5d58",
+        "button_hover_fg": "#dfdfdf",
+        "button_border": "#5e5d58"
+    },
+
+    "find_on_page_widget": {
+        "bg": "#282a3a",
+        "fg": "#c2c2bb",
+        "line_edit_bg": "#383733",
+        "line_edit_fg": "#c2c2bb",
+        "checkbox_on": "#cf633e",
+        "checkbox_off": "#383733",
+        "btn_arrow_bg": "#43423e",
+        "btn_arrow_fg": "#c2c2bb",
+        "btn_arrow_hover": "#5e5d58",
+        "btn_close_bg": "#bb5938",
+        "btn_close_fg": "#c2c2bb"
+    },
+
+    "line_edit": {
+        "bg": "#383733",
+        "fg": "#c2c2bb",
+        "border": "#bb5938",
+        "hover": "#5e5d58"
+    },
+
+    "combobox": {
+        "bg": "#bb5938",
+        "fg": "#c2c2bb",
+        "item": "#383733"
+    },
+
+    "check_box": {
+        "normal": "#383733",
+        "checked": "#cf633e"
+    },
+
+    "sections_panel": {
+        "bg": "#383733",
+        "fg": "#c2c2bb",
+        "select": "#bb5938",
+        "hover": "#3D3D3C"
+    },
+
+    "container": {
+        "bg": "#4e4d49",
+        "fg": "#c2c2bb"
+    },
+
+    "container_title": {
+        "bg": "#383733",
+        "fg": "#c2c2bb",
+        "alt_fg": "#777771"
+    },
+
+    "container_title_btn": {
+        "bg": "#4e4d49",
+        "fg": "#c2c2bb",
+        "hover": "#bb5938"
+    },
+
+    "download_item": {
+        "bg": "#383733",
+        "fg": "#c2c2bb",
+        "alt_fg": "#777771"
+    },
+
+    "download_item_btn": {
+        "bg": "#4e4d49",
+        "fg": "#eef1f1",
+        "hover": "#5e5d58",
+        "border": "#bb5938"
+    },
+
+    "progress_bar": {
+        "fg": "#c2c2bb",
+        "chunk": "#bb5938",
+        "border": "#5e5d58"
+    }
+}
