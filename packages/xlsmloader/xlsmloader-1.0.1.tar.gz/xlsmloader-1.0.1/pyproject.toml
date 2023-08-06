@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "xlsmloader"
+version = "1.0.1"
+description = ""
+readme = "README.md"
+authors = [{ name = "Paulo Rogério Sales Santos", email = "paulosales@gmail.com" }]
+license = { file = "MIT" }
+keywords = ["xlsm", "reader", "assets", "sql"]
+
+dependencies = [
+    "et-xmlfile >= 1.1.0",
+    "numpy >= 1.24.2",
+    "openpyxl >= 3.1.0",
+    "pandas >= 1.5.3",
+    "python-dateutil >= 2.8.2",
+    "pytz >= 2022.7.1",
+    "six >= 1.16.0",
+    'tomli; python_version < "3.11"',
+]
+requires-python = ">=3.9"
