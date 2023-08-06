@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: hailin
+Version: 2023.3.29
+Summary: WANG HAILIN's Shared Blog
+Author-email: WANG Hailin <hailin.wang@connect.polyu.hk>
+Project-URL: GitHub, https://github.com/haiiliin/haiiliin/
+Project-URL: Homepage, https://haiiliin.com/
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: matplotlib
+Requires-Dist: qtpy
+Provides-Extra: dev
+Requires-Dist: black ; extra == 'dev'
+Requires-Dist: PyQt5 ; extra == 'dev'
+Requires-Dist: pytest ; extra == 'dev'
+Requires-Dist: pytest-cov ; extra == 'dev'
+
+### Hi there 👋
+
+- 🔭 I’m currently working on programming soil-structure interaction
+<!-- - 🌱 I’m currently learning ... -->
+<!-- - 👯 I’m looking to collaborate on ... -->
+- 🤔 I’m looking for help with [abqpy](https://github.com/haiiliin/abqpy)
+<!-- - 💬 Ask me about Python, Abaqus ... -->
+- 📫 How to reach me: hailin.wang@connect.polyu.hk or wanghailin@tongji.edu.cn
+<!-- - 😄 Pronouns: ...
+- ⚡ Fun fact: ... -->
