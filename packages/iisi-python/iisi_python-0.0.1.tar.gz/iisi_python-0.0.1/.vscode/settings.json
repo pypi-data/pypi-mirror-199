@@ -1,0 +1,74 @@
+{
+    "editor.rulers": [
+        100
+    ],
+    "[python]": {
+        "editor.formatOnPaste": false,
+        "editor.formatOnSave": true,
+        "editor.formatOnSaveMode": "file",
+        "editor.codeActionsOnSave": {
+            "source.fixAll.eslint": true,
+            "source.organizeImports": true,
+            "source.fixAll": true
+        },
+    },
+    "files.exclude": {
+        "**/.git/**": true,
+        "**/.mypy_cache/**": true,
+        "**/htmlcov/**": true,
+        "**/dist/**": true,
+        "**/.venv/**": true
+    },
+    "files.eol": "\n",
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true,
+    "files.trimTrailingWhitespace": true,
+    "files.watcherExclude": {
+        "**/.git/**": true,
+        "**/.mypy_cache/**": true,
+        "**/htmlcov/**": true,
+        "**/dist/**": true,
+        "**/.venv/**": true
+    },
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/src/iisi",
+        "${workspaceFolder}/src/tests"
+    ],
+    "python.formatting.provider": "none",
+    "python.formatting.blackArgs": [
+        "-l 100"
+    ],
+    "python.envFile": "${workspaceFolder}/.env",
+    "isort.args": [
+        "--settings-file=${workspaceFolder}/.vscode/.isort.cfg",
+        "--src-path=${workspaceFolder}/src/iisi",
+        "--src-path=${workspaceFolder}/src/tests",
+    ],
+    "python.testing.pytestArgs": [
+        "--rootdir=${workspaceFolder}/src/iisi",
+        "--cov=src/backend",
+        "--cov-report=xml:coverage.xml",
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.pytestEnabled": true,
+    "python.linting.pylintEnabled": true,
+    "python.linting.enabled": true,
+    "python.linting.pylintArgs": [
+        "--max-line-length=100"
+    ],
+    "python.analysis.typeCheckingMode": "basic",
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "python.analysis.extraPaths": [
+        ".iisi",
+    ],
+    "cSpell.words": [
+        "usecase",
+        "punq",
+        "authoritah",
+        "boto",
+        "configurators",
+        "botocore",
+        "iisi"
+    ],
+}
