@@ -1,0 +1,14 @@
+sortedcontainers
+toml
+GitPython
+filelock
+pycparser
+setuptools
+prompt_toolkit
+
+[test]
+angr-management>=9.2.40
+pytest-qt
+pyside6
+flake8
+pytest
