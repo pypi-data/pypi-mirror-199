@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: filesocket
+Version: 0.1.8
+Summary: Transferring data between PCs library
+Home-page: https://github.com/Qolorerr/FileSocketClient
+Author: Mikhail Ivanov
+Author-email: qolorer@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests (>=2.28.1)
+Requires-Dist: pyngrok (>=5.2.1)
+Requires-Dist: uvicorn (>=0.20.0)
+Requires-Dist: fastapi (>=0.89.1)
+Requires-Dist: starlette (>=0.22.0)
+Requires-Dist: python-multipart (>=0.0.5)
+
+# FileSocket
+Library for file transfer and remote PC control
+
+## Links
+- [Client GitHub](https://github.com/Qolorerr/FileSocketClient)
+- [Server GitHub](https://github.com/Qolorerr/FileSocketServer) - Client needs it to establish connection to PC
+
+## Quick usage
+```python
+from pathlib import Path
+from filesocket import sign_in, show_all_pc, ManagedClient, ManagingClient
+
+
+# Sign in
+sign_in("login", "password")
+
+# Create managed client
+client = ManagedClient(port=7999, require_token='token')
+client.run()
+
+# Get managed pc id
+all_pc = show_all_pc()
+
+# Create managing client
+client = ManagingClient(device_id=all_pc[0].id, device_secure_token='token')
+client.run(text_ui=False)
+
+# Send cmd command
+client.cmd_command('ipconfig')
+
+# Send file
+client.send_file(Path("local/path/to/file/to/send"), Path("path/where/to/put"))
+```
+
+
