@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: changepoynt
+Version: 0.0.3
+Summary: Readable package for several change point detection methods implemented in python.
+Home-page: https://github.com/Lucew/changepoynt
+Author: Lucas Weber
+Author-email: weber-lucas@web.de
+License: BSD License
+Keywords: changepoint timeseries engineering
+Classifier: Programming Language :: Python :: 3.9
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Topic :: Scientific/Engineering
+License-File: LICENSE
+Requires-Dist: numpy (~=1.23.5)
+Requires-Dist: numba (~=0.56.4)
+Requires-Dist: scipy (~=1.10.1)
+Requires-Dist: fbpca (==1.0)
+Requires-Dist: matplotlib (==3.7.1)
+Requires-Dist: stumpy (==1.11.1)
+Provides-Extra: test
+Requires-Dist: pytest (~=7.2.2) ; extra == 'test'
+Requires-Dist: numpy (~=1.23.5) ; extra == 'test'
+Requires-Dist: numba (~=0.56.4) ; extra == 'test'
+Requires-Dist: scipy (~=1.10.1) ; extra == 'test'
+Requires-Dist: fbpca (==1.0) ; extra == 'test'
+Requires-Dist: stumpy (==1.11.1) ; extra == 'test'
+
+This package contains several readable change point detections methods in python.
