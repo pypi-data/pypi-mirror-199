@@ -1,0 +1,121 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyPrairieView"
+version = "0.0.1"
+description = "Darik & Doug Do A Thing"
+readme = "README.md"
+requires-python = ">=3.7, <4"
+license = {file = "LICENSE"}
+keywords = [
+    "Bruker",
+    "PrairieView",
+    "Microscopy",
+    "Two-Photon",
+    "One-Photon",
+    "Confocal",
+    "Electrophysiology",
+    "Ephys",
+    "Neuroscience",
+    "Psychology",
+    "Biology",
+    ]
+authors = [
+    {name = "Douglas Miller"},
+    {name = "Darik A. O'Neil"}
+]
+maintainers = [
+    {name = "Douglas Miller"},
+    {name = "Darik A. O'Neil"}
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python",
+    "Operating System :: Microsoft :: Windows",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Natural Language :: English",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: End Users/Desktop",
+    "Topic :: Scientific/Engineering",
+]
+
+dependencies = [
+    "numpy",
+    "pandas",
+    "pillow",
+    "PPVD",
+    "prettytable",
+    "tifffile",
+    "tqdm"
+]
+[project.urls]
+documentation = "https://github.com/saglag/pyPrairieView"
+repository = "https://github.com/saglag/pyPrairieView"
+
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "pytest-datafiles",
+    "pytest-lazy-fixture",
+    "pytest-sugar",
+    "pytest-clarity",
+]
+development = [
+    "build",
+    "coverage[toml]",
+    "coveralls",
+    "flake8",
+    "flake8-annotations",
+    "flake8-bugbear",
+    "flake8-class-attributes-order",
+    "flake8-comprehensions",
+    "flake8-html",
+    "flake8-unused-arguments",
+    "toml",
+    "tomli",
+    "twine"
+]
+documentation = [
+    "sphinx",
+    "sphinx-rtd-theme",
+    "sphinx-autodoc-typehints"
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+    "-s",
+    "--color=yes",
+    "-vv",
+    "--diff-width=120"
+]
+testpaths = "tests"
+console_output_style = "progress"
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::FutureWarning"
+]
+
+[tool.coverage.run]
+branch = true
+command_line = "-m pytest"
+omit = ["*/tests*", "*tests*", "*tests/*", "tests*", "tests/*", "tests"]
+dynamic_context = "test_function"
+
+[tool.coverage.report]
+fail_under = 15
+
+[tool.coverage.json]
+pretty_print = true
+
+[tool.coverage.html]
+show_contexts = true
