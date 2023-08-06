@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: mm-poetry
+Version: 0.1.1
+Summary: Poetry project
+Author: AC
+Author-email: ac@marketmining.com.br
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pendulum (>=2.1.2,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Poetry
+
+### Install
+
+- Install poetry
+
+- Init Project
+
+```sh
+poetry init
+```
+
+
+- Create Project
+
+```sh
+poetry new [project-name]
+```
+
+
+- Configuring Credentials
+poetry config pypi-token.pypi <my-token>
+
+poetry build
+poetry publish
+
+
+
+
+
+### Reference
+
+[Poetry Docs](https://python-poetry.org/docs/)
+
