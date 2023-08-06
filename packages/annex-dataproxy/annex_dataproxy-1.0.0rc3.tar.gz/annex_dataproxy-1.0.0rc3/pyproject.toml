@@ -1,0 +1,37 @@
+[build-system]
+requires = ["hatchling", "setuptools>=45", "setuptools_scm[toml]>=6.2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "annex-dataproxy"
+dynamic = ["version"]
+authors = [
+  { name="Marmaduke Woodman", email="marmaduke.woodman@univ-amu.fr" },
+]
+description = "git annex support for Ebrains Data Proxy"
+readme = "README.md"
+requries-python = ">=3.7"
+dependencies = [
+    "annexremote",
+    "requests"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+
+[project.scripts]
+git-annex-remote-dataproxy = "annex_dataproxy.__main__:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "twine",
+  "build"
+]
+
+[tool.hatch.version]
+path = "annex_dataproxy/_version.py"
+

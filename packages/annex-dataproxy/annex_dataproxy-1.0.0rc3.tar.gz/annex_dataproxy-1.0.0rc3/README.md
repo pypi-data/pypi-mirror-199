@@ -1,0 +1,53 @@
+# annex_dataproxy
+
+This git annex external remote extension uses
+[AnnexRemote](https://github.com/Lykos153/AnnexRemote) to
+talk to [EBRAINS Data Proxy](https://https://data-proxy.ebrains.eu/api/docs)
+so that you can use EBRAINS Collaboratory buckets as
+Datalad siblings. 
+
+## Install
+
+`pip install annex_dataproxy`.
+
+## Usage
+
+create a dataset
+```bash
+$ datalad create pdfdata
+[INFO   ] Creating a new annex repo at /tmp/pdfdata 
+[INFO   ] scanning for unlocked files (this may take some time) 
+create(ok): /tmp/pdfdata (dataset)
+$ cd pdfdata/
+$ rsync -ra $HOME/PDFs/ ./
+$ datalad save
+add(ok): 1107.0903 Montbrio Pazo - Stuart Landau.pdf (file)                                          
+  [199 similar messages have been suppressed; disable with datalad.ui.suppress-similar-results=off]  
+save(ok): . (dataset)                                                                                
+action summary:                                                                                      
+  add (ok: 209)
+  save (ok: 1)
+```
+tell the dataproxy remote our token and what bucket & prefix to use
+```bash
+$ export EBRAINS_TOKEN=$EBRAINS_TOKEN
+$ export DATAPROXY_PATH=insference/pdfs
+```
+create the annex remote and `datalad push --to` it
+```
+$ git annex initremote pdfs type=external externaltype=dataproxy encryption=none
+initremote pdfs ok
+(recording state in git...)
+$ datalad push --to pdfs
+copy(ok): 15009.full.pdf (file) [to pdfs...]                                                   
+  [193 similar messages have been suppressed; disable with datalad.ui.suppress-similar-results=off]  
+action summary:                                                                                      
+  copy (notneeded: 6, ok: 203)
+```
+
+## Status
+
+- [x] sloppy proof of concept
+- [x] `git annex testremote` passes
+- [x] PyPI package for easier install
+- [ ] better mechanism for specifying bucket & prefix
