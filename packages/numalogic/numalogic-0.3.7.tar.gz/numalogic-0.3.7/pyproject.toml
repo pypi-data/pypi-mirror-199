@@ -1,0 +1,89 @@
+[tool.poetry]
+name = "numalogic"
+version = "0.3.7"
+description = "Collection of operational Machine Learning models and tools."
+authors = ["Numalogic Developers"]
+packages = [{ include = "numalogic" }]
+readme = "README.md"
+license = "Apache-2.0"
+maintainers = [
+    "Avik Basu <avikbasu93@gmail.com>",
+    "Vigith Maurice <vigith@gmail.com>",
+]
+classifiers = [
+    "Topic :: Software Development :: Libraries",
+    "License :: OSI Approved :: Apache Software License",
+    "Intended Audience :: Developers",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10"
+]
+repository = "https://github.com/numaproj/numalogic"
+documentation = "https://numalogic.numaproj.io/"
+homepage = "https://numalogic.numaproj.io/"
+
+[tool.poetry.dependencies]
+python = ">=3.8, <3.11"
+numpy = "^1.23"
+pandas = "^1.4"
+scikit-learn = "^1.0"
+mlflow-skinny = { version = ">2.0, <2.3", optional = true }
+protobuf = "~3.20" # needed to support pytorch-lightning
+omegaconf = "^2.3.0"
+
+[tool.poetry.extras]
+mlflow = ["mlflow-skinny"]
+
+[tool.poetry.group.torch]
+optional = true
+
+[tool.poetry.group.torch.dependencies]
+pytorch-lightning = "^1.8"
+
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+matplotlib = "^3.4.2"
+black = "^22.6"
+pytest = "^7.1"
+pytest-cov = "^4.0"
+pylint = "^2.14.2"
+flake8 = "^5.0"
+
+[tool.poetry.group.jupyter]
+optional = true
+
+[tool.poetry.group.jupyter.dependencies]
+jupyter = "^1.0.0"
+ipykernel = "^6.15.1"
+nb-black = "^1.0.7"
+black = "^22.6.0"
+ipympl = "^0.9.1"
+ipython-autotime = "^0.3.1"
+
+[tool.black]
+line-length = 100
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | \.hg
+  | \.mypy_cache
+  | \.tox
+  | \.venv
+  | \.idea
+  | _build
+  | buck-out
+  | build
+  | dist
+  | examples/.*/venv
+  | tests/.*/setup.py
+)/
+'''
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
