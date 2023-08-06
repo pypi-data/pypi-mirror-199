@@ -1,0 +1,7 @@
+packaging
+
+[cpu]
+tensorflow-cpu>=2.11
+
+[gpu]
+tensorflow>=2.11
