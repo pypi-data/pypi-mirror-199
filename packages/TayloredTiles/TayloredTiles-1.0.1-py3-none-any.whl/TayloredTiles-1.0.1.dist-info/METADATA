@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: TayloredTiles
+Version: 1.0.1
+Summary: UNKNOWN
+Home-page: UNKNOWN
+Author: PyRiscV
+Author-email: pyriscv@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: sympy
+
+# Taylored Tiles
+[![Test Coverage](https://img.shields.io/badge/Test%20Coverage-100%25-success)](https://github.com/jacob-h-barrow/Penguin-Services)
+[![Security](https://img.shields.io/badge/Secure-True-informational)](https://github.com/jacob-h-barrow/Penguin-Services)
+[![Platform](https://img.shields.io/badge/Platform-Ubuntu%2020%2B-critical)](https://github.com/jacob-h-barrow/Penguin-Services)
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-critical)](https://github.com/jacob-h-barrow/Penguin-Services)
+[![MIT License](https://img.shields.io/badge/License-MIT-lightgrey)](https://github.com/jacob-h-barrow/Penguin-Services/blob/main/Penguin-Services.png)
+
+![tayloredtiles](https://user-images.githubusercontent.com/124107313/217258535-05bfe1d9-c3b8-47ec-88c5-53dfd5078e22.png)
+
+- Created By Jacob H Barrow
+
+# In Development
+## Information
+- Built the logic and have a working tkinter interface
+- Need to debug for errors (only spent about 4 hours on it!)
+- Need to implement extensions
+
+## What is Taylored Tiles
+- It's a spin-off from popular games that works with Taylor Sequences instead of words
+
+## Why this game?
+- Some people are visual learners, some need to get hands one, others are purely mathematical
+
+## Who is this for?
+- The people that develop our software, deploy our architectures, and monitor our networks
+- Mainly for people whose first languages are not human, but instead, computer-based
+- Who doesn't speak a human language??? Dumbledore's Army!!!
+
+## Usage
+``` python
+>>> from TayloredTiles import TayloredTiles
+>>> root = tk.Tk()
+>>> tiles = TayloredTiles(root)
+>>> tiles.set_grid()
+>>> root.mainloop()
+```
+
+### Shout Out
+- To my friends at the NSA: even though they undervalue us, we will still thrive!!
+- Just imagine if we weren't burdened with corruption
+- Long live the enterprise: spock out!
+
+
