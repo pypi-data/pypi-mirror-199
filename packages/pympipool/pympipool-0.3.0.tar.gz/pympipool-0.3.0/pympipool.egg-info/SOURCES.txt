@@ -1,0 +1,17 @@
+LICENSE
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+versioneer.py
+pympipool/__init__.py
+pympipool/__main__.py
+pympipool/_version.py
+pympipool.egg-info/PKG-INFO
+pympipool.egg-info/SOURCES.txt
+pympipool.egg-info/dependency_links.txt
+pympipool.egg-info/entry_points.txt
+pympipool.egg-info/requires.txt
+pympipool.egg-info/top_level.txt
+tests/test_communicator_split.py
+tests/test_pool.py
