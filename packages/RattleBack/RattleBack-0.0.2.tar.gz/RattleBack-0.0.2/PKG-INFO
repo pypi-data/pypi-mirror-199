@@ -1,0 +1,72 @@
+Metadata-Version: 2.1
+Name: RattleBack
+Version: 0.0.2
+Summary: motion of rattle-back
+Home-page: https://github.com/tt-nakamura/rattle
+Author: Takahiro Nakamura
+Author-email: a41757@gmail.com
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/tt-nakamura/rattle/issues
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# RattleBack: motion of rattle-back
+```
+RattleBack(abch, ABCD, init, t, sigma=0, g=981, **kw):
+abch,ABCD = tuples of four real numbers, where
+  a,b,c = radii of ellipsoid (cm)
+  h = OG (O = center of ellipsoid, G = center of mass) (cm)
+  A,B,C = moments of inertia along a,b,c axis (cm^2)
+  D = product of intertia in a-b plane (cm^2)
+init = initial condition of integration (shape (6,))
+t = evaluation time (1d array) (sec)
+sigma = friction coefficient (cm^2/sec)
+g = gravity acceleration (cm/sec^2)
+kw = keyword arguments passed to scipy.integrate.odeint
+return y = output of odeint (shape(len(t),6)), where
+  y[:,0:3] = euler angles alpha,beta,gamma
+  y[:,3:6] = angular velocities omega_i (i=1,2,3)
+all variables are measured in CGS units and radians
+A,B,C,D,sigma corresponds to those of
+  Kane & Levinson DIVIDED BY MASS of rattleback
+-------------------------------------------------------------
+reference: T. R. Kane and D. A. Levinson
+  "Realistic Mathematical Modeling of the Rattleback"
+   International Journal of Non-Linear Mechanics 17 (1982) 175
+```
+# example code:
+```
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.constants import degree
+from RattleBack import RattleBack
+
+abch = (20,3,2,1)
+ABCD = (2,16,17,-0.2)
+sigma = 1
+init = [0.5*degree, 0.5*degree, 0,0,0,-5]
+t = np.linspace(0,10,500)
+
+y = RattleBack(abch, ABCD, init, t, sigma)
+alpha,beta,gamma = y.T[:3] # Euler angles
+delta = np.arccos(np.cos(alpha)*np.cos(beta)) # tilt angle
+
+plt.figure(figsize=(5,5.5))
+
+plt.subplot(211)
+plt.plot(t, gamma/degree)
+plt.ylabel(r'$\gamma$  / deg')
+
+plt.subplot(212)
+plt.plot(t, delta/degree)
+plt.ylabel(r'$\delta$  / deg')
+plt.xlabel(r'$t$ = time  / sec')
+plt.tight_layout()
+plt.show()
+```
+
