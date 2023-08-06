@@ -1,0 +1,24 @@
+[build-system]
+requires = [
+"setuptools>=61.0",
+"wheel"
+]
+build-backend = "setuptools.build_meta"
+[project]
+name = "V2Ray"
+version = "1.1"
+authors = [
+  { name="Santrich", email="santricham@gmail.com" },
+]
+description = "A project that can create a VPN server(Vmess , Vless) using this script from X-UI panels"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/santrichm/python-V2Ray-API"
+"Bug Tracker" = "https://github.com/santrichm/python-V2Ray-API/issues"
