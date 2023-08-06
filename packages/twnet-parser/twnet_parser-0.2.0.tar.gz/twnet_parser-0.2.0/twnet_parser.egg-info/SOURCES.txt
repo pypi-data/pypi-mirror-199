@@ -1,0 +1,17 @@
+LICENSE.txt
+README.md
+pyproject.toml
+setup.cfg
+twnet_parser/__init__.py
+twnet_parser/chunk_header.py
+twnet_parser/message_parser.py
+twnet_parser/msg7.py
+twnet_parser/net_message.py
+twnet_parser/packer.py
+twnet_parser/packet.py
+twnet_parser/pretty_print.py
+twnet_parser.egg-info/PKG-INFO
+twnet_parser.egg-info/SOURCES.txt
+twnet_parser.egg-info/dependency_links.txt
+twnet_parser.egg-info/top_level.txt
+twnet_parser/messages7/system/map_change.py
