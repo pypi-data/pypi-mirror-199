@@ -1,0 +1,5 @@
+{% for variable in data.variables %}
+set +o history
+gh secret set {{ variable }} --body "${{ variable }}"
+set -o history
+{% endfor %}
