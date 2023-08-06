@@ -1,0 +1,64 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:z3c="http://namespaces.zope.org/z3c"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    xmlns:i18n="http://namespaces.zope.org/i18n"
+    i18n_domain="contenttypes.basic">
+
+  <adapter factory=".icon.IconFieldWidget" />
+  <adapter factory=".colour.ColourFieldWidget" />
+  <adapter factory=".osmap.OSMapFieldWidget" />
+  <adapter factory=".osmap_advanced.OSMapAdvancedFieldWidget" />
+  
+  <adapter factory=".osmap.OSMapConverter" />
+  <adapter factory=".osmap_advanced.OSMapAdvancedConverter" />
+  
+  <z3c:widgetTemplate
+    mode="input"
+    widget="..interfaces.IIconWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="icon_input.pt" />
+
+  <z3c:widgetTemplate
+    mode="display"
+    widget="..interfaces.IIconWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="icon_display.pt" />
+
+  <z3c:widgetTemplate
+    mode="input"
+    widget="..interfaces.IColourWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="colour_input.pt" />
+
+  <z3c:widgetTemplate
+    mode="display"
+    widget="..interfaces.IColourWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="colour_display.pt" />
+
+  <z3c:widgetTemplate
+    mode="input"
+    widget="..interfaces.IOSMapWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="osmap_input.pt" />
+
+  <z3c:widgetTemplate
+    mode="display"
+    widget="..interfaces.IOSMapWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="osmap_display.pt" />
+
+  <z3c:widgetTemplate
+    mode="input"
+    widget="..interfaces.IOSMapAdvancedWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="osmap_advanced_input.pt" />
+
+  <z3c:widgetTemplate
+    mode="display"
+    widget="..interfaces.IOSMapAdvancedWidget"
+    layer="plone.app.z3cform.interfaces.IPloneFormLayer"
+    template="osmap_advanced_display.pt" />
+
+</configure>
