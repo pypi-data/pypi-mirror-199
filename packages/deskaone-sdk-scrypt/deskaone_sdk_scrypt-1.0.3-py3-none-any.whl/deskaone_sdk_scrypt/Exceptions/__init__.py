@@ -1,0 +1,19 @@
+import sys, os
+
+class Error(BaseException): ...
+class Stoper(BaseException): ...
+class Pause(BaseException): ...
+class Continue(BaseException): ...
+class ParseError(BaseException): ...
+class NotFoundError(BaseException): ...
+class PrintError:
+    def __init__(self) -> None:
+        self.exc_type, self.exc_obj, self.exc_tb = sys.exc_info()
+        self.fname = os.path.split(self.exc_tb.tb_frame.f_code.co_filename)[1] # type: ignore
+        self.firstlineno    = self.exc_tb.tb_frame.f_code.co_firstlineno # type: ignore
+        self.co_name        = self.exc_tb.tb_frame.f_code.co_name # type: ignore
+    
+    def __repr__(self) -> str:
+        Type = str(self.exc_type)
+        return f'Exception(Type={Type}, Name={self.fname}, Line={self.exc_tb.tb_lineno}, Lines={self.firstlineno}, Function={self.co_name})' # type: ignore
+    
