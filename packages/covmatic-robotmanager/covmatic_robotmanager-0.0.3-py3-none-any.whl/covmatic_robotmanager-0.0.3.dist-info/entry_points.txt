@@ -1,0 +1,3 @@
+[console_scripts]
+robotmanager-calibrator = covmatic_robotmanager.calibrator:main
+robotmanager-server = covmatic_robotmanager.main:main
