@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: tcod-ecs
+Version: 0.0.1
+Summary: A partially implemented Entity Component System.
+Author-email: Kyle Benesch <4b796c65+github@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Dist: typing-extensions >=4.4.0
+Requires-Dist: attrs >=22.2.0 ; extra == "test"
+Requires-Dist: pytest>=7.2.0 ; extra == "test"
+Requires-Dist: pytest-cov ; extra == "test"
+Requires-Dist: mypy >=1.1.1 ; extra == "test"
+Project-URL: Changelog, https://github.com/HexDecimal/python-tcod-ecs/blob/main/CHANGELOG.md
+Project-URL: Home, https://github.com/HexDecimal
+Project-URL: Source, https://github.com/HexDecimal/python-tcod-ecs
+Provides-Extra: test
+
+# About
+
+An experimental and work-in-progress ECS registry for implementing composition over inheritance.
+
+# Installation
+
+Use pip to install this library:
+```
+pip install tcod-ecs
+```
+
+If `tcod` is installed and the version is less than `14.0.0` then `import tcod.ec` will fail.
+Remove or update `tcod` to fix this issue.
+
