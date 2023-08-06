@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: vtpython
+Version: 2.7
+Summary: A very simple Python package for submitting files to VirusTotal for analysis
+Home-page: https://github.com/Mateodevv/virustotal-python
+Author: Mateo Mrvelj
+Author-email: burningmalwareblog@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# virustotal-python
+A very simple implementation of the VirusTotal V3 API. You can examine files/urls/domains/IPs quickly by simply passing the filepath.
+
+## Installation
+
+```pip install vtpython```
+
+## Quickstart
+
+
+``` 
+from vtpython import VirusTotalClient
+
+client = VirtusTotalClient('YOUR-API-KEY')
+
+file_report = client.get_file_report('PATH/TO/FILE')
+
+url_report = client.get_url_report('URL')
+
+domain_report = client.get_domain_report('DOMAIN')
+
+ip_report = client.get_ip_address_report('IP')
+
+```
+
+
