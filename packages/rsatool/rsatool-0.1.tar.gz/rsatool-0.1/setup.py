@@ -1,0 +1,18 @@
+from setuptools import setup
+
+
+def readme():
+    with open('README.md', 'r') as f:
+        return f.read()
+
+
+setup(
+    name='rsatool',
+    version='0.1',
+    description='Module for fast calculating large primes, and RSA encryption and decryption of data of any size',
+    long_description=readme(),
+    author='Nikita Grigorev',
+    author_email='nekitbilding@inbox.ru',
+    url='https://github.com/mrNikGrig/RSA_tool.git',
+    packages=['rsatool']
+)
