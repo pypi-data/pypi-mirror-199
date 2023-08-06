@@ -1,0 +1,43 @@
+from setuptools import setup, find_packages
+
+setup(
+    name="FeSeEL",
+    version="1.0.0",
+    description="Package for Feature Selection, Transformation, Elimination",
+    author="DAT/Mattia Centurelli",
+    author_email="mcenturelli@credem.it",
+    url="https://dev.azure.com/credem-data/DAT/_git/FeSTE",
+    classifiers=[
+        "Development Status :: 4 - Beta",
+        "Intended Audience :: Developers",
+        "Topic :: Software Development :: Build Tools",
+        "License :: OSI Approved :: MIT License",
+        "Programming Language :: Python :: 3 :: Only",
+    ],
+    packages=find_packages(
+        where='src',
+        exclude=['test']),
+    package_dir={"": "src"},
+    # Usato solo con 3.9 e 3.10
+    python_requires=">=3.9, <4",
+
+    install_requires=[
+        "wheel==0.37.1",
+        "typed-ast==1.5.4",
+        "numpy==1.22.4",
+        "pandas==1.4.2",
+        "scikit-learn==1.1.1",
+        "lightgbm==3.3.2",
+        "matplotlib==3.5.2",
+        "seaborn==0.11.1",
+        "pyreadstat==1.1.7",
+        "scipy==1.8.1",
+        "statsmodels==0.13.2",
+        "PyYAML==6.0",
+        "altair==4.2.0",
+        "altair-saver==0.5.0",
+        "shap==0.38.1",
+        "pytest==6.2.5",
+        "mergedeep==1.3.4"
+    ],
+)
