@@ -1,0 +1,4 @@
+from __future__ import annotations
+from .VerifyEmailRequest import VerifyEmailRequest
+
+AuthVerifyEmailRequest = VerifyEmailRequest
