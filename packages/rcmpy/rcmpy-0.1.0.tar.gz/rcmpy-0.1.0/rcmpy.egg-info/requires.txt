@@ -1,0 +1,12 @@
+
+[test]
+pylint
+flake8
+pytest
+pytest-cov
+mypy
+black
+isort
+vcorelib
+setuptools-wrapper
+types-setuptools
