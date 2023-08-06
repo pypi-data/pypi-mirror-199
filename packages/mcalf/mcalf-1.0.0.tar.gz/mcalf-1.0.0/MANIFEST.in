@@ -1,0 +1,12 @@
+# setuptools_scm includes all files tracked by git so need to exclude some
+exclude .gitignore
+exclude .readthedocs.yml
+exclude .travis.yml
+exclude .zenodo.json
+exclude azure-pipelines.yml
+prune examples
+# not being included automatically in win-py36
+include src/mcalf/tests/models/data/*
+include src/mcalf/tests/utils/data/*
+include src/mcalf/tests/figure_hashes_*.json
+include src/mcalf/tests/baseline_*/*
