@@ -1,0 +1,5 @@
+Pillow>=5.2.0
+tqdm>=4.9.0
+
+[:python_version == "2.7"]
+numpy>=1.11.0futures>=3.2.0
