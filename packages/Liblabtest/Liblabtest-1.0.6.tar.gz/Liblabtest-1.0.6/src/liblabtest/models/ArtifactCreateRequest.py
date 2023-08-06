@@ -1,0 +1,4 @@
+from __future__ import annotations
+from .CreateArtifactRequest import CreateArtifactRequest
+
+ArtifactCreateRequest = CreateArtifactRequest
