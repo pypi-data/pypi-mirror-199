@@ -1,0 +1,38 @@
+[tool.poetry]
+name = "saturn-notebook"
+version = "1.2.1"
+description = "Plain-text Python notebooks with checkpointing"
+authors = ["Dmitriy Morozov <dmitriy@mrzv.org>"]
+license = "BSD-3-Clause-LBNL"
+packages = [
+    { include = "saturn_notebook" },
+]
+repository = "https://github.com/mrzv/saturn"
+homepage = "https://github.com/mrzv/saturn"
+readme = "README.md"
+
+[tool.poetry.scripts]
+saturn = 'saturn_notebook.__main__:main'
+
+[tool.poetry.dependencies]
+python = "^3.8"
+argh = "^0.26.2"
+rich = "^12.3.0"
+atomicwrites = "^1.4.0"
+dill = "^0.3.6"
+matplotlib = "^3.5.0"
+Markdown = "^3.3.6"
+Pygments = "^2.12.0"
+ptpython = "^3.0.23"
+more-itertools = "^8.12.0"
+wurlitzer = "^3.0.2"
+importlib-metadata = "^4.11.3"
+nbformat = "^5.7.0"
+
+[tool.poetry.dev-dependencies]
+icecream = "^2.1.2"
+mpi4py = "^3.1.3"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
