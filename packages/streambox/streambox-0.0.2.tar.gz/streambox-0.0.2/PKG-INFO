@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: streambox
+Version: 0.0.2
+Summary: A package for generic data science utilities
+Author-email: Kaveh Bakhtiyari <kbakhtiyari@yahoo.com>
+Project-URL: Homepage, https://github.com/kavehbc/streambox
+Project-URL: Bug Tracker, https://github.com/kavehbc/streambox
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Streambox - Data Science Toolkit
+
+Streamkit is a toolkit with a number of functions and decorators useful for data scientist and developers in their projects.
+
+## Installation
+
+You can install this package either by cloning/forking this repo and install it locally,
+or by fetching it from PyPIP repo.
+
+### Local Installation
+If you want to hot reload new changes, from repo root run: 
+
+```bash
+pip install -e . --upgrade --upgrade-strategy only-if-needed
+```
+
+### PyPIP Installation
+
+```bash
+pip install streambox
+```
+
+## Changelog
+- **0.1.0** (23 March 2023)
+
+    This is the genesis version released.
