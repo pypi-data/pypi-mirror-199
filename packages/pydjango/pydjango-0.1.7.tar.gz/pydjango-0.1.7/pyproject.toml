@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "pydjango"
+version = "0.1.7"
+description = ""
+authors = ["Roman Hartig <roman.hartig@gmail.com>"]
+readme = "README.md"
+packages = [
+    {include = "pyngo"}
+]
+exclude = ["pyngo/db.sqlite3"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+django = "^4.1.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
