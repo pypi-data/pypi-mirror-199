@@ -1,0 +1,21 @@
+-e .
+
+# Packaging
+twine
+wheel
+
+# Tooling and tests
+attrs>=19.2  # Fix compatibility between trio and outcome
+autoflake
+black==22.10.*
+exceptiongroup; python_version<'3.11'
+flake8==5.*
+isort==5.*
+mypy==0.990
+pytest==7.*
+pytest-asyncio==0.18.*
+pytest-cov
+pytest-trio==0.8.*
+starlette==0.26.*
+trio==0.22.*
+httpx==0.23.*
