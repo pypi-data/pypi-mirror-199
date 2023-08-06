@@ -1,0 +1,12 @@
+name: bumpline
+version: "3.2"
+services:
+  test:
+    build:
+      context: .
+      args:
+        - PYTHON_IMAGE=${PYTHON_IMAGE:-python}
+        - PYTHON_VERSION=${PYTHON_VERSION:-latest}
+    container_name: test
+    restart: "no"
+    entrypoint: /app/entrypoint.py -r
