@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: batchbook-python
+Version: 0.1.1
+Summary: API wrapper for Batchbook written in Python
+License: MIT
+Author: Miguel Ferrer
+Author-email: ingferrermiguel@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: requests (>=2.26.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+# Batchbook-python
+Batchbook API wrapper written in python.
+
+## Installing
+```
+pip install batchbook-python
+```
+
+## Usage
+### Simple access with API KEY
+```
+from batchbool.client import Client
+
+client = Client('API_KEY')
+```
+
+Get Contacts
+```
+client.get_contacts()
+```
+
+Get an specific contact
+```
+client.get_contact(contact_id)
+```
+## Requirements
+
+```
+-Requests
+-Urllib
+```
+
+## TODO
+- Companies
+- Custom Fields
+- Users
+- Roles
+- Communications
+
