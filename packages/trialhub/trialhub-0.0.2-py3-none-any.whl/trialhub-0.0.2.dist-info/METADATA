@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: trialhub
+Version: 0.0.2
+Summary: Helper modules for TrialHub project
+Home-page: https://github.com/IvayloYosifov/trialhub-helpers
+Author: FindMeCure team
+Author-email: ivo@findmecure.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: openai
+Requires-Dist: biopython
+Requires-Dist: pinecone-client
+Requires-Dist: azure-storage-blob
+Requires-Dist: cryptography
+Requires-Dist: azure-identity
+Requires-Dist: azure-keyvault-secrets
+
+UNKNOWN
+
+
