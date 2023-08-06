@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bar Baz</title>
+  <link rel="stylesheet" href="pygment.css"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      color: #f0f0f0;
+      background-color: #222;
+      margin: 40px 30px;
+      max-width: 850px;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      color: #c0c0c0;
+    }
+    a {
+      color: #66a4ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    pre {
+      display: block;
+      padding: 10px;
+      overflow-x: auto;
+    }
+    img {
+      max-width: 100%;
+    }
+    .last-edited {
+      font-size: 0.8em;
+      color: #999;
+    }
+  </style>
+</head>
+<body>
+  <h1>Bar Baz</h1>
+<p>Hey, look at this code.</p>
+<pre><code>:::python
+print(&quot;Hello world&quot;)
+</code></pre>
+<p>...or this code:</p>
+<pre><code>#!python
+def get_last_edited(path: str) -&gt; str:
+    try:
+        # Attempt to get the last Git commit date of the file
+        last_edited = subprocess.check_output(
+            [&quot;git&quot;, &quot;log&quot;, &quot;-1&quot;, &quot;--format=%cd&quot;, &quot;--date=local&quot;, path])
+        return last_edited.decode(&quot;utf-8&quot;).strip()
+    except Exception:
+        # Fallback to the file's modified timestamp
+        return str(datetime.datetime.fromtimestamp(os.path.getmtime(path)))
+</code></pre>
+<p>...or this code!</p>
+<pre lang="python"><code>import os
+os.Exit(42)
+</code></pre>
+
+  <p class="last-edited">Last edited: Fri Mar 24 01:51:57 2023</p>
+</body>
+</html>
