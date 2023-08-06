@@ -1,0 +1,360 @@
+Metadata-Version: 2.1
+Name: deepof
+Version: 0.2
+Summary: A suite for postprocessing time-series extracted from videos of freely moving rodents using DeepLabCut
+Home-page: https://gitlab.mpcdf.mpg.de/lucasmir/deepof/
+Author: Lucas Miranda
+Author-email: lucas_miranda@psych.mpg.de
+Classifier: Programming Language :: Python :: 3
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: absl-py (==1.4.0)
+Requires-Dist: alabaster (==0.7.13)
+Requires-Dist: anyio (==3.6.2)
+Requires-Dist: appnope (==0.1.3)
+Requires-Dist: argon2-cffi (==21.3.0)
+Requires-Dist: argon2-cffi-bindings (==21.2.0)
+Requires-Dist: arrow (==1.2.3)
+Requires-Dist: asttokens (==2.2.1)
+Requires-Dist: astunparse (==1.6.3)
+Requires-Dist: attrs (==22.2.0)
+Requires-Dist: av (==10.0.0)
+Requires-Dist: Babel (==2.11.0)
+Requires-Dist: backcall (==0.2.0)
+Requires-Dist: beautifulsoup4 (==4.11.1)
+Requires-Dist: black (==22.12.0)
+Requires-Dist: bleach (==5.0.1)
+Requires-Dist: blosc2 (==2.0.0)
+Requires-Dist: cachetools (==5.2.1)
+Requires-Dist: catboost (==1.1.1)
+Requires-Dist: certifi (==2022.12.7)
+Requires-Dist: cffi (==1.15.1)
+Requires-Dist: charset-normalizer (==3.0.1)
+Requires-Dist: click (==8.1.3)
+Requires-Dist: cloudpickle (==2.2.1)
+Requires-Dist: comm (==0.1.2)
+Requires-Dist: contourpy (==1.0.7)
+Requires-Dist: coverage (==6.5.0)
+Requires-Dist: cycler (==0.11.0)
+Requires-Dist: Cython (==0.29.33)
+Requires-Dist: dask (==2023.1.0)
+Requires-Dist: dask-image (==2022.9.0)
+Requires-Dist: debugpy (==1.6.5)
+Requires-Dist: decorator (==5.1.1)
+Requires-Dist: defusedxml (==0.7.1)
+Requires-Dist: dm-tree (==0.1.8)
+Requires-Dist: docutils (==0.17.1)
+Requires-Dist: entrypoints (==0.4)
+Requires-Dist: et-xmlfile (==1.1.0)
+Requires-Dist: exceptiongroup (==1.1.0)
+Requires-Dist: executing (==1.2.0)
+Requires-Dist: fastjsonschema (==2.16.2)
+Requires-Dist: flatbuffers (==23.1.4)
+Requires-Dist: fonttools (==4.38.0)
+Requires-Dist: fqdn (==1.5.1)
+Requires-Dist: fsspec (==2022.11.0)
+Requires-Dist: gast (==0.4.0)
+Requires-Dist: google-auth (==2.16.0)
+Requires-Dist: google-auth-oauthlib (==0.4.6)
+Requires-Dist: google-pasta (==0.2.0)
+Requires-Dist: graphviz (==0.20.1)
+Requires-Dist: grpcio (==1.51.1)
+Requires-Dist: h5py (==3.7.0)
+Requires-Dist: hypothesis (==6.62.1)
+Requires-Dist: idna (==3.4)
+Requires-Dist: imageio (==2.24.0)
+Requires-Dist: imageio-ffmpeg (==0.4.8)
+Requires-Dist: imagesize (==1.4.1)
+Requires-Dist: imbalanced-learn (==0.10.1)
+Requires-Dist: imblearn (==0.0)
+Requires-Dist: importlib-metadata (==6.0.0)
+Requires-Dist: iniconfig (==2.0.0)
+Requires-Dist: ipykernel (==6.20.2)
+Requires-Dist: ipython (==8.8.0)
+Requires-Dist: ipython-genutils (==0.2.0)
+Requires-Dist: ipywidgets (==8.0.4)
+Requires-Dist: isoduration (==20.11.0)
+Requires-Dist: jedi (==0.18.2)
+Requires-Dist: Jinja2 (==3.1.2)
+Requires-Dist: joblib (==1.2.0)
+Requires-Dist: jsonpointer (==2.3)
+Requires-Dist: jsonschema (==4.17.3)
+Requires-Dist: jupyter (==1.0.0)
+Requires-Dist: jupyter-console (==6.4.4)
+Requires-Dist: jupyter-events (==0.6.3)
+Requires-Dist: jupyter-sphinx (==0.4.0)
+Requires-Dist: jupyter-client (==7.4.9)
+Requires-Dist: jupyter-core (==5.1.3)
+Requires-Dist: jupyter-server (==2.1.0)
+Requires-Dist: jupyter-server-terminals (==0.4.4)
+Requires-Dist: jupyterlab-pygments (==0.2.2)
+Requires-Dist: jupyterlab-widgets (==3.0.5)
+Requires-Dist: keras (==2.11.0)
+Requires-Dist: keras-tuner (==1.1.3)
+Requires-Dist: kiwisolver (==1.4.4)
+Requires-Dist: kt-legacy (==1.0.4)
+Requires-Dist: libclang (==15.0.6.1)
+Requires-Dist: llvmlite (==0.39.1)
+Requires-Dist: locket (==1.0.0)
+Requires-Dist: Markdown (==3.4.1)
+Requires-Dist: MarkupSafe (==2.1.2)
+Requires-Dist: matplotlib (==3.6.3)
+Requires-Dist: matplotlib-inline (==0.1.6)
+Requires-Dist: mistune (==2.0.4)
+Requires-Dist: msgpack (==1.0.4)
+Requires-Dist: mypy-extensions (==0.4.3)
+Requires-Dist: nbclassic (==0.4.8)
+Requires-Dist: nbclient (==0.7.2)
+Requires-Dist: nbconvert (==7.2.8)
+Requires-Dist: nbformat (==5.7.3)
+Requires-Dist: nbsphinx (==0.8.11)
+Requires-Dist: nest-asyncio (==1.5.6)
+Requires-Dist: networkx (==2.8.8)
+Requires-Dist: notebook (==6.5.2)
+Requires-Dist: notebook-shim (==0.2.2)
+Requires-Dist: numba (==0.56.4)
+Requires-Dist: numexpr (==2.8.4)
+Requires-Dist: numpy (==1.23.5)
+Requires-Dist: oauthlib (==3.2.2)
+Requires-Dist: opencv-python (==4.7.0.68)
+Requires-Dist: openpyxl (==3.0.10)
+Requires-Dist: opt-einsum (==3.3.0)
+Requires-Dist: packaging (==23.0)
+Requires-Dist: pandas (==1.5.3)
+Requires-Dist: pandocfilters (==1.5.0)
+Requires-Dist: parso (==0.8.3)
+Requires-Dist: partd (==1.3.0)
+Requires-Dist: pathspec (==0.10.3)
+Requires-Dist: patsy (==0.5.3)
+Requires-Dist: pexpect (==4.8.0)
+Requires-Dist: pickleshare (==0.7.5)
+Requires-Dist: Pillow (==9.4.0)
+Requires-Dist: PIMS (==0.6.1)
+Requires-Dist: platformdirs (==2.6.2)
+Requires-Dist: pluggy (==1.0.0)
+Requires-Dist: pockets (==0.9.1)
+Requires-Dist: POT (==0.8.2)
+Requires-Dist: prometheus-client (==0.15.0)
+Requires-Dist: prompt-toolkit (==3.0.36)
+Requires-Dist: protobuf (==3.19.6)
+Requires-Dist: psutil (==5.9.4)
+Requires-Dist: ptyprocess (==0.7.0)
+Requires-Dist: pure-eval (==0.2.2)
+Requires-Dist: py (==1.11.0)
+Requires-Dist: py-cpuinfo (==9.0.0)
+Requires-Dist: pyasn1 (==0.4.8)
+Requires-Dist: pyasn1-modules (==0.2.8)
+Requires-Dist: pycparser (==2.21)
+Requires-Dist: pydocstyle (==6.3.0)
+Requires-Dist: Pygments (==2.14.0)
+Requires-Dist: pynndescent (==0.5.8)
+Requires-Dist: pyparsing (==3.0.9)
+Requires-Dist: pyrsistent (==0.19.3)
+Requires-Dist: pytest (==7.2.1)
+Requires-Dist: python-dateutil (==2.8.2)
+Requires-Dist: python-json-logger (==2.0.4)
+Requires-Dist: pytz (==2022.7.1)
+Requires-Dist: PyYAML (==6.0)
+Requires-Dist: pyzmq (==25.0.0)
+Requires-Dist: qtconsole (==5.4.0)
+Requires-Dist: QtPy (==2.3.0)
+Requires-Dist: regex (==2022.10.31)
+Requires-Dist: requests (==2.28.2)
+Requires-Dist: requests-oauthlib (==1.3.1)
+Requires-Dist: rfc3339-validator (==0.1.4)
+Requires-Dist: rfc3986-validator (==0.1.1)
+Requires-Dist: rsa (==4.9)
+Requires-Dist: ruptures (==1.1.7)
+Requires-Dist: scikit-learn (==1.2.0)
+Requires-Dist: scipy (==1.10.0)
+Requires-Dist: seaborn (==0.11.2)
+Requires-Dist: seglearn (==1.2.5)
+Requires-Dist: Send2Trash (==1.8.0)
+Requires-Dist: setuptools-scm (==7.1.0)
+Requires-Dist: shap (==0.41.0)
+Requires-Dist: Shapely (==1.8.5.post1)
+Requires-Dist: six (==1.16.0)
+Requires-Dist: slicer (==0.0.7)
+Requires-Dist: slicerator (==1.1.0)
+Requires-Dist: sniffio (==1.3.0)
+Requires-Dist: snowballstemmer (==2.2.0)
+Requires-Dist: sortedcontainers (==2.4.0)
+Requires-Dist: soupsieve (==2.3.2.post1)
+Requires-Dist: spektral (==1.2.0)
+Requires-Dist: Sphinx (==5.3.0)
+Requires-Dist: sphinx-press-theme (==0.8.0)
+Requires-Dist: sphinx-rtd-theme (==1.1.1)
+Requires-Dist: sphinxcontrib-devhelp (==1.0.2)
+Requires-Dist: sphinxcontrib-htmlhelp (==2.0.0)
+Requires-Dist: sphinxcontrib-jsmath (==1.0.1)
+Requires-Dist: sphinxcontrib-napoleon (==0.7)
+Requires-Dist: sphinxcontrib-qthelp (==1.0.3)
+Requires-Dist: sphinxcontrib-serializinghtml (==1.1.5)
+Requires-Dist: sphinxcontrib.applehelp (==1.0.3)
+Requires-Dist: sphynx (==0.0.3)
+Requires-Dist: stack-data (==0.6.2)
+Requires-Dist: statannotations (==0.5.0)
+Requires-Dist: statsmodels (==0.13.5)
+Requires-Dist: structlog (==21.5.0)
+Requires-Dist: tables (==3.8.0)
+Requires-Dist: tenacity (==8.1.0)
+Requires-Dist: tensorboard (==2.11.2)
+Requires-Dist: tensorboard-data-server (==0.6.1)
+Requires-Dist: tensorboard-plugin-wit (==1.8.1)
+Requires-Dist: tensorflow-addons (==0.19.0)
+Requires-Dist: tensorflow-estimator (==2.11.0)
+Requires-Dist: tensorflow-probability (==0.17.0)
+Requires-Dist: termcolor (==2.2.0)
+Requires-Dist: terminado (==0.17.1)
+Requires-Dist: threadpoolctl (==3.1.0)
+Requires-Dist: tifffile (==2022.10.10)
+Requires-Dist: tinycss2 (==1.2.1)
+Requires-Dist: tomli (==2.0.1)
+Requires-Dist: toolz (==0.12.0)
+Requires-Dist: tornado (==6.2)
+Requires-Dist: tqdm (==4.64.1)
+Requires-Dist: traitlets (==5.8.1)
+Requires-Dist: typeguard (==2.13.3)
+Requires-Dist: typing-extensions (==4.4.0)
+Requires-Dist: umap-learn (==0.5.3)
+Requires-Dist: uri-template (==1.2.0)
+Requires-Dist: urllib3 (==1.26.14)
+Requires-Dist: wcwidth (==0.2.6)
+Requires-Dist: webcolors (==1.12)
+Requires-Dist: webencodings (==0.5.1)
+Requires-Dist: websocket-client (==1.4.2)
+Requires-Dist: Werkzeug (==2.2.2)
+Requires-Dist: widgetsnbextension (==4.0.5)
+Requires-Dist: wrapt (==1.14.1)
+Requires-Dist: zipp (==3.11.0)
+Requires-Dist: tensorflow (>=2.2.0) ; platform_machine != "arm64" or platform_system != "Darwin"
+Requires-Dist: keras-tcn (==3.5.0) ; platform_machine != "arm64" or platform_system != "Darwin"
+Requires-Dist: tensorflow-macos (>=2.5.0) ; platform_machine == "arm64" and platform_system == "Darwin"
+Requires-Dist: keras-tcn-macos (==1.0) ; platform_machine == "arm64" and platform_system == "Darwin"
+
+[![Pipeline](https://gitlab.mpcdf.mpg.de/lucasmir/deepof/badges/master/pipeline.svg)](https://gitlab.mpcdf.mpg.de/lucasmir/deepof/-/pipelines)
+[![Coverage](https://gitlab.mpcdf.mpg.de/lucasmir/deepof/badges/master/coverage.svg)](https://coverage.readthedocs.io/en/coverage-5.3/)
+[![Documentation Status](https://readthedocs.org/projects/deepof/badge/?version=latest)](https://deepof.readthedocs.io/en/latest)
+[![CodeFactor](https://www.codefactor.io/repository/github/lucasmiranda42/deepof/badge)](https://www.codefactor.io/repository/github/lucasmiranda42/deepof)
+[![Version](https://img.shields.io/badge/release-v0.2-informational)](https://pypi.org/project/deepof/)
+[![MLFPM](https://img.shields.io/badge/funding-MLFPM-informational)](https://mlfpm.eu/)
+[![Black](https://img.shields.io/badge/code%20style-black-black)](https://github.com/psf/black)
+
+<br>
+
+<div align="center">
+  <img width="350" height="350" src="https://gitlab.mpcdf.mpg.de/lucasmir/deepof/-/raw/master/logos/deepOF_logo_w_text.png">
+</div>
+
+### A suite for postprocessing time-series extracted from videos of freely moving rodents using [DeepLabCut](http://www.mousemotorlab.org/deeplabcut)
+#
+
+You can use this package to either extract pre-defined motifs from the time series (such as time-in-zone, climbing, 
+basic social interactions) or to embed your data into a sequence-aware latent space to extract meaningful motifs in an
+unsupervised way! Both of these can be used within the package, for example, to automatically 
+compare user-defined experimental groups.
+
+### How do I start?
+##### Installation:
+
+The easiest way to install DeepOF is to use [pip](https://pypi.org/project/deepof):
+
+```bash
+   pip install deepof
+```
+
+Alternatively, you can download our pre-built [Docker image](https://hub.docker.com/repository/docker/lucasmiranda42/deepof),
+which contains all compatible dependencies:
+
+```bash
+   # download the latest available image
+   docker pull lucasmiranda42/deepof:latest
+   # run the image in interactive mode, enabling you to open python and import deepof
+   docker run -it lucasmiranda42/deepof
+```
+
+Or use [poetry](https://python-poetry.org/):
+
+```bash
+   # after installing poetry and clonning the DeepOF repository, just run
+   poetry install # from the main directory
+```
+
+##### Before we delve in:
+DeepOF relies heavily on DeepLabCut's output. Thorough tutorials on how to get started with DLC for pose estimation can be found [here](https://www.mousemotorlab.org/deeplabcut).
+Once your videos are processed and tagged, you can use DeepOF to extract and annotate your motion-tracking time-series. While many features in DeepOF can work regardless of the set of labels used, we currently recommend using videos from a top-down perspective, and follow our recommended
+set of labels (which can be found in the full documentation page). A pre-trained model capable of recognizing **C57Bl6** and **CD1** mice can be downloaded from [our repository](https://gitlab.mpcdf.mpg.de/lucasmir/deepof/tree/master/models).
+
+##### Basic usage:
+
+The main module with which you'll interact is called ```deepof.data```. Let's import it and create a project:
+
+```python
+   import deepof.data
+   my_deepof_project = deepof.data.Project(
+      project_path=".", # Path where to create project files
+      video_path="/path/to/videos", # Path to DLC tracked videos
+      table_path="/path/to/tables", # Path to DLC output
+      project_name="my_deepof_project", # Name of the current project
+      exp_conditions={exp_ID: exp_condition} # Dictionary containing one or more experimental conditions per provided video
+    )
+```
+
+This command will create a ```deepof.data.Project``` object storing all the necessary information to start. There are
+many parameters that we can set here, but let's stick to the basics for now.
+
+One you have this, you can run you project using the ```.create()``` method, which will do quite a lot of computing under
+the hood (load your data, smooth your trajectories, compute distances, angles, and areas between body parts, and save all
+results to disk). The returned object belongs to the ```deepof.data.Coordinates``` class.
+
+```python
+   my_project = my_project.create(verbose=True)
+```
+
+Once you have this, you can do several things! But let's first explore how the results of those computations mentioned
+are stored. To extract trajectories, distances, angles and/or areas, you can respectively type:
+
+```python
+   my_project_coords = my_project.get_coords(center="Center", polar=False, align="Nose", speed=0)
+   my_project_dists  = my_project.get_distances(speed=0)
+   my_project_angles = my_project.get_angles(speed=0)
+   my_project_areas = my_project.get_areas(speed=0)
+```
+
+Here, the data are stored as ```deepof.data.table_dict``` instances. These are very similar to python dictionaries
+with experiment IDs as keys and pandas.DataFrame objects as values, with a few extra methods for convenience. Peeping
+into the parameters you see in the code block above, ```center``` centers your data (it can be either a boolean or
+one of the body parts in your model! in which case the coordinate origin will be fixed to the position of that point);
+```polar``` makes the ```.get_coords()``` method return polar instead of Cartesian coordinates, and ```speed```
+indicates the derivation level to apply (0 is position-based, 1 speed, 2 acceleration, 3 jerk, etc). Regarding
+```align``` and ```align-inplace```, they take care of aligning the animal position to the y Cartesian axis: if we
+center the data to "Center" and set ```align="Nose", align_inplace=True```, all frames in the video will be aligned in a
+way that will keep the Center-Nose axis fixed. This is useful to constrain the set of movements that one can extract
+with our unsupervised methods.
+
+As mentioned above, the two main analyses that you can run are supervised and unsupervised. They are executed by
+the ```.supervised_annotation()``` method, and the ```.deep_unsupervised_embedding()``` methods of the ```deepof.data.Coordinates```
+class, respectively.
+
+```python
+   supervised_annot = my_project.supervised_annotation()
+   gmvae_embedding  = my_project.deep_unsupervised_embedding()
+```
+
+The former returns a ```deepof.data.TableDict``` object, with a pandas.DataFrame per experiment containing a series of
+annotations. The latter is a bit more complicated: it returns a series of objects that depend on the model selected (we 
+offer three flavours of deep clustering models), and allow for further analysis comparing cluster expression and dynamics.
+
+That's it for this (very basic) introduction. Check out the tutorials [full documentation](https://deepof.readthedocs.io/en/latest/index.html) for details!
+
+---
+
+ This project has received funding from the European Union's Horizon 2020 research and innovation programme under the Marie Skłodowska-Curie grant agreement No.  813533
+ <div align="center">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/255px-Flag_of_Europe.svg.png">
+</div>
+
+---
