@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: python-powerhouse-assistant
+Version: 1.0.0
+Summary: 
+Author: Python Powerhouse
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: openai (>=0.27.2,<0.28.0)
+Requires-Dist: pillow (>=9.4.0,<10.0.0)
+Requires-Dist: prettytable (>=3.6.0,<4.0.0)
+Requires-Dist: prompt-toolkit (>=3.0.38,<4.0.0)
+Requires-Dist: pygame (>=2.3.0,<3.0.0)
+Description-Content-Type: text/markdown
+
+
