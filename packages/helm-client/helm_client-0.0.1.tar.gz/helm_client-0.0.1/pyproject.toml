@@ -1,0 +1,45 @@
+[project]
+name = "helm-client"
+requires-python = ">=3.7"
+readme = "README.md"
+description = "Helm client"
+dynamic = ["version", "dependencies"]
+
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+namespaces = true
+exclude = ["*.tests", "*.tests.*", "tests.*", "tests", "helm.tests*", "helm.tests.*"]
+include = ["helm", "helm.*"]
+
+[tool.setuptools.dynamic]
+version = { attr = "helm._version.__version__" }
+dependencies = { file = "requirements.txt" }
+
+[tool.pytest.ini_options]
+testpaths = ["helm/tests"]
+
+[tool.poetry]
+name = "helm-client"
+version = "0.0.1"
+description = ""
+authors = ["Attila Kobor <atti92@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "helm"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pydantic = "^1.10.7"
+packaging = "^23.0"
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+default = false
+secondary = false
