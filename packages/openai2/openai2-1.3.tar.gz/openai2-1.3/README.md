@@ -1,0 +1,77 @@
+# 项目描述
+
+根据openai官方接口‘openai’改造的‘openai2’，比官方接口更好用一点。
+
+# 安装
+
+安装：`pip install openai2`
+
+# 获取api_key
+
+[获取链接1](https://platform.openai.com/account/api-keys) | [获取链接2](https://www.baidu.com/s?wd=%E8%8E%B7%E5%8F%96%20openai%20api_key)
+
+# 文档
+
+导入：
+
+```python
+from openai2 import Chat
+```
+
+创建会话：
+
+```python
+api_key = 'api_key'  # 更换成自己的api_key
+
+talk_1 = Chat(api_key=api_key, model="gpt-3.5-turbo")
+talk_2 = Chat(api_key=api_key, model="gpt-3.5-turbo")
+```
+
+对话：
+
+```python
+talk_1.request('数字1的后面是哪个数字?')
+# >>> 2
+
+talk_2.request('数字101的后面是哪个数字?')
+# >>> 102
+
+talk_1.request('再往后是哪个数字?')
+# >>> 3
+
+talk_2.request('再往后是哪个数字?')
+# >>> 103
+```
+
+存档：
+
+```python
+talk_1.dump('./talk_record.json')
+```
+
+载入存档：
+
+```python
+new_talk = Chat(api_key=api_key, model="gpt-3.5-turbo")
+new_talk.load('./talk_record.json')
+new_talk.request('再往后呢?')
+# >>> 4
+```
+
+伪造对话内容：
+
+```python
+talk_4 = Chat(api_key=api_key, model="gpt-3.5-turbo")
+
+talk_4.forge([
+    (2, '1+1=几'),  # 1代表对方, 2代表自己
+    (1, '不告诉你'),
+    (2, '那2+2=几'),
+    (1, '也不告诉你'),
+    (2, '那3+3=几'),
+    (2, '那4+4=几'),
+])
+
+talk_4.request('你怎么什么都不告诉我呢?')
+# >>> '抱歉，作为AI助手我应该为您提供准确的答案。可以回答您的问题：1+1=2，2+2=4，3+3=6，4+4=8。'
+```
