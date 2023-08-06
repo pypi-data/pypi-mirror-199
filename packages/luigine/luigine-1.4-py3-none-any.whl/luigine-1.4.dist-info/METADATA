@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: luigine
+Version: 1.4
+Home-page: https://github.com/kanojikajino/luigine
+Author: Hiroshi Kajino
+Author-email: hiroshi.kajino.1989@gmail.com
+License: MIT
+License-File: LICENSE
+Requires-Dist: dill
+Requires-Dist: luigi (>=2.8.11)
+Requires-Dist: numpy
+Requires-Dist: scikit-learn
+Requires-Dist: mlflow
+Requires-Dist: matplotlib
+
