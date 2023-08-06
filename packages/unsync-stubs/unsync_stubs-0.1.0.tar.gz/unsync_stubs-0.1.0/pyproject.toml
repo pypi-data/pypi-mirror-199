@@ -1,0 +1,14 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "unsync-stubs"
+version = "0.1.0"
+description = ""
+authors = ["Niraj <niraj@polywrap.io>"]
+readme = "README.md"
+packages = [{include = "unsync-stubs"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
