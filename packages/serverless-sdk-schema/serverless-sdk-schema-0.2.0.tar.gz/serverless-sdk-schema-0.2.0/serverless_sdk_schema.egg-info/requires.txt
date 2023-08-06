@@ -1,0 +1,7 @@
+protobuf>=4.22
+typing-extensions>=4.4
+
+[tests]
+black>=22.12
+pytest>=7.2
+ruff>=0.0.199
