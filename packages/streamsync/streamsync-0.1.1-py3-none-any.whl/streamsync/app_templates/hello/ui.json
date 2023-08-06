@@ -1,0 +1,1075 @@
+{
+    "metadata": {
+        "streamsync_version": "0.1.0"
+    },
+    "components": {
+        "root": {
+            "id": "root",
+            "type": "root",
+            "content": {
+                "appName": "A standard app"
+            },
+            "parentId": null,
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "c1cb10d3-4775-4d76-8353-cf2891258536": {
+            "id": "c1cb10d3-4775-4d76-8353-cf2891258536",
+            "type": "heading",
+            "content": {
+                "text": "Heading Text",
+                "alignment": "left"
+            },
+            "parentId": "96f33576-6efc-45d8-bbec-676b1b5c6b93",
+            "handlers": {},
+            "position": 6,
+            "visible": true
+        },
+        "4a80873e-3f03-4aee-8582-19ed9696de4a": {
+            "id": "4a80873e-3f03-4aee-8582-19ed9696de4a",
+            "type": "page",
+            "content": {
+                "pageMode": "compact",
+                "accentColor": "#6b36ba",
+                "key": "primary"
+            },
+            "parentId": "root",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "5740a107-5585-4dc7-918c-ecec954120c7": {
+            "id": "5740a107-5585-4dc7-918c-ecec954120c7",
+            "type": "header",
+            "content": {
+                "text": "The Breakfast Cereal Market"
+            },
+            "parentId": "4a80873e-3f03-4aee-8582-19ed9696de4a",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "a29a7152-821f-46bf-873d-c2ca35c0d492": {
+            "id": "a29a7152-821f-46bf-873d-c2ca35c0d492",
+            "type": "image",
+            "content": {
+                "src": "https://images.unsplash.com/photo-1626369310934-50b439f7fed0?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1498&q=80",
+                "caption": "Bowl of cereal. Courtesy of Mind Studio on Unsplash.",
+                "maxHeight": ""
+            },
+            "parentId": "9e0e9493-b33e-4fe6-8aa2-2d218d02509a",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "b9b34864-3c66-4097-9072-fae387b8590d": {
+            "id": "b9b34864-3c66-4097-9072-fae387b8590d",
+            "type": "columns",
+            "content": {},
+            "parentId": "4a80873e-3f03-4aee-8582-19ed9696de4a",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "631d46dc-40c7-4b1e-9747-6490a3318665": {
+            "id": "631d46dc-40c7-4b1e-9747-6490a3318665",
+            "type": "column",
+            "content": {
+                "title": "",
+                "width": "1",
+                "isCollapsible": ""
+            },
+            "parentId": "b9b34864-3c66-4097-9072-fae387b8590d",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "1281d4e2-7046-419c-96f0-0b46ddee5c70": {
+            "id": "1281d4e2-7046-419c-96f0-0b46ddee5c70",
+            "type": "column",
+            "content": {
+                "width": "2"
+            },
+            "parentId": "b9b34864-3c66-4097-9072-fae387b8590d",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "9e0e9493-b33e-4fe6-8aa2-2d218d02509a": {
+            "id": "9e0e9493-b33e-4fe6-8aa2-2d218d02509a",
+            "type": "section",
+            "content": {
+                "title": "An ever-evolving staple",
+                "snapMode": ""
+            },
+            "parentId": "631d46dc-40c7-4b1e-9747-6490a3318665",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "5c48b1b1-559d-416f-b3c3-30cdf11e61f6": {
+            "id": "5c48b1b1-559d-416f-b3c3-30cdf11e61f6",
+            "type": "tabs",
+            "content": {},
+            "parentId": "1281d4e2-7046-419c-96f0-0b46ddee5c70",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "6e7fb732-03e3-498f-b408-49b5d91400c8": {
+            "id": "6e7fb732-03e3-498f-b408-49b5d91400c8",
+            "type": "tab",
+            "content": {
+                "name": "Discussion"
+            },
+            "parentId": "5c48b1b1-559d-416f-b3c3-30cdf11e61f6",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "ad98f178-37b5-4463-866f-df984f63e7ea": {
+            "id": "ad98f178-37b5-4463-866f-df984f63e7ea",
+            "type": "text",
+            "content": {
+                "text": "We don't have anything interesting to say about this cereal data.\n\nBut, we wanted to tell you that you can use Markdown in *Text* components. You'll need to enable the *\"Use Markdown\"* option in the component.\n",
+                "useMarkdown": "yes",
+                "alignment": "left"
+            },
+            "parentId": "643952ef-9587-463c-ba0e-16748cea99e2",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "b6a8a40b-2f40-4262-b08c-6ad9b1b65be8": {
+            "id": "b6a8a40b-2f40-4262-b08c-6ad9b1b65be8",
+            "type": "separator",
+            "content": {},
+            "parentId": "9e0e9493-b33e-4fe6-8aa2-2d218d02509a",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "6503455b-000e-4504-b6e2-9731b1ae7c81": {
+            "id": "6503455b-000e-4504-b6e2-9731b1ae7c81",
+            "type": "text",
+            "content": {
+                "text": "\"Breakfast cereal is more than just a meal;\nit's a symbol of the joy that can be found\nin the simplest of things.\"\n\n*ChatGPT*",
+                "useMarkdown": "yes",
+                "alignment": "right"
+            },
+            "parentId": "9e0e9493-b33e-4fe6-8aa2-2d218d02509a",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "3b40f858-8e2c-4639-8c21-5cbb930b6419": {
+            "id": "3b40f858-8e2c-4639-8c21-5cbb930b6419",
+            "type": "button",
+            "content": {
+                "text": "Click me!",
+                "buttonColor": "#ef9906",
+                "buttonTextColor": "#ffffff",
+                "buttonShadow": "0px 2px 12px 1px #bcc6d2"
+            },
+            "parentId": "9e0e9493-b33e-4fe6-8aa2-2d218d02509a",
+            "handlers": {
+                "click": "increment"
+            },
+            "position": 4,
+            "visible": true
+        },
+        "146d3748-785f-40bb-b760-cbe7ef9ad3cd": {
+            "id": "146d3748-785f-40bb-b760-cbe7ef9ad3cd",
+            "type": "separator",
+            "content": {},
+            "parentId": "9e0e9493-b33e-4fe6-8aa2-2d218d02509a",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "8e57e21c-4c95-4310-9e01-6b35ef4312ab": {
+            "id": "8e57e21c-4c95-4310-9e01-6b35ef4312ab",
+            "type": "tab",
+            "content": {
+                "name": "Data"
+            },
+            "parentId": "5c48b1b1-559d-416f-b3c3-30cdf11e61f6",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "822987ef-dcb9-4cc3-a9c4-386937af35e0": {
+            "id": "822987ef-dcb9-4cc3-a9c4-386937af35e0",
+            "type": "dataframe",
+            "content": {
+                "dataframe": "@{data_cereal}",
+                "dataframeHeaderRowBackgroundColor": "#f0f0f0"
+            },
+            "parentId": "8e57e21c-4c95-4310-9e01-6b35ef4312ab",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "cc938d94-3fd6-442f-bbf2-af0ac5d46474": {
+            "id": "cc938d94-3fd6-442f-bbf2-af0ac5d46474",
+            "type": "separator",
+            "content": {},
+            "parentId": "8e57e21c-4c95-4310-9e01-6b35ef4312ab",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "9ecaebbf-d6c9-4bb3-abeb-7a4c428dd73e": {
+            "id": "9ecaebbf-d6c9-4bb3-abeb-7a4c428dd73e",
+            "type": "separator",
+            "content": {},
+            "parentId": "8e57e21c-4c95-4310-9e01-6b35ef4312ab",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "7094bf31-6260-4304-ba05-d2890c51ed5f": {
+            "id": "7094bf31-6260-4304-ba05-d2890c51ed5f",
+            "type": "vegalitechart",
+            "content": {
+                "spec": "@{chart}"
+            },
+            "parentId": "e7775833-4c2d-4e4a-8071-b321d7a054bc",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "adf67a55-9de6-495f-afff-5307d139c376": {
+            "id": "adf67a55-9de6-495f-afff-5307d139c376",
+            "type": "columns",
+            "content": {},
+            "parentId": "8e57e21c-4c95-4310-9e01-6b35ef4312ab",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "e7775833-4c2d-4e4a-8071-b321d7a054bc": {
+            "id": "e7775833-4c2d-4e4a-8071-b321d7a054bc",
+            "type": "column",
+            "content": {
+                "width": "1",
+                "alignment": "center"
+            },
+            "parentId": "adf67a55-9de6-495f-afff-5307d139c376",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "efba8391-52c0-4bd9-8562-1a686d5b589b": {
+            "id": "efba8391-52c0-4bd9-8562-1a686d5b589b",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "adf67a55-9de6-495f-afff-5307d139c376",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "bb9849e5-7c3e-4958-b295-3248cea6e5e7": {
+            "id": "bb9849e5-7c3e-4958-b295-3248cea6e5e7",
+            "type": "separator",
+            "content": {},
+            "parentId": "adf67a55-9de6-495f-afff-5307d139c376",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "221720d8-4f81-4af9-8e16-995deb4f497f": {
+            "id": "221720d8-4f81-4af9-8e16-995deb4f497f",
+            "type": "sliderinput",
+            "content": {
+                "label": "Fat",
+                "initialValue": "0",
+                "minValue": "0",
+                "maxValue": "100",
+                "stepSize": "1"
+            },
+            "parentId": "11674811-2213-4747-8db8-b316a2298bd0",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "1ddca53f-1f34-4c72-b799-840e3ed348a1": {
+            "id": "1ddca53f-1f34-4c72-b799-840e3ed348a1",
+            "type": "sliderinput",
+            "content": {
+                "label": "Calories",
+                "initialValue": "0",
+                "minValue": "0",
+                "maxValue": "100",
+                "stepSize": "1"
+            },
+            "parentId": "b78f1464-ced8-467f-a979-e30fa0a32916",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "c3ebae36-fe91-4078-b004-a5c4cc8ea1ec": {
+            "id": "c3ebae36-fe91-4078-b004-a5c4cc8ea1ec",
+            "type": "form",
+            "content": {
+                "submitDesc": "Filter",
+                "clearFormAfterSubmission": "yes"
+            },
+            "parentId": "8e57e21c-4c95-4310-9e01-6b35ef4312ab",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "11ecfeb1-05be-482d-8b58-476ecc736333": {
+            "id": "11ecfeb1-05be-482d-8b58-476ecc736333",
+            "type": "columns",
+            "content": {},
+            "parentId": "c3ebae36-fe91-4078-b004-a5c4cc8ea1ec",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "11674811-2213-4747-8db8-b316a2298bd0": {
+            "id": "11674811-2213-4747-8db8-b316a2298bd0",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "11ecfeb1-05be-482d-8b58-476ecc736333",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "b78f1464-ced8-467f-a979-e30fa0a32916": {
+            "id": "b78f1464-ced8-467f-a979-e30fa0a32916",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "11ecfeb1-05be-482d-8b58-476ecc736333",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "2f8d606c-e7ed-485d-9bb4-8fad8d9e2d16": {
+            "id": "2f8d606c-e7ed-485d-9bb4-8fad8d9e2d16",
+            "type": "columns",
+            "content": {},
+            "parentId": "6e7fb732-03e3-498f-b408-49b5d91400c8",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "643952ef-9587-463c-ba0e-16748cea99e2": {
+            "id": "643952ef-9587-463c-ba0e-16748cea99e2",
+            "type": "column",
+            "content": {
+                "width": "2",
+                "title": "Markdown",
+                "startCollapsed": ""
+            },
+            "parentId": "2f8d606c-e7ed-485d-9bb4-8fad8d9e2d16",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "a91435df-0acb-429c-a6a0-bf63bf79dd66": {
+            "id": "a91435df-0acb-429c-a6a0-bf63bf79dd66",
+            "type": "column",
+            "content": {
+                "width": "2",
+                "title": "HTML elements",
+                "isCollapsible": "yes",
+                "alignment": ""
+            },
+            "parentId": "2f8d606c-e7ed-485d-9bb4-8fad8d9e2d16",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "45050406-31f6-4ff2-ba6a-d75df9c37f9d": {
+            "id": "45050406-31f6-4ff2-ba6a-d75df9c37f9d",
+            "type": "html",
+            "content": {
+                "styles": "{\n  \"padding\": \"16px\",\n  \"margin-bottom\": \"16px\",\n  \"min-height\": \"64px\",\n  \"min-width\": \"64px\",\n  \"border-radius\": \"8px\",\n  \"background\": \"linear-gradient(90deg, rgba(239,153,6,1) 1%, rgba(209,123,188,1) 100%)\",\n  \"transform\": \"rotate(-5deg)\"\n}"
+            },
+            "parentId": "a91435df-0acb-429c-a6a0-bf63bf79dd66",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "c0df3910-bddf-4313-88c0-5157943e0ad6": {
+            "id": "c0df3910-bddf-4313-88c0-5157943e0ad6",
+            "type": "text",
+            "content": {
+                "text": "Sometimes you just need a custom HTML element with custom CSS, and that's fine.\n",
+                "useMarkdown": "no",
+                "alignment": "left",
+                "primaryTextColor": "#ffffff"
+            },
+            "parentId": "45050406-31f6-4ff2-ba6a-d75df9c37f9d",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "603811d9-aafe-432b-aada-4101a0290b10": {
+            "id": "603811d9-aafe-432b-aada-4101a0290b10",
+            "type": "text",
+            "content": {
+                "text": "Most of the time, Streamsync's components will cover your use cases.\n\n",
+                "useMarkdown": "no",
+                "alignment": "right"
+            },
+            "parentId": "a91435df-0acb-429c-a6a0-bf63bf79dd66",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "ebf57e28-cb68-41a1-bc43-7bcdc739fdfe": {
+            "id": "ebf57e28-cb68-41a1-bc43-7bcdc739fdfe",
+            "type": "button",
+            "content": {
+                "text": "You can still use built-in components inside",
+                "buttonShadow": "0px 11px 12px -14px #000000"
+            },
+            "parentId": "45050406-31f6-4ff2-ba6a-d75df9c37f9d",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "3f6096f9-cc16-4321-a3c0-e99220f7cc37": {
+            "id": "3f6096f9-cc16-4321-a3c0-e99220f7cc37",
+            "type": "separator",
+            "content": {},
+            "parentId": "2f8d606c-e7ed-485d-9bb4-8fad8d9e2d16",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "e4849ab4-195b-42da-aa9a-73929be1b678": {
+            "id": "e4849ab4-195b-42da-aa9a-73929be1b678",
+            "type": "horizontalstack",
+            "content": {
+                "alignment": "left"
+            },
+            "parentId": "6e7fb732-03e3-498f-b408-49b5d91400c8",
+            "handlers": {},
+            "position": 4,
+            "visible": true
+        },
+        "ed17c791-33c1-47dd-90e6-915f964a19cc": {
+            "id": "ed17c791-33c1-47dd-90e6-915f964a19cc",
+            "type": "button",
+            "content": {
+                "text": "Button"
+            },
+            "parentId": "e4849ab4-195b-42da-aa9a-73929be1b678",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "2bde2b34-91fd-429e-8108-5dc5650f0d7d": {
+            "id": "2bde2b34-91fd-429e-8108-5dc5650f0d7d",
+            "type": "text",
+            "content": {
+                "text": "If you want to stack things horizontally: Horizontal Stack.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "e4849ab4-195b-42da-aa9a-73929be1b678",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "f5c6db76-5ed9-4532-bec6-ca44b9cbe565": {
+            "id": "f5c6db76-5ed9-4532-bec6-ca44b9cbe565",
+            "type": "separator",
+            "content": {},
+            "parentId": "e4849ab4-195b-42da-aa9a-73929be1b678",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "99e07632-fcee-4443-bef3-4ab02348be1c": {
+            "id": "99e07632-fcee-4443-bef3-4ab02348be1c",
+            "type": "columns",
+            "content": {},
+            "parentId": "6e7fb732-03e3-498f-b408-49b5d91400c8",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "7652941b-bf45-4840-88e8-1545c74f6661": {
+            "id": "7652941b-bf45-4840-88e8-1545c74f6661",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "99e07632-fcee-4443-bef3-4ab02348be1c",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "ebba4af4-c27a-4d4e-9e0b-9d49d530baef": {
+            "id": "ebba4af4-c27a-4d4e-9e0b-9d49d530baef",
+            "type": "column",
+            "content": {
+                "width": "0.5",
+                "title": "Another collapsible column",
+                "isCollapsible": "yes",
+                "startCollapsed": "yes"
+            },
+            "parentId": "99e07632-fcee-4443-bef3-4ab02348be1c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "9ddcb15c-78e5-4fa5-ab2e-e7a1725845ad": {
+            "id": "9ddcb15c-78e5-4fa5-ab2e-e7a1725845ad",
+            "type": "text",
+            "content": {
+                "text": "The direction in which the collapsible columns open depends on the position of the non-collapsible content. ",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "ebba4af4-c27a-4d4e-9e0b-9d49d530baef",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "d2c1a934-6edd-47ef-92fe-8b97f776b3b1": {
+            "id": "d2c1a934-6edd-47ef-92fe-8b97f776b3b1",
+            "type": "separator",
+            "content": {},
+            "parentId": "99e07632-fcee-4443-bef3-4ab02348be1c",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "794ba122-bb2f-4d1d-b4b8-bd30b354a5b9": {
+            "id": "794ba122-bb2f-4d1d-b4b8-bd30b354a5b9",
+            "type": "separator",
+            "content": {},
+            "parentId": "6e7fb732-03e3-498f-b408-49b5d91400c8",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "d1e583d0-023d-4fcf-9158-322380800784": {
+            "id": "d1e583d0-023d-4fcf-9158-322380800784",
+            "type": "separator",
+            "content": {},
+            "parentId": "6e7fb732-03e3-498f-b408-49b5d91400c8",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "fd74ca35-8f32-4d5e-9d8e-53ea03b2932f": {
+            "id": "fd74ca35-8f32-4d5e-9d8e-53ea03b2932f",
+            "type": "section",
+            "content": {
+                "title": "There are no nesting restrictions. All components can be nested as you please.",
+                "containerBackgroundColor": "#ededed",
+                "snapMode": "no"
+            },
+            "parentId": "7652941b-bf45-4840-88e8-1545c74f6661",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "3199f531-ab60-4d01-9a15-c6faeafc2eca": {
+            "id": "3199f531-ab60-4d01-9a15-c6faeafc2eca",
+            "type": "section",
+            "content": {
+                "title": "But...",
+                "containerBackgroundColor": "#dbdbdb",
+                "snapMode": "no"
+            },
+            "parentId": "fd74ca35-8f32-4d5e-9d8e-53ea03b2932f",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "181ac191-a581-4a00-9ab0-d277e8f50526": {
+            "id": "181ac191-a581-4a00-9ab0-d277e8f50526",
+            "type": "section",
+            "content": {
+                "title": "applying common sense...",
+                "containerBackgroundColor": "#c2c2c2",
+                "snapMode": "no"
+            },
+            "parentId": "3199f531-ab60-4d01-9a15-c6faeafc2eca",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "8f145b26-77cc-4c88-803d-e265db23e0b6": {
+            "id": "8f145b26-77cc-4c88-803d-e265db23e0b6",
+            "type": "button",
+            "content": {
+                "text": "Button"
+            },
+            "parentId": "e4849ab4-195b-42da-aa9a-73929be1b678",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "3c5d0eb4-9797-4557-92a8-57d27aba15ed": {
+            "id": "3c5d0eb4-9797-4557-92a8-57d27aba15ed",
+            "type": "heading",
+            "content": {
+                "text": "calories / protein correlation",
+                "alignment": "center",
+                "headingType": "h4"
+            },
+            "parentId": "e7775833-4c2d-4e4a-8071-b321d7a054bc",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "b3e2fb1d-3969-49cf-8cf3-ab234f09edaf": {
+            "id": "b3e2fb1d-3969-49cf-8cf3-ab234f09edaf",
+            "type": "page",
+            "content": {
+                "key": "secondary",
+                "pageMode": "compact",
+                "accentColor": "#b651b8",
+                "emptinessColor": "#415471",
+                "containerBackgroundColor": "#ffffff"
+            },
+            "parentId": "root",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "967eda71-a4d2-4114-bd70-9746a80c1a74": {
+            "id": "967eda71-a4d2-4114-bd70-9746a80c1a74",
+            "type": "button",
+            "content": {
+                "text": "Click me to go back",
+                "buttonColor": "#ef9906",
+                "buttonTextColor": "#ffffff",
+                "buttonShadow": "0px 2px 12px 1px #bcc6d2"
+            },
+            "parentId": "cb9a1b79-0140-405d-8f8f-e8323ea5aa91",
+            "handlers": {
+                "click": "$goToPage_primary"
+            },
+            "position": 0,
+            "visible": true
+        },
+        "bf076249-0058-440a-940f-98ee5a0115ae": {
+            "id": "bf076249-0058-440a-940f-98ee5a0115ae",
+            "type": "section",
+            "content": {
+                "title": "is recommended...",
+                "primaryTextColor": "#ffffff",
+                "containerBackgroundColor": "#969696",
+                "snapMode": "no"
+            },
+            "parentId": "181ac191-a581-4a00-9ab0-d277e8f50526",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "b43040e6-50d5-419f-83e8-c0d77641bb64": {
+            "id": "b43040e6-50d5-419f-83e8-c0d77641bb64",
+            "type": "text",
+            "content": {
+                "text": "to avoid confusing your users.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "bf076249-0058-440a-940f-98ee5a0115ae",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "cb9a1b79-0140-405d-8f8f-e8323ea5aa91": {
+            "id": "cb9a1b79-0140-405d-8f8f-e8323ea5aa91",
+            "type": "section",
+            "content": {
+                "title": "You've made it to the secondary page.",
+                "snapMode": "no"
+            },
+            "parentId": "b3e2fb1d-3969-49cf-8cf3-ab234f09edaf",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "b0e37d00-5d6b-4031-8745-a3c55b468588": {
+            "id": "b0e37d00-5d6b-4031-8745-a3c55b468588",
+            "type": "header",
+            "content": {
+                "text": "Header Text",
+                "emptinessColor": "#ffffff"
+            },
+            "parentId": "b3e2fb1d-3969-49cf-8cf3-ab234f09edaf",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "bec72103-a2bf-482b-9541-ecd62d35c326": {
+            "id": "bec72103-a2bf-482b-9541-ecd62d35c326",
+            "type": "button",
+            "content": {
+                "text": "Go to secondary page",
+                "buttonColor": "#ef9906",
+                "buttonTextColor": "#ffffff",
+                "buttonShadow": "0px 2px 12px 1px #bcc6d2"
+            },
+            "parentId": "efba8391-52c0-4bd9-8562-1a686d5b589b",
+            "handlers": {
+                "click": "$goToPage_secondary"
+            },
+            "position": 0,
+            "visible": true
+        },
+        "f322c9e0-d088-4579-8cf5-bd4384b29e1c": {
+            "id": "f322c9e0-d088-4579-8cf5-bd4384b29e1c",
+            "type": "tab",
+            "content": {
+                "name": "Repeater"
+            },
+            "parentId": "5c48b1b1-559d-416f-b3c3-30cdf11e61f6",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "1a299d38-d3fb-46d3-870b-6401a91aaaf1": {
+            "id": "1a299d38-d3fb-46d3-870b-6401a91aaaf1",
+            "type": "horizontalstack",
+            "content": {
+                "alignment": "left"
+            },
+            "parentId": "f322c9e0-d088-4579-8cf5-bd4384b29e1c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "3dd71360-11ce-4cb9-aa07-8e6375ae2280": {
+            "id": "3dd71360-11ce-4cb9-aa07-8e6375ae2280",
+            "type": "repeater",
+            "content": {
+                "repeaterObject": "@{data_records}",
+                "keyVariable": "itemId",
+                "valueVariable": "item"
+            },
+            "parentId": "1a299d38-d3fb-46d3-870b-6401a91aaaf1",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "d533e762-96bf-4405-ab41-14532983ee0a": {
+            "id": "d533e762-96bf-4405-ab41-14532983ee0a",
+            "type": "section",
+            "content": {
+                "title": "@{item.name}",
+                "snapMode": "no",
+                "containerShadow": "0px 4px 15px -12px #000000"
+            },
+            "parentId": "3dd71360-11ce-4cb9-aa07-8e6375ae2280",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "08710dea-aa61-45bc-977c-6cc9a6f23875": {
+            "id": "08710dea-aa61-45bc-977c-6cc9a6f23875",
+            "type": "text",
+            "content": {
+                "text": "**Age**: @{item.age}\n\nRepeat components,\nbased on a dictionary,\nusing *Repeater*.",
+                "useMarkdown": "yes"
+            },
+            "parentId": "d533e762-96bf-4405-ab41-14532983ee0a",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "a5908ffa-ace5-41c8-a24c-0fc24480509b": {
+            "id": "a5908ffa-ace5-41c8-a24c-0fc24480509b",
+            "type": "separator",
+            "content": {},
+            "parentId": "d533e762-96bf-4405-ab41-14532983ee0a",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "a1ceba9d-9747-476d-8094-f2cf36b4badb": {
+            "id": "a1ceba9d-9747-476d-8094-f2cf36b4badb",
+            "type": "page",
+            "content": {
+                "pageMode": "compact"
+            },
+            "parentId": "root",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "fe79c782-6c51-491a-8ec8-b0a52b3f2f83": {
+            "id": "fe79c782-6c51-491a-8ec8-b0a52b3f2f83",
+            "type": "header",
+            "content": {
+                "text": "Placeholder App"
+            },
+            "parentId": "a1ceba9d-9747-476d-8094-f2cf36b4badb",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "eb248f00-3339-43d4-9aff-db76107000d9": {
+            "id": "eb248f00-3339-43d4-9aff-db76107000d9",
+            "type": "section",
+            "content": {
+                "title": "Counter",
+                "snapMode": "no"
+            },
+            "parentId": "a1ceba9d-9747-476d-8094-f2cf36b4badb",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "8d871af2-facb-455b-9d14-dc9f175dd40c": {
+            "id": "8d871af2-facb-455b-9d14-dc9f175dd40c",
+            "type": "horizontalstack",
+            "content": {
+                "alignment": "left"
+            },
+            "parentId": "eb248f00-3339-43d4-9aff-db76107000d9",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "c528082a-53f5-4270-905a-b275e810e1e3": {
+            "id": "c528082a-53f5-4270-905a-b275e810e1e3",
+            "type": "button",
+            "content": {
+                "text": "Increment"
+            },
+            "parentId": "8d871af2-facb-455b-9d14-dc9f175dd40c",
+            "handlers": {
+                "click": "increment"
+            },
+            "position": 1,
+            "visible": true
+        },
+        "d0f5b0ab-128a-48f6-b5d0-aea31da2af10": {
+            "id": "d0f5b0ab-128a-48f6-b5d0-aea31da2af10",
+            "type": "text",
+            "content": {
+                "text": "The count is @{counter}"
+            },
+            "parentId": "8d871af2-facb-455b-9d14-dc9f175dd40c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "ccbc0254-599c-4bc5-8f9e-d31b3d07208f": {
+            "id": "ccbc0254-599c-4bc5-8f9e-d31b3d07208f",
+            "type": "sidebar",
+            "content": {},
+            "parentId": "a1ceba9d-9747-476d-8094-f2cf36b4badb",
+            "handlers": {},
+            "position": -2,
+            "visible": true
+        },
+        "a4f3cd90-b259-4023-8d72-f6fcd95282ec": {
+            "id": "a4f3cd90-b259-4023-8d72-f6fcd95282ec",
+            "type": "form",
+            "content": {
+                "submitDesc": "Submit",
+                "clearFormAfterSubmission": "yes"
+            },
+            "parentId": "a1ceba9d-9747-476d-8094-f2cf36b4badb",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "485be84b-32d8-43c2-8d99-86a35187fffd": {
+            "id": "485be84b-32d8-43c2-8d99-86a35187fffd",
+            "type": "sidebar",
+            "content": {
+                "containerBackgroundColor": "#e4e0e6",
+                "sidebarBackgroundColor": "#d5d0d7",
+                "buttonColor": "#ededed",
+                "startCollapsed": "yes"
+            },
+            "parentId": "4a80873e-3f03-4aee-8582-19ed9696de4a",
+            "handlers": {},
+            "position": -2,
+            "visible": true
+        },
+        "e86ef061-ec2e-49a1-870b-5989b80f3d9c": {
+            "id": "e86ef061-ec2e-49a1-870b-5989b80f3d9c",
+            "type": "section",
+            "content": {
+                "title": "About this application",
+                "snapMode": "no"
+            },
+            "parentId": "485be84b-32d8-43c2-8d99-86a35187fffd",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "ed597343-337a-4e9d-9299-2da7011dd482": {
+            "id": "ed597343-337a-4e9d-9299-2da7011dd482",
+            "type": "text",
+            "content": {
+                "text": "This is a demo application for Streamsync. It's not intended to provide a comprehensive demo of its capabilities, but rather serve as an introduction to the framework.",
+                "useMarkdown": "no",
+                "alignment": "left"
+            },
+            "parentId": "e86ef061-ec2e-49a1-870b-5989b80f3d9c",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "43acbea5-6f66-4722-a811-292bceae5645": {
+            "id": "43acbea5-6f66-4722-a811-292bceae5645",
+            "type": "separator",
+            "content": {},
+            "parentId": "e86ef061-ec2e-49a1-870b-5989b80f3d9c",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "054a8f10-2f93-464b-bff0-fb1ca863be77": {
+            "id": "054a8f10-2f93-464b-bff0-fb1ca863be77",
+            "type": "section",
+            "content": {
+                "title": "Section Title",
+                "snapMode": "no"
+            },
+            "parentId": "485be84b-32d8-43c2-8d99-86a35187fffd",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "17612c5f-2f88-4d65-8495-7a2ef9e6326a": {
+            "id": "17612c5f-2f88-4d65-8495-7a2ef9e6326a",
+            "type": "horizontalstack",
+            "content": {
+                "alignment": "left"
+            },
+            "parentId": "efba8391-52c0-4bd9-8562-1a686d5b589b",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "5acaed47-2ef7-445d-8d46-ac1812f91761": {
+            "id": "5acaed47-2ef7-445d-8d46-ac1812f91761",
+            "type": "text",
+            "content": {
+                "text": "@{counter}"
+            },
+            "parentId": "efba8391-52c0-4bd9-8562-1a686d5b589b",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "a5b03c11-25aa-4b36-b06b-9da877b16516": {
+            "id": "a5b03c11-25aa-4b36-b06b-9da877b16516",
+            "type": "page",
+            "content": {
+                "pageMode": "compact"
+            },
+            "parentId": "root",
+            "handlers": {},
+            "position": 3,
+            "visible": true
+        },
+        "f1191ed5-e996-4513-8af7-039c9339e3c5": {
+            "id": "f1191ed5-e996-4513-8af7-039c9339e3c5",
+            "type": "header",
+            "content": {
+                "text": "Header Text"
+            },
+            "parentId": "a5b03c11-25aa-4b36-b06b-9da877b16516",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "03caa178-66aa-4430-9375-c1912a8f2c9e": {
+            "id": "03caa178-66aa-4430-9375-c1912a8f2c9e",
+            "type": "columns",
+            "content": {},
+            "parentId": "a5b03c11-25aa-4b36-b06b-9da877b16516",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "e4b86b7a-a2ce-4d6a-b1b4-18b71b69f159": {
+            "id": "e4b86b7a-a2ce-4d6a-b1b4-18b71b69f159",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "03caa178-66aa-4430-9375-c1912a8f2c9e",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "af69e665-464b-4252-9308-e6cceef21233": {
+            "id": "af69e665-464b-4252-9308-e6cceef21233",
+            "type": "column",
+            "content": {
+                "width": "1"
+            },
+            "parentId": "03caa178-66aa-4430-9375-c1912a8f2c9e",
+            "handlers": {},
+            "position": 1,
+            "visible": true
+        },
+        "49422514-fcc8-42d6-88aa-c6d20434a344": {
+            "id": "49422514-fcc8-42d6-88aa-c6d20434a344",
+            "type": "section",
+            "content": {
+                "title": "Section Title",
+                "snapMode": "no"
+            },
+            "parentId": "e4b86b7a-a2ce-4d6a-b1b4-18b71b69f159",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "8a845231-9102-4815-9de8-5fd34fe903b0": {
+            "id": "8a845231-9102-4815-9de8-5fd34fe903b0",
+            "type": "section",
+            "content": {
+                "title": "Section Title",
+                "snapMode": "no"
+            },
+            "parentId": "af69e665-464b-4252-9308-e6cceef21233",
+            "handlers": {},
+            "position": 0,
+            "visible": true
+        },
+        "03ab9d1b-69f3-45b7-94fd-4501e367605d": {
+            "id": "03ab9d1b-69f3-45b7-94fd-4501e367605d",
+            "type": "section",
+            "content": {
+                "title": "Section Title",
+                "snapMode": "no"
+            },
+            "parentId": "a5b03c11-25aa-4b36-b06b-9da877b16516",
+            "handlers": {},
+            "position": 2,
+            "visible": true
+        },
+        "d0be4f01-3a4f-4c78-bb7d-0971b24f98bc": {
+            "id": "d0be4f01-3a4f-4c78-bb7d-0971b24f98bc",
+            "type": "button",
+            "content": {
+                "text": "Increment"
+            },
+            "parentId": "17612c5f-2f88-4d65-8495-7a2ef9e6326a",
+            "handlers": {
+                "click": "increment"
+            },
+            "position": 0,
+            "visible": true
+        }
+    }
+}

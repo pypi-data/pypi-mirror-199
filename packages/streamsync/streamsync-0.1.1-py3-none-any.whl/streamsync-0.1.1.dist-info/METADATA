@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: streamsync
+Version: 0.1.1
+Summary: Streamsync helps you create performant data apps, via Python code and its built-in visual UI editor.
+Author-email: Ramiro Medina <ramiro.a.medina@gmail.com>
+License: Apache 2.0
+Keywords: data apps,gui,ui
+Classifier: Development Status :: 2 - Pre-Alpha
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi
+Requires-Dist: websockets
+Requires-Dist: uvicorn
+Requires-Dist: watchdog
+Requires-Dist: altair
+Requires-Dist: pandas
+
+# Streamsync
+
+Like Streamlit, but fast and with a visual editor. A proof-of-concept framework built using TypeScript/Vue.js + Python/FastAPI + WebSockets.
+
+## Authors
+
+- **Ramiro Medina**
+
+## License
+
+This project is licensed under the Apache 2.0 License.
