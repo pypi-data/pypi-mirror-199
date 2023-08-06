@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: Codebugger
+Version: 0.0.1
+Summary: Codebugger explains the buggy code in simple terms and offers ways to fix the code.
+Author: Gabriel Cha
+Author-email: gcha@ucsd.edu
+Keywords: python,debugger,gpt
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: Unix
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai
+
+
+# Codebugger
+
+Codebugger explains the buggy code in simple terms and offers ways to fix the code.
+This takes away hours of frustration by helping you understand the root cause of the error, helping to clear up any misconceptions, and saving you time. Debugger uses gpt language model from Openai. 
+
