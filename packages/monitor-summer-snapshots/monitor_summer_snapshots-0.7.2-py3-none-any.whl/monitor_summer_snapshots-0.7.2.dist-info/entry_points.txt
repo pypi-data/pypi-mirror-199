@@ -1,0 +1,4 @@
+[console_scripts]
+mosusnap=monitor_summer_snapshots.monitor_summer_snapshots:main
+mosusnap_zbx_lld=monitor_summer_snapshots.zabbix_discovery:main
+
