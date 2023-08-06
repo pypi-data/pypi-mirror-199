@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: loguru-safe
+Version: 0.6.0
+Summary: Python logging made (stupidly) simple
+Home-page: https://github.com/Delgan/loguru_safe
+Author: Delgan
+Author-email: delgan.py@gmail.com
+License: MIT license
+Download-URL: https://github.com/Delgan/loguru_safe/archive/0.6.0.tar.gz
+Project-URL: Changelog, https://github.com/Delgan/loguru_safe/blob/master/CHANGELOG.rst
+Project-URL: Documentation, https://loguru_safe.readthedocs.io/en/stable/index.html
+Keywords: loguru_safe,logging,logger,log
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Topic :: System :: Logging
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.5
+License-File: LICENSE
+Requires-Dist: aiocontextvars (>=0.2.0) ; python_version < "3.7"
+Requires-Dist: colorama (>=0.3.4) ; sys_platform == "win32"
+Requires-Dist: win32-setctime (>=1.0.0) ; sys_platform == "win32"
+
+UNKNOWN
+
