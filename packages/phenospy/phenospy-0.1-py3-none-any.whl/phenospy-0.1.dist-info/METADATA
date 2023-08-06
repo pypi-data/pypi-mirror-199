@@ -1,0 +1,45 @@
+Metadata-Version: 2.1
+Name: phenospy
+Version: 0.1
+Summary: Tools for making and processing computable phenotype descriptions
+Home-page: https://github.com/sergeitarasov/PhenoScript
+Author: Sergei Tarasov
+Author-email: sergei.tarasov@helsinki.fi
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: Owlready2
+Requires-Dist: PyYAML
+Requires-Dist: colorama
+Requires-Dist: pyparsing (==2.4.2)
+
+# Phenospy
+ Python package for describing phenotypes and species using ontologies.
+
+
+ <p align="left">
+  <img src="https://raw.githubusercontent.com/sergeitarasov/PhenoScript/main/Phenoscript_logo.png" width="300" title="Phenoscript logo">
+</p>  
+
+
+## Install
+```bash
+pip install phenospy
+```
+## Requirements
+* Python >=3.6
+
+## Quick start guide
+
+Coming soon.
+
+### Changelog
+
