@@ -1,0 +1,54 @@
+#- id: template1
+#  langs: xxx-yyy
+#  desc: desc1
+#  url: https://example.com
+#  train:
+#    - did1
+#    - did2
+#  dev: did3
+#  test:
+#    - did4
+#    - did5
+
+- id: vaswani_etal_2017_ende
+  langs: eng-deu
+  desc: Transformer - Attention is all you need
+  url: https://arxiv.org/abs/1706.03762
+  train:
+  - Statmt-commoncrawl_wmt13-1-deu-eng
+  - Statmt-europarl_wmt13-7-deu-eng
+  - Statmt-news_commentary_wmt18-13-deu-eng
+  dev: Statmt-newstest-2013-eng-deu
+  test: Statmt-newstest_deen-2014-deu-eng
+
+- id: tg01_2to1_test
+  desc: testing multilingual
+  langs: mul-eng       #  mul is multiple languages
+  train:
+    - WAT-alt_train-2020-mya-eng
+    - Statmt-pmindia-1-eng-tel
+  dev:
+    #- AI4Bharath-wat_dev-2021-eng-tel
+    - JoshuaDec-indian_dev-1-tel-eng
+    - WAT-alt_dev-2020-mya-eng
+  test:
+    #- AI4Bharath-wat_test-2021-eng-tel
+    - JoshuaDec-indian_test-1-tel-eng
+    - WAT-alt_test-2020-mya-eng
+
+- id: test_02_with_mono
+  desc: Testing monolingual downloads
+  langs: eng-deu
+  train:
+    - Statmt-europarl-10-deu-eng
+    #- Statmt-news_commentary-16-deu-eng
+    #- Statmt-wikititles-3-deu-eng
+  dev:
+    - Statmt-newstest_deen-2020-deu-eng
+  test:
+    - Statmt-newstest_ende-2020-eng-deu
+  mono_train:
+    - Statmt-news_crawl-2021-eng
+    - Statmt-news_discussions-2019-eng
+    - Statmt-news_crawl-2021-deu
+    - Statmt-europarl-v10-deu

@@ -1,0 +1,4 @@
+include README.md
+graft mtdata/resource
+include mtdata/iso/bcp47.json
+global-exclude *.pyc
