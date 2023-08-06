@@ -1,0 +1,24 @@
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools>=61.0"]
+
+[project]
+dynamic = ["dependencies"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",]
+description = "River forecasting package"
+version = "0.1.0"
+name = "kmz_custom_maps"
+readme = "README.md"
+requires-python = ">=3.9"
+[[project.authors]]
+email = "johannes.n.hendriks@gmail.com"
+name = "johannes Hendriks"
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["kmz_custom_maps"]
+exclude = ["test_data"]
+[tool.setuptools.dynamic]
+dependencies = {file=["requirements.txt"]}
