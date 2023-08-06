@@ -1,0 +1,8 @@
+colorama
+chardet
+tqdm
+colormath
+pydantic
+
+[:platform_system == "Windows"]
+win32_setctime
