@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: arrlio
+Version: 0.17.0
+Author: Roma Koshel
+Author-email: roma.koshel@gmail.com
+License: MIT
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: aiormq (>=6.6.4)
+Requires-Dist: pydantic (>=1.9.0)
+Requires-Dist: yarl
+Requires-Dist: rich
+Requires-Dist: roview
+Requires-Dist: siderpy[hiredis] (>=0.6.0)
+
