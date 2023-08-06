@@ -1,0 +1,13 @@
+loguru
+trl
+transformers
+datasets
+tqdm
+
+[dev]
+torch
+
+[test]
+torch
+pytest
+pytest-xdist
