@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: Choicer
+Version: 0.0.1
+Summary: Helps you make choices.
+Home-page: UNKNOWN
+Author: Manav Chawla
+Author-email: manavachawla@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Choicer
+
+<b>Ever had a problem with making decisions?</b>
+Wanted to flip a coin for it? Maybe once, maybe twice, maybe a 100 times, maybe 10,000 times, just to be sure?
+Don't worry, we are here for you. No matter how many choies, no matter how many times you want to count.
+
+We will help you make your decision.
+
+Simple syntax:
+choose num_times option1 option2 [...options]
+
+
