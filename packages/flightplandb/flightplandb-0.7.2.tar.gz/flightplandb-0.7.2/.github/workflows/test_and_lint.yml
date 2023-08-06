@@ -1,0 +1,39 @@
+name: Tests and lint
+on: [push, workflow_dispatch]
+jobs:
+  # no need to set up a matrix for the lint
+  flake8-lint:
+    runs-on: ubuntu-latest
+    name: Flake8 Lint
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v2
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.9"
+      - name: flake8 Lint
+        uses: py-actions/flake8@v1
+        with:
+          max-line-length: "120"
+
+  # but we do want to run unittests on many python versions
+  unittests:
+    strategy:
+      matrix:
+        python-version: [ '3.8', '3.9', '3.10', '3.11']
+    runs-on: ubuntu-latest
+
+    name: Unit tests, Python ${{ matrix.python-version }}
+
+    steps:
+      - name: Check out source repository
+        uses: actions/checkout@v2
+      - name: Set up Python environment
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install packages
+        run: python -m pip install .[test]
+      - name: Run unittests
+        run: python -m pytest tests
