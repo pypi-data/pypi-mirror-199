@@ -1,0 +1,12 @@
+deepspeech>=0.9.3
+
+[develop]
+black>=22
+bump2version>=1.0.0
+flake8>=3.7.8
+flake8-black>=0.2.1
+flake8-pyproject
+pytest>=4.3.0
+pytest-cov>=2.6.1
+twine
+wheel

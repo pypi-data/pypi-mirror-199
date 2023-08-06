@@ -1,0 +1,16 @@
+.bumpversion.cfg
+LICENSE
+MANIFEST.in
+Makefile
+README.md
+pyproject.toml
+setup.py
+src/__init__.py
+src/_version.py
+src/transcription.py
+src/insta_captions.egg-info/PKG-INFO
+src/insta_captions.egg-info/SOURCES.txt
+src/insta_captions.egg-info/dependency_links.txt
+src/insta_captions.egg-info/requires.txt
+src/insta_captions.egg-info/top_level.txt
+tests/test_transcription.py
