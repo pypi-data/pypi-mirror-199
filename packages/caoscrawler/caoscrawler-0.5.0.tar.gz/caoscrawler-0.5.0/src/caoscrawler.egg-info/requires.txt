@@ -1,0 +1,10 @@
+importlib-resources
+caosdb>=0.11.0
+caosadvancedtools>=0.7.0
+yaml-header-tools>=0.2.1
+pyyaml
+odfpy
+pandas
+
+[:python_version < "3.8"]
+importlib_metadata
