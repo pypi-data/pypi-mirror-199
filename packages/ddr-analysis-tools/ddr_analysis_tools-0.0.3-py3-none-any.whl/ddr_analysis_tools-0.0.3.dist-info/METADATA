@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: ddr-analysis-tools
+Version: 0.0.3
+Summary: Package for data analysis tools
+Home-page: https://github.com/ddrathod121294/ddr_analysis_tools
+Author: Darshan Rathod
+Author-email: darshan.rathod1994@gmail.com
+Keywords: ddr,time series data analysis,data analysis,POD,SPOD,FFT,ddr_FFT,ddr_SPOD,ddr_PODddr_analysis_tools
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Physics
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.10, <4
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: matplotlib
+Requires-Dist: pyspod
+
+# ddr_analysis_tools
+
+This project contains multiple analysis tools.
+
+---
+---
