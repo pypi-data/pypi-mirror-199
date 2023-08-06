@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: aenigma
+Version: 0.1.1
+Summary: The Aenigma library calculates the Relative Complexity Score (RCS) of each sentence in a given body of text
+Author-email: Sohal Sudheer <sohalsdr@gmail.com>, Griffin Pitts <griffpitts@gmail.com>, Harris Sarfaraz <harrisms305@gmail.com>
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 3 - Alpha
+Classifier: Natural Language :: English
+Classifier: Topic :: Text Processing
+Requires-Dist: nltk >=3.8.1
+Requires-Dist: syllables >=1.0.7
+Project-URL: Bug Tracker, https://github.com/NeuroRead/Aenigma/issues
+Project-URL: Homepage, https://github.com/NeuroRead
+Project-URL: Source, https://github.com/NeuroRead/Aenigma
+
+# Aenigma
+
+The Aenigma library calculates the Relative Complexity Score (RCS) of each sentence in a given body of text. It achieves this by calculating the Flesch-Kincaid score of every individual sentence within the body of text, then comparing them against the mean score.
+
