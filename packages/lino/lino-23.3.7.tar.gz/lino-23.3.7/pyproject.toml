@@ -1,0 +1,19 @@
+[tool]
+[tool.pdm]
+
+[project]
+name = "leo"
+version = "0.1.0"
+description = "Personal utility"
+authors = [
+    {name = "8lurry", email = "sharifmehedi24@outlook.com"},
+]
+
+dependencies = []
+requires-python = ">=3.10"
+readme = "README.rst"
+license = {text = "PRIVATE"}
+
+[build-system]
+requires = ["pdm-pep517>=1.0"]
+build-backend = "pdm.pep517.api"
