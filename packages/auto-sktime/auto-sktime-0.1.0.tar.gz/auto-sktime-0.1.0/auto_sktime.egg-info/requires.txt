@@ -1,0 +1,17 @@
+sktime==0.13.0
+ConfigSpace~=0.6.0
+smac~=1.4.0
+matplotlib~=3.6.2
+seaborn~=0.12.1
+tsmoothie~=1.0.4
+tsfresh~=0.19.0
+torch~=1.13.0
+numpy~=1.22.0
+
+[:python_version < "3.8"]
+importlib-metadata
+
+[testing]
+setuptools
+pytest
+pytest-cov
