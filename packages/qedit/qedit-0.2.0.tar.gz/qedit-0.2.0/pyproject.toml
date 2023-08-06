@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "qedit"
+version = "0.2.0"
+description = "A CLI for automatically editing videos using word detection"
+authors = ["Tyler <terrifictyler8@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.scripts]
+qedit = "qedit.cli:app"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+typer = {extras = ["all"], version = "^0.7.0"}
+vosk = "^0.3.45"
+ffmpeg-python = "^0.2.0"
+
+
+[[tool.poetry.source]]
+name = "testpypi"
+url = "https://test.pypi.org/simple/"
+default = false
+secondary = false
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
