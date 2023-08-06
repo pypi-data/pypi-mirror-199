@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "igwn-gwalert-schema"
+version = "1.0.0"
+description = "JSON and Avro Schema for gravitational-wave alerts"
+license = { text = "GPL-3+" }
+readme = "README.md"
+authors = [
+    { name = "Leo Singer", email = "leo.p.singer@nasa.gov" },
+    { name = "Cody Messick", email = "cody.messick@ligo.org"},
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Internet",
+    "Topic :: Scientific/Engineering :: Astronomy",
+    "Topic :: Scientific/Engineering :: Physics"
+]
+requires-python = ">=3.8"
+
+[tool.setuptools]
+packages = [ "igwn_gwalert_schema" ]
+
+[tool.setuptools.package-dir]
+igwn_gwalert_schema = "."
+
+[tool.setuptools.package-data]
+"*" = [ "*.avsc", "*.schema.json" ]
+
+[project.urls]
+source = "https://git.ligo.org/emfollow/igwn-gwalert-schema"
+"Bug Tracker" = "https://git.ligo.org/emfollow/igwn-gwalert-schema/issues"
+"Source Code" = "https://git.ligo.org/emfollow/igwn-gwalert-schema"
