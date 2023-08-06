@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: custodial-registration-proxy
+Version: 0.1.0
+Summary: Atomically registers a custodial user on-chain and provisions necessary gas and training vouchers.
+Home-page: https://github.com/grassrootseconomics/custodial-registration-proxy
+Author: Mohamed Sohail
+Author-email: sohail@grassecon.org
+License: AGPLv3+
+Keywords: ethereum
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: OS Independent
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries
+Requires-Python: >=3.6
+License-File: LICENSE
+
+Atomically registers a custodial user on-chain and provisions necessary gas and training vouchers.
