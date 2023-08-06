@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: image-decoding-algorithms
+Version: 0.0.3
+Summary: Scripts for decoding an image
+Home-page: https://github.com/gejirz/image-decoding-algorithms
+Author: Victor Andrievskiy
+Author-email: superavb222@gmail.com
+License: MIT License
+Keywords: python,image decoding,JFIF,jpeg,decoding,baseline encoding
+Platform: UNKNOWN
+
+Scripts for decoding an image. Myself have written a decoding algorithm for JFIF, baseline encoding mode, used skimage for everything else.
+
