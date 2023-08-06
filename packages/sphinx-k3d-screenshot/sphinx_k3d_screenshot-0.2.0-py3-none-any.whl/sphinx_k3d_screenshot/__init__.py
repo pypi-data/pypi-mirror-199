@@ -1,0 +1,3 @@
+from sphinx_k3d_screenshot._version import __version__
+from sphinx_k3d_screenshot.plot_directive import setup
+import sphinx_k3d_screenshot.utils
