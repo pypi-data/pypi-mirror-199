@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: kernel-scilab
+Version: 1.0.0
+Summary: A Jupyter kernel for Scilab.
+Home-page: https://github.com/WallyTutor/jupyter-kernel-scilab
+Author: Steven Silvester
+Author-email: steven.silvester@ieee.org
+Maintainer: "Walter Dal'Maz Silva"
+Maintainer-email: walter.dalmazsilva@gmail.com
+License: MIT
+Download-URL: https://github.com/WallyTutor/jupyter-kernel-scilab
+Project-URL: Repository, https://github.com/WallyTutor/jupyter-kernel-scilab
+Keywords: Scientific computing,Computing platform
+Platform: Any
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development
+Classifier: Topic :: System :: Shells
+Requires: ipykernel
+Requires: jupyter_client (>=4.3.0)
+Requires: majordome (>=0.2.2)
+Requires: metakernel (>=0.23.0)
+Requires: numpy (>=1.22.4)
+Requires-Python: >=3.10
+Description-Content-Type: text/x-rst
+License-File: LICENSE.txt
+Requires-Dist: ipykernel
+Requires-Dist: jupyter-client (>=4.3.0)
+Requires-Dist: majordome (>=0.2.2)
+Requires-Dist: metakernel (>=0.23.0)
+Requires-Dist: numpy (>=1.22.4)
+
+read: README.rst
+
