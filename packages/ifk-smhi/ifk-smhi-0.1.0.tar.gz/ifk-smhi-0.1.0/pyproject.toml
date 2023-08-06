@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ifk-smhi"
+version = "0.1.0"
+description = "Inspect and get SMHI data."
+license = { text = "MIT" }
+readme = "README.md"
+authors = [
+    { name = "Anders Nord", email = "dr.anders.nord@gmail.com" },
+    { name = "Mladen Gibanica", email = "11275336+mgcth@users.noreply.github.com" },
+]
+requires-python = ">=3.9"
+dependencies = [
+    "requests ~= 2.28",
+    "pandas ~= 1.5",
+    "geopy ~= 2.2",
+    "arrow ~= 1.2",
+]
+
+[project.optional-dependencies]
+lint = [
+    "flake8 ~= 5.0",
+    "flake8-bandit ~= 4.1",
+    "flake8-docstrings ~= 1.6",
+    "flake8-black ~= 0.3",
+]
+type = ["mypy ~= 0.990", "types-requests ~= 2.28", "pandas-stubs ~= 1.5"]
+test = ["pytest ~= 7.1", "coverage ~= 6.5", "pytest-cov ~= 4.0"]
+doc = [
+    "mkdocs ~= 1.4",
+    "mkdocs-material ~= 8.5",
+    "mkdocstrings[python] ~= 0.19",
+]
+dev = [
+    "ifk-smhi[lint]",
+    "ifk-smhi[type]",
+    "ifk-smhi[test]",
+    "ifk-smhi[doc]",
+    "black ~= 22.8",
+    "pre-commit ~= 2.20",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+exclude = ["material"]
