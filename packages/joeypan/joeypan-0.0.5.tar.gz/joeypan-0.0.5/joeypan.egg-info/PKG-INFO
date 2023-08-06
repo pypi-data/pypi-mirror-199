@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: joeypan
+Version: 0.0.5
+Summary: A small package for web framework
+Home-page: https://github.com/elijahxb/joeypan
+Author: elijahxb
+Author-email: elijahxb@outlook.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Example Package
+
+joeypan.config.settings.py#print_list是一个可以打印缩进列表的示例函数,示例代码如下：
+
+    from example_pkg_zx1 import nestList
+    alist = ["grace", "angle", "roy", 
+                ["anna", "jhon", "richard", ["nio", "lily"]], 
+                "bluce"]        
+    nestList.print_list(alist)
