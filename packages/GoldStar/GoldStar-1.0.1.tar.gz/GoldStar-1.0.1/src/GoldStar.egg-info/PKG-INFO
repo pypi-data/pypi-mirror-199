@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: GoldStar
+Version: 1.0.1
+Summary: API for website.goldstar.cf
+Author: GoldStar
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# GoldStar
+
+
+# API DOCS
+Link to api docs: [API DOCS](https://docs.goldstar.cf)
+
+## Installation
+```
+pip install goldstar
+```
+## example 
+Server Count Post :
+```python
+from goldstar import goldstar
+from discord.ext import commands
+
+client = commands.Bot(command_prefix="!") 
+dbl = goldstar(client,"token of goldstar")
+
+@client.event
+async def on_ready():
+  x = await dbl.serverCountPost()
+  print(x)
+
+client.run("token")
+```
+
+Search bot: 
+```python
+from goldstar import goldstar
+
+client = commands.Bot(command_prefix="!") 
+dbl = goldstar(client,"token of goldstar")
+id=botid
+
+a = dbl.search(id)
+print(a)
+
+```
+All functions in api:
+```angular2html
+1: serverCountPost()
+2: search()
+3: hasVoted()
+```
+
+
+
+
