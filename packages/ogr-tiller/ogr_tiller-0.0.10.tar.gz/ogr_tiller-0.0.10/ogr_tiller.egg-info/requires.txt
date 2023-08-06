@@ -1,0 +1,7 @@
+fastapi
+uvicorn[standard]
+protobuf<=3.20.3
+parse
+mercantile
+fiona
+mapbox_vector_tile==2.0.1
