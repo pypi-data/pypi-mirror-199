@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: eaw2web
+Version: 0.2.0
+License: MIT
+Author-email: Sven Marcus <s.marcus@outlook.de>
+Requires-Python: >=3.10
+Requires-Dist: Pillow>=9.4.0
+Requires-Dist: pydantic>=1.10.5
+Requires-Dist: typer[all]>=0.7.0
+Provides-Extra: dev
+Requires-Dist: mypy>=1.1.1; extra == "dev"
+Requires-Dist: black>=23.1.0; extra == "dev"
+Requires-Dist: ruff>=0.0.254; extra == "dev"
+Requires-Dist: types-Pillow>=9.4.0.17; extra == "dev"
+Description-Content-Type: text/markdown
