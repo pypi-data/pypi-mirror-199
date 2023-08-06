@@ -1,0 +1,12 @@
+MANIFEST.in
+setup.py
+IDA/IDA_main.py
+IDA/Image_reader.py
+IDA/JFIFDecoder.py
+IDA/JFIF_Decoder_Algorithms.pyd
+IDA/__init__.py
+image_decoding_algorithms.egg-info/PKG-INFO
+image_decoding_algorithms.egg-info/SOURCES.txt
+image_decoding_algorithms.egg-info/dependency_links.txt
+image_decoding_algorithms.egg-info/requires.txt
+image_decoding_algorithms.egg-info/top_level.txt
