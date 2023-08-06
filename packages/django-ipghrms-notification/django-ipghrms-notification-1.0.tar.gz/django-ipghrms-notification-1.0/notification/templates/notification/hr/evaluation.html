@@ -1,0 +1,50 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-body">
+                    <h4 align="center"> <i class="fa fa-clipboard-user"></i> {{legend|upper}}</h4>
+                    <table class="table table-sm table-striped" id="#" width="100%" cellspacing="0">
+                        <thead>
+                            <tr align="center">
+                                <th style="text-align: left;">Categoria</th>
+                                <th># Total Funcionariu</th>
+                                <th># Total Avaliadu</th>
+                                <th># Total Falta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr align="center">
+                                <td align="left">{{ obj.0.name }}</td>
+                                <td>{{ obj.1 }}</td>
+                                <td> <a href="{% url 'all-eval-cat-eval-list' obj.0.pk %}"> {{ obj.2 }} </a></td>
+                                <td> <a href="{% url 'all-eval-cat-not-list' obj.0.pk %}"> {{ obj.3 }}</a></td>
+                                <td>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
