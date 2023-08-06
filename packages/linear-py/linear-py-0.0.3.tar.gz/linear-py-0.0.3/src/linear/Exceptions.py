@@ -1,0 +1,2 @@
+class LinearQueryException(Exception):
+    pass
