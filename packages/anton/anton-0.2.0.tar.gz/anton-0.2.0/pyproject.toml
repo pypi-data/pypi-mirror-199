@@ -1,0 +1,73 @@
+[tool.poetry]
+name = "anton"
+version = "0.2.0"
+description = ""
+license = "MIT"
+authors = ["Karthik Rangasai Sivaraman <karthikrangasai@gmail.com>"]
+readme = "README.md"
+repository = "https://github.com/karthikrangasai/anton"
+packages = [{include = "anton", from = "src"}]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "License :: OSI Approved :: MIT License",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.8",
+    "Typing :: Typed",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pyyaml = "^6.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^2.20.0"
+pyupgrade = "^3.2.2"
+black = "^22.10.0"
+isort = "^5.10.1"
+flake8 = "^5.0.4"
+mypy = "^0.991"
+pytest = "^7.2.0"
+coverage = "^6.5.0"
+pytest-cov = "^4.0.0"
+ipykernel = "^6.19.4"
+types-pyyaml = "^6.0.12.2"
+
+
+[tool.poetry.group.docs.dependencies]
+sphinx = "5.3.0"
+myst-parser = "^0.18.1"
+sphinx-rtd-theme = "^1.1.1"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/karthikrangasai/anton/issues"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.mypy]
+[mypy]
+pretty = true
+show_error_codes = true
+disallow_untyped_defs = true
+ignore_missing_imports = true
+scripts_are_modules = true
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
