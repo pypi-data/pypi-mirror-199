@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: georges-core
+Version: 2023.2
+Summary: Georges' accelerator physics library - Core
+Author: Cédric Hernalsteens
+Author-email: cedric.hernalsteens@ulb.be
+Requires-Python: >3.8.1,<3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: Pint (==0.20.1)
+Requires-Dist: PyYAML (==6.0)
+Requires-Dist: awkward (==2.1.1)
+Requires-Dist: awkward-pandas (==2022.12a1)
+Requires-Dist: boost-histogram (==1.3.2)
+Requires-Dist: cpymad (==1.13.0)
+Requires-Dist: fastparquet (==2023.2.0)
+Requires-Dist: ipykernel (==6.22.0)
+Requires-Dist: ipyparallel (==8.5.0)
+Requires-Dist: jupyterlab (==3.6.2)
+Requires-Dist: jupyterlab-code-formatter (==1.6.0)
+Requires-Dist: matplotlib (==3.7.1)
+Requires-Dist: mergedeep (==1.3.4)
+Requires-Dist: nbdime (==3.1.1)
+Requires-Dist: numba (==0.56.3)
+Requires-Dist: numpy (==1.22.3)
+Requires-Dist: numpy-quaternion (==2022.4.3)
+Requires-Dist: pandas (==1.5.1)
+Requires-Dist: plotly (==5.13.1)
+Requires-Dist: pyarrow (==11.0.0)
+Requires-Dist: pybdsim (==3.0.1)
+Requires-Dist: scipy (==1.7.3)
+Requires-Dist: uproot (==5.0.5)
+Requires-Dist: vtk (==9.2.6)
