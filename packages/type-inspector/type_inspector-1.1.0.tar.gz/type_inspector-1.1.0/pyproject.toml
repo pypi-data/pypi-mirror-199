@@ -1,0 +1,49 @@
+[tool.poetry]
+name = "type-inspector"
+version = "1.1.0"
+description = ""
+authors = ["Stanislav Zmiev <szmiev2000@gmail.com>"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = ">=3.10"
+pydantic = { version = "^1.10.4", optional = true }
+issubclass = ">=0.1.2"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = ">=7.2.1"
+pytest-cov = ">=4.0.0"
+pyupgrade = "*"
+black = "*"
+autoflake = "*"
+isort = "*"
+pydantic = "*"
+
+[tool.coverage.report]
+fail_under = 100
+skip_covered = true
+skip_empty = true
+# Taken from https://coverage.readthedocs.io/en/7.1.0/excluding.html#advanced-exclusion
+exclude_lines = [
+    "pragma: no cover",
+    "assert_never\\(",
+    "if self.debug:",
+    "if settings.DEBUG",
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "if False:",
+    "if __name__ == .__main__.:",
+    # Impossible to cover
+    # It is impossible to cover "if TYPE_CHECKING" statements because they never actually run
+    "if TYPE_CHECKING:",
+    "@(abc\\.)?abstractmethod",
+    "@(typing\\.)?overload",
+    "__rich_repr__",
+    "__repr__",
+]
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

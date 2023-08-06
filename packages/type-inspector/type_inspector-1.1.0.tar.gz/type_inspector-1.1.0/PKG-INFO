@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: type-inspector
+Version: 1.1.0
+Summary: 
+License: MIT
+Author: Stanislav Zmiev
+Author-email: szmiev2000@gmail.com
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: issubclass (>=0.1.2)
+Requires-Dist: pydantic (>=1.10.4,<2.0.0)
