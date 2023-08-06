@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "testingclick"
+version = "0.1.0"
+description = ""
+authors = ["vaibhavblayer <vaibhavblayer@gmail.com>"]
+readme = "README.md"
+
+
+[tool.poetry.scripts]
+testingclick = "testingclick.main:main"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
