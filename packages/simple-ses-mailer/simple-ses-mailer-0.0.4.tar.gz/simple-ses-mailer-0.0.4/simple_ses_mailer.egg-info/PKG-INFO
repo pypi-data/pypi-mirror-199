@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: simple-ses-mailer
+Version: 0.0.4
+Home-page: https://github.com/rez0n/simple-ses-mailer
+Author: Denis Verbin <den.verbin@gmail.com>
+License: Apache licence, see LICENCE
+Keywords: aws,ses,mail
+Classifier: Topic :: Communications :: Email
+Requires: boto3
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# simple-ses-mailer
+Simple Python mailer for AWS SES
+
+
+## Installation
+
+```
+pip install simple-ses-mailer
+```
+
+## Example Usage
+```python
+from simple_ses_mailer.mailers import SesEmailMessage
+
+
+msg = SesEmailMessage(
+    subject='Test Subject',
+    body_html='<span>Test Body</span>',
+    mail_from='d@verbin.dev',
+    mail_to=['test@example.com']
+)
+msg.send()
+```
+> More informative readme will be pushed later
