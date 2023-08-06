@@ -1,0 +1,86 @@
+Metadata-Version: 2.1
+Name: logyca
+Version: 0.0.2
+Summary: This package name is reserved by LOGYCA company
+Project-URL: Homepage, https://github.com/ccc/ccc
+Project-URL: Documentation, https://ccc/
+Author-email: Jaime Andres Cardona Carrillo <tecnologiaeinformacion@logyca.com>
+License: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Pydantic
+Classifier: Framework :: Pydantic :: 1
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Requires-Dist: pydantic!=1.7,!=1.7.1,!=1.7.2,!=1.7.3,!=1.8,!=1.8.1,<2.0.0,>=1.6.2
+Description-Content-Type: text/markdown
+
+<p align="center">
+  <a href="https://logyca.com/"><img src="https://logyca.com/wp-content/uploads/2019/06/logo-logyca.png" alt="Logyca"></a>
+</p>
+<p align="center">
+    <em>Logyca libraries, apiresult, health check dto</em>
+</p>
+
+<p align="center">
+<a href="https://pypi.org/project/logyca" target="_blank">
+    <img src="https://img.shields.io/pypi/v/logyca?color=orange&label=PyPI%20Package" alt="Package version">
+</a>
+<a href="(https://www.python.org" target="_blank">
+    <img src="https://img.shields.io/badge/Python-%5B%3E%3D3.7%2C%3C%3D3.11%5D-orange" alt="Python">
+</a>
+</p>
+
+
+---
+
+# About us
+
+* <a href="http://logyca.com" target="_blank">LOGYCA Company</a>
+* <a href="https://www.youtube.com/channel/UCzcJtxfScoAtwFbxaLNnEtA" target="_blank">LOGYCA Youtube Channel</a>
+* <a href="https://www.linkedin.com/company/logyca" target="_blank"><img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="Linkedin"></a>
+* <a href="https://twitter.com/LOGYCA_Org" target="_blank"><img src="https://img.shields.io/badge/Twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white" alt="Twitter"></a>
+* <a href="https://www.facebook.com/OrganizacionLOGYCA/" target="_blank"><img src="https://img.shields.io/badge/Facebook-1877F2?style=for-the-badge&logo=facebook&logoColor=white" alt="Facebook"></a>
+
+---
+
+# What's libraries
+
+LOGYCA microsoft public libraries
+
+* **Traversal libraries**: Standard methods to be used by microservices.
+* **Return codes**: Standard methods to report result status codes.
+* **Monitoring**: Standard methods to report check health status codes.
+* **Helpers**: Standard methods to be used. *
+
+---
+
+# Very quick install
+
+```console
+python -m pip install ccc
+```
+
+
+
