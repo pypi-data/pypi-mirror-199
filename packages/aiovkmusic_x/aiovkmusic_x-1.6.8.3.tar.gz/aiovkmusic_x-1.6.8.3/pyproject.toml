@@ -1,0 +1,16 @@
+[project]
+description = "aiovkmusic_x"
+name = "aiovkmusic_x"
+version = "1.6.8.3"
+authors = [{name = "lavacat", email = "steveharris2828@gmail.com"}]
+requires-python = ">=3.6"
+dependencies = [
+    "python-ffmpeg",
+    "loguru",
+    "bs4",
+    "asyncio"
+]
+readme = "README.md"
+
+[project.urls]
+Source = "https://codeberg.org/agark0vlad21/aiovkmusic-x"
