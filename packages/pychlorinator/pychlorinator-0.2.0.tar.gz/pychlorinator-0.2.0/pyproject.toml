@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "pychlorinator"
+version = "0.2.0"
+description = ""
+authors = ["pbutterworth <3683210+pbutterworth@users.noreply.github.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+pycryptodome = "^3.17"
+bleak = "^0.20.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.1.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[project.urls]
+"Homepage" = "https://github.com/pbutterworth/pychlorinator"
