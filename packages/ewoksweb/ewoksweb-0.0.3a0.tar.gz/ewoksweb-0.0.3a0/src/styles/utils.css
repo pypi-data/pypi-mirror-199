@@ -1,0 +1,18 @@
+.btn-clean {
+  margin: 0;
+  padding: 0;
+  background: none;
+  border: none;
+  font: inherit;
+  color: inherit;
+  line-height: inherit;
+  text-align: left;
+  white-space: normal;
+  cursor: pointer;
+}
+
+.btn-clean:disabled,
+.btn-clean[aria-disabled='true'] {
+  opacity: 0.5;
+  pointer-events: none;
+}

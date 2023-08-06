@@ -1,0 +1,109 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--sans-serif);
+  line-height: 1.2;
+  color: var(--text);
+}
+
+@media (min-width: 50em) {
+  body {
+    font-size: 1.125rem;
+  }
+}
+
+#root {
+  height: 100vh;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+p,
+ol,
+ul,
+dl {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+pre {
+  font-family: var(--monospace);
+}
+
+abbr[title] {
+  cursor: help;
+  border-bottom: 1px dotted;
+  text-decoration: none;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+[tabindex='-1']:focus:not(:focus-visible) {
+  outline: 0 !important;
+}
+
+@media (prefers-reduced-motion) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.react-flow__handle-top {
+  top: -35px;
+  border-radius: 0;
+}
+
+.react-flow__handle {
+  width: 10px;
+}
+
+.MuiDrawer-paperAnchorBottom {
+  max-height: 90%;
+  display: flex;
+  align-items: center;
+}
+
+.selected {
+  stroke: rgb(10, 34, 78);
+}
+
+.react-flow__edge.selected .react-flow__edge-path {
+  stroke: rgb(18, 88, 219);
+}
+
+.MuiChip-label {
+  white-space: break-spaces;
+  margin: 10px;
+}
+
+.MuiAccordionDetails-root {
+  padding: 4px;
+}
+
+.Accordions-sidebar {
+  margin-left: 2px;
+  border-radius: 10px 0px 0px 10px;
+}
+#add-nodes-accordion {
+  width: 100%;
+  /* margin-left: 2px; */
+  border-radius: 10px 0px 0px 10px;
+}

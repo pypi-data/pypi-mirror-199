@@ -1,0 +1,108 @@
+stages:
+  - style
+  - build
+  - deploy
+
+### Jobs templates ###
+
+.base:
+  image: "docker-registry.esrf.fr/dau/ewoks:python_3.9_node_12"
+  tags:
+    - linux
+  only:
+    refs:
+      - main
+      - merge_requests
+  timeout: 10m
+
+.style:
+  stage: style
+  extends: .base
+
+.build:
+  stage: build
+  extends: .base
+  only:
+    refs:
+      - main
+
+.deploy:
+  stage: deploy
+  extends: .base
+  only:
+    refs:
+      - main
+
+### Required jobs ###
+
+flake8:
+  extends: .style
+  before_script:
+    - python3 -m pip install flake8
+  script:
+    - flake8
+
+black:
+  extends: .style
+  before_script:
+    - python3 -m pip install black
+  script:
+    - LC_ALL=C.UTF-8 black --check --safe .
+
+lint:
+  extends: .style
+  before_script:
+    # - npx -y browserslist@latest --update-db
+    - npm install -y
+  script:
+    - npm run lint
+
+# build:
+#   extends: .build
+#   stage: build
+#   script:
+#     # - npx -y browserslist@latest --update-db
+#     - python3 --version
+#     - python3 -m pip install --upgrade pip
+#     - python3 -m pip install --upgrade setuptools
+#     - npm install -y
+#     - npm run build
+#     - python3 setup.py sdist
+#     - mv dist sdist
+#   after_script:
+#     - ls -Rl sdist
+#   artifacts:
+#     paths:
+#       - sdist/
+#     when: on_success
+#     expire_in: 2h
+
+pages:
+  stage: deploy
+  extends: .base
+  script:
+    - npm install
+    - npm run build
+    - rm -rf public
+    - mv build public
+  variables:
+    REACT_APP_SERVER_URL: https://bosquet.silx.org/ewoks/
+  artifacts:
+    paths:
+      - public
+  only:
+    - 64-restructuring-files-in-src
+
+assets:
+  extends: .deploy
+  script:
+    - rm -rf assets
+    - mkdir assets
+    - mv sdist/* assets/
+  after_script:
+    - ls -Rl assets
+  artifacts:
+    paths:
+      - assets
+    when: on_success
+    expire_in: 2h

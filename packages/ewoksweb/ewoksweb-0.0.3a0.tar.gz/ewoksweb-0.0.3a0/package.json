@@ -1,0 +1,87 @@
+{
+  "name": "ewoks-web",
+  "homepage": ".",
+  "private": true,
+  "version": "0.0.1",
+  "description": "Visualizer for NetworkX task graphs",
+  "author": "European Synchrotron Radiation Facility",
+  "license": "MIT",
+  "engines": {
+    "node": "16.18.0",
+    "npm": "6.x"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "postbuild": "node postbuild.js",
+    "test": "react-scripts test",
+    "lint": "run-p lint:*",
+    "lint:eslint": "eslint \"**/*.{ts,tsx,js,jsx}\" --max-warnings=0",
+    "lint:tsc": "tsc --noEmit",
+    "lint:prettier": "prettier --check .",
+    "analyze": "npx source-map-explorer 'build/static/js/*.js'"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "@material-ui/icons": "^4.11.2",
+    "@material-ui/lab": "^4.0.0-alpha.60",
+    "axios": "^0.23.0",
+    "clsx": "^1.1.1",
+    "dagre": "^0.8.5",
+    "normalize.css": "^8.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.4",
+    "react-error-boundary": "^3.1.4",
+    "react-flow-renderer": "^10.1.0",
+    "react-json-view": "latest",
+    "react-reflex": "^4.0.9",
+    "react-rnd": "^10.3.4",
+    "react-router-dom": "^6.3.0",
+    "react-use": "^17.3.1",
+    "socket.io-client": "^4.4.1",
+    "zustand": "^3.5.10"
+  },
+  "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/react": "^11.2.5",
+    "@testing-library/user-event": "^12.8.3",
+    "@types/jest": "^26.0.21",
+    "@types/node": "^12.20.6",
+    "@types/react": "^17.0.3",
+    "@types/react-dom": "^17.0.3",
+    "@typescript-eslint/eslint-plugin": "4.18.0",
+    "@typescript-eslint/parser": "4.18.0",
+    "cypress": "^11.0.0",
+    "eslint": "^7.22.0",
+    "eslint-config-galex": "2.13.4",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest": "24.3.2",
+    "eslint-plugin-jsx-a11y": "6.4.1",
+    "eslint-plugin-react": "7.22.0",
+    "eslint-plugin-react-hooks": "4.2.0",
+    "eslint-plugin-testing-library": "3.10.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "react-app-polyfill": "^2.0.0",
+    "react-scripts": "4.0.3",
+    "typescript": "^4.2.3"
+  },
+  "jest": {
+    "restoreMocks": true
+  },
+  "browserslist": {
+    "production": [
+      ">1%",
+      "Firefox 60",
+      "Firefox ESR",
+      "not ie 11",
+      "not op_mini all",
+      "not dead"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version"
+    ]
+  }
+}

@@ -1,0 +1,89 @@
+.icons {
+}
+
+/* TODO: check if all style is used with the new interface */
+.dndflow {
+  /* flex-direction: column; */
+  /* display: flex; */
+  height: 100%;
+  flex-wrap: wrap;
+  margin-top: 80px;
+  /* background-color: DodgerBlue; */
+}
+
+.dndflow aside {
+  border-right: 1px solid #eee;
+  /* padding: 15px 10px; */
+  font-size: 12px;
+  background: #fcfcfc;
+}
+
+.dndflow aside .description {
+  margin-bottom: 10px;
+}
+
+.dndflow .dndnode {
+  margin: 4px;
+  height: 80px;
+  width: 60px;
+  /* padding: 4px; */
+  /* border: 1px solid #1a192b;
+  border-radius: 2px; */
+  margin-bottom: 10px;
+  display: inline-grid;
+  /* flex-direction: row;
+  justify-content: center;
+  align-items: center; */
+  cursor: grab;
+  /* TODO: use scss */
+  /* & .selected {
+    border: 1px solid #1a192b;
+  } */
+}
+
+.selectedTask {
+  border: 2px solid #3f51b5;
+  border-radius: 10px;
+}
+
+.dndflow .dndnode.input {
+  border: 1px solid #0041d0;
+  border-radius: 2px;
+}
+
+.dndflow .dndnode.output {
+  border: 1px solid #ff0072;
+  border-radius: 2px;
+}
+
+.dndflow .reactflow-wrapper {
+  flex-grow: 1;
+  /* height: 100%; */
+}
+
+.dndflow .dndnode.default {
+  border: 1px solid #6d65e2;
+  border-radius: 2px;
+}
+
+.dndflow .dndnode.graph {
+  margin-right: 10px;
+  border: 1px solid #1b9439;
+  border-radius: 2px;
+}
+
+@media screen and (min-width: 768px) {
+  /* .dndflow {
+    flex-direction: row;
+  } */
+
+  .dndflow aside {
+    width: 20%;
+    max-width: 250px;
+  }
+}
+
+.MuiTableCell-root {
+  padding: 1px;
+  width: 98%;
+}
