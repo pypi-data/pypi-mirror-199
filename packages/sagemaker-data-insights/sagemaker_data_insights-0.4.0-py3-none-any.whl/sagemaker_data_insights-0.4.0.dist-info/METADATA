@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: sagemaker-data-insights
+Version: 0.4.0
+Summary: Data Insights Library for Amazon SageMaker.
+Home-page: https://github.com/aws/sagemaker-data-insights/
+Author: Amazon Web Services
+License: AWS Customer Agreement
+Keywords: ML Amazon AWS SageMaker Data Insights
+Classifier: Development Status :: 4 - Beta
+Requires-Python: >=3.7
+License-File: LICENSE
+License-File: NOTICE
+Requires-Dist: numpy (>=1.21.6)
+Requires-Dist: psutil (>=5.6.7)
+Requires-Dist: pandas (>=1.1.4)
+Requires-Dist: scikit-learn (>=0.22.1)
+Requires-Dist: scipy (>=1.4.1)
+Requires-Dist: sagemaker-scikit-learn-extension (==2.5.0)
+Provides-Extra: spark
+Requires-Dist: pyspark (==3.2.1) ; extra == 'spark'
+Requires-Dist: pydeequ (==1.0.1) ; extra == 'spark'
+Provides-Extra: test
+Requires-Dist: tox ; extra == 'test'
+Requires-Dist: tox-conda (==0.7.3) ; extra == 'test'
+Requires-Dist: pytest ; extra == 'test'
+Requires-Dist: coverage ; extra == 'test'
+Requires-Dist: mock ; extra == 'test'
+Requires-Dist: altair ; extra == 'test'
+
+sagemaker-data-insights is a package producing ML relevant statistics regarding the data
