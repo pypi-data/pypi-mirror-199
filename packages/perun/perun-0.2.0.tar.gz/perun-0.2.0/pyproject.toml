@@ -1,0 +1,76 @@
+[tool.poetry]
+name = "perun"
+version = "0.2.0"
+description = ""
+authors = ["Gutiérrez Hermosillo Muriedas, Juan Pedro <juanpedroghm@gmail.com>"]
+license = "BSD-3-Clause"
+readme = "README.md"
+homepage = "https://github.com/Helmholtz-AI-Energy/perun"
+
+[tool.poetry.scripts]
+perun = "perun.cli:main"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+pynvml = "*"
+click = "*"
+py-cpuinfo = "*"
+PyYAML = "*"
+numpy = "*"
+psutil = "*"
+h5py = "*"
+prettytable = "^3.6.0"
+pandas = "^1.5.3"
+typing-extensions = "^4.5.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+flake8 = "*"
+mypy = "*"
+black = "*"
+pre-commit = "*"
+pytest-cov = "*"
+
+[tool.poetry.group.mpi]
+optional = true
+
+[tool.poetry.group.mpi.dependencies]
+mpi4py = "*"
+
+[tool.poetry.group.horeka]
+optional = true
+
+[tool.poetry.group.horeka.dependencies]
+influxdb-client = "*"
+pandas = "*"
+
+[tool.semantic_release]
+version_variable = [
+    "perun/__init__.py:__version__",
+    "pyproject.toml:version"
+]
+branch = "release"
+upload_to_pypi = true
+upload_to_release = true
+commit_message = "{version} [skip ci]"
+build_command = "pip install poetry && poetry build"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.isort]
+skip = ["perun/__init__.py"]
+known_third_party = ["click", "cpuinfo", "h5py", "influxdb_client", "numpy", "pandas", "prettytable", "psutil", "pynvml", "pytest", "typing_extensions"]
+profile = "black"
+
+[tool.pydocstyle]
+match = '(test_)!.*\.py'
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+exclude = [
+    'tests/**/*'
+]
