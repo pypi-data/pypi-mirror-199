@@ -1,0 +1,31 @@
+mutation createTestPlanWithTest ($summary: String!, $project_key: String!, $test_ids: [String]!) {
+    createTestPlan(
+        testIssueIds: $test_ids
+        jira: {
+            fields: {
+                summary: $summary,
+                project: {key: $project_key}
+            }
+        }
+    ) {
+        testPlan {
+            issueId
+            jira(fields: ["key"])
+            tests(limit: 10) {
+                    total
+                    start
+                    limit
+                    results {
+                        issueId
+                        jira(fields: ["key"])
+                        projectId
+                        testType {
+                            name
+                            kind
+                        }
+                    }
+                }
+        }
+        warnings
+    }
+}

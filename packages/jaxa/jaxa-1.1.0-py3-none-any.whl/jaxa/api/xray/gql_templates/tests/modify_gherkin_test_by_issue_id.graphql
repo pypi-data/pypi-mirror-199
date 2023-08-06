@@ -1,0 +1,9 @@
+mutation modifyGherkinTestByIssueId ($issue_id: String!, $gherkin: String!) {
+    updateGherkinTestDefinition(
+        issueId: "$issue_id",
+        gherkin: "$gherkin" )
+        {
+        issueId
+        gherkin
+    }
+}

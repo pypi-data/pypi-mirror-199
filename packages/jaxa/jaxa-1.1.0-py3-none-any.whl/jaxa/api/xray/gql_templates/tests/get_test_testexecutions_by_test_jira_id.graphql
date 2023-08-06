@@ -1,0 +1,32 @@
+query getTestExecutionsByTestJiraId ($jira_id: String!) {
+  getTests(jql: $jira_id, limit: 10) {
+    total
+    start
+    limit
+    results {
+      issueId
+      jira(fields: ["key"])
+      projectId
+      testExecutions(limit: 100) {
+        total
+        start
+        limit
+        results {
+          issueId
+          projectId
+          testEnvironments
+          testPlans(limit: 50) {
+            total
+            start
+            limit
+            results {
+              issueId
+              projectId
+              jira(fields: ["key"])
+            }
+          }
+        }
+      }
+    }
+  }
+}

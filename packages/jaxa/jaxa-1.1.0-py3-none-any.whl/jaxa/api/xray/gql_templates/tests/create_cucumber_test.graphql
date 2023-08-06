@@ -1,0 +1,19 @@
+mutation createCucumberTest($project_id: String!, $summary: String!, $gherkin: String!) {
+    createTest(
+        testType: { name: "Cucumber" },
+        gherkin: $gherkin,
+        jira: {
+            fields: { summary:$summary, project: {key: $project_id} }
+        }
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            gherkin
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}

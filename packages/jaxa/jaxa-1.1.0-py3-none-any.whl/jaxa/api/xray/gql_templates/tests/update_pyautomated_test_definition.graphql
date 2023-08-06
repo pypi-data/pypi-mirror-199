@@ -1,0 +1,6 @@
+mutation updateUnstructuredTestDefinition($issue_id: String!, $definition: String!){
+    updateUnstructuredTestDefinition(issueId: $issue_id, unstructured: $definition ) {
+        issueId
+        unstructured
+    }
+}
