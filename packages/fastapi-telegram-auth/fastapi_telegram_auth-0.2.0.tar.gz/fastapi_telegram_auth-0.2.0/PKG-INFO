@@ -1,0 +1,42 @@
+Metadata-Version: 2.1
+Name: fastapi-telegram-auth
+Version: 0.2.0
+Summary: FastAPI router for fast Telegram auth integration
+Home-page: https://github.com/pylakey/fastapi_telegram_auth
+License: MIT
+Author: pylakey
+Author-email: pylakey@protonmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Framework :: AsyncIO
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Dist: fastapi (>=0.92.0,<=0.95.0)
+Requires-Dist: pydantic (>=1.10.5,<2.0.0)
+Project-URL: Repository, https://github.com/pylakey/fastapi_telegram_auth
+Description-Content-Type: text/markdown
+
+# fastapi_telegram_auth - FastAPI router for fast Telegram auth integration
+
+[![PyPI version shields.io](https://img.shields.io/pypi/v/fastapi_telegram_auth.svg)](https://pypi.python.org/pypi/fastapi_telegram_auth/)
+[![PyPI pyversions](https://img.shields.io/pypi/pyversions/fastapi_telegram_auth.svg)](https://pypi.python.org/pypi/fastapi_telegram_auth/)
+[![PyPI license](https://img.shields.io/pypi/l/fastapi_telegram_auth.svg)](https://pypi.python.org/pypi/fastapi_telegram_auth/)
+
+FastAPI router for fast Telegram auth integration
+
+## Examples
+
+### Basic example
+
+```python
+# TODO: ...
+```
+
+## LICENSE
+
+This project is licensed under the terms of the [MIT](https://github.com/pylakey/aiotdlib/blob/master/LICENSE) license.
+
