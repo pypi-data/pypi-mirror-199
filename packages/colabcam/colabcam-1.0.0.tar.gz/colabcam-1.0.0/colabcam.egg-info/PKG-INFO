@@ -1,0 +1,24 @@
+Metadata-Version: 1.1
+Name: colabcam
+Version: 1.0.0
+Summary: take picture from cam in colab
+Home-page: https://pypi.org/project/colabcam
+Author: KuoYuan Li
+Author-email: funny4875@gmail.com
+License: UNKNOWN
+Description: 
+        # Author:KuoYuan Li  
+        ex1:
+        '''python
+        import colabcam  
+        colabcam.take_photo(filename)  
+        '''  
+        
+Keywords: colab,webcam,take_photo,take_img,record_video_timed
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
