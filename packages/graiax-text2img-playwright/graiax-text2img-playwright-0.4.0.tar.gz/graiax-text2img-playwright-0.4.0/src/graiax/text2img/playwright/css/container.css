@@ -1,0 +1,19 @@
+.container-block {
+  margin: 16px 0;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 16px 16px 8px;
+  line-height: 24px;
+  font-size: 14px;
+  overflow-wrap: break-word;
+  color: rgba(60, 60, 60, .7);
+}
+.container-block p:first-child{
+    margin: 0;
+}
+.container-block p {
+    margin: 8px 0;
+}
+.container-block-title {
+    font-weight: 700;
+}
