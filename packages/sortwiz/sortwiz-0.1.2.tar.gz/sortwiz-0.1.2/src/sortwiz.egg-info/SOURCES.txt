@@ -1,0 +1,17 @@
+LICENSE
+README.md
+pyproject.toml
+setup.py
+src/sortwiz/__init__.py
+src/sortwiz/__main__.py
+src/sortwiz/base_sort.py
+src/sortwiz/bubble_sort.py
+src/sortwiz/errors.py
+src/sortwiz/sorting.py
+src/sortwiz.egg-info/PKG-INFO
+src/sortwiz.egg-info/SOURCES.txt
+src/sortwiz.egg-info/dependency_links.txt
+src/sortwiz.egg-info/entry_points.txt
+src/sortwiz.egg-info/top_level.txt
+test/test_base_sort.py
+test/test_bubble_sort.py
