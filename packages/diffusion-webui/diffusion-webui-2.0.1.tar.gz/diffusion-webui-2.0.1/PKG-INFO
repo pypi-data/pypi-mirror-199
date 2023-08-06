@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: diffusion-webui
+Version: 2.0.1
+Summary: PyTorch implementation of Diffusion Models
+Home-page: https://github.com/kadirnar/diffusion-webui
+Author: kadirnar
+License: Open RAIL++-M
+Keywords: diffusion,stable diffusion,controlnet,webui,image2image,text2image,inpaint,canny,depth,hed,mlsd,pose,seg,scribble
+Platform: UNKNOWN
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Operating System :: OS Independent
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Education
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+<h2>
+  Stable Diffusion + ControlNet + Keras Diffusion WebUI
+</h2>
+
+<a href="https://huggingface.co/spaces/ArtGAN/Stable-Diffusion-ControlNet-WebUI"><img src="https://img.shields.io/badge/%20HuggingFace%20-Demo-blue.svg" alt="HuggingFace Spaces"></a>
+
+This repo is a Stable Diffusion(v1.5, v2.0 and v2.1) + ControlNet + Keras Diffusion WebUI implementation.
+
+### Installation
+```bash
+git clone https://github.com/kadirnar/Stable-Diffusion-ControlNet-WebUI
+cd Stable-Diffusion-ControlNet-WebUI
+pip install -r requirements.txt
+```
+### Usage
+```python
+python3 app.py
+```
+
+
