@@ -1,0 +1,16 @@
+{% extends change_form_template|default:"admin/cms/page/plugin/change_form.html" %}
+{% load i18n static %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="https://api.mapy.cz/loader.js"></script>
+    <script src="{% static "djangocms_mapycz_markers/js/admin-form.js" %}" ></script>
+{% endblock %}
+
+{% block content %}
+    <p>
+        {% trans "Write the address and choose from the options offered." %}
+        {% trans "This selection sets the location position." %}
+    </p>
+    {{ block.super }}
+{% endblock %}

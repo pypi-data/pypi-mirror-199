@@ -1,0 +1,4 @@
+include VERSION
+recursive-include djangocms_mapycz_markers/locale *
+recursive-include djangocms_mapycz_markers/static *
+recursive-include djangocms_mapycz_markers/templates *

@@ -1,0 +1,26 @@
+{% load l10n static cms_tags sekizai_tags %}
+
+{% addtoblock "base_js" %}
+    <script src="https://api.mapy.cz/loader.js"></script>
+    {# Caution! Add djangocms_mapycz_markers.urls into site urls. For more see docstring in djangocms_mapycz_markers/urls.py  #}
+    <script src="{% url "mapycz_markers_js" language_code=LANGUAGE_CODE %}"></script>
+    <script src="{% static "djangocms_mapycz_markers/js/map.js" %}" data-mapid="{{ instance.pk|unlocalize }}"></script>
+{% endaddtoblock %}
+
+<div id="mapycz-markers-{{ instance.pk|unlocalize }}"
+    data-map_width="{{ instance.map_width|default_if_none:""|unlocalize }}"
+    data-map_height="{{ instance.map_height|default_if_none:""|unlocalize }}"
+    data-map_latitude="{{ instance.map_latitude|unlocalize }}"
+    data-map_longitude="{{ instance.map_longitude|unlocalize }}"
+    data-map_zoom="{{ instance.map_zoom|unlocalize }}"
+    data-controls="{{ instance.controls }}"
+    data-no_zoom="{{ instance.no_zoom }}"
+    data-clusterer="{{ instance.clusterer }}"
+    {% if instance.map_width or instance.map_height %}
+        style="{% if instance.map_width %}width: {{ instance.map_width }};{% endif %}{% if instance.map_height %} height: {{ instance.map_height }};{% endif %}"
+    {% endif %}
+    >
+    {% for plugin in instance.child_plugin_instances %}
+        {% render_plugin plugin %}
+    {% endfor %}
+</div>

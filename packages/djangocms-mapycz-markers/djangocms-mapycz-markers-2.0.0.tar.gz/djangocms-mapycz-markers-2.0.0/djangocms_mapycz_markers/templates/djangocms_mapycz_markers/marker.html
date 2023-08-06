@@ -1,0 +1,15 @@
+{% load l10n %}
+<marker
+    data-longitude="{{ instance.longitude|unlocalize }}"
+    data-latitude="{{ instance.latitude|unlocalize }}"
+    data-title="{{ instance.title|default_if_none:"" }}"
+    data-address="{{ instance.address|default_if_none:"" }}"
+    data-card_width="{{ instance.card_width|default_if_none:""|unlocalize }}"
+    data-card_heigth="{{ instance.card_heigth|default_if_none:""|unlocalize }}"
+    data-card_header="{{ instance.card_header|default_if_none:"" }}"
+    data-card_body="{{ instance.card_body|default_if_none:"" }}"
+    data-card_footer="{{ instance.card_footer|default_if_none:"" }}"
+    data-img_path="{{ instance.img_path|default_if_none:"" }}"
+    data-img_styles="{{ instance.img_styles|default_if_none:"" }}"
+    data-img_text="{{ instance.img_text|default_if_none:"" }}"
+></marker>

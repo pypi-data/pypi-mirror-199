@@ -1,0 +1,187 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: djangocms_mapycz_markers\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2022-12-21 16:39+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Zdeněk Böhm <zdenek.bohm@nic.cz>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+msgid "Add Markers into Mapy.cz"
+msgstr "Přidat znakčy do Mapy.cz"
+
+msgid "Address"
+msgstr "Adresa"
+
+msgid "Card body"
+msgstr "Tělo vizitky"
+
+msgid "Card footer"
+msgstr "Zápatí vizitky"
+
+msgid "Card header"
+msgstr "Záhlaví vizitky"
+
+msgid "Card heigth"
+msgstr "Výška vizitky"
+
+msgid "Card width"
+msgstr "Šířka vizitky"
+
+msgid "Clusterer"
+msgstr "Shluky značek"
+
+msgid "Command cannot be used on this data type."
+msgstr "Pro tento typ dat nelze příkaz použít."
+
+msgid "Connect address with the map"
+msgstr "Propojit adresu s mapou"
+
+msgid "Disable scrolling zoom by mouse wheel."
+msgstr "Deaktivovat lupu nastavovanou kolečkem myši."
+
+msgid "Display map controls - zoom, map slider."
+msgstr "Zobrazit ovladače mapy - lupa, posuvník."
+
+msgid "Element name for Card footer."
+msgstr "Jméno pole pro zápatí vizitky."
+
+msgid "Element name for Card header."
+msgstr "Jméno pole pro záhlaví vizitky."
+
+msgid "Element name for Street and number, city."
+msgstr "Jméno pole pro ulici, číslo a město."
+
+msgid "Element name for geographical latitude."
+msgstr "Jméno pole pro zeměpisnou šířku."
+
+msgid "Element name for geographical longitude."
+msgstr "Jméno pole pro zeměpisnou délku."
+
+msgid "Element name for icon title."
+msgstr "Jméno pole pro titulek ikony."
+
+msgid "Element names for Card body."
+msgstr "Jméno pole pro tělo vizitky."
+
+msgid "Enable Clusterer for display cluster of markers."
+msgstr "Aktivovat shlukování značek do kruhů."
+
+msgid "For example 100%"
+msgstr "Například 100%"
+
+msgid "For example 400px"
+msgstr "Například 400px"
+
+msgid "Geographical latitude."
+msgstr "Zeměpisná šířka."
+
+msgid "Geographical longitude."
+msgstr "Zeměpisná délka."
+
+msgid "Icon"
+msgstr "Ikona"
+
+msgid ""
+"Icon styles in JSON. Example: {\"position\": \"absolute\", \"left\": 0, \"top"
+"\": \"2px\", \"textAlign\": \"center\", \"width\": \"22px\", \"color\": "
+"\"white\", \"fontWeight\": \"bold\"}"
+msgstr ""
+"Styly icony v JSON. Example: {\"position\": \"absolute\", \"left\": 0, \"top"
+"\": \"2px\", \"textAlign\": \"center\", \"width\": \"22px\", \"color\": "
+"\"white\", \"fontWeight\": \"bold\"}"
+
+msgid "Icon text"
+msgstr "Text ikony"
+
+msgid "Icon text."
+msgstr "Text ikony."
+
+msgid "Icon title"
+msgstr "Titulek ikony"
+
+msgid "Image styles"
+msgstr "Styl obrázku"
+
+msgid "Latitude"
+msgstr "Zeměpisná šířka"
+
+msgid "Longitude"
+msgstr "Zeměpisná délka"
+
+msgid "Map"
+msgstr "Mapa"
+
+msgid "Map Latitude"
+msgstr "Zeměpisná šířka"
+
+msgid "Map Longitude"
+msgstr "Zeměpisná délka"
+
+msgid "Map Zoom"
+msgstr "Lupa mapy"
+
+msgid "Map controls"
+msgstr "Ovladače mapy"
+
+msgid "Map height"
+msgstr "Výška mapy"
+
+msgid "Map width"
+msgstr "Šířka mapy"
+
+msgid "Mapy.cz"
+msgstr "Mapy.cz"
+
+msgid "Mapy.cz Markers"
+msgstr "Mapy.cz Markers"
+
+msgid "Marker"
+msgstr "Značka"
+
+#, python-format
+msgid "Marker \"%s\" already exists."
+msgstr "Značka \"%s\" již existuje."
+
+#, python-format
+msgid "Marker[%(pk)d] created \"%(address)s\"."
+msgstr "Značka[%(pk)d] vytvořena \"%(address)s\"."
+
+msgid "Name of marker."
+msgstr "Název značky."
+
+msgid "No zoom"
+msgstr "Ne lupa"
+
+#, python-format
+msgid "Page <a href=\"%(href)s\" target=\"_top\">%(href)s</a> published."
+msgstr "Stránka <a href=\"%(href)s\" target=\"_top\">%(href)s</a> zveřejněna."
+
+msgid "Street and number, city."
+msgstr "Ulice a číslo, město."
+
+msgid ""
+"The value can be composed of multiple fields. Enter their names separated by "
+"spaces."
+msgstr ""
+"Hodnota může být složena z více polí. Zadejte jejich názvy oddělené mezerami."
+
+msgid "This selection sets the location position."
+msgstr "Výběrem se nastaví poloha vybraného místa."
+
+msgid "Title"
+msgstr "Titulek"
+
+msgid "URL to the icon image or simply one of [red, yellow, blue]."
+msgstr "URL obrázku ikony nebo jednoduše jeden z [red, yellow, blue]."
+
+msgid "Write the address and choose from the options offered."
+msgstr "Napište adresu a vyberze z nabízených možností."
+
+msgid "at"
+msgstr "v"

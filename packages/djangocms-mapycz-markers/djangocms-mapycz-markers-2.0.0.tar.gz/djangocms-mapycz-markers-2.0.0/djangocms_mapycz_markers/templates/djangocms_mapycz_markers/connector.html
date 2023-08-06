@@ -1,0 +1,12 @@
+{% load static sekizai_tags %}
+
+{% addtoblock "base_js" %}
+    <script src="https://api.mapy.cz/loader.js"></script>
+    <script src="{% static "djangocms_mapycz_markers/js/connector.js" %}" ></script>
+{% endaddtoblock %}
+
+<mapycz-suggest-address
+    data-address="{{ instance.address }}"
+    data-latitude="{{ instance.latitude|default_if_none:"" }}"
+    data-longitude="{{ instance.longitude|default_if_none:"" }}"
+></mapycz-suggest-address>
