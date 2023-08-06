@@ -1,0 +1,65 @@
+# expressGPT
+
+expressGPT is a handy utility that allows you to run ChatGPT prompts in any window or application just by typing a simple keyword sequence. It provides a quick and convenient way to get assistance from ChatGPT, whether you're drafting an email, writing code, or even coming up with a flirty message for your partner.
+
+## Features
+
+- **Universal ChatGPT access**: Use ChatGPT in any window or application by typing `gpt:` followed by your query and ending the query with `:gpt`.
+- **Versatile use cases**: Get help with various tasks, such as drafting emails in your mail app, writing code in a code editor, generating jokes, and more.
+
+
+## Setup
+
+You need to add your openAI API key and the modelname to the evironment variable:
+
+#### Setting Environment Variables
+
+To use expressGPT, you need to set up the following environment variables:
+
+- `API_KEY_OPENAI`: Your OpenAI API key
+- `CHATGPT_MODEL`: The ChatGPT model name for the [model](https://platform.openai.com/docs/models/gpt-3-5) you want to use (e.g., `gpt-3.5-turbo`)
+
+It is recommended to set the variables permanently for ease of use instead of setting them temporary.
+
+You can follow [this](https://kb.wisc.edu/cae/page.php?id=24500) tutorial to setup the environment variable in Windows. 
+Follow [this](https://devconnected.com/set-environment-variable-bash-how-to/#:~:text=In%20order%20to%20set%20a,to%20have%20this%20environment%20variable.) tutorial for setting the environment variable in Linux.
+For Mac OS use [this](https://phoenixnap.com/kb/set-environment-variable-mac) .
+
+
+## Installation
+
+You can install expressGPT using pip:
+
+```bash
+pip install expressgpt
+```
+
+## Usage
+
+Open a terminal and type:
+
+```bash
+expressgpt
+```
+
+The program will run and to use ChatGPT in any window or application, simply type `gpt:` followed by your query and end the query with `:gpt`. expressGPT will replace your query with ChatGPT's response.
+For example, if you're in a text editor and you type:
+```
+gpt: Who was the winner of the first IPL season :gpt
+```
+expressGPT will replace the query with ChatGPT's response, like:
+```
+Rajasthan Royal won the first IPL season. 
+```
+
+![](https://i.ibb.co/6PdsG2C/express-GPT.gif)
+
+## Support
+If you find expressGPT helpful and want to show your appreciation, consider buying me a cup of coffee:
+[![Buy me a coffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/DigantPatel)
+Your support is greatly appreciated!
+
+Thanks,
+
+Digant Patel 
+[www.digantpatel.com](http://digantpatel.com)
