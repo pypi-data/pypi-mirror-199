@@ -1,0 +1,175 @@
+Metadata-Version: 2.1
+Name: openalexnet
+Version: 0.1.2
+Summary: Python library to load get networks from the OpenAlex API
+Home-page: https://github.com/filipinascimento/openalexnet
+Author: Filipi N. Silva
+Author-email: filipinascimento@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+<a target="_blank" href="https://colab.research.google.com/github/filipinascimento/openalexnet">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+# OpenAlex Networks (openalexnet)
+OpenAlex Networks is a helper library and standalone command-line application to process and obtain data from the [OpenAlex](https://openalex.org) dataset via API. It also provides functionality to generate citation and coauthorship networks from queries.
+
+<img width="1054" alt="image" src="https://user-images.githubusercontent.com/600989/214225803-86be86b6-e1fe-4c4a-babf-1fce518bcb9a.png">
+
+
+
+## [Installation](#installation)
+
+Install using pip
+
+```bash
+pip install openalexnet
+```
+
+or from source:
+```bash
+pip git+https://github.com/filipinascimento/openalexnet.git
+```
+
+## [Usage as command-line application](#usage-as-command-line-application)
+After installing openalexnet, you can use the command:
+```bash
+python -m openalexnet
+```
+or simply 
+```bash
+openalexnet
+```
+This should print a help message with the available commands and options.
+
+You can make your first query by using:
+```bash
+openalexnet -t works -f "author.id:A2420755856,is_paratext:false,type:journal-article" -s "complex" -r "cited_by_count:desc" -o works.jsonl -c citation_network.gml -a coauthorship_network.gml
+```
+This will get all the journal articles from H. Eugene Stanley (A2420755856) with the word "complex" and sorted by the number of citations (in descending order).
+
+For more details about the interface, check the following sections.
+
+### [Querying the OpenAlex API](#querying-the-openalex-api)
+The queries have four main parameters:
+ - `entitytype` (`-t`): Type of entity to be retrieved from the OpenAlex API. Can be one of the following: `works`, `institutions`, `authors`, `concepts` or `venues`
+ - `filter` (`-f`): Comma-separated filter entries formatted as `<key>:<value>` to be used in the OpenAlex API call. Only results passing the filter will be retrieved. See https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/filter-entity-lists for more information. Defaults to `""` (or no filter). Example: `-f "type:journal-article,author.id:A2420755856"`.
+ - `search` (`-s`): Search string to be used in the OpenAlex API call. Only results matching the search string (in the title, abstract, or fulltext) will be retrieved. See https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/search-entities for more information. Defaults to `""` (or no search). Example: `-s "complex networks"`.
+ - `sort` (`-r`): Comma-separated sort entries formatted as `<key>[:desc]` to be used in the OpenAlex API call. See https://docs.openalex.org/how-to-use-the-api/get-lists-of-entities/sort-entity-lists for more information. Defaults to `""` (or no sort). Example: `-r "cited_by_count:desc"`.
+
+In addition to the query parameters, the user can provide the maximum number of entities to be retrieved by using the parameter `maxentities` (`-m`), set to 10000 by default. Use -1 to retrieve all entities. Example: `-m 100` or `-m -1`.
+
+Note that OpenAlex API recommends downloading and processing the snapshots of the dataset instead of using the API if you plan to download a large chunk of the complete dataset.
+
+### [JSON Lines output](#json-lines-output)
+The output can be saved to a JSON Lines file (each line containing a JSON entry) by passing the argument `--outputfile` (`-o`). Example: `-o works.jsonl`.
+
+### [Aggregating queries](#aggregating-queries)
+It is also possible to combine several queries by providing a `.csv` or `.tsv` file with the queries. The file should have the following columns: `filter`, `search`, `sort` and `maxentities`. Missing columns will be filled with the default values. The output will have all the aggregated queries. Example: `openalexnet -i queries.csv` for a file `queries.csv` with the following content:
+```csv
+filter,search,sort,maximum_entities
+"type:journal-article","""complex networks""","cited_by_count:desc",10000
+"type:journal-article","""network science""","cited_by_count:desc",10000
+```
+This should retrieve the 10000 most cited works with the terms "complex networks" or "network science" using two different queries. The folder `Examples/query_files/` provides more examples of query files.
+
+### [Generating networks](#generating-networks)
+The command-line application can also generate citation and coauthorship networks from the retrieved entities. The networks can be saved in 3 different formats: `.edgelist`, `.gml`, or `.xnet`.
+The citation network can be generated by providing the argument `--citationfile` (`-c`), with the parameter being the file path where the network should be saved. The extension of the file will determine the format. Example: `-c citation_network.gml`. Similarly, the coauthorship network can be generated by providing the argument `--coauthorfile` (`-a`). Example: `-c citation_network.gml -a coauthorship_network.gml`.
+
+Attributes of works can be selected to be exported in the network by providing the argument `--keptattributes` (`-k`). The attributes should be comma-separated. Example: `-n "id,title,doi"`.
+
+By default the following properties are exported in the network:
+```
+id, doi, title, display_name, publication_year, publication_date, type, authorships, concepts, host_venue
+```
+
+The parameter --ignoreattributes (`-g`) can be used to ignore some of the default attributes. Example: `-i "authorships,concepts,host_venue"`.
+
+For the case of coauthorship networks, the user can provide two extra parameters:
+ - `--no_simplenetworks` (`-n`): If enabled, the coauthorship network edges will not be aggregated, resulting in multiple edges. The default is disabled.
+ - `--countweights` (`-w`) If enabled the coauthorship network will have non-normalized weights, i.e., the contribution of a paper to a connection weight is 1.0, otherwise the contribution is the inverse of the number of authors in the paper. The default is disabled.
+
+ if `.edgelist` format is used, extra `csv` files with the nodes and edges attributes will be generated with the same name as the network file, but with the extension `_nodes.csv` and `_edges.csv`.
+
+### [Loading from saved JSON Lines files](#loading-from-saved-json-lines-files)
+The command-line application can also load the JSON Lines files generated by the API and generate the networks. This can be done by providing the argument `--inputfile` (`-i`). Example: `-i works.jsonl -c citation_network.gml -a coauthorship_network.gml`.
+
+### [Polite mode](#polite-mode)
+Finally, users can use the polite mode by providing an email address using `--email` (`-e`). See https://docs.openalex.org/how-to-use-the-api/ for more information.
+
+### [Example usage](#example-usage)
+To obtain the works with the term`"complex networks"` (in abstracts, titles or fulltexts) sorted by the number of citations. This also generates gml files for the citation and coauthorship networks.
+```bash
+openalexnet -t works -f "type:journal-article" -s "complex networks" -r "cited_by_count:desc" -o works.jsonl -c citation_network.gml -a coauthorship_network.gml
+```
+Note that because `maxentities` is not provided, only the 10000 most cited works will be obtained.
+
+To load the saved works.jsonl file and generate the networks:
+```bash
+openalexnet -t works -i works.jsonl -c citation_network.edgelist -a coauthorship_network.edgelist
+```
+
+Use a query file to retrieve works and save them to a JSON Lines file:
+```bash
+openalexnet -t works -q query.csv -o works.jsonl
+```
+
+## [Python Library Usage](#python-library-usage)
+
+Obtaining works from a specific author:
+
+```python
+    filterData = {
+        "author.id": "A2420755856", # Eugene H. Stanley
+        "is_paratext": "false",  # Only works, no paratexts (https://en.wikipedia.org/wiki/Paratext)
+        "type": "journal-article", # Only journal articles
+        "from_publication_date": "2000-01-01" # Published after 2000
+    }
+
+    entityType = "works"
+
+    openalex = oanet.OpenAlexAPI() # add your email to accelerate the API calls. See https://openalex.org/api
+
+    entities = openalex.getEntities(entityType, filter=filterData)
+
+    entitiesList = []
+    for entity in tqdm(entities,desc="Retrieving entries"):
+        entitiesList.append(entity)
+
+    # Saving data as json lines (each line is a json object)
+    oanet.saveJSONLines(entitiesList,"works_filtered.jsonl")
+```
+
+Check `Examples` folder for more examples.
+
+## [Coming soon](#coming-soon)
+ - Full API documentation
+    - More examples
+ - Unit tests
+ - Group count
+
+## Google Colaboratory Demo/Tutorial
+You can access a Google Colab demo and tutorial by using the following link.
+<a target="_blank" href="https://colab.research.google.com/github/filipinascimento/openalexnet">
+  <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"/>
+</a>
+
+## [Thanks](#thanks)
+Remember to cite the OpenAlex work:
+```bib
+@article{priem2022openalex,
+  title={OpenAlex: A fully-open index of scholarly works, authors, venues, institutions, and concepts},
+  author={Priem, Jason and Piwowar, Heather and Orr, Richard},
+  journal={arXiv preprint arXiv:2205.01833},
+  year={2022}
+}
+```
+If you use this code, please give it a star and share with your coleagues. Also stay tuned as I plan to develop a web-based interface for dynamic visualization of openalex networks. Check out [Helios-Web](http://github.com/filipinascimento/helios-web) to see the development progress of our network visualization tools.
+
+
