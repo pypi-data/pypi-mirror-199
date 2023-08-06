@@ -1,0 +1,20 @@
+# About
+
+This repository houses a series of utility functions for spaCy. I designed these during the course of my work at the Smithsonian Institution and United States Holocaust Memorial Museum.
+
+
+# Functions
+
+This will serve as the basic docs for the functions found in this repository.
+
+## `count_spans`
+
+spaCy comes built with a `count_by()` method for the Doc container. It can count anything that sits in a the nlp object's vocab. This works for NER because the position of ENT_TYPE is 78 in the nlp.vocab. Span labels, however, are large numbers that cannot be processed via this approach because of how spaCy uses NumPy. This is a naive approach to resolve this issue.
+
+This function takes a Spacy Doc object and a string span_key as input. The span_key argument is used to specify the type of span to count such as "named_entities" or "noun_chunks".
+
+The function then initializes two empty lists, spans and labels. It loops through all the spans of the specified type in the doc object, and for each span, it appends a tuple of (span.text, span.label_) to the spans list, where span.text is the actual text of the span and span.label_ is the label of the span. The function also appends the span.label_ to the labels list.
+
+The function then creates two Counter objects: span_counts and label_counts. The Counter object span_counts counts the frequency of each unique (span.text, span.label_) tuple in the spans list, while the Counter object label_counts counts the frequency of each unique span.label_ in the labels list.
+
+Finally, the function returns a tuple containing the two Counter objects span_counts and label_counts. The span_counts object maps each unique (span.text, span.label_) tuple to its frequency in the document, while the label_counts object maps each unique span.label_ to its frequency in the document.
