@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: qedit
+Version: 0.2.0
+Summary: A CLI for automatically editing videos using word detection
+Author: Tyler
+Author-email: terrifictyler8@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: ffmpeg-python (>=0.2.0,<0.3.0)
+Requires-Dist: typer[all] (>=0.7.0,<0.8.0)
+Requires-Dist: vosk (>=0.3.45,<0.4.0)
+Description-Content-Type: text/markdown
+
+# QEdit
+
+A CLI for automatically editing videos using word detection.
+- Recognizes words using the Vosk `en-us-sm` model
+- Intelligently cuts out silence from the video
