@@ -1,0 +1,131 @@
+Metadata-Version: 2.1
+Name: fhandleio
+Version: 1.0.1
+Summary: Handling files super easily
+Home-page: https://devsquaresio.github.io
+Author: DevSquares
+Author-email: reeyanpeekaboo69@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# fhandleio
+A simple library for easy file handling
+
+## Installation
+1. To install, type the command:
+```python
+pip install fhandleio
+```
+2. And you are done!
+
+## Basics
+You are able to read, write, append, and create new files. These are the four basics for file handling. 
+Saving and loading data will be explained in a bit
+
+**READING**
+```python
+from fhandleio import fhandleio
+
+data = fhandleio.read("filename") # Takes the entire file
+data = fhandleio.readb("filename") # Reads via bytes
+data = fhandleio.readl("filename", index) # Index where the line is read
+data = fhandleio.readls("filename") # Takes all lines and puts in a list
+```
+
+**WRITING**
+```python
+data = fhandleio.write("filename", message) # Overrides file and writes message
+data = fhandleio.writeb("filename", data) # Writes in byte format
+data = fhandleio.writels("filename", message) # Writes in lines
+```
+
+**APPENDING**
+```python
+data = fhandleio.append("filename", message) # Adds to bottom of file
+data = fhandleio.appendb("filename", data) # Append bytes
+```
+**CREATING**
+```python
+data = fhandleio.create("filename") # If file exists, creates error
+```
+
+And a bonus one for here is to check if a file exists
+
+```python
+if fhandleio.check_file("filename"):
+	print("File exists!")
+```
+
+## Saving & Loading Data
+You also have a major ability to save and load data in this library as well. The process is straightforward, and easy to follow.
+**SAVING**
+```python
+fhandleio.save_data(filename=filename, data=data, override=False, hashing=True, mode="txt")
+```
+The function has five parameters:
+* Filename - The Name of File (**NO EXTENSIONS**)
+* Data - Data to Store (*Usually dictionaries*)
+* Override - If it should Override Current Save File
+* Hashing - If it should encrypt data first
+* Mode - txt, py, json, pickle
+
+**LOADING**
+```python
+fhandleio.load_data(filename, hashed=False, mode="pickle")
+```
+The function has only three parameters:
+* Filename - The Name of File (**NO EXTENSIONS**)
+* Hashed - If the data was encrypted from save
+* Mode - txt, py, json, pickle
+
+
+## Other Functions
+There are some smaller functions you can also use with the library
+
+**CHUNK  READ**
+Read the file, but only the amount of bytes you have
+```python
+data = fhandleio.chunk_read("yellow.txt", 64) # Reads 64 bytes of yellow.txt
+```
+
+
+**FILE NO**
+Returns integer file descriptor used for I/O requests by system
+```python
+num = fhandleio.fileno("what.mp3")
+```
+**GET SIZE**
+Gets byte size for file
+```python
+size = fhandleio.get_size("hi.txt")
+```
+**IS EMPTY**
+Check if contents of a file are empty
+```python
+if fhandleio.is_empty("yo.txt"):
+	print("Empty file alert")
+```
+**RAW**
+Gets the raw object for a file
+```python
+object = fhandleio.raw("some.txt")
+```
+
+**SEEK AND TELL**
+Give it a set of position to tell what is and continue the text from there. (Uses file seek and tell)
+```python
+stuff = fhandleio.seek_and_tell("hey.txt", (2, 0))
+```
+The confusing part is `(2, 0)`
+* The first is offset - position of where you want to start
+* Second is from_where - 0 is beginning, 1 is current, 2 is end of file
+
+**TRUNCATING**
+Setting the size of the file to a specific byte size
+```python
+fhandleio.trunc("somefile.txt", 1024) # Sets size to 1024 bytes
+```
