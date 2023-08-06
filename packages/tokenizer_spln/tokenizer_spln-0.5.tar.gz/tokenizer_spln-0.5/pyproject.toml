@@ -1,0 +1,14 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tokenizer_spln"
+authors = [{name = "Tiago Silva", email = "tiagoluisdiassilva@gmail.com"}]
+dynamic = ["version", "description"]
+
+[project.scripts]
+tok = "tokenizer_spln:main"
+
+[project.urls]
+Home = "https://github.com/surumkata/spln-2223/tree/main/TPC4"
