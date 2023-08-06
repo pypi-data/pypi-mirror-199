@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "streambotapi"
+version = "1.2.4"
+description = "A WebSocket development server for interaction with StreamBot package"
+authors = ["dr00 <andrewmeyer23@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/dr00-eth/StreamBotAPI"
+keywords = ["chatgpt", "stream", "openai", "websocket", "flask", "socketio", "gpt", "python"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+flask = "^2.2.3"
+flask-cors = "^3.0.10"
+flask-socketio = "^5.3.2"
+streambot = "^1.1.9"
+eventlet = "^0.33.3"
+tiktoken = "^0.3.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
