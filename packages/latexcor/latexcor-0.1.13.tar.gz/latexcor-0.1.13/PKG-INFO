@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: latexcor
+Version: 0.1.13
+Summary: latex automation
+Home-page: https://github.com/infocornouaille/latexcor
+License: MIT
+Keywords: latex,jupyter,notebook
+Author: David Couronné
+Author-email: couronne.david@gmail.com
+Requires-Python: >=3.8,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: chardet (>=5.1.0,<6.0.0)
+Requires-Dist: python-slugify (>=8.0.1,<9.0.0)
+Project-URL: Repository, https://github.com/infocornouaille/latexcor
+Description-Content-Type: text/markdown
+
+# cours-maths-nsi
+
+latexcor need latexmk
+
+pip install --upgrade latexcor
+
+## command
+
+latexcor
+
+latexcor --clean
+
+latexcor --recompile
+
+latexcor --xelatex
+
+latexcor --lualatex
+
+latexcor --utf8
+
+latexcor --slugify
+
+## Ajouter texmf
+
+```bash
+sudo tlmgr conf auxtrees add ~/texmf
+```
+
