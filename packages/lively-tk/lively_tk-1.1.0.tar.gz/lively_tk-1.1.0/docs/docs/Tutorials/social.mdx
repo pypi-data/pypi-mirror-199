@@ -1,0 +1,521 @@
+# Social Robot
+
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
+
+:::note
+Since Lively is still in beta, the design is subject to change and should not be considered final!
+:::
+
+We have also created examples in Javascript, Python, and Rust for liveliness. You can find the file by clicking the links in the table down below.
+
+| Language   | Path                                                                                                     | Command to run the example                              |
+| ---------- | -------------------------------------------------------------------------------------------------------- | ------------------------------------------------------- |
+| Rust       | [link](https://github.com/Wisc-HCI/lively/blob/main/examples/rust_examples/social_robot_example.rs)      | cargo run --package lively --example liveliness_example |
+| Python     | [link](https://github.com/Wisc-HCI/lively/blob/main/examples/python_examples/social_robot_example.ipynb) | run in the Jupyter Notebook                             |
+| Javascript | [link](https://github.com/Wisc-HCI/lively/tree/main/examples/js_examples/social_robot)                   | `yarn build`, `yarn dev`                                |
+
+<Tabs>
+  <TabItem value="jsx" label="Live">
+
+```jsx live
+function InitializationExample(props) {
+  const l_arm_joints = {
+      LShoulderPitch: 0,
+      LShoulderRoll: 1.1,
+      LElbowYaw: -1.88,
+      LElbowRoll: -0.7,
+      LWristYaw: 0.9 ,
+      LHand: 1
+    };
+
+  const [livelySolver, setLivelySolver] = useState(null);
+  const [robot, setRobot] = useState("panda");
+  const [robotState, setRobotState] = useState(null);
+  const [visualRobotState, setVisualRobotState] = useState(null);
+
+  useEffect(() => {
+    /* 
+      Given that we are showing this example in a declarative
+      react context, we need to use the useEffect hook to execute
+      imperative (sequential) code. That means that if you are
+      writing standard javascript, your code will look like the
+      contents of the function in this 'useEffect'.
+    */
+
+    const newSolver = new lively.Solver(
+      urdfs.pepper, // The urdf of the robot
+      {
+        // some lively objective examples. Notice for JavaScript, you do not need to import anything for objective. Simply construct an object
+        smoothness: {
+          name: "MySmoothnessObjective",
+          type: "SmoothnessMacro",
+          weight: 25,
+          joints: true,
+          origin: false,
+          links: false,
+        },
+        collision: {
+          name: "MyCollisionDetection",
+          type: "CollisionAvoidance",
+          weight: .5,
+        },
+        jointLimit: {
+          name: "MyJointLimit",
+          type: "JointLimits",
+          weight: 5,
+        },
+        torsoPosition: {
+          name: "Torso Position",
+          type: "PositionMatch",
+          link: "torso",
+          weight: 10,
+        },
+        rHandPosition: {
+          name: "R Hand Position",
+          type: "PositionMatch",
+          link: "r_gripper",
+          weight: 10,
+        },
+        rHandOrientation: {
+          name: "R Hand Orientation",
+          type: "OrientationMatch",
+          link: "r_gripper",
+          weight: 10,
+        },
+        headOrientation: {
+          name: "Gaze",
+          type: "OrientationMatch",
+          link: "Head",
+          weight: 7,
+        },
+        idleGaze: {
+          name: "Idle Gaze",
+          type: "OrientationLiveliness",
+          link: "Head",
+          weight: 20,
+          frequency: 10,
+        },
+        LShoulderPitch: {
+          name: "LShoulderPitch",
+          joint: "LShoulderPitch",
+          type: "JointMatch",
+          weight: 10,
+        },
+        LShoulderRoll: {
+          name: "LShoulderRoll",
+          joint: "LShoulderRoll",
+          type: "JointMatch",
+          weight: 10,
+        },
+        LElbowYaw: {
+          name: "LElbowYaw",
+          joint: "LElbowYaw",
+          type: "JointMatch",
+          weight: 10,
+        },
+        LElbowRoll: {
+          name: "LElbowRoll",
+          joint: "LElbowRoll",
+          type: "JointMatch",
+          weight: 10,
+        },
+        LWristYaw: {
+          name: "LWristYaw",
+          joint: "LWristYaw",
+          type: "JointMatch",
+          weight: 10,
+        },
+        LHand: {
+          name: "LHand",
+          joint: "LHand",
+          type: "JointMatch",
+          weight: 10,
+        },
+      }
+    );
+    // Normalize the collision bodies
+    newSolver.computeAverageDistanceTable();
+    // Assign the solver to the value
+    setLivelySolver(newSolver);
+    // Run solve to get a solved state
+    const newState = newSolver.solve({}, {}, 0.0);
+    // Update the solver's current state
+    setRobotState(newState);
+    setVisualRobotState(newState);
+
+    return () => {
+      // Provide a function to clear previous values
+      setLivelySolver(null);
+      setRobotState(null);
+      setVisualRobotState(null);
+    };
+  }, [robot]); // Rerun this code if the robot changes
+
+  useEffect(() => {
+    const updateSolver = () => {
+      if (livelySolver) {
+        const d = new Date();
+        let jointGoals =lodash.mapValues(l_arm_joints,(j)=>({Scalar:j}));
+        
+        let time = d.getTime(); // Get the time in milliseconds
+        jointGoals.LElbowRoll.Scalar = 0.21*Math.sin(time/1000) - 1.13;
+        let goals = {
+          torsoPosition: {
+            Translation: [0.0,0.0,0.85],
+          },
+          rHandPosition: {
+            Translation: [0.0,-0.216,0.546]
+          },
+          rHandOrientation: {
+            Rotation: [0.536,0.455,-0.435,0.5616]
+          },
+          idleGaze: {
+            Size: [0.01, 0.0, 0.1],
+          },
+          ...jointGoals
+        };
+        const newState = livelySolver.solve(goals, {}, time / 1000); // Pass the new goal into solve function
+        // Update the solver's current state
+        setRobotState(newState);
+        setVisualRobotState(newState);
+      }
+
+      //console.log(goal);
+    };
+
+    const interval = setInterval(updateSolver, 1000 / 60);
+
+    return () => {
+      //setShapesUpdate(null);
+      setRobotState(null);
+      setVisualRobotState(null);
+      clearInterval(interval);
+    };
+  }, [livelySolver]);
+
+  return (
+    <div>
+      <RobotViewer
+        state={robotState}
+        links={livelySolver ? livelySolver.links : []}
+      />
+      <Tree label="state" data={visualRobotState} />
+    </div>
+  );
+}
+```
+
+  </TabItem>
+
+  <TabItem value="js" label="Javascript">
+
+```js
+import { pepper } from './urdfs.js';
+import { Solver } from '@people_and_robots/lively';
+import { mapValues } from 'lodash';
+
+const initialRootBounds = [
+  // An exmaple of root bounds
+  { value: 0.0, delta: 0.0 },
+  { value: 0.25, delta: 0.0 },
+  { value: 0.5, delta: 0.0 },
+  { value: 0.0, delta: 0.0 },
+  { value: 0.0, delta: 0.0 },
+  { value: 0.0, delta: 0.0 },
+];
+
+const l_arm_joints = {
+  LShoulderPitch: 0,
+  LShoulderRoll: 1.1,
+  LElbowYaw: -1.88,
+  LElbowRoll: -0.7,
+  LWristYaw: 0.9,
+  LHand: 1,
+};
+
+const initialObjectives = {
+  // some lively objective examples. Notice for JavaScript, you do not need to import anything for objective. Simply construct an object
+  smoothness: {
+    name: 'MySmoothnessObjective',
+    type: 'SmoothnessMacro',
+    weight: 25,
+    joints: true,
+    origin: false,
+    links: false,
+  },
+  collision: {
+    name: 'MyCollisionDetection',
+    type: 'CollisionAvoidance',
+    weight: 0.5,
+  },
+  jointLimit: {
+    name: 'MyJointLimit',
+    type: 'JointLimits',
+    weight: 5,
+  },
+  torsoPosition: {
+    name: 'Torso Position',
+    type: 'PositionMatch',
+    link: 'torso',
+    weight: 10,
+  },
+  rHandPosition: {
+    name: 'R Hand Position',
+    type: 'PositionMatch',
+    link: 'r_gripper',
+    weight: 10,
+  },
+  rHandOrientation: {
+    name: 'R Hand Orientation',
+    type: 'OrientationMatch',
+    link: 'r_gripper',
+    weight: 10,
+  },
+  headOrientation: {
+    name: 'Gaze',
+    type: 'OrientationMatch',
+    link: 'Head',
+    weight: 7,
+  },
+  idleGaze: {
+    name: 'Idle Gaze',
+    type: 'OrientationLiveliness',
+    link: 'Head',
+    weight: 20,
+    frequency: 10,
+  },
+  LShoulderPitch: {
+    name: 'LShoulderPitch',
+    joint: 'LShoulderPitch',
+    type: 'JointMatch',
+    weight: 10,
+  },
+  LShoulderRoll: {
+    name: 'LShoulderRoll',
+    joint: 'LShoulderRoll',
+    type: 'JointMatch',
+    weight: 10,
+  },
+  LElbowYaw: {
+    name: 'LElbowYaw',
+    joint: 'LElbowYaw',
+    type: 'JointMatch',
+    weight: 10,
+  },
+  LElbowRoll: {
+    name: 'LElbowRoll',
+    joint: 'LElbowRoll',
+    type: 'JointMatch',
+    weight: 10,
+  },
+  LWristYaw: {
+    name: 'LWristYaw',
+    joint: 'LWristYaw',
+    type: 'JointMatch',
+    weight: 10,
+  },
+  LHand: {
+    name: 'LHand',
+    joint: 'LHand',
+    type: 'JointMatch',
+    weight: 10,
+  },
+};
+
+const newSolver = new Solver(
+  pepper,
+  initialObjectives,
+  initialRootBounds,
+  null,
+  null,
+  null,
+  null,
+  null
+);
+
+newSolver.computeAverageDistanceTable();
+const d = new Date();
+let jointGoals = mapValues(l_arm_joints, (j) => ({ Scalar: j }));
+
+let time = d.getTime(); // Get the time in milliseconds
+jointGoals.LElbowRoll.Scalar = 0.21 * Math.sin(time / 1000) - 1.13;
+let goals = {
+  torsoPosition: {
+    Translation: [0.0, 0.0, 0.85],
+  },
+  rHandPosition: {
+    Translation: [0.0, -0.216, 0.546],
+  },
+  rHandOrientation: {
+    Rotation: [0.536, 0.455, -0.435, 0.5616],
+  },
+  idleGaze: {
+    Size: [0.01, 0.0, 0.1],
+  },
+  ...jointGoals,
+};
+const newState = newSolver.solve(goals, {}, time / 1000);
+
+document.querySelector('#app').innerHTML = `
+  <div>
+   ${JSON.stringify(newState)}
+  </div>`;
+
+console.log(newState);
+
+```
+
+  </TabItem>
+
+  <TabItem value="py" label="Python">
+
+```py
+from lively import Solver, Translation, Rotation,Transform, OrientationLivelinessObjective, OrientationMatchObjective, SmoothnessMacroObjective, PositionMatchObjective, JointMatchObjective, CollisionAvoidanceObjective, JointLimitsObjective, BoxShape, CollisionSettingInfo, ScalarRange
+from lxml import etree
+
+# Constructed CollisionAvoidance Objective ,BoxShape and configured Collision Setting
+box = BoxShape(name="Table",frame="world",physical=True,x=2,y=1,z=1.2,translation = Translation(x=1.0, y =2.0, z=3.0),
+rotation = Rotation(x=0.0,y=0.0,z=0.0,w=1.0))
+collision = CollisionSettingInfo(d_max = 0.1, r = 0.0, a_max = 2.0, time_budget = 100, timed = False)
+
+# Read the xml file into a string
+xml_file = '../../tests/panda.xml'
+tree = etree.parse(xml_file)
+xml_string = etree.tostring(tree).decode()
+#print(xml_string)
+# Instantiate a new solver
+solver = Solver(
+  urdf=xml_string, # Full urdf as a string
+  objectives={
+      # An example objective (smoothness macro)
+      "smoothness":SmoothnessMacroObjective(name="MySmoothnessObjective",weight=25,joints=True,origin=False,links=True),
+      "collision": CollisionAvoidanceObjective(name="MyCollisionAvoidanceObjective", weight=0.5),
+      "jointLimit": JointLimitsObjective(name="MyJointLimitObjective", weight=5),
+      "torso Position": PositionMatchObjective(name="MyPositionMatchObjective", weight=10, link="torso"),
+      "positionMatch": PositionMatchObjective(name="R Hand Position", weight=10, link="r_gripper"),
+      "r hand orientation": OrientationMatchObjective(name="R Hand Orientation", weight=10, link="r_gripper"),
+      "headOrientation": OrientationMatchObjective(name="Gaze",link="Head",weight=7),
+      "idleGaze": OrientationLivelinessObjective(name="Idle Gaze", link= "Head", weight=20, frequency=10),
+      "LShoulderPitch": JointMatchObjective(name="LShoulderPitch", joint="LShoulderPitch", weight=10),
+      "LShoulderRoll": JointMatchObjective(name="LShoulderRoll", joint="LShoulderRoll", weight=10),
+      "LElbowYaw": JointMatchObjective(name="LElbowYaw", joint="LElbowYaw", weight=10),
+      "LElbowRoll": JointMatchObjective(name="LElbowRoll", joint="LElbowRoll", weight=10),
+      "LWristYaw": JointMatchObjective(name="LWristYaw", joint="LWristYaw", weight=10),
+      "LHand": JointMatchObjective(name="LHand", joint="LHand", weight=10),
+      
+  },
+  root_bounds=[
+      ScalarRange(value=0.0,delta=0.0),ScalarRange(value=0.0,delta=0.0),ScalarRange(value=0.0,delta=0.0), # Translational, (x, y, z)
+      ScalarRange(value=0.0,delta=0.0),ScalarRange(value=0.0,delta=0.0),ScalarRange(value=0.0,delta=0.0)  # Rotational, (r, p, y)
+  ],
+  shapes=[
+      box
+  ],
+  collision_settings = collision
+
+)
+
+# Run solve to get a solved state
+state = solver.solve(goals= {"MyGoal1": Translation(x=1.0, y =2.0, z=3.0)},weights = {},time = 0.0)
+# Log the initial state
+print(state.origin.as_dicts())
+print(state.joints)
+print(state.frames["panda_link0"])
+print(state.proximity)
+```
+
+  </TabItem>
+
+  <TabItem value="rs" label="Rust">
+
+```rust
+use lively::lively::Solver;
+use lively::objectives::core::base::SmoothnessMacroObjective;
+use lively::objectives::core::base::CollisionAvoidanceObjective;
+use lively::objectives::core::base::JointLimitsObjective;
+use lively::objectives::core::matching::PositionMatchObjective;
+use lively::objectives::core::matching::OrientationMatchObjective;
+use lively::objectives::core::matching::JointMatchObjective;
+use lively::objectives::liveliness::perlin::OrientationLivelinessObjective;
+use lively::objectives::objective::Objective;
+use std::collections::HashMap;
+use std::fs;
+
+fn main() {
+    let mut objectives: HashMap<String, Objective> = HashMap::new();
+    // Add a Smoothness Macro Objective
+    objectives.insert(
+        "smoothness".into(),Objective::SmoothnessMacro(SmoothnessMacroObjective::new("MySmoothnessObjective".to_string(), 25.0, true,false,false))  
+    );
+    objectives.insert(
+        "collision".into(), Objective::CollisionAvoidance(CollisionAvoidanceObjective::new("MyCollisionAvoidanceObjective".to_string(), 0.5))
+    );
+    objectives.insert(
+        "jointLimit".into(), Objective::JointLimits(JointLimitsObjective::new("MyJointLimits".to_string(), 5.0))
+    );
+    objectives.insert(
+        "torsoPosition".into(), Objective::PositionMatch(PositionMatchObjective::new("Torso Position".to_string(), 10.0, "torso".to_string()))
+    );
+    objectives.insert(
+        "RHandPosition".into(), Objective::PositionMatch(PositionMatchObjective::new("R Hand Position".to_string(), 10.0 , "r_gripper".to_string()))
+    );
+    objectives.insert(
+        "RHandOrientation".into(), Objective::OrientationMatch(OrientationMatchObjective::new("R Hand Orientation".to_string(), 10.0 , "r_gripper".to_string()))
+    );
+    objectives.insert(
+        "Gaze".into(), Objective::OrientationMatch(OrientationMatchObjective::new("Gaze".to_string(), 7.0 , "Head".to_string()))
+    );
+    objectives.insert(
+        "Gaze".into(), Objective::OrientationMatch(OrientationMatchObjective::new("Gaze".to_string(), 7.0 , "Head".to_string()))
+    );
+    objectives.insert(
+        "Idle Gaze".into(), Objective::OrientationLiveliness(OrientationLivelinessObjective::new("OrientationLiveliness".to_string(), 0.0, "Head".to_string(), 10.0))
+    );
+    objectives.insert(
+        "LShoulderPitch".into(), Objective::JointMatch(JointMatchObjective::new("LShoulderPitch".to_string(),10.0, "LShoulderPitch".to_string()))
+    );
+    objectives.insert(
+        "LShoulderRoll".into(), Objective::JointMatch(JointMatchObjective::new("LShoulderRoll".to_string(),10.0, "LShoulderRoll".to_string()))
+    );
+    objectives.insert(
+        "LElbowYaw".into(), Objective::JointMatch(JointMatchObjective::new("LElbowYaw".to_string(),10.0, "LElbowYaw".to_string()))
+    );
+    objectives.insert(
+        "LElbowRoll".into(), Objective::JointMatch(JointMatchObjective::new("LElbowRoll".to_string(),10.0, "LElbowRoll".to_string()))
+    );
+    objectives.insert(
+        "LWristYaw".into(), Objective::JointMatch(JointMatchObjective::new("LWristYaw".to_string(),10.0, "LWristYaw".to_string()))
+    );
+    objectives.insert(
+        "LHand".into(), Objective::JointMatch(JointMatchObjective::new("LHand".to_string(),10.0, "LHand".to_string()))
+    );
+
+
+    
+let data = fs::read_to_string("./tests/basic.xml").expect("Something went wrong reading the file");
+let mut solver = Solver::new(
+    data.clone(), // Full urdf as a string
+    objectives, //objectives
+    None, //root_bounds
+    None, //shapes
+    None, //initial_state
+    None, //max_retries
+    None, //max_iterations
+    None); //collision_settings
+  // Run solve to get a solved state
+  let state = solver.solve(
+    HashMap::new(), // empty goals hashmap
+    HashMap::new(), // empty weights hashmap
+    0.0, // time
+    None //shape_update
+  );
+  // Log the initial state
+  println!("{:?}",state);
+}
+
+```
+
+  </TabItem>
+
+</Tabs>
