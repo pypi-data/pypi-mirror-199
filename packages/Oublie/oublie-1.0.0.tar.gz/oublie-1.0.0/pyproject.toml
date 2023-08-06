@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "Oublie"
+version = "1.0.0"
+authors = [
+  { name="Oublie", email="313166062@qq.com" },
+]
+description = "Oublie的个人Python模块"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "networkx",
+    "matplotlib",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/oublie6/Oublie-Python"
+"Bug Tracker" = "https://github.com/oublie6/Oublie-Python/issues"
