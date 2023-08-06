@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: paketmutfak
+Version: 1.1.13
+Summary: Library of code for working with paket mutfak
+Home-page: https://github.com/PaketMutfak/PaketMutfak-Lib-Test
+Author: Paket Mutfak
+Author-email: dev@paketmutfak.com.tr
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: DateTime (==4.4)
+Requires-Dist: Flask (==2.2.3)
+Requires-Dist: PyJWT (==2.4.0)
+Requires-Dist: beartype (==0.10.4)
+Requires-Dist: boto3 (==1.24.3)
+Requires-Dist: flake8 (>=5.0.4,<6.0.0)
+Requires-Dist: iso8601 (==1.0.2)
+Requires-Dist: pytest (>=7.1.3,<8.0.0)
+Requires-Dist: setuptools (==57.0.0)
+Requires-Dist: slugify (==0.0.1)
+Requires-Dist: uuid (==1.30)
+Project-URL: Bug Tracker, https://github.com/PaketMutfak/PaketMutfak-Lib-Test/issues
+Project-URL: Repository, https://github.com/PaketMutfak/PaketMutfak-Lib-Test
+Description-Content-Type: text/markdown
+
+# PaketMutfak-Lib-Test
