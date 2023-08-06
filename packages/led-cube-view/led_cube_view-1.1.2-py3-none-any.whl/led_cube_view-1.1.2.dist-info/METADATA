@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: led-cube-view
+Version: 1.1.2
+Summary: A QtPy widget to display a LED cube on a 3D graph and manipulate its LEDs.
+Home-page: https://github.com/crash8229/led-cube-view
+License: GPL-3.0-only
+Author: crash8229
+Author-email: mu304007@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: PyOpenGL (>=3.1.6,<4.0.0)
+Requires-Dist: QtPy (>=2.3.0,<3.0.0)
+Requires-Dist: numpy-stl (>=3.0.0,<4.0.0)
+Requires-Dist: pyqtgraph (>=0.13.1,<0.14.0)
+Project-URL: Repository, https://github.com/crash8229/led-cube-view
+Description-Content-Type: text/markdown
+
+# led-cube-view
+A QtPy widget to display a LED cube on a 3D graph and manipulate its LEDs.
+This is being developed for use with my [LED cube editor](https://github.com/crash8229/led-cube-editor).
+
