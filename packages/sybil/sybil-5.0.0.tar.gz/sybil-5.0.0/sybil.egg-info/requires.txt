@@ -1,0 +1,13 @@
+
+[build]
+furo
+sphinx
+twine
+wheel
+
+[test]
+myst_parser
+pytest>=7.1.0
+pytest-cov
+seedir
+testfixtures
