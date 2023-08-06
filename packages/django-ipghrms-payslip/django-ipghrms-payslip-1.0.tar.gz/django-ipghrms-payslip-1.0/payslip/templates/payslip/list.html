@@ -1,0 +1,62 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'payslip-emp-list' %}">LISTA ASESSOR</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel"></div>
+                <div class="card-body">
+                    <center>
+                        <h4>{{ legend|upper }}</h4>
+                        <h2>{{ unit|upper }}</h2>
+                        <h1>{{ cat|upper }}</h1>
+                    </center>
+                    <hr/>
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'payslip-add' emp.hashed %}">Aumenta <i class="fa fa-plus"></i></a>
+                    <table class="table table-sm table-striped" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Nu. Fatura</th>
+                                <th>Data</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'payslip-detail' obj.hashed %}">{{ obj.inv_no }}</a></td>
+                                <td>{{ obj.inv_date|date:"d/m/Y" }}</td>
+                                <td>
+                                {% if obj.is_lock == False %}
+                                    <a href="{% url 'payslip-update' emp.id obj.hashed %}"><i class="fa fa-edit"></i></a>
+                                {% else %}
+                                    <a href="#" class="disabled"><i class="fa fa-edit"></i></a>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

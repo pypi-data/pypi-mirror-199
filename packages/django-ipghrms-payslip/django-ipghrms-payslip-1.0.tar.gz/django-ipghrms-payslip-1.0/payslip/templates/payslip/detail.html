@@ -1,0 +1,136 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'payslip-list' emp.hashed %}">LISTA PAYSLIP</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel">{{ legend|upper }}</div>
+                <div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Naran</th>
+                            <th>No. Kartaun</th>
+                            <th>Kategoria</th>
+                            <th>Email</th>
+                        </tr>
+                        <tr>
+                            <td><a href="{% url 'emp-detail' payslip.employee.hashed %}">{{ payslip.employee }}</a></td>
+                            <td>#{{ payslip.employee.emp_id }}</td>
+                            <td>{{ payslip.category }}</td>
+                            <td>{{ payslip.email }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Naran iha Konta</th>
+                            <th>Nu. Konta</th>
+                            <th>IBAN</th>
+                            <th>Naran Banku</th>
+                            <th>Enderesu Banku</th>
+                        </tr>
+                        <tr>
+                            <td>{{ emp.fidnumber.customer_name }}</td>
+                            <td>{{ emp.fidnumber.bank_account }}</td>
+                            <td>{{ emp.fidnumber.iban }}</td>
+                            <td>{{ emp.fidnumber.bank }}</td>
+                            <td>{{ emp.fidnumber.bank_address }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>No Fatura</th>
+                            <th>Data</th>
+                            <th>Total Loron Servisu</th>
+                            <th>Total Falta</th>
+                        </tr>
+                        <tr>
+                            <td>{{ payslip.inv_no }}</td>
+                            <td>{{ payslip.inv_date }}</td>
+                            <td>{{ payslip.days }} 
+                                {% if payslip.is_lock == False %}
+                                <a href="{% url 'payslip-days-add' payslip.hashed %}"><i class="fa fa-refresh"></i></a>
+                                {% endif %}
+                            </td>
+                            <td>{{ tot_attend }}
+                                {% if payslip.is_lock == False %}
+                                <a href="{% url 'payslip-adjust' payslip.hashed %}"><i class="fa fa-refresh"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                    <hr/>
+                {% if payslip.is_lock == False %}
+                    {% if count < 2 %}
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'payslip-det-add' payslip.hashed %}">Aumenta <i class="fa fa-plus"></i></a>
+                    {% endif %}
+                    <a class="btn btn-sm btn-primary mb-1" href="{% url 'payslip-det-add' payslip.hashed %}">Refresh <i class="fa fa-refresh"></i></a>
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'payslip-lock' payslip.hashed %}">Taka <i class="fa fa-lock"></i></a>
+                {% endif %}
+                    <a class="btn btn-sm btn-secondary mb-1" href="{% url 'payslip-lock' payslip.hashed %}">Print <i class="fa fa-print"></i></a>
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th width="15%">Deskrisaun</th>
+                            <th width="10%">Unidade</th>
+                            <th width="10%">Kuantidade</th>
+                            <th width="15%">Salario Mensal</th>
+                            <th width="15%">Valor Bruto inklui Imposto(USD)</th>
+                            <th width="15%">Menos Imposto (USD)</th>
+                            <th width="15%">Valor Liquido (USD)</th>
+                            {% if payslip.is_lock == False %}
+                            <th width="5%">#</th>
+                            {% endif %}
+                        </tr>
+                        {% for obj in objects %}
+                        <tr>
+                            <td>{{ obj.desc }}</td>
+                            <td>{{ obj.unit }}</td>
+                            <td>{{ obj.qty }}</td>
+                            <td>$ {{ obj.month_sallary|intcomma }}</td>
+                            <td>$ {{ obj.tax|intcomma }}</td>
+                            <td>$ {{ obj.tax_min|intcomma }}</td>
+                            <td>$ {{ obj.net|intcomma }}</td>
+                        {% if payslip.is_lock == False %}
+                            <td>
+                                <a href="{% url 'payslip-det-update' payslip.hashed obj.id %}"><i class="fa fa-edit"></i></a>
+                            {% if obj.is_sallary ==  True %}
+                                <a href="{% url 'payslip-det-ref1' payslip.hashed obj.id %}"><i class="fa fa-refresh"></i></a>
+                            {% else %}
+                                <a href="{% url 'payslip-det-ref2' payslip.hashed obj.id %}"><i class="fa fa-refresh"></i></a>
+                            {% endif %}
+                            </td>
+                        {% endif %}
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="6">Total</th>
+                            <th colspan="2">$ {{ total|intcomma }}</th>
+                        </tr>
+                        <tr>
+                            <th colspan="6">Total Depois Koa ba Absensia</th>
+                            <th colspan="2">$ {{ payslip.net|intcomma }}</th>
+                        </tr>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

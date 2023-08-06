@@ -1,0 +1,26 @@
+
+============================
+Django IPG HRMS payslip
+============================
+
+
+Quick start
+============
+
+
+1. Add 'payslip' to your INSTALLED_APPS settings like this::
+
+    INSTALLED_APPS = [
+        'payslip'
+    ]
+
+2. Include the payslip to project URLS like this::
+
+    path('payslip/', include('payslip.urls')),
+
+3. Run ``python manage.py migrate`` to create payslip model
+
+4. Another Apps Need for this Apps::
+    4.1. custom::
+    4.2. employee::
+    4.3. user
