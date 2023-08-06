@@ -1,0 +1,40 @@
+Metadata-Version: 2.1
+Name: tf-ate
+Version: 1.0.3
+Summary: Approximate Text Explaination
+Home-page: https://github.com/tjarkpr/ate
+Author: Tjark Prokoph
+Author-email: tjark.prokoph@gmx.de
+Project-URL: Issues, https://github.com/tjarkpr/ate/issues
+Project-URL: Repository, https://github.com/tjarkpr/ate
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+# Approximate Text Explantation (ATE)
+Transformation of TensorFlow text classification models into local interpretable models to explain the base model decisions via effects.
+
+Related work and base for this idea:
+<ul>
+<li><a href="https://arxiv.org/abs/1602.04938">Paper: "Why Should I Trust You?": Explaining the Predictions of Any Classifier by Marco Tulio Ribeiro, Sameer Singh, Carlos Guestrin</a></li>
+<li><a href="https://github.com/marcotcr/lime">GitHub: marcotcr/lime</a></li>
+</ul>
+
+## Approximate Local Text Explantation (ALTE)
+"Approximate Local Text Explantation" is based on the LIME method. The goal of the approach is the derivation of effects or influences of the input components (textual data) on the respective output (classification label). This is a local explanation procedure in which a single input data point is analyzed. The components of this input data point (token) are activated or deactivated by permutations of a binary vector of the same size as the number of components of the input data point. All permutations are classified by the original classification model and stored in a meta dataset. This meta dataset is then used to train a linear classification model, thus linearly approximating the original classification function. Since the computation of all permutations of the components of the input data point is very computationally expensive, the permutation upper bound, the permutation repetitions and the epochs of the linear model can be defined via configuration parameters. In addition, the permutation process is iteratively repeated and the permutations are randomized, which also makes it possible to refine the linear model in the long run.
+
+## Approximate Global Text Explantation (AGTE)
+"Approximate Global Text Explantation" is also based on the LIME method. The goal of the approach is to infer effects or influences of the input components (textual data) of all input data points in the data set on the respective output (classification label). This is a global explanation procedure in which the effects of all input data points are analyzed. AGTE uses the approach of ALTE for this and extends it with an N-fold execution. Accordingly, several linear models are trained which represent the original classification function at different points. The more data points exist and the more computational capacity is available (i.e. the more permutations can be calculated and classified), the better the approximation of the original model. In addition, a pipeline is implemented, with the help of which the effect representation (token and its effect on certain classes) can be converted into a decision rule set (DecisionTree).
+MIT License
+
+Copyright (c) 2023 Tjark Prokoph
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
