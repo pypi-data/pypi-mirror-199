@@ -1,0 +1,23 @@
+.gitignore
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+requirements.txt
+setup.cfg
+setup.py
+test-requirements.txt
+tox.ini
+.github/dependabot.yml
+.github/workflows/python-publish.yml
+ipsw/__init__.py
+ipsw/_version.py
+ipsw/client.py
+ipsw/version.py
+ipsw.egg-info/PKG-INFO
+ipsw.egg-info/SOURCES.txt
+ipsw.egg-info/dependency_links.txt
+ipsw.egg-info/not-zip-safe
+ipsw.egg-info/requires.txt
+ipsw.egg-info/top_level.txt
+scripts /release.sh
