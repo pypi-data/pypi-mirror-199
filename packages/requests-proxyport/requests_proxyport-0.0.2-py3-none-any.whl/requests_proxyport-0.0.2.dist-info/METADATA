@@ -1,0 +1,80 @@
+Metadata-Version: 2.1
+Name: requests-proxyport
+Version: 0.0.2
+Summary: Proxy Port requests
+Home-page: https://proxy-port.com/en/scraping-proxy
+Author: Proxy Port
+Author-email: Proxy Port <proxyportcom@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023 proxyport
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Homepage, https://proxy-port.com/en/scraping-proxy
+Project-URL: Bug Tracker, https://github.com/proxyport/py-requests-proxyport/issues
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Development Status :: 3 - Alpha
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet :: Proxy Servers
+Classifier: Topic :: Internet :: WWW/HTTP :: Session
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.6.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: proxyport2
+Requires-Dist: requests
+
+# Proxy Port Python `requests` wrapper
+About <a href="https://proxy-port.com/en/scraping-proxy" target="_blank">Proxy Port</a>
+## Prerequisites
+To use this package you will need a free API key. Get your AIP key <a href="https://account.proxy-port.com/scraping" target="_blank">here</a>.
+Detailed instructions <a href="https://proxy-port.com/en/scraping-proxy/getting-started" target="_blank">here</a>.
+## Installation
+Install via <a href="https://pip.pypa.io/" target="_blank">pip</a>:
+```shell
+$ pip install requests-proxyport
+```
+## Getting Started
+Before you get your first proxy, you need to assign an API key.
+This can be done either through an environment variable
+```shell
+$ export PROXY_PORT_API_KEY=<API_KEY>
+```
+or directly in the code.
+```python
+from requests_proxyport import Session
+
+session = Session(proxyport_api_key='<API_KEY>') # here
+r = session.get('https://example.com/')
+print(r.text)
+
+```
