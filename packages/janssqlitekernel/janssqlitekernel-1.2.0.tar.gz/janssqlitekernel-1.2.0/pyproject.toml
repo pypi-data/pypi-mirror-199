@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "janssqlitekernel"
+version = "1.2.0"
+authors = [
+  { name="Jan Arman Parpin", email="is@hidden.com" },
+]
+description = "A jupyter SQLite3 kernel."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX :: Linux",
+    "Framework :: Jupyter :: JupyterLab :: 3"
+]
+dependencies = [
+    "ipykernel",
+    "pexpect"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/jans-code/janssqlitekernel"
+"Bug Tracker" = "https://github.com/jans-code/janssqlitekernel/issues"
+
+[project.scripts]
+janssqlitekernel = "janssqlitekernel.install_kernelspec:install_kernelspec"
