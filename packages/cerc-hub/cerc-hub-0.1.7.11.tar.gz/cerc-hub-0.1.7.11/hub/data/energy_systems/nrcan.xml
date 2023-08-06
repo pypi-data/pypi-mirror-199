@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<nrcan base_url="https://raw.githubusercontent.com/NREL/openstudio-standards/master/lib/openstudio-standards/standards/necb/ECMS/data/">
+    <boilers_location>boiler_set.json</boilers_location>
+    <chillers_location>chiller_set.json</chillers_location>
+    <curves_location>curves.json</curves_location>
+    <furnaces_location>furnace_set.json </furnaces_location>
+    <heat_pumps_location>heat_pumps.json</heat_pumps_location>
+    <domestic_hot_water_systems_location>shw_set.json</domestic_hot_water_systems_location>
+    <pvs_location>pv.json</pvs_location>
+    <air_conditioners_location>unitary_acs.json</air_conditioners_location>
+</nrcan>
