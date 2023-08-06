@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: rpycocotools-stubs
+Version: 0.0.3
+Summary: Package stubs for rpycocotools.
+Project-URL: Homepage, https://github.com/hoel-bagard/rpycocotools-stubs
+Project-URL: Bug Tracker, https://github.com/hoel-bagard/rpycocotools-stubs/issues
+Author: Bagard Hoel
+License: MIT
+License-File: LICENSE
+Keywords: COCO,COCO dataset
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.8
+Requires-Dist: numpy>=1.21
+Requires-Dist: typing-extensions
+Provides-Extra: build
+Requires-Dist: hatch; extra == 'build'
+Provides-Extra: dev
+Requires-Dist: pip-tools; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Requires-Dist: pyright; extra == 'dev'
+Requires-Dist: ruff; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# rpycocotools-stubs
+Python stubs for the rpycocotools package
+
+## TODO:
+Use [mypy's stubtest](https://mypy.readthedocs.io/en/stable/stubtest.html) for CI testing ?
