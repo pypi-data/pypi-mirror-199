@@ -1,0 +1,13 @@
+{% include 'inventor/1-header.qmd' %}
+
+This is report has been automatically generated for the following data source(s) at {{ datetime }}:
+
+{% for filename in disambiguation_files %}
+- {{ filename }}
+{% endfor %}
+
+For more information, please refer to the [PatentsView-Evaluation project homepage](https://github.com/PatentsView/PatentsView-Evaluation/) or to the report [source code](index.qmd).
+
+{% include 'inventor/2-summary.qmd' %}
+
+{% include 'inventor/3-benchmark.qmd' %}
