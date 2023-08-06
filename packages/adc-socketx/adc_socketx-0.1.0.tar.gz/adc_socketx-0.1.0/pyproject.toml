@@ -1,0 +1,27 @@
+[tool.poetry]
+name = "adc-socketx"
+version = "0.1.0"
+description = "ADC socket data eXchange"
+authors = ["Pavel Russu <pavlucho@gmail.com>"]
+license = "GTLAB Diagnostic LLC"
+readme = "README.md"
+
+[tool.poetry.scripts]
+adcx = "adc_socketx.main:app"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.7.0"}
+soundfile = "^0.12.1"
+numpy = "^1.24.2"
+
+[tool.poetry.group.dev.dependencies]
+isort = "^5.12.0"
+flake8 = "^6.0.0"
+pre-commit = "^3.1.1"
+black = "^23.1.0"
+typer-cli = "^0.0.13"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

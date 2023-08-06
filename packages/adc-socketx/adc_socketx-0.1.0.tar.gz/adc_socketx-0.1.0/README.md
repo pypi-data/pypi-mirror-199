@@ -1,0 +1,92 @@
+# `adcx` <sup>0.1.0</sup>
+
+**ADC** socket data e**X**change py-script.
+
+GTLAB Diagnostic LLC, 2023
+
+**Usage**:
+
+```console
+$ adcx [OPTIONS] COMMAND [ARGS]...
+```
+
+**Options**:
+
+* `--help`: Show this message and exit.
+
+**Commands**:
+
+* `get-info`: Get the ADC information.
+* `get-lan`: Get lan configuration and exit.
+* `get-wav`: Record a signal from the ADC to a .wav file.
+* `reboot`: Reboot the ADC.
+* `set-ip`: Change the ipv4 address setting.
+
+## `adcx get-info`
+
+Get the ADC information.
+(serial number, frequency, channels, calibration)
+
+**Usage**:
+
+```console
+$ adcx get-info [OPTIONS]
+```
+
+## `adcx get-lan`
+
+Get lan configuration and exit.
+
+**Usage**:
+
+```console
+$ adcx get-lan [OPTIONS]
+```
+
+## `adcx get-wav`
+
+Record a signal from the ADC to a .wav file.
+
+**Usage**:
+
+```console
+$ adcx get-wav [OPTIONS] SECONDS
+```
+
+**Arguments**:
+
+* `SECONDS`: [required]
+
+**Options**:
+
+* `--ch INTEGER RANGE`: Set the number of channels to record  [default: 1; 1<=x<=2]
+* `--iepe / --no-iepe`: [default: iepe]
+* `--help`: Show this message and exit.
+
+## `adcx reboot`
+
+Reboot the ADC.
+
+**Usage**:
+
+```console
+$ adcx reboot [OPTIONS]
+```
+
+## `adcx set-ip`
+
+Change the ipv4 address setting.
+
+**Usage**:
+
+```console
+$ adcx set-ip [OPTIONS] IPV4
+```
+
+**Arguments**:
+
+* `IPV4`: [required]
+
+# `Contacts`
+[![Telegram Badge](https://img.shields.io/badge/-pavelrus-blue?style=social&logo=telegram&link=https://t.me/pavelrus)](https://t.me/pavelrus)<br>
+[![Gmail Badge](https://img.shields.io/badge/-pavlucho@gmail.com-c14438?style=flat&logo=Gmail&logoColor=white&link=mailto:pavlucho@gmail.com)](mailto:pavlucho@gmail.com)
