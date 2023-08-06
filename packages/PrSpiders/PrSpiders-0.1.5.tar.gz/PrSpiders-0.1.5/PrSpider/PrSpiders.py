@@ -1,0 +1,138 @@
+import logging
+from concurrent.futures import ThreadPoolExecutor, as_completed
+import time, datetime
+import os
+from typing import Optional
+from .requestXpath import prequest
+
+logging.basicConfig(format='%(message)s', level=logging.INFO)
+
+
+class settions:
+    workers: Optional[int] = 5
+    setting: Optional[dict] = None
+    url_queue: Optional[list] = []
+    start_urls: Optional[list] = None
+    pid = os.getppid()
+    request_num: Optional[int] = 0
+    success_num: Optional[int] = 0
+    false_num: Optional[int] = 0
+    start_time: Optional[int] = time.time()
+    executor = None
+    prequests = None
+    retry = None
+
+
+penrexecutor = ThreadPoolExecutor(20)
+
+
+class PrSpiders(settions):
+    def __init__(self) -> None:
+        PrSpiders.executor = ThreadPoolExecutor(self.workers)
+        PrSpiders.prequests = prequest()
+        settions.retry = self.retry
+        settions.url_queue = self.url_queue
+        logging.info('******************PrSpider Start******************')
+        if not self.start_urls and not hasattr(self, 'start_requests'):
+            raise AttributeError(
+                "Crawling could not start: 'start_urls' not found ")
+        else:
+            self.start_requests()
+
+    def start_requests(cls, **kwargs):
+        cls.url_list = []
+        request = PrSpiders._request(
+            cls, callback=cls.parse, url=cls.start_urls)
+        cls.SpiderPool(request, **kwargs)
+
+    @classmethod
+    def Requests(cls, url=None, callback=None, headers=None, retry_time=3, method='GET', meta=None,
+                 encoding='utf-8', retry_interval=1, timeout=3, **kwargs):
+        if isinstance(url, str):
+            url = [url]
+
+        cls.SpiderPool(cls, callback=callback, url=url, headers=headers, retry_time=retry_time, method=method,
+                       meta=meta,
+                       encoding=encoding, retry_interval=retry_interval, timeout=timeout, **kwargs)
+
+    def _request(self, callback=None, url=None):
+        if isinstance(url, str):
+            request = [[url, callback]]
+        else:
+            request = [[_, callback] for _ in url]
+        return request
+
+    @classmethod
+    def fetch(self, url, callback, headers=None, retry_time=3, method='GET', meta=None,
+              encoding='utf-8', retry_interval=1, timeout=3, **kwargs):
+        self.request_num += 1
+        current_time = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        response = self.prequests.get(url, headers=headers, retry_time=retry_time, method=method, meta=meta,
+                                      encoding=encoding, retry_interval=retry_interval, timeout=timeout,
+                                      settion=settions, **kwargs, )
+        if response:
+            if response.ok:
+                self.success_num += 1
+                logging.info(
+                    f'{current_time} [PrSpider] True [Method] {method} [Status] {response.code} [Url] {url}')
+                return (response, callback)
+        else:
+            self.false_num += 1
+            if response:
+                logging.error(
+                    f'{current_time} [PrSpider] False [Method] {method} [Status] {response.code} [Url] {url}')
+            else:
+                logging.error(
+                    f'{current_time} [PrSpider] False [Method] {method} [Status] Timeout [Url] {url}')
+            return (response, callback)
+
+    def SpiderPool(cls, callback=None, url=None, **kwargs):
+        while len(cls.url_queue) > 0 or cls.request_num == 0:
+            for _url in url:
+                cls.url_queue.append(PrSpiders.executor.submit(cls.fetch, _url, callback, **kwargs))
+            for future in as_completed(cls.url_queue):
+                cls.url_queue.remove(future)
+                data = future.result()
+                response = data[0] if data else None
+                getcall = data[1] if data else None
+                return getcall(response)
+
+        for _url in url:
+            cls.url_queue.append(PrSpiders.executor.submit(cls.fetch, _url, callback, **kwargs))
+
+    @classmethod
+    def parse(self, response, **kwargs):
+        raise NotImplementedError(
+            f'{self.__class__.__name__}.parse callback is not defined')
+
+    def process_timestamp(self, t):
+        timeArray = time.localtime(int(t))
+        formatTime = time.strftime("%Y-%m-%d %H:%M:%S", timeArray)
+        return formatTime
+
+    def __del__(self):
+        try:
+            self.prequests.close()
+        except:
+            pass
+        end_time = time.time()
+        spend_time = end_time - self.start_time
+        try:
+            average_time = spend_time / self.request_num
+        except ZeroDivisionError:
+            average_time = 0
+        m = """
+Requests Response Close.
+request_num: %s
+success_num: %s
+false_num: %s
+start_time: %s
+end_time: %s
+spend_time: %.3fs
+average_time: %.3fs
+        """ % (
+            self.request_num, self.success_num, self.false_num,
+            self.process_timestamp(self.start_time), self.process_timestamp(end_time), spend_time,
+            average_time
+        )
+        logging.info(m)
