@@ -1,0 +1,41 @@
+[project]
+name = "checkyoself"
+version = "0.0.3"
+description = "Which online repositories does my system rely on?"
+authors = [
+    { name = "David Seaward", email = "david@librem.one" },
+]
+dependencies = [
+    "click>=8.1.3",
+    "parse>=1.19.0",
+    "ruamel-yaml>=0.17.21",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "AGPL-3.0-or-later"
+
+[project.optional-dependencies]
+
+[project.scripts]
+checkyoself = "checkyoself.chikkity:check"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "carmine>=0.0.3",
+]
+
+[tool.syllabub.project]
+conduct = "contributor-covenant-2.1"
+copyright = "Copyright 2020 David Seaward and contributors"
+origin = "DCO-1.1-git-signoff"
+sbom = "reuse spdx"
+title = "Check yo' self (dibbity deb remix)"
+url = "https://lofidevops.neocities.org"
