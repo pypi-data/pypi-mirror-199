@@ -1,0 +1,110 @@
+Metadata-Version: 2.1
+Name: argparse-param-types
+Version: 0.0.3
+Summary: Provides a library of common option types for the argparse cammand-line options parser
+Project-URL: Homepage, https://github.com/ndmalc/argparse_param_types
+Project-URL: Bug Tracker, https://github.com/ndmalc/argparse_param_types/issues
+Author: ndmalc
+License: MIT License
+        
+        Copyright (c) 2023 ndmalc
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3
+Requires-Dist: ipaddress
+Requires-Dist: regex
+Provides-Extra: tests
+Requires-Dist: pyfakefs; extra == 'tests'
+Requires-Dist: pytest; extra == 'tests'
+Description-Content-Type: text/markdown
+
+# Argparse Param Types
+## Introduction
+
+Argparse is an excellent standard library for managing input in command-line python script, but it ships with only basic types. This project provides a library of option types that covers a lot of common use case to avoid rewriting again and again the same basic code.
+
+## Installation
+
+```
+pip install argparse_param_types
+```
+
+## How to use
+
+
+## Available option types
+
+### file_type
+
+### directory_type
+
+### host_type
+
+### ip_type
+
+### rawip_type
+
+### ip4_type
+
+### rawip4_type
+
+### ip6_type
+
+### rawip6_type
+
+### net_type
+
+### rawnet_type
+
+### net4_type
+
+### rawnet4_type
+
+### net6_type
+
+### rawnet6_type
+
+### port_type
+
+## Changelog
+
+#### 0.0.3
+- Add missing dependencies in pyproject (dependencies not automatically installed when pip install)
+- Add a `logs` flag on each param type to allow function nesting without erroneous error logging
+- Bug fix: Do not log error when param_type function is used as a test in a success scenario
+- Use more precise except exception class to better fit business logic and not broadly catch exceptions
+
+#### 0.0.2
+- Refactor to be PEP8 compliant, improve/add documentation, add type hinting
+- Add easy import from module \_\_init__
+- Add .gitignore to project
+- Add param type host_type & ip_type & rawip_type & ip4_type & rawip4_type & ip6_type & rawip6_type & net_type & rawnet_type & net4_type & rawnet4_type & net6_type & rawnet6_type & port_type
+- Add unit tests for every param type
+
+#### 0.0.1
+- Initial commit
+- Implement param type file_type & directory_type
+
+## License
+
+[MIT License](https://opensource.org/licenses/MIT) © [ndmalc]
