@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: serverless-sdk-schema
+Version: 0.2.0
+Summary: The protobuf generated Serverless SDK Schema
+Author: serverlessinc
+Project-URL: changelog, https://github.com/serverless/console/blob/main/python/packages/sdk-schema/CHANGELOG.md
+Project-URL: documentation, https://github.com/serverless/console/tree/main/python/packages/sdk-schema
+Project-URL: homepage, https://www.serverless.com/console
+Project-URL: repository, https://github.com/serverless/console
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: protobuf (>=4.22)
+Requires-Dist: typing-extensions (>=4.4)
+Provides-Extra: tests
+Requires-Dist: black (>=22.12) ; extra == 'tests'
+Requires-Dist: pytest (>=7.2) ; extra == 'tests'
+Requires-Dist: ruff (>=0.0.199) ; extra == 'tests'
+
+# Serverless SDK Schema
+
+This is the auto generated Python package from the Serverless Protobufs. Serverless uses Protobufs as the required format for all instrumentation libraries that communicate with the Serverless Platform.
+
+## Build
+To build the sdk-schema package from source, follow these steps:
+
+```bash
+# cd to the root directory of repo
+python3.9 -m venv .venv
+source .venv/bin/activate
+
+brew install protobuf
+brew install bufbuild/buf/buf
+cd ./proto
+buf build
+buf generate --template=buf.gen.python.yaml
+
+cd ../python/packages/sdk-schema
+pip install . --target=./dist
+python -m build --wheel --sdist .
+```
+
+## Unit tests
+To run the unit tests, replace the last two steps of the `Build` step with these:
+
+```bash
+pip install '.[tests]'
+python3 -m pytest
+```
