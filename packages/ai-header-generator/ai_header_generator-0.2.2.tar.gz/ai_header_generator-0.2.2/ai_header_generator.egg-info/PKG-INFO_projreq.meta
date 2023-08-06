@@ -1,0 +1,76 @@
+
+
+{
+    "Metadata-Version": "1.0",
+    "Name": "ai-header-generator",
+    "Version": "0.1",
+    "Summary": "UNKNOWN",
+    "Home-page": "UNKNOWN",
+    "Author": "UNKNOWN",
+    "Author-email": "UNKNOWN",
+    "License": "UNKNOWN",
+    "Description": "UNKNOWN",
+    "Platform": "UNKNOWN",
+    "Project Requirements": {
+        ".gitignore": null,
+        ".sourcery.yaml": null,
+        ".vscode": {
+            "launch.json": null,
+            "settings.json": null
+        },
+        "ai_header_generator": {
+            "cli.py": null,
+            "cli_projreq.meta": null,
+            "header_generator.py": null,
+            "header_generator_projreq.meta": null,
+            "misc.py": null,
+            "misc_projreq.meta": null,
+            "__init__.py": null,
+            "__init___projreq.meta": null
+        },
+        "build": {
+            "bdist.win-amd64": {},
+            "lib": {
+                "ai_header_generator": {
+                    "cli.py": null,
+                    "header_generator.py": null,
+                    "misc.py": null,
+                    "__init__.py": null
+                }
+            }
+        },
+        "config.ini": null,
+        "config_projreq.meta": null,
+        "dist": {
+            "ai_header_generator-0.1-py3-none-any.whl": null,
+            "ai_header_generator-0.1.tar.gz": null
+        },
+        "my_project": {
+            "my_project": {}
+        },
+        "power.bat": null,
+        "project_tree.hex": null,
+        "README.md": null,
+        "README_projreq.meta": null,
+        "setup.py": null,
+        "setup_projreq.meta": null,
+        "templates": {
+            "docstring.json": null,
+            "examples.json": null,
+            "projectlevelreqs.json": null,
+            "readme.json": null,
+            "requirements.json": null,
+            "sqlexplainer.json": null,
+            "suggestions.json": null,
+            "summarize.json": null,
+            "template.json": null,
+            "testcases.json": null,
+            "TODOs.json": null,
+            "usecases.json": null
+        },
+        "tests": {
+            "test_cli.py": null,
+            "test_header_generator.py": null
+        }
+    }
+}

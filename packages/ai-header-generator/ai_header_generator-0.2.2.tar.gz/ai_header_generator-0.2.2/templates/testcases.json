@@ -1,0 +1,7 @@
+{
+    "name": "Code Description",
+    "description": "Promt generate unit tests using pytest",
+    "analysis_file_extension": ".py",
+    "prompt": "suggest test cases with setup, steps, pass/fail criteria in json format (if unit tests are required, use pytest) for code base: {code} \n\n given the following project structure {project_tree}",
+    "header_postfix": "_pytest.txt"
+}

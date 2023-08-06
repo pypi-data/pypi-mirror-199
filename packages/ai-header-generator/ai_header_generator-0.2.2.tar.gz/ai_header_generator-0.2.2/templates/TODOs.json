@@ -1,0 +1,7 @@
+{
+    "name": "Code Description",
+    "description": "Promt generate unit tests using pytest",
+    "analysis_file_extension": ".py",
+    "prompt": "infer outstanding TODOs for code base: {code} \n\n given the following project structure {project_tree}",
+    "header_postfix": "_TODOs.txt"
+}

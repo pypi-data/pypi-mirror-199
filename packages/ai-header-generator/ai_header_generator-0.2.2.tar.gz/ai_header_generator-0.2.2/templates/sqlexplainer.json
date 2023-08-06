@@ -1,0 +1,5 @@
+{
+    "name": "Code Description",
+    "description": "Description of code file",
+    "prompt": "given code base: {code} generate a file header in json format {{description:, tables:, filename:{filename}}}"
+}
