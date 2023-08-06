@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: data-collect
+Version: 0.7.7
+Summary: project descriptions here
+Home-page: https://console.cloud.baidu-int.com/devops/icode/repos/baidu/themis/windmill-endpoint/tree/master
+Author: zhoubohan
+Author-email: zhoubohan@baidu.com
+License: MIT
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: pybind11 (>=2.2)
+Requires-Dist: spdlog (>=2.0.4)
+Requires-Dist: opencv-python-headless
+Requires-Dist: Pillow
+Requires-Dist: numpy
+Requires-Dist: pydantic
+
