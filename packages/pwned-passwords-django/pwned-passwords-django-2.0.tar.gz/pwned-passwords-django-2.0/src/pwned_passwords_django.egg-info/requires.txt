@@ -1,0 +1,20 @@
+Django>=3.2
+httpx
+
+[docs]
+furo
+sphinx
+sphinx-copybutton
+sphinx-inline-tabs
+sphinx-notfound-page
+sphinxcontrib-django
+sphinxext-opengraph
+
+[tests]
+coverage
+
+[tests:python_full_version < "3.11.0a7"]
+tomli
+
+[tests:python_full_version < "3.8.0"]
+mock
