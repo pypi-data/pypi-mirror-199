@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: muzik-api
+Version: 0.1.0
+Summary: Free Personal Music API
+License: MIT
+Author: Dhrumil Mistry
+Author-email: 56185972+dmdhrumilmistry@users.noreply.github.com
+Requires-Python: >=3.8
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: Django (>=4.1.7,<5.0.0)
+Requires-Dist: django-filter (>=23.1,<24.0)
+Requires-Dist: djangorestframework (>=3.14.0,<4.0.0)
+Requires-Dist: markdown (>=3.4.3,<4.0.0)
+Description-Content-Type: text/markdown
+
+# Music API
+
+Personal Music API to download and search music from several platforms such as JioSaavn. 
