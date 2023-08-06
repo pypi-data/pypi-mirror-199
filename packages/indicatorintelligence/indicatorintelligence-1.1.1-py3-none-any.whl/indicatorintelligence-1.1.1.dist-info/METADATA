@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: indicatorintelligence
+Version: 1.1.1
+Summary: 
+Author: Your Name
+Author-email: osmankandemir00@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: aiodns (==3.0.0)
+Requires-Dist: beautifulsoup4 (==4.11.2)
+Requires-Dist: build (==0.10.0)
+Requires-Dist: certifi (==2022.12.7)
+Requires-Dist: cffi (==1.15.1)
+Requires-Dist: charset-normalizer (==3.0.1)
+Requires-Dist: dnspython (==1.15.0)
+Requires-Dist: filelock (==3.9.0)
+Requires-Dist: idna (==3.4)
+Requires-Dist: packaging (==23.0)
+Requires-Dist: platformdirs (==3.0.0)
+Requires-Dist: pycares (==4.3.0)
+Requires-Dist: pycparser (==2.21)
+Requires-Dist: pyproject-hooks (==1.0.0)
+Requires-Dist: requests (==2.28.2)
+Requires-Dist: requests-file (==1.5.1)
+Requires-Dist: six (==1.16.0)
+Requires-Dist: soupsieve (==2.4)
+Requires-Dist: tldextract (==3.4.0)
+Requires-Dist: tomli (==2.0.1)
+Requires-Dist: uritools (==4.0.1)
+Requires-Dist: urlextract (==1.8.0)
+Requires-Dist: urllib3 (==1.26.14)
+Description-Content-Type: text/markdown
+
+# Indicator-Intelligence
+
+#### NOTE : You should definitely use it for legal activities.
+
+## Description
+
+Indicator-Intelligence collects static files and related domains for target to do threat intelligence.
+
+
+## Usage
+
+```
+-d DOMAINS [DOMAINS], --domains DOMAINS [DOMAINS] Input Targets. --domains target-web1.com target-web2.com
+-p PROXY, --proxy PROXY Use HTTP proxy. --proxy 0.0.0.0:8080
+-a AGENT, --agent AGENT Use agent. --agent 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)'
+-o JSON, --json JSON  JSON output. --json
+```
+
+#### Function Usage
+
+```
+from indicator.indicator import Indicator
+
+#SCAN
+Indicator(["target-web.com"])
+
+#OUTPUT
+Indicator(["target-web.com"],json=True)
+```
+
+## License
+
+Copyright (c) 2023 Osman Kandemir \
+Licensed under the GPL-3.0 License.
+
+## Donations
+If you like Indicator-Intelligence and would like to show support, you can Buy A Coffee for the developer using the button below
+
+<a href="https://www.buymeacoffee.com/OsmanKandemir" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+
+Your support will be much appreciated😊
