@@ -1,0 +1,71 @@
+Metadata-Version: 2.1
+Name: python-yeet
+Version: 1.0.1
+Summary: yeet is a simple Python framework
+Author: Yakser
+Author-email: iaksanov2044@mail.ru
+Requires-Python: >=3.9,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: cryptography (>=39.0.2,<40.0.0)
+Requires-Dist: jinja2 (>=3.1.2,<4.0.0)
+Requires-Dist: pymysql (>=1.0.2,<2.0.0)
+Description-Content-Type: text/markdown
+
+# yeet
+
+# quickstart
+
+## Run app
+```python
+import os
+from controllers import HomeController, ArticlesController
+from examples.constants import INIT_QUERIES, DB_SETTINGS
+from python_yeet.app import Yeet
+from python_yeet.db import Database
+
+app = Yeet(name=os.path.basename(os.getcwd()))
+app.add_route(r'^articles/$', ArticlesController(methods=['GET', 'POST']))
+app.add_route(r'^.*$', HomeController)
+db = Database(db_settings=DB_SETTINGS,
+              init_queries=INIT_QUERIES)
+app.run()
+```
+
+## Create model example
+
+```python
+import datetime
+from python_yeet.orm import BaseModel, BaseManager
+
+
+class Article(BaseModel):
+    table_name = "articles"
+    manager_class = BaseManager
+
+    id: int
+    title: str
+    text: str
+    author: int
+    created_at: datetime.datetime
+```
+
+## Create controller example
+
+```python
+from examples.models.article import Article
+from python_yeet.controllers import BaseController
+
+
+class ArticlesController(BaseController):
+    @staticmethod
+    def _get_articles():
+        articles = Article.objects.select("id", "title")
+        return articles
+
+    def get(self, path):
+        return self.render_template('articles.html', articles=self._get_articles())
+```
+
