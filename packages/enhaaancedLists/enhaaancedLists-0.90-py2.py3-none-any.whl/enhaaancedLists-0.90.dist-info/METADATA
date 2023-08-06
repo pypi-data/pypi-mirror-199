@@ -1,0 +1,234 @@
+Metadata-Version: 2.1
+Name: enhaaancedLists
+Version: 0.90
+Summary: (Thread-safe) list(s) with extended / enhanced in-place capabilities (e.g. conditional element selection)
+Home-page: https://www.blackward.de
+Author: Dominik Niedenzu
+Author-email: pyadaaah@blackward.de
+Maintainer: Dominik Niedenzu
+License: Proprietary License
+Platform: any platform which provides python
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Other Audience
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Topic :: Software Development
+Requires-Python: >= 2.2
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+The 'EnhaaancedLists' library provides **list classes** with 
+automatic locking mechanisms (**multithreading/processing safe-ty**),
+**extended / enhanced in-place capabilities** and/or
+**automatic type checking** mechanisms (for list elements).
+
+Together with the 'elem' term / alias (comprised too), some of their 
+methods (also) allow using a **new operator notation for selecting 
+list elements** - closely resembling mathematical conditions.
+
+The following just is a brief summary of the main elements - the full 
+documentation is available by either the command line option '--info':
+
+```sh
+		python enhaaancedLists.py --info
+```
+
+or the python command 'help' (displaying the doc-string of the module):
+
+```python
+		import enhaaancedLists
+		help(enhaaancedLists)
+```
+
+
+
+EnhList
+=======
+
+**Examples for additional capabilities** 
+(the standard list operations work too) are:
+
+<span style="font-size:0.7em;">( Note that the '&' resp. the '|' are 'abused' 
+as 'logical and resp. logical or' in this context (and **not** 'bitwise'!) ).</span>
+
+```python
+		#import class and aliases used
+		from enhaaancedLists import EnhList, elem, single, several
+
+		#convert a parameter list to an enhanced list 
+		eL = EnhList(1,3,5,7)                                       #eL: [1,3,5,7]
+		
+		#push single as well as multiple elements into the list
+		eL.push(9)                                  #==> None       #eL: [1,3,5,7,9]
+		eL.push(11,13,15)                           #==> None       #eL: [1,3,5,7,9,11,13,15]
+		
+		#pop - note that push/pop implements a FIFO - in contrast to the standard list
+		eL.pop()                                    #==> 1          #eL: [3,5,7,9,11,13,15]
+		eL.pop( (elem > 3) & (elem < 11), single )  #==> 5          #eL: [3,7,9,11,13,15]
+		eL.pop( (elem > 3) & (elem < 11)         )  #==> [7,9]      #eL: [3,11,13,15]
+		
+		#extend the list
+		eL.extend( [7,8,9] )                        #==> None       #eL: [3,11,13,15,7,8,9]
+		eL.extend( [4,5,6], reverse=True )          #==> None       #eL: [4,5,6,3,11,13,15,7,8,9]
+		
+		#get items from list
+		eL[ elem >= 10         ]                    #==> [11,13,15] #eL: unchanged
+		eL[ elem >= 10, single ]                    #==> 11         #eL: unchanged
+		eL[ elem <  3,  single ]                    #==> None       #eL: unchanged
+		
+		#check whether list contains items
+		( elem <  3 ) in eL                         #==> False      #eL: unchanged
+		( elem >= 3 ) in eL                         #==> True       #eL: unchanged
+		
+		#set items in list                                          
+		eL = EnhList(4,5,6,3,11,13,15,7,8,9)                        #eL: [4,5,6,3,11,13,15,7,8,9]
+		eL[ elem % 2 == 1]              = elem // 2 #==> None       #eL: [4,2,6,1,5,6,7,3,8,4]
+		eL[ (elem == 6) | (elem == 8) ] = 0         #==> None       #eL: [4,2,0,1,5,0,7,3,0,4]
+		
+		#delete items from list
+		eL = EnhList(4,5,6,3,11,13,15,7,8,9)                        #eL: [4,5,6,3,11,13,15,7,8,9]
+		del eL[ elem < 12, single ]                 #==> ---        #eL: [5,6,3,11,13,15,7,8,9]
+		del eL[ elem > 12         ]                 #==> ---        #eL: [5,6,3,11,7,8,9]
+		
+		eL = EnhList(1,3,5,7)                                       #eL: [1,3,5,7]
+		#check whether all elements meet a condition
+		eL.areAll( elem % 2 == 1 )                  #==> True
+		eL.areAll( elem     >= 3 )                  #==> False
+		
+		#map function on elements / work with items of elements
+		#map replaces elements, which are mapped, by the mapping result
+		eL.mapIf( lambda x: dict(a=x) )	                            #==> None	#eL: [{'a':1},{'a':3},{'a':5},{'a':7}]
+		eL.mapIf( lambda x: x['a'] + 1, elem['a'] > 3)              #==> None	#eL: [{'a':1},{'a':3},6,8]
+			
+		#apply map function on elements / work on items of elements                                          
+		#apply map does not replace elements; it modifies elements, which are apply mapped, instead
+		eL = EnhList([3],[5],[7])												#eL: [[3],[5],[7]]
+		eL.applyMapIf( lambda x: list.append(x, 22) )              	#==> None	#eL: [[3,22],[5,22],[7,22]]
+		eL.applyMapIf( lambda x: list.append(x, 33), elem[0] > 4 ) 	#==> None	#eL: [[3,22],[5,22,33],[7,22,33]]
+		
+		#get min, max, avg, median or sum of a selected property
+		eL = EnhList([3,8],[5,6],[7,4])                             #eL: [[3,8],[5,6],[7,4]]
+		eL.min(    elem[0] )                        #==> 3          #eL: [[3,8],[5,6],[7,4]]
+		eL.max(    elem[1] )                        #==> 8          #eL: [[3,8],[5,6],[7,4]]
+		eL.avg(    elem[0] )                        #==> 5.0        #eL: [[3,8],[5,6],[7,4]]
+		eL.median( elem[1] )                        #==> 6.0        #eL: [[3,8],[5,6],[7,4]]
+		eL.sum(    elem[0] )                        #==> 15         #eL: [[3,8],[5,6],[7,4]]
+		
+		#work with attributes of elements
+		eL = EnhList([{'a':1},{'a':3},6,8])                         #eL: [{'a':1},{'a':3},6,8]
+		class Attr(object):
+					def __init__(self, value):
+							self.a = value
+					def __repr__(self):
+							return ".a=%s" % self.a
+		eL.mapIf( lambda x: Attr(x), lambda x: type(x) ==  int ) 
+													#==> None       #eL: [{'a':1},{'a':3},.a=6,.a=8]
+																								
+		#create a list, whose elements just can be of given types (a typed list)
+		eL = EnhList(1,3,5,7, elemTypesT=(int, float))              #eL: [1,3,5,7]
+		eL.append(1.23)                             #==> None       #eL: [1,3,5,7,1.23]
+		eL.append("a")                              #==> TypeMismatch exception
+		
+		#for the aforementioned use case, there also are some premade typed lists
+		eL = NumberList(1,3,5,7)                                    #eL: [1,3,5,7]
+		eL.append(1.23)                             #==> None       #eL: [1,3,5,7,1.23]
+		eL.append("a")                              #==> TypeMismatch exception
+```
+
+Premade typed list classes inherited from EnhList are:
+
+- DecimalList
+- DictList
+- FloatList
+- IntList
+- ListList
+- LupleList		(elements can be of type list or tuple)
+- NumberList	(lements can be of type int, float and decimal.Decimal)
+- SetList
+- StrList
+- TupleList
+
+
+
+SecList
+=======
+
+The 'SecList' class is a secured version of the enhanced list class 'EnhList'.  
+
+Access to its elements has been made 'thread-safe' by wrapping the belonging
+methods in a 'with' context automatically 'acquiring' / 'releasing' an
+internal 'Semi/BlockingMutex' (a multithreading / multiprocessing lock).
+
+**Examples:**
+
+```python
+    #import class
+    from enhaaancedLists import SecList, elem
+
+    #convert a parameter list into a secured list 
+    sL = SecList(1,2,3,4,5,6,7,8)
+   
+    #if then a first thread e.g. would run the following statement:
+    evenL = sL.pop( elem % 2 == 0 )
+   
+    #and a second thread in parallel (!!) e.g. would run the following statement:
+    oddL = sL.pop( elem % 2 == 1 )
+   
+    #the parallel access to said list would not result in a collission resp.
+    #error and the result would be:
+    #evenL <==> [2,4,6,8]
+    #oddL  <==> [1,3,5,7]
+    #sL    <==> [] 
+```
+
+Premade typed list classes inherited from SecList are:
+
+- DecimalSecList
+- DictSecList
+- FloatSecList
+- IntSecList
+- ListSecList
+- LupleSecList		(elements can be of type list or tuple)
+- NumberSecList		(elements can be of type int, float and decimal.Decimal)
+- SetSecList
+- StrSecList
+- TupleSecList
+
+
+Further Informations
+====================
+
+Detailed descriptions can be found in the doc/help-texts of the module 
+and its classes and their methods. E.g. try:
+
+```sh
+    python -i
+    import enhaaancedLists
+    help(enhaaancedLists)
+
+    from enhaaancedLists import EnhList, SecList, elem
+    help(EnhList)
+    help(SecList)
+    help(elem)
+```
+
+or
+
+```sh 
+    python enhaaancedLists.py --info
+    python enhaaancedLists.py --test
+```
+
+More examples can be found in the source code of the selftest() function
+of the "enhaaancedList.py" library module and the methods called from there.
+
+Further infomations and links can be found on my homepage
+
+[https://www.blackward.de](https://www.blackward.de)  
+
+Have Fun!
+
