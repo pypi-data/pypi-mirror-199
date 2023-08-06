@@ -1,0 +1,20 @@
+<div id="deleteModal" class="modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title"> <i class="fa-solid fa-triangle-exclamation"></i> Konfirmasaun Delete</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+        <p>Itaboot konfirma delete Trip:  <strong> {{obj.name}} </strong> ?</p>
+          <form method="post" action="{% url 'm-t-delete' obj.hashed  %}">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger" style="float: right;">SIM</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  

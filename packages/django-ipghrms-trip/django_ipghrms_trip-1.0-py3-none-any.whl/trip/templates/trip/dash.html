@@ -1,0 +1,59 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+<script src="{% static 'main/js/highcharts/highcharts.js' %}"></script>
+<script src="{% static 'main/js/highcharts/exporting.js' %}"></script>
+<script src="{% static 'main/js/highcharts/export-data.js' %}"></script>
+<script src="{% static 'main/js/highcharts/accessibility' %}"></script>
+<link rel="stylesheet" href="{% static 'main/css/highchart.css' %}">
+{% endblock head %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			
+			<li class="breadcrumb-item active" aria-current="page">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg pt-1 border-primary rounded">
+				<div class="card-header border-primary">
+					<center>
+						<h2>{{ legend|upper }}
+							<i class="fa fa-arrow-right"></i>
+							<a class="btn btn-sm btn-info" href="{% url 't-list' %}">Lists Trip <i class="fa fa-list-ol"></i> </a>
+							<a class="btn btn-sm btn-success" href="{% url 't-summary' %}">Summary Trip <i class="fa fa-list-ol"></i> </a>
+						</h2>
+					</center>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-md-6">
+
+							<figure class="highcharts-figure">
+								<div id="setChartEmpTrip"></div>
+							</figure>
+						</div>
+						<div class="col-md-6">
+							
+							<figure class="highcharts-figure">
+								<div id="allTripTot_chart"></div>
+							</figure>
+						</div>
+					</div>
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div> <!--end container-->
+{% endblock %}
+{% block scripts %}
+
+	<script>
+        {% include 'trip/emp_trip.js' %}
+        {% include 'trip/tot_trip.js' %}
+    </script>
+{% endblock %}

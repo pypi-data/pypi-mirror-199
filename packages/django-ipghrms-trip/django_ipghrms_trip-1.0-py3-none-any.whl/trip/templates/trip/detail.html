@@ -1,0 +1,127 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 't-dash' %}">PAINEL TRIP</a></li>
+            <li class="breadcrumb-item"><a href="{% url 't-list' %}">LISTA TRIP</a></li>
+            <li class="breadcrumb-item active">{{legend|upper}}</li>
+
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tr>
+                            <th>Asuntu</th><th>Type Trip</th><th>Data Out</th><th>Data In</th><th>Country/Municipality</th>  <th>Pareser</th>
+                        </tr>
+                        <tr>
+                            <td>{{ objects.name }}</td>
+                            <td>{{objects.ttype}}</td>
+                            <td>{{objects.date_out|date:"d/M/Y"}}</td>
+                            <td>{{objects.date_in|date:"d/M/Y"}}</td>
+                            <td>
+                                {% if objects.ttype.pk == 1 %}
+                                  {{objects.municipality}}
+                                {% elif objects.ttype.pk == 2 %}
+                                  {{objects.country}}
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if objects.file %}
+                                  <a href="{{objects.file.url}}" target="_blank" class="btn btn-sm btn-info"> <i class="fa fa-file-pdf"></i> </a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th align="center" colspan="8">DESCRIPTION</th>
+                        </tr>
+                        <tr>
+                            <td colspan="6">{{objects.description|safe}}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <div class="border-primary">
+                            <h6>LISTA FUNSIONARIO
+                                {% if group == 'hr' %}
+                                <i class="fa fa-arrow-right"></i>
+                                    {% if objects.is_lock == False %}
+                                        <a class="btn btn-info btn-sm mb-1" href="{% url 'm-t-emp-add' objects.hashed %}">Aumenta Staff <i class="fa fa-plus"></i></a>
+                                        {% if tripemp %}
+                                        <a class="btn btn-danger btn-sm mb-1" href="{% url 'm-t-lock' objects.hashed %}">Chave <i class="fa fa-lock"></i></a>
+                                        {% endif %}
+                                        {% else %}
+                                        <a class="btn btn-info btn-sm mb-1 disabled" href="#"> <del>Aumenta Staff</del> <i class="fa fa-plus"></i></a>
+                                        
+                                    {% endif %}
+                                        
+                                {% endif %}
+                            </h6>
+                    </div>
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr align="center">
+                                <th>Nu.</th>
+                                <th>Naran</th>
+                                <th>Pozisaun</th>
+                                <th>Divizaun</th>
+                                <th align="center">#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in tripemp %}
+                            <tr align="center">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ obj.employee }}</td>
+                                <td>{{ obj.employee.curempposition.position.name }}</td>
+                                <td width="20%">{{ obj.employee.curempdivision.unit }}</td>
+                                <td>
+                                {% if group == 'hr' %}
+                                  
+                                
+                                    {% if objects.is_lock == False %}
+                                        <a class="btn btn-sm btn-info" href="{% url 'm-t-emp-udpate' obj.hashed %}" title="Altera"><i class="fa fa-edit"></i></a>
+                                        <a class="btn btn-sm btn-danger" href="{% url 'm-t-emp-delete' obj.hashed %}" title="Hapaga"><i class="fa fa-trash"></i></a>
+                                    {% else %}
+                                        <a class="btn btn-sm btn-info disabled" href="#" title="Altera"><i class="fa fa-edit"></i></a>
+                                        <a class="btn btn-sm btn-danger disabled" href="#" title="Hapaga"><i class="fa fa-trash"></i></a>
+                                        {% if objects.is_lock %}
+                                            {% if obj.is_update == False %}
+                                                <a class="btn btn-success btn-sm " href="{% url 'm-t-emp-update-att' objects.hashed obj.pk %}">Update Absensia <i class="fa fa-refresh"></i></a>
+                                            {% else %}
+                                                <a class="btn btn-success btn-sm  disabled" href="#">Update Ona Absensia <i class="fa fa-check"></i></a>
+                                            {% endif %}
+                                        
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <div class="badge badge-danger">Kontrola Husi RH</div>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
