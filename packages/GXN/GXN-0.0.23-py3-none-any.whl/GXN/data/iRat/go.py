@@ -1,0 +1,44 @@
+"""
+Load gene expression datasets
+-----------------------------
+
+Loads gene expression datasets
+
+Example:
+    Test the example by running this file::
+
+        $ python gene_expression.py
+"""
+
+__author__ = "Sergio Peignier"
+__copyright__ = "Copyright 2019, The Dream5 Project"
+__credits__ = ["Sergio Peignier"]
+__license__ = "GPL"
+__version__ = "0.0.1"
+__maintainer__ = "Sergio Peignier"
+__email__ = "sergio.peignier@insa-lyon.fr"
+__status__ = "pre-alpha"
+
+from GXN.data.iRat.configuration import library_folder
+from os.path import join
+from pandas import read_csv
+
+def load_go():
+    """
+    Load rat GO
+
+    Returns:
+        pandas.DataFrame: Mouse GOs
+
+    Examples:
+        >>> tfscofactors = load_cofactors()
+        >>> tfscofactors.head()
+
+
+    """
+    gos = read_csv(join(library_folder, "mart_export.txt"),sep="\t",header=0)
+    return(gos)
+
+if __name__ == '__main__':
+    print("Loading GO data")
+    print(load_go().head())
