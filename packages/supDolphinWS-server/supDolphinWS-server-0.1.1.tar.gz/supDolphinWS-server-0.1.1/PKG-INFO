@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: supDolphinWS-server
+Version: 0.1.1
+Summary: A WebSocket server for accessing memory of emulated games in Dolphin
+Home-page: https://github.com/sup39/supDolphinWS-server
+Author: sup39
+Author-email: sms@sup39.dev
+License: MIT
+Project-URL: Bug Tracker, https://github.com/sup39/supDolphinWS-server/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# supDolphinWSServer
+A WebSocket server for accessing memory of emulated games in Dolphin.
+
+This tool only runs on Windows currently.
+
+## Prerequisite
+- [Dolphin beta/dev version](https://dolphin-emu.org/download/) (stable version is NOT available)
+- Python >= 3.8
+
+## Installation/Upgrade
+```
+pip install -U supDolphinWS-server
+```
+
+## Usage
+```
+python -m supDolphinWS.server
+```
+
+Use the following command to see the available options:
+```
+python -m supDolphinWS.server --help
+```
