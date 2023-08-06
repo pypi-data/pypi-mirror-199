@@ -1,0 +1,21 @@
+Metadata-Version: 2.1
+Name: faker-to-kafka
+Version: 0.0.1
+Summary: produce fake data to kafka
+Home-page: https://github.com/zqWu/faker-to-kafka
+Author: dormi330
+Author-email: dormi330@gmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Faker (==17.0.0)
+Requires-Dist: PyYAML (==6.0)
+Requires-Dist: kafka-python (==2.0.2)
+
+produce fake data to kafka, support csv and json
+
