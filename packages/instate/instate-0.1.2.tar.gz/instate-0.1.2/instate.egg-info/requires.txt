@@ -1,0 +1,11 @@
+pandas
+torch
+torchvision
+torchdata
+torchtext
+
+[dev]
+check-manifest
+
+[test]
+coverage
