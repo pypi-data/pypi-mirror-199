@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ddtank"
+version = "1.2"
+authors = [
+  { name="zx", email="jugking6688@gmail.com" },
+]
+description = "A package used for writing ddtank game scripts."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "pywin32==227",
+    "onnxruntime>=1.13.1",
+    "ddtcv==0.1.1",
+    "pysimplegui>=4.60.4"
+]
+
