@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "nostr-mirror"
+version = "0.1.0"
+description = ""
+authors = ["kchro3 <jhara1418@gmail.com>"]
+readme = "README.md"
+packages = [{include = "nostr_mirror"}]
+
+[tool.poetry.dependencies]
+python = "^3.9.6"
+pynostr = "^0.6.2"
+setuptools = "^67.6.0"
+fire = "^0.5.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
