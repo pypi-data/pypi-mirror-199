@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: comot_update_berita_terpopuler_detik
+Version: 0.3
+Summary: A package to scrape the latest most popular news on detik.com
+Home-page: https://github.com/head-of-kejoramedia/detik-most-popular-news
+Author: Hasan A.
+Author-email: hasan40p30m@gmail.com
+Project-URL: Bug Tracker, https://github.com/head-of-kejoramedia/detik-most-popular-news
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# detik-most-popular-news
+This package will get the latest most popular news on detik.com.
+
+## How it works?
+This package will scrape from [detik.com](https://www.detik.com/).
+This package will use beautifulsoup4 and requests library to produce output in the form of JSON that is ready
+to be used in web or mobile apps.
