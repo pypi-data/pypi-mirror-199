@@ -1,0 +1,44 @@
+Metadata-Version: 2.1
+Name: ovos-skill-filebrowser
+Version: 0.0.3a1
+Summary: OVOS file browser skill plugin
+Home-page: https://github.com/OpenVoiceOS/skill-ovos-filebrowser
+Author: Aix
+Author-email: aix.m@outlook.com
+License: Apache-2.0
+Keywords: ovos file browser skill plugin
+Platform: UNKNOWN
+Requires-Dist: ovos-plugin-common-play (~=0.0.3)
+Requires-Dist: ovos-utils (>=0.0.28,~=0.0)
+Requires-Dist: ovos-workshop (>=0.0.11,~=0.0)
+Provides-Extra: notify
+Requires-Dist: pyudev ; extra == 'notify'
+
+# <img src='https://raw.githubusercontent.com/FortAwesome/Font-Awesome/6.x/svgs/solid/folder-open.svg' card_color='#55dffe' width='50' height='50' style='vertical-align:bottom'/> File Browser
+
+## About
+File Browser For Open Voice OS
+
+## Examples
+* "Open File Browser"
+* "Show File Browser"
+
+## Credits
+Aditya Mehra (@AIIX)
+
+## Category
+**Daily**
+
+## Tags
+#filebrowser
+#browser
+#file
+#manager
+#local
+#usb
+
+## Notes
+- File Browser requires latest OVOS Shell: https://github.com/OpenVoiceOS/ovos-shell
+- Not backwards compatible with Mycroft-Core GUI API, Requires OVOS QML Plugin from ovos-shell
+
+
