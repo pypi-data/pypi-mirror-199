@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: json-to-csv-lol
+Version: 0.1.1
+Summary: 
+Home-page: https://github.com/walis85300/json-to-csv-lol.git
+Author: Eduardo Alvarez
+Author-email: walojose46@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: polars (>=0.16.16,<0.17.0)
+Requires-Dist: typer[all] (>=0.7.0,<0.8.0)
+Project-URL: Repository, https://github.com/walis85300/json-to-csv-lol.git
+Description-Content-Type: text/markdown
+
+# JSON to CSV Converter
+
+This is a simple package for convert a JSON to a CSV File
