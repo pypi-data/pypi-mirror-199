@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: long-to-short-cli
+Version: 1.0.1
+Summary: A CLI tool to extract a video clip and crop it to a 9:16 aspect ratio using MoviePy
+Home-page: https://github.com/bimsonz/long-to-short-cli
+Author: Zach Bimson
+Author-email: zach@bison.digital
+License-File: LICENSE
+Requires-Dist: moviepy
+
