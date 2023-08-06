@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: awslogs-v2
+Version: 0.20.0
+Summary: awslogs is a simple command line tool to read aws cloudwatch logs.
+Home-page: https://github.com/sidpremkumar/awslogs-v2
+Author: Jorge Bastida
+Author-email: sid.premkumar@gmail.com
+License: BSD
+Keywords: aws logs cloudwatch
+Platform: any
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Utilities
+Requires-Python: >=3.5.*
+License-File: COPYING
+License-File: AUTHORS
+
+awslogs is a simple command line tool to read aws cloudwatch logs.
