@@ -1,0 +1,33 @@
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "rlaphoenix.pymp4"
+version = "1.5.0"
+description = "A Python parser for MP4 boxes"
+authors = ["beardypig <git@beardypig.com>"]
+license = "Apache-2.0"
+readme = "README.md"
+homepage = "https://github.com/rlaphoenix/pymp4"
+repository = "https://github.com/rlaphoenix/pymp4"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Natural Language :: English",
+    "Operating System :: OS Independent",
+    "Topic :: Multimedia :: Sound/Audio",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Utilities",
+]
+packages = [
+    { include = "pymp4" }
+]
+
+[tool.poetry.dependencies]
+python = "^2.7 || >=3.3,<4.0"
+construct = "2.8.8"
+
+[tool.poetry.scripts]
+mp4dump = "pymp4.cli:dump"
