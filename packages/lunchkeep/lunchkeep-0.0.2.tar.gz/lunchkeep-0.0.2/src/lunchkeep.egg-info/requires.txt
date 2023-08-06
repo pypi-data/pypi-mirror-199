@@ -1,0 +1,11 @@
+pydantic
+jinja2
+platformdirs
+
+[:python_version < "3.8"]
+importlib-metadata
+
+[testing]
+setuptools
+pytest
+pytest-cov
