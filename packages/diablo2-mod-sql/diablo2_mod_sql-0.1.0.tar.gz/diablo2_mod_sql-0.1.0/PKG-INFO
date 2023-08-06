@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: diablo2-mod-sql
+Version: 0.1.0
+Summary: A library that allows you to modify Diablo II data with SQL for modding purposes.
+License: GPL-3.0
+Author: HE Yaowen
+Author-email: he.yaowen@hotmail.com
+Requires-Python: >=3.7
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: mo-sql-parsing (>=9.357.23070,<10.0.0)
+Description-Content-Type: text/markdown
+
+# diablo2-mod-sql
+
+A library that allows you to modify Diablo II data with SQL for modding purposes.
+
+## License
+
+Copyright (C) 2022 HE Yaowen <he.yaowen@hotmail.com>
+
+The GNU General Public License (GPL) version 3, see [LICENSE](./LICENSE).
+
