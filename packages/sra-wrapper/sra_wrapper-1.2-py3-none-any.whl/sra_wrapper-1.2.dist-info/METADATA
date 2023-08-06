@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: sra-wrapper
+Version: 1.2
+Summary: 
+Author: Your Name
+Author-email: you@example.com
+Requires-Python: >=3.10.0,<3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: Flask (>=2.2.0,<3.0.0)
+Requires-Dist: numpy (>=1.22.2,<2.0.0)
+Requires-Dist: replit (>=3.2.4,<4.0.0)
+Requires-Dist: urllib3 (>=1.26.12,<2.0.0)
