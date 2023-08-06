@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: pyCEURspt
+Version: 0.0.4
+Project-URL: Home, https://github.com/ceurws/ceur-spt
+Project-URL: Documentation, https://github.com/ceurws/ceur-spt
+Project-URL: Source, https://github.com/ceurws/ceur-spt
+Author-email: Tim Holzheim <tim.holzheim@rwth-aachen.de>, Wolfgang Fahl <wf@bitplan.com>
+Maintainer-email: Wolfgang Fahl <wf@bitplan.com>, Tim Holzheim <tim.holzheim@rwth-aachen.de>
+License-Expression: Apache-2.0
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Requires-Dist: beautifulsoup4
+Requires-Dist: fastapi[all]
+Requires-Dist: linkml-runtime
+Requires-Dist: uvicorn
+Provides-Extra: test
+Requires-Dist: green; extra == 'test'
+Description-Content-Type: text/markdown
+
+# ceur-spt
+RESTFul Single Point of Truth Server for CEUR-WS
+
+[![Join the discussion at https://github.com/ceurws/ceur-spt/discussions](https://img.shields.io/github/discussions/ceurws/ceur-spt)](https://github.com/ceurws/ceur-spt/discussions)
+[![pypi](https://img.shields.io/pypi/pyversions/pyCEURspt)](https://pypi.org/project/pyCEURspt/)
+[![Github Actions Build](https://github.com/ceurws/ceur-spt/workflows/Build/badge.svg?branch=main)](https://github.com/ceurws/ceur-spt/actions?query=workflow%3ABuild+branch%3Amain)
+[![PyPI Status](https://img.shields.io/pypi/v/pyCEURspt.svg)](https://pypi.python.org/pypi/pyCEURspt/)
+[![GitHub issues](https://img.shields.io/github/issues/ceurws/ceur-spt.svg)](https://github.com/ceurws/ceur-spt/issues)
+[![GitHub closed issues](https://img.shields.io/github/issues-closed/ceurws/ceur-spt.svg)](https://github.com/ceurws/ceur-spt/issues/?q=is%3Aissue+is%3Aclosed)
+[![License](https://img.shields.io/github/license/ceurws/ceur-spt.svg)](https://www.apache.org/licenses/LICENSE-2.0)
+
+## Introduction
+### CEUR-WS 
+CEUR Workshop Proceedings (CEUR-WS.org)
+Free Open-Access Proceedings for Computer Science Workshops
+https://ceur-ws.org/
+### Semantification of CEUR-WS
+- http://ceur-ws-browser.bitplan.com
+- http://ceur-ws.bitplan.com
+
+### Single Point of Truth
+- http://ceurspt.wikidata.dbis.rwth-aachen.de/docs
+
+
