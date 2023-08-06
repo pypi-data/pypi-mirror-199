@@ -1,0 +1,222 @@
+import os
+import json
+import shutil
+import subprocess
+import jinja2
+
+
+class Build:
+    def __init__(self, cusom_image_name, build_number, build_release):
+        self.upload_dir = 'uploads'
+        self.image_name = cusom_image_name
+        self.build_number = build_number
+        self.build_release = build_release
+        self.serverdata = self.initialBuildConfigrationLoad()
+
+    def initialBuildConfigrationLoad(self):
+        jdata = open('build_files/JenkinsBuild.json')
+        data = json.load(jdata)
+        jdata.close()
+        servers = list(data.keys())
+        return [servers, data]
+
+    def makeDockerBuild(self, server, server_detail):
+        shutil.copy2('build_files/'+server+'.env', '.env')
+        print("sudo buildImage " +
+              server_detail['name']+" "+server_detail['version']+" latest")
+        return_code = subprocess.call(
+            "sudo buildImage "+server_detail['name']+" "+server_detail['version']+" latest", shell=True)
+
+    def buildUploadOnServer(self, server, server_detail, file_to_upload, upload_path):
+        data = self.serverdata[1]
+
+        if (data[server]['access'] == 'jump'):
+            file_query = ""
+            if (server_detail['authorization_file']):
+                file_path = "build_files/"+server_detail['authorization_file']
+                return_code = subprocess.call(
+                    "chmod 400 "+file_path, shell=True)
+                file_query = "-i "+file_path
+            # print("sshpass -P assphrase -p '"+server_detail['password']+"' scp "+file_query+" -r -P "+server_detail['port']+" "+server_detail['shell_option'] +
+            #       " "+file_to_upload+"  "+server_detail['user']+"@"+server_detail['host']+":/home/"+server_detail['user']+"/"+self.upload_dir+"/"+upload_path+"/")
+            shell_option = ""
+            if (server_detail['shell_option']):
+                shell_option = server_detail['shell_option']
+            upload_cmd = "sshpass -P assphrase -p '"+server_detail['password']+"' scp "+file_query+" -r -P "+server_detail['port']+" "+shell_option+" "+file_to_upload+"  "+server_detail['user']+"@"+server_detail['host']+":/home/"+server_detail['user']+"/"+self.upload_dir+"/"+upload_path+"/"
+            print(upload_cmd)
+            output = subprocess.check_output(upload_cmd, shell=True)
+            print(output)
+            return True
+        return True
+    
+    def buildUploadThroughJumpServer(self, server, server_detail, file_to_upload, upload_path):
+        data = self.serverdata[1]
+        
+        if (data[server]['access'] == 'jump'):
+            file_query = ""
+            if (server_detail['authorization_file']):
+                file_path = "build_files/"+server_detail['authorization_file']
+                return_code = subprocess.call(
+                    "chmod 400 "+file_path, shell=True)
+                file_query = "-i "+file_path
+            # print("sshpass -P assphrase -p '"+server_detail['password']+"' scp "+file_query+" -r -P "+server_detail['port']+" "+server_detail['shell_option'] +
+            #       " "+file_to_upload+"  "+server_detail['user']+"@"+server_detail['host']+":/home/"+server_detail['user']+"/"+self.upload_dir+"/"+upload_path+"/")
+            shell_option = ""
+            if (server_detail['shell_option']):
+                shell_option = server_detail['shell_option']
+            if(data[server]['access'] == 'jump' and data[server]['upload_server'] == 'app_server'):
+                upload_cmd = "sshpass -p '"+server_detail['password']+"' scp -oProxyCommand='sshpass -p '"+data[server]['jump_server']['password']+"' ssh -W %h:%p "+data[server]['jump_server']['user']+"@"+data[server]['jump_server']['host']+"' "+file_to_upload+" "+server_detail['user']+"@"+server_detail['host']+":/home/"+server_detail['user']+"/"+self.upload_dir+"/"+upload_path+"/"
+            else:
+                upload_cmd = "sshpass -P assphrase -p '"+server_detail['password']+"' scp "+file_query+" -r -P "+server_detail['port']+" "+shell_option+" "+file_to_upload+"  "+server_detail['user']+"@"+server_detail['host']+":/home/"+server_detail['user']+"/"+self.upload_dir+"/"+upload_path+"/"
+                print("In else of buildUploadThroughJumpServer....")
+            print(upload_cmd)
+            output = subprocess.check_output(upload_cmd, shell=True)
+            print(output)
+            return True
+        return True
+
+    def makeTarBuild(self, server, server_detail):
+        new_directory_path = server_detail['name']
+        if os.path.exists(new_directory_path):
+            shutil.rmtree(new_directory_path)
+        os.mkdir(new_directory_path)
+        shutil.copy2("build_files/.env_"+server+"_ctrl",
+                     new_directory_path+"/.env")
+        file_list = os.listdir()
+        for i in file_list:
+            if (i not in ['build_files', server_detail['name']]):
+                return_code = subprocess.call(
+                    "cp -rp "+i+" "+new_directory_path+"/", shell=True)
+
+        return_code = subprocess.call(
+            "tar -cpzf "+server_detail['name']+".tgz "+new_directory_path, shell=True)
+
+    def makeEnvFiles(self, server, server_detail):
+        servers = self.serverdata[0]
+        data = self.serverdata[1]
+        print("Ram................")
+        for pod_data in data[server]['pods']:
+            templateLoader = jinja2.FileSystemLoader(searchpath="./")
+            templateEnv = jinja2.Environment(loader=templateLoader)
+            TEMPLATE_FILE = "build_files/.env_template"
+            template = templateEnv.get_template(TEMPLATE_FILE)
+            outputText = template.render(pod=pod_data)
+            with open("build_files/.env_"+server+"_"+pod_data['name'], "w") as fh:
+                fh.write(outputText)
+
+    def makeConfigTar(self, server, server_detail):
+        print("tar cpzf "+server_detail['name']+"_config.tgz ./")
+        new_directory_path = server_detail['name']+'_config'
+        if os.path.exists(new_directory_path):
+            shutil.rmtree(new_directory_path)
+        os.mkdir(new_directory_path)
+        self.makeEnvFiles(server, server_detail)
+        file_list = os.listdir('build_files')
+        for i in file_list:
+            if (i.startswith('.env_'+server+'_')):
+                shutil.copy2("build_files/"+i, new_directory_path+"/")
+
+        return_code = subprocess.call(
+            "tar -cpzf "+server_detail['name']+"_config.tgz "+new_directory_path, shell=True)
+
+    def makeTarBackupOnServer(self, server, server_detail):
+        print("make tar backup on server")
+        # new_directory_path = server_detail['name']+'_config'
+        # if os.path.exists(new_directory_path):
+        #     shutil.rmtree(new_directory_path)
+        # os.mkdir(new_directory_path)
+
+    def makeDockerBuildOnBuildServer(self, server, server_detail):
+        data = self.serverdata[1]
+        file_query = ""
+        if (server_detail['authorization_file']):
+            file_path = "build_files/"+server_detail['authorization_file']
+            # return_code = subprocess.call("chmod 400 "+file_path, shell=True)
+            file_query = "-i "+file_path
+        
+        return_code = subprocess.check_output(
+            "sshpass -P assphrase -p '"+server_detail['password']+"' ssh "+file_query+" -p "+server_detail['port']+" "+server_detail['shell_option']+" "+server_detail['user']+"@"+server_detail['host']+" 'tar -xvzf ./upload/volumes/"+server_detail['name']+".tgz -C ./upload/volumes/'", shell=True)
+
+        # return_code = subprocess.check_output(
+        #     "sshpass -P assphrase -p '"+server_detail['password']+"' ssh "+file_query+" -p "+server_detail['port']+" "+server_detail['shell_option']+" "+server_detail['user']+"@"+server_detail['host']+" 'tar -xvzf ./upload/volumes/"+server_detail['name']+".tgz -C ./upload/volumes/'", shell=True)
+        # return_code = subprocess.check_output(
+        #     "sshpass -P assphrase -p '"+server_detail['password']+"' ssh "+file_query+" -p "+server_detail['port']+" "+server_detail['shell_option']+" "+server_detail['user']+"@"+server_detail['host']+" 'docker run -w /home/"+server_detail['user']+"/uploads/volumes/"+server_detail['name']+" -d --name "+server_detail['name']+" -e TZ=Asia/Kolkata -p 9056:8055 "+server_detail['name']+":latest'", shell=True)
+        
+
+    def preparebuildOnBuildServer(self):
+        servers = self.serverdata[0]
+        data = self.serverdata[1]
+        # output = subprocess.call("sshpass -P assphrase -p 'Dhn1kr9fq!jhC' scp -i build_files/np-sec-drtx.pem -r -P 5726 -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no package.json  np-sec-drtx@15.207.4.125:/home/np-sec-drtx/test_backend/volumes/", shell=True)
+
+        for server in servers:
+            # print(data[server]['build'])
+            # exit()
+            if (data[server]['build']):
+                if (data[server]['build_type'] == 'docker' and data[server]['build_on'] == 'jenkins'):
+                    print(">>>>>>>>>>>>>>>>>>>>>>>>>>>")
+                    self.makeConfigTar(server, data[server])
+                    upload_status = self.buildUploadThroughJumpServer(
+                        server, data[server][data[server]['upload_server']], data[server]['name']+"_config.tgz", "volumes")
+                    shutil.rmtree(data[server]['name']+"_config")
+                    self.makeTarBuild(server, data[server])
+                    upload_status = self.buildUploadThroughJumpServer(
+                        server, data[server][data[server]['upload_server']], data[server]['name']+".tgz", "volumes")
+                    file_path = data[server]['name']+".tgz"
+                    os.remove(file_path)
+                    if(data[server]['type'] == 'upgrade'):
+                        self.makeDockerBuild(server, data[server])
+                        upload_status = self.buildUploadOnServer(
+                            server, data[server]['jump_server'], data[server]['name']+".tar", "cntr_img_archvs")
+                        print(data[server]['name'])
+                        file_path = data[server]['name']+".tar"
+                        os.remove(file_path)
+
+                if (data[server]['build_type'] == 'docker' and data[server]['build_on'] == 'build_server'):
+                    print('started...................')
+                    self.makeConfigTar(server, data[server])
+                    upload_status = self.buildUploadOnServer(
+                        server, data[server]['build_server'], data[server]['name']+"_config.tgz", "volumes")
+                    shutil.rmtree(data[server]['name']+"_config")
+                    self.makeTarBuild(server, data[server])
+                    upload_status = self.buildUploadOnServer(
+                        server, data[server]['build_server'], data[server]['name']+".tgz", "volumes")
+                    file_path = data[server]['name']+"_config.tgz"
+                    os.remove(file_path)
+                    file_path = data[server]['name']+".tgz"
+                    os.remove(file_path)
+                    if(data[server]['type'] == 'upgrade'):
+                        print("start sh file upload")
+                        upload_status = self.buildUploadOnServer(server, data[server]['build_server'], "build_files/buildImage.sh", "")
+
+
+                    #self.makeDockerBuildOnBuildServer(server, data[server])
+                    # self.makeDockerBuildOnBuildServer(
+                    #     server, data[server]['build_server'])
+                    print("tgz is removed...............")
+                    # docker build -t sdms_sec_backend_portal:latest .
+                    # docker save sdms_sec_backend_portal:latest -o ./sdms_sec_backend_portal.tar
+                    # tar -cpzf node_modules.tgz node_modules/
+                    # mv node_modules.tgz sdms_sec_backend_portal_nm.tgz
+                    # cp -rp sdms_sec_backend_portal.tgz ../../uploads/volumes/
+                    # cp -rp sdms_sec_backend_portal_config.tgz ../../uploads/volumes/
+                    # cp -rp sdms_sec_backend_portal.tar ../../../uploads/cntr_img_archvs/
+                    # cp -rp sdms_sec_backend_portal_nm.tgz ../../uploads/volumes/
+
+    def initiate(self):
+        print("Reached to library")
+        self.initialBuildConfigrationLoad()
+        self.preparebuildOnBuildServer()
+        
+
+# deploy = Deployclass('sdms_web_site', '26', '5.2.1.1')
+# deploy.initialConfigrationLoad()
+# deploy.preparebuildOnBuildServer()
+# print(deploy.initialConfigrationLoad())
+
+
+# echo "shaileshhhhhhhhhhhhhh"
+# python3 - << EOF
+# from build_files.letsdeploy import Deploy
+# deploy = Build('sdms_web_site', '26', '5.2.1.1')
+# deploy.initiate()
+# EOF
