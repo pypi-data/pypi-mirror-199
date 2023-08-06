@@ -1,0 +1,50 @@
+[project]
+name = "s7r"
+dynamic = ["version"]
+authors = [
+  { name="Henry Jones", email="henryivesjones@gmail.com" },
+]
+description = "An easy to use job runner."
+readme = "README.md"
+requires-python = ">=3.6"
+license = {text="GPL-3.0-or-later"}
+classifiers = [
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+
+dependencies = [
+  "docker>=6.0.1",
+  "redis>=4.0.0",
+  "PyYAML>=6.0",
+  "pydantic>=1.0.0",
+  "smart_open>=6.0.0",
+  "croniter>=1.0.0",
+  "Flask>=2.0.0",
+  "itsdangerous>=2.0.0",
+  "click>=8.0.0",
+  "gunicorn>=20.0.0",
+  "Flask-Cors>=3.0.10"
+]
+
+keywords = [
+  "scheduler",
+  "task runner",
+  "task",
+  "job"
+]
+
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+sprinkler = "sprinkler.cli:cli"
+
+[tool.setuptools.dynamic]
+version = {attr = "sprinkler.__version__"}
