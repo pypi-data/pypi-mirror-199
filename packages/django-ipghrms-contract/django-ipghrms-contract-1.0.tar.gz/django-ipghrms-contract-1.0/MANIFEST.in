@@ -1,0 +1,7 @@
+include LICENSE
+include README.rst
+recursive-include attendance/templates *
+recursive-include attendance/migrations *
+recursive-include attendance/views *
+recursive-include attendance/api *
+recursive-include attendance/forms *
