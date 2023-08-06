@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: tests4py
+Version: 0.0.1a0
+Summary: Tests4Py a benchmark for testing bugs
+Home-page: https://github.com/smythi93/Tests4Py
+Author: Marius Smytzek & Martin Eberlein
+Author-email: Marius Smytzek <marius.smytzek@cispa.de>, Martin Eberlein <ebermart@informatik.hu-berlin.de>
+Project-URL: Homepage, https://github.com/smythi93/Tests4Py
+Project-URL: Bug Tracker, https://github.com/smythi93/Tests4Py/issues
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Software Development :: Testing
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: fuzzingbook (>=1.1)
+Requires-Dist: isla-solver (>=1.10)
+Provides-Extra: dev
+Provides-Extra: test
+Requires-Dist: pytest (>=7.2.2) ; extra == 'test'
+Requires-Dist: pytest-cov (>=4.0.0) ; extra == 'test'
+Requires-Dist: pytest-html (>=3.2.0) ; extra == 'test'
+Requires-Dist: pytest-rerunfailures (>=11.1.2) ; extra == 'test'
+Requires-Dist: parameterized (>=0.8.1) ; extra == 'test'
+
+# Tests4Py
