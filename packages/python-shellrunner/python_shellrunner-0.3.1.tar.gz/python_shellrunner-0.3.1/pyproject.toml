@@ -1,0 +1,141 @@
+[project]
+name = "python-shellrunner"
+version = "0.3.1"
+description = "Write safe shell scripts in Python."
+authors = [
+    { name = "adamhl8", email = "adamhl@pm.me" },
+]
+dependencies = []
+requires-python = ">=3.10"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3.10",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: POSIX",
+    "Operating System :: Unix",
+    "Programming Language :: Unix Shell",
+    "Topic :: System :: Shells",
+    "Topic :: System :: System Shells",
+]
+keywords = [
+    "shell",
+    "scripting",
+    "bash",
+    "zsh",
+    "fish",
+]
+
+[project.license]
+text = "MIT"
+
+[project.urls]
+Homepage = "https://github.com/adamhl8/python-shellrunner"
+Source = "https://github.com/adamhl8/python-shellrunner"
+"Bug Tracker" = "https://github.com/adamhl8/python-shellrunner/issues"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "black>=23.1.0",
+    "ruff>=0.0.257",
+    "pytest>=7.2.2",
+    "types-psutil>=5.9.5.10",
+    "pyroma>=4.2",
+]
+
+[tool.pdm.scripts.test]
+cmd = "pytest src"
+
+[tool.pdm.scripts.pyright]
+shell = "pyright src"
+
+[tool.pdm.scripts.ruff]
+cmd = "ruff check src"
+
+[tool.pdm.scripts.lint]
+composite = [
+    "pyright",
+    "ruff",
+]
+
+[tool.pdm.scripts.format]
+cmd = "black src"
+
+[tool.pdm.scripts.pyroma]
+cmd = "pyroma ."
+
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+]
+
+[tool.pyright]
+typeCheckingMode = "strict"
+extraPaths = [
+    "__pypackages__/3.10/lib",
+    "src",
+]
+
+[tool.ruff]
+line-length = 120
+target-version = "py310"
+select = [
+    "E",
+    "F",
+    "W",
+    "I",
+    "N",
+    "UP",
+    "BLE",
+    "FBT",
+    "B",
+    "A",
+    "COM",
+    "C4",
+    "T10",
+    "EM",
+    "EXE",
+    "ISC",
+    "ICN",
+    "G",
+    "INP",
+    "PIE",
+    "PYI",
+    "PT",
+    "Q",
+    "RSE",
+    "RET",
+    "SLF",
+    "SIM",
+    "TID",
+    "TCH",
+    "ARG",
+    "PTH",
+    "ERA",
+    "PL",
+    "PLC",
+    "PLE",
+    "PLR",
+    "PLW",
+    "TRY",
+    "RUF",
+]
+ignore = [
+    "E501",
+    "PLR0915",
+    "PLR0912",
+    "PLR0913",
+    "PLC1901",
+]
+
+[tool.black]
+line-length = 120
+target-version = [
+    "py310",
+]
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
