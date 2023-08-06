@@ -1,0 +1,13 @@
+satcfdi>=1.1.2
+diskcache
+num2words
+PyYAML
+babel
+azure-keyvault
+markdown2
+python-dateutil
+PySimpleGUI
+
+[test]
+coverage
+pytest
