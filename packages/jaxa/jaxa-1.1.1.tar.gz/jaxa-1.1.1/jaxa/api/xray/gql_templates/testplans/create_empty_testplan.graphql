@@ -1,0 +1,17 @@
+mutation createTestPlan ($summary: String!, $project_key: String!) {
+    createTestPlan(
+        testIssueIds: []
+        jira: {
+            fields: {
+                summary: $summary,
+                project: {key: $project_key}
+            }
+        }
+    ) {
+        testPlan {
+            issueId
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}

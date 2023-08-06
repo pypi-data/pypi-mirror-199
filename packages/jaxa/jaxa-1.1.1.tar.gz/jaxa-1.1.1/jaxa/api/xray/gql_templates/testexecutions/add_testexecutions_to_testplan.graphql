@@ -1,0 +1,9 @@
+mutation addTestExecutionsToTestPlan ($testplan_id: String!, $testexecution_ids: [String]!) {
+    addTestExecutionsToTestPlan(
+        issueId: $testplan_id,
+        testExecIssueIds: $testexecution_ids
+    ) {
+        addedTestExecutions
+        warning
+    }
+}

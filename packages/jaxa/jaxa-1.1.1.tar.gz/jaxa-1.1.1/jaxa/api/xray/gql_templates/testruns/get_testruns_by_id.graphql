@@ -1,0 +1,30 @@
+query getTestRunsById ($testrun_ids: [String]!) {
+    getTestRunsById( ids: $testrun_ids, limit: 10 ) {
+        total
+        limit
+        start
+        results {
+            id
+            status {
+                name
+                color
+                description
+            }
+            gherkin
+            examples {
+                id
+                status {
+                    name
+                    color
+                    description
+                }
+            }
+            test {
+                issueId
+            }
+            testExecution {
+                issueId
+            }
+        }
+    }
+}

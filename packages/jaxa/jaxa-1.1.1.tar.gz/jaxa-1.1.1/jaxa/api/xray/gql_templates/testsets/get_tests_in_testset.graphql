@@ -1,0 +1,20 @@
+query getTestsInTestSet ($testset_id: String!) {
+    getTestSet(issueId: $testset_id) {
+        issueId
+        jira(fields: ["key", "summary"])
+        tests(limit: 10) {
+            total
+            start
+            limit
+            results {
+                issueId
+                jira(fields: ["key", "summary"])
+                projectId
+                testType {
+                    name
+                    kind
+                }
+            }
+        }
+    }
+}

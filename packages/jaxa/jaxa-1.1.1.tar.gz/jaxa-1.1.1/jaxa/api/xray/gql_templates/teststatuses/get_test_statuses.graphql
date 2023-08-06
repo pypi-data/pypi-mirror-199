@@ -1,0 +1,7 @@
+query getTestStatuses {
+    getStatuses {
+        name
+        description
+        color
+    }
+}

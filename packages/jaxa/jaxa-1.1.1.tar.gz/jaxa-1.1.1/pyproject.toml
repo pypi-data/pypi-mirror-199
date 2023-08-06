@@ -1,0 +1,77 @@
+[tool.poetry]
+name = "jaxa"
+version = "1.1.1"
+description = "Jira and Xray API"
+authors = ["Gleams API user <Stephen.Swannell+ghapi@gmail.com>"]
+license = "GNU GENERAL PUBLIC LICENSE"
+readme = "README.md"
+keywords = ["jira", "xray", "rest", "graphql", "api"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<4.0"
+gql = "^3.4.0"
+requests-toolbelt = "^0.10.1"
+
+[tool.poetry.dev-dependencies]
+nox = "^2022.1.7"
+nox-poetry = "^1.0.0"
+flake8 = "^4.0.1"
+isort = "^5.10.1"
+bandit = "^1.7.4"
+black = "^22.3.0"
+mypy = "^0.961"
+types-PyYAML = "^6.0.8"
+pre-commit = "^2.19.0"
+pytest-cov = "^4.0.0"
+safety = "^2.3.3"
+pytest = "^7.2.0"
+pytest-xdist = "^3.1.0"
+
+[tool.poetry.group.dev.dependencies]
+python-dotenv = "^0.21.0"
+
+[build-system]
+build-backend = "poetry.core.masonry.api"
+requires = [
+  "poetry-core>=1",
+]
+
+[tool.poetry.scripts]
+run-tests = "scripts.dev_process:run_tests"
+prep-dev-release = "scripts.release_process:prep_dev"
+prep-patch-release = "scripts.release_process:prep_patch"
+prep-minor-release = "scripts.release_process:prep_minor"
+prep-major-release = "scripts.release_process:prep_major"
+release = "scripts.release_process:upload_release"
+
+[tool.isort]
+multi_line_output = 3
+include_trailing_comma = "true"
+
+[tool.bandit]
+exclude_dirs = ["tests", "scripts", "noxfile.py"]
+tests = []
+skips = ["B101","B506"]
+
+[tool.mypy]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+log_cli = true
+log_cli_level = "debug"
+markers = [
+    "functional",
+    "utils",
+    "jira",
+    "issues",
+    "labels",
+    "links",
+    "fields",
+    "customfields",
+    "xray",
+    "authentication",
+    "testexecutions",
+    "testruns",
+    "tests",
+    "testplans"
+]

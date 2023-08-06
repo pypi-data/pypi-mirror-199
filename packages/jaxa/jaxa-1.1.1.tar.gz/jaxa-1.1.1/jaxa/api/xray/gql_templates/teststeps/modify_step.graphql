@@ -1,0 +1,22 @@
+mutation addStepWithAttachment ($step_id: String!, $action: String!, $data: String!, $result: String!) {
+    updateTestStep(
+        stepId: "$step_id",
+        step: {
+            action: "$action",
+            data: "$data"
+            result: "$result",
+            attachments:
+                {
+                    add: {
+                        data:"ZHVtbXkgY29udGVudA==",
+                        filename:"dummy.txt",
+                        mimeType:"text/plain"
+                    }
+                }
+
+        }
+    ) {
+        addedAttachments
+        warnings
+    }
+}

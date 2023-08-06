@@ -1,0 +1,22 @@
+query getTestSetsByJQL ($jql_query: String!) {
+  getTestSets(jql: $jql_query, limit: 50) {
+    total
+    start
+    limit
+    results {
+      issueId
+      jira(fields: ["key", "summary"])
+      projectId
+      tests(limit: 10) {
+        results {
+          issueId
+          jira(fields: ["key", "summary"])
+          testType {
+            name
+            kind
+          }
+        }
+      }
+    }
+  }
+}

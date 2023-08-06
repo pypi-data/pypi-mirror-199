@@ -1,0 +1,40 @@
+mutation createMaxedTest(
+    $project_id: String!,
+    $summary: String!,
+    $gherkin: String!,
+    $unstructured: String!,
+    $folder_path: String!,
+    $jira_key: String!,
+    $preconditionIssueIds: [String]!
+    $steps: [CreateStepInput]!
+) {
+    createTest(
+        testType: {
+            name: "Cucumber"
+        },
+        jira: {
+            fields: {
+                summary:$summary,
+                key: $jira_key,
+                project: {
+                    key: $project_id
+                }
+            }
+        }
+        gherkin: $gherkin,
+        unstructured: $unstructured
+        steps: $steps
+        folderPath: $folder_path
+        preconditionIssueIds: $preconditionIssueIds
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            gherkin
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}

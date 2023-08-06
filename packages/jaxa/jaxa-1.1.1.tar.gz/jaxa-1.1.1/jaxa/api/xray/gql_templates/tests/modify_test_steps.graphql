@@ -1,0 +1,22 @@
+mutation modifyTestSteps ($jql_query: String!) {
+    updateTestStep(
+        stepId: "{{T1_NEWSTEP_ID}}",
+        step: {
+            action: "example step5x",
+            data: "example data5x"
+            result: "example result5x",
+            attachments:
+                {
+                    add: {
+                        data:"ZHVtbXkgY29udGVudA==",
+                        filename:"dummy.txt",
+                        mimeType:"text/plain"
+                    }
+                }
+
+        }
+    ) {
+        addedAttachments
+        warnings
+    }
+}

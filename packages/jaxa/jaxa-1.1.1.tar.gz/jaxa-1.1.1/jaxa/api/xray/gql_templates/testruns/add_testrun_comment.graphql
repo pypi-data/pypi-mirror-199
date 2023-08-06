@@ -1,0 +1,6 @@
+mutation updateTestRunComment ($testrun_id: String!, $comment: String!) {
+    updateTestRunComment(
+            id: $testrun_id,
+            comment: $comment
+        )
+}

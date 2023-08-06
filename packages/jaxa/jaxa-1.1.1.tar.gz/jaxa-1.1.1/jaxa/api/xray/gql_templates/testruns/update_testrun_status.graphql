@@ -1,0 +1,3 @@
+mutation updateTestRunStatus ($testrun_id: String!, $status: String!) {
+    updateTestRunStatus( id: $testrun_id, status: $status)
+}
