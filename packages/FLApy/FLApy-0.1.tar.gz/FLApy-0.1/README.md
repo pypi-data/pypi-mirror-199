@@ -1,0 +1,154 @@
+![](https://github.com/niB-gnaW/FLApy/blob/master/Pics/logo.png)
+# FLApy 
+
+
+## General description
+Forest Light Analysis python package (FLApy) is a python package for assessing
+light availability（LA） condition at any observers within forest using Airborne Laser
+Scanning data and analysis the change or heterogeneity of LA over spatiotemporal scale.
+
+
+## Version
+`0.1`
+
+## Demo Material
+UAV-based LiDAR data was obtained in Ailao Mountain sampling quadrate, Yunnan Province, China
+
+# Getting started
+## Installation （Have not finished yet）
+
+```
+pip install FLApy      #It would be upload to the pypi platform, but for now, it's only on GitHub
+```
+
+## Usage
+All scripts are run on Jupyter Notebook.
+
+A simple workflow is as follows:
+
+![](https://github.com/niB-gnaW/FLApy/blob/master/Pics/FLApy_workflow.png)
+
+### Set the configuration file
+Before start running, you need to set the parameters. And check the parameters to ensure they are effectively passed into the FLApy workflow.
+Users can modify it directly using the text tool, or modify it using the following methods. Users are advised to save the data to be processed in ```～/Datapool'```.
+At least, a classified `las.` data is required.
+```
+import FLApy as fp
+
+setting = fp.dataManagement.read_config()
+
+setting['obsFilePath'] = '2022obs_csv.csv'
+setting['lasFilePath'] = 'demoLiDAR2021.las'
+
+fp.dataManagement.set_config(setting)
+
+```
+
+### Read the LAS file and prepare data
+
+```
+import FLApy as fp
+
+#Read all required data
+allpoints, Tpoint, allobs = fp.data_IO.getAllData()                                 
+
+#Simulate and map the distribution of pixels obscured by vegetation or terrain on a spherical surface.
+blackMap = fp.sphereAnalyst.sphereAnalyst(allpoints, Tpoint).getBlackMap()          
+
+#The short wave radiation is calculated at a observation based on the onscured spherical map.
+SWRbelow = fp.illuminationAnalyst.illuminationCalculator(blackMap).getSWRbelow()    
+```
+
+
+## Output
+
+|             Indicators              |   Scale    | Value | Abbreviation |
+|:-----------------------------------:|:----------:|:-----:|:------------:|
+|               Average               |   Voxel    |   1   |   AVE_Vox    |
+|         Standard_deviation          |   Voxel    |   1   |   STD_Vox    |
+|      Coefficient_of_variation       |   Voxel    |   1   |    CV_Vox    |
+|                Range                |   Voxel    |   1   |   RAN_Vox    |
+|       Spatial_autocorrelation       |   Voxel    |   1   |   SAC_Vox    |
+|              Diversity              |   Voxel    |   1   |   DIV_Vox    |
+|          Gini_coefficient           |   Voxel    |   1   |   GINI_Vox   |
+|       Light_attenuation_rate        |  Vertical  |   1   |   LAR_Ver    |
+|     Height_of_inflection_point      |  Vertical  |   1   |   HIP_Ver    |
+| Relative_height_of_inflection_point |  Vertical  |   1   |   HIPr_Ver   |
+|          Convex_hull_area           |  Vertical  |   1   |   ACH_Ver    |
+|               Average               | Horizontal |   1   |   AVE_Hor    |
+|         Standard_deviation          | Horizontal |   1   |   STD_Hor    |
+|      Coefficient_of_variation       | Horizontal |   1   |    CV_Hor    |
+|                Range                | Horizontal |   1   |   RAN_Hor    |
+|       Spatial_autocorrelation       | Horizontal |   1   |   SAC_Hor    |
+|              Diversity              | Horizontal |   1   |   DIV_Hor    |
+|          Gini_coefficient           | Horizontal |   1   |   GINI_Hor   |
+|             Hot_volume              | 3D_Cluster |   1   |   HVOL_3D    |
+|             Cold_volume             | 3D_Cluster |   1   |   CVOL_3D    |
+|         Relative_hot_volume         | 3D_Cluster |   1   |   HVOLr_3D   |
+|        Relative_cold_volume         | 3D_Cluster |   1   |   CVOLr_3D   |
+|     Volume_ratio_of_hot_to_cold     | 3D_Cluster |   1   |   VRH2C_3D   |
+|         Largest_hot_volume          | 3D_Cluster |   1   |    LHV_3D    |
+|         Largest_cold_volume         | 3D_Cluster |   1   |    LCV_3D    |
+|            Hot_abundance            | 3D_Cluster |   1   |    HAB_3D    |
+|           Cold_abundance            | 3D_Cluster |   1   |    CAB_3D    |
+|         Hot_volume_average          | 3D_Cluster |   1   |    HVA_3D    |
+|         Cold_volume_average         | 3D_Cluster |   1   |    CVA_3D    |
+|            Hot_cohesion             | 3D_Cluster |   1   |    HCO_3D    |
+|            Cold_cohesion            | 3D_Cluster |   1   |    CCO_3D    |
+|          Hot_shape_factor           | 3D_Cluster |   1   |    HSF_3D    |
+|          Cold_shape_factor          | 3D_Cluster |   1   |    CSF_3D    |
+|           Hot_shape_index           | 3D_Cluster |   1   |    HSI_3D    |
+|          Cold_shape_index           | 3D_Cluster |   1   |    CSI_3D    |
+
+
+# Examples
+
+## Read and plot files
+
+```
+import FLApy as fp
+
+allPointsXYZ = fp.data_IO.dataI().las2xyz()
+fp.visualization.visXYZ_points(lasXYZ)          ##Read and visualize all points
+
+TPointsXYZ = fp.data_IO.dataI().readTerrainPointsXYZ()
+fp.visualization.visXYZ_points(TPointsXYZ)      ##Read and visualize terrain points
+
+allobsXYZ = fp.data_IO.dataI(fp.obsPath, type=fp.obsType).getObs()
+fp.visualization.visXYZ_points(allobs)          ##Read and visualize all observers
+```
+## Project all points or terrain points to a spherical surface
+```
+allpointsC2Sed = fp.sphereAnalyst.sphereAnalyst(allpoints, Tpoint).getAllPointsC2SedXYZ()
+fp.visualization.visXYZ_points(allpointsC2Sed)
+
+TPointsC2Sed = fp.sphereAnalyst.sphereAnalyst(allpoints, Tpoint).getTPointsC2SedXYZ()
+fp.visualization.visXYZ_points(TPointsC2Sed)
+```
+## Map the distribution of obscured pixels
+```
+blackMap = fp.sphereAnalyst.sphereAnalyst(allpoints, Tpoint).getBlackMap()
+fp.visualization.visSphereMap(blackMap)
+```
+## Calculate some factors realted to light condition
+```
+#Calculate the sky-view fraction
+SVF = fp.lightAnalyst.lightCalculator(blackMap).getSVF()
+
+#Calculate the gap fraction
+GapFraction = fp.lightAnalyst.lightCalculator(blackMap).getGapFraction()
+
+#Calculate the short wave radiance
+SWR = fp.lightAnalyst.lightCalculator(blackMap).getSWRbelow()
+```
+
+## 
+
+# Notation
+
+# Authors
+Bin Wang, Cameron Proctor, Zhenghua Sun, Luxiang Lin, Zhiming Zhang
+
+wb931022@hotmail.com
+
+# Citation
