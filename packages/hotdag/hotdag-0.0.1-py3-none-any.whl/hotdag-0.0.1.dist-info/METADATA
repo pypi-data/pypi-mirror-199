@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: hotdag
+Version: 0.0.1
+Summary: Hot evaluation of dbt DAG selectors
+Project-URL: Documentation, https://github.com/nicholasyager/hotdag#readme
+Project-URL: Issues, https://github.com/nicholasyager/hotdag/issues
+Project-URL: Source, https://github.com/nicholasyager/hotdag
+Author-email: Nicholas Yager <yager@nicholasyager.com>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.7
+Requires-Dist: fastapi
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: flake8; extra == 'dev'
+Requires-Dist: uvicorn; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# HotDAG
+
+[![PyPI - Version](https://img.shields.io/pypi/v/hotdag.svg)](https://pypi.org/project/hotdag)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/hotdag.svg)](https://pypi.org/project/hotdag)
+
+-----
+
+**Table of Contents**
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+```console
+pip install hotdag
+```
+
+## License
+
+`hotdag` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
