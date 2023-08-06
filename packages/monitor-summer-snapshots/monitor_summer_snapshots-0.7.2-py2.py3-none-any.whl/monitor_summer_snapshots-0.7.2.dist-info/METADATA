@@ -1,0 +1,112 @@
+Metadata-Version: 2.1
+Name: monitor-summer-snapshots
+Version: 0.7.2
+Summary: 
+Home-page: https://gricad-gitlab.univ-grenoble-alpes.fr/OSUG/RESIF/monitor-summer-snapshots
+Author: Jonathan Schaeffer
+Author-email: jonathan.schaeffer@univ-grenoble-alpes.fr
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: influxdb
+Requires-Dist: paramiko
+Requires-Dist: py-zabbix
+Requires-Dist: pyyaml
+Description-Content-Type: text/markdown
+
+monitor-summer-snapshots
+========================
+
+![](screenshot.png)
+
+Installation
+------------
+
+monitor-summer-snapshots is distributed on [PyPI](https://pypi.org) as a
+universal wheel and is available on Linux/macOS and Windows and supports
+Python 3.7.
+
+``` bash
+$ pip install monitor-summer-snapshots
+```
+
+To see the list of installed files :
+
+``` bash
+$ pip show -f monitoring-summer-snapshots}
+```
+
+License
+-------
+
+monitor-summer-snapshots is distributed under the terms of the GPLv3,
+see LICENSE file.
+
+Description
+-----------
+
+Configuration
+-------------
+
+### Monitoring
+
+Copier le fichier `config.yml.example` en `config.yml` et l'éditer :
+
+    influxdb:                        # Paramétrage de l'envoi à influxdb
+      active: true                   # placer à false pour désactiver l'envoi à influxdb
+      server: plop.u-ga.fr           # le serveur influxdb
+      port: 8086                     # le port
+      database: plop                 # le nom de la base de donnée
+      measurement: summer_snapshot   # le nom de la mesure
+    zabbix:
+      active: true                   # placer à false pour désactiver l'envoi à zabbix
+      server: plop.u-ga.fr           # serveur zabbix
+      host: thisone                  # nom de l'hote qui envoie la métrique
+      key: summer.snapshot.size      # la clé de l'item telle qu'elle est configurée dans zabbix
+
+    lifs:                            # liste des LIF SUMMER
+      - name: resif                  # un nom pour cette LIF
+        sshserver:                   # le serveur SSH d'administration
+        login:                       # le login SSH
+        password:                    # devine
+        volumes:                     # une liste des volumes à monitorer
+          - name:                    # nom du volume dans la LIF
+            mountpoint:              # un nom logique du volume pour le monitoring
+
+Les logs se configurent dans le fichier de logs `logger.conf`.
+
+### Zabbix
+
+Il faut configurer zabbix pour qu'il accueille les métriques remontées
+par le script
+
+#### Discovery
+
+Après le déploiement de l'application, configurer l'agent zabbix, par
+exemple `/etc/zabbix/zabbix_agent.d/summer-snapshots-discovery.conf`
+
+```
+UserParameter=summer\_snapshots\_mount.discovery,/home/sysop/.virtualenv/monitoring/bin/python
+    /home/sysop/monitoring/monitoring-summer-snapshot/zabbix-discovery.py
+```
+
+Et redémarrer l'agent.
+
+``` bash
+systemctl restart zabbix-agent
+```
+
+#### Template
+
+Ensuite, il faut importer importer le template proposé dans ce dépôt
+(<https://gricad-gitlab.univ-grenoble-alpes.fr/schaeffj/monitoring-summer-snapshot/blob/master/monitor_summer_snapshots/zabbix_template.xml>)
+et éventuellement l'adapter à vos besoin.
+
