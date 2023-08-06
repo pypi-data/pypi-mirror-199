@@ -1,0 +1,13 @@
+# YT Comment
+A package used to scrap all comments ( < 10000 ) && the title given a youtube video url.
+
+## How to used
+
+_After installing the package use the following import:_<br>
+
+from ytcomment import youtubescrapper
+
+link = "https://www.youtube.com/watch?v=QBasYIll0aw"
+comments, title = youtubescrapper(link)
+
+

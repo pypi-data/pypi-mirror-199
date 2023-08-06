@@ -1,0 +1,37 @@
+Metadata-Version: 2.1
+Name: ytcomment
+Version: 0.0.1
+Summary: ytcomment scrap all comments and title given a  youtube url.
+Home-page: https://github.com/azerinho007/
+Author: Azer
+Author-email: azerch.1996@gmail.com
+License: MIT
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: google-api-python-client (>=2.81.0)
+Provides-Extra: dev
+Requires-Dist: twine (>=4.0.2) ; extra == 'dev'
+
+#  ytcomment scrapper
+    ytcomment is a package to scrap all comments & title given a youtube video url.
+
+
+#  Dependency
+    google-api-python-client <br> <br>
+    ==> pip install google-api-python-client
+
+
+## How to use
+    <br>
+    _After install the package, use following imports: <b>
+
+    from ytcomment import youtubescrapper
+
+    link = "https://www.youtube.com/watch?v=QBasYIll0aw&t=532s"
+
+    comments, title = youtubescrapper(link)
+
