@@ -1,0 +1,6 @@
+include load/*.csv
+include load/*.html
+include *.md
+include load/*.rst
+include *.ipynb
+include requirements.txt
