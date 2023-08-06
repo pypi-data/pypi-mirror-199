@@ -1,0 +1,32 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "aenigma"
+version = "0.1.0"
+authors = [
+  { name="Sohal Sudheer", email="sohalsdr@gmail.com" },
+  { name="Griffin Pitts", email="griffpitts@gmail.com" },
+  { name="Harris Sarfaraz", email="harrisms305@gmail.com" },
+]
+description = "The Aenigma library calculates the Relative Complexity Score (RCS) of each sentence in a given body of text"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Development Status :: 3 - Alpha",
+    "Natural Language :: English",
+    "Topic :: Text Processing",
+]
+dependencies = [
+    "nltk >=3.8.1",
+    "syllables >=1.0.7",
+]
+
+[project.urls]
+"Source" = "https://github.com/NeuroRead/Aenigma"
+"Homepage" = "https://github.com/NeuroRead"
+"Bug Tracker" = "https://github.com/NeuroRead/Aenigma/issues"
