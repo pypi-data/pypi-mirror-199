@@ -1,0 +1,70 @@
+[project]
+name = "language_server_protocol"
+authors = [{name="Joel Christiansen"}]
+version = "1.0.1"
+dynamic = ['dependencies', 'optional-dependencies']
+readme = "README.md"
+requires-python = ">=3.11"
+license = {file="LICENSE"}
+keywords = ['language', 'server', 'protocol']
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Software Development",
+    "Topic :: Software Development :: Libraries",
+]
+
+[project.urls]
+Documentation="https://language-server-protocol.readthedocs.io/en/latest/index.html"
+github="https://github.com/Thirdegree/language-server-protocol"
+Pypi="https://pypi.org/project/language-server-protocol/"
+
+[tool.vulcan]
+no-lock = true
+
+[tool.vulcan.dependencies]
+ujson = "~=5.7"
+
+[tool.setuptools]
+script-files = ["scripts/lspsnitch"]
+
+[tool.setuptools.packages.find]
+include = ["lsp*"]
+
+[build-system]
+requires = ["vulcan-py~=2.0"]
+build-backend = "vulcan.build_backend"
+
+[tool.mypy]
+strict = true
+
+[tool.yapf]
+COLUMN_LIMIT=120
+
+# pytest.ini
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.coverage.report]
+# Regexes for lines to exclude from consideration
+exclude_lines =[
+    # Have to re-enable the standard pragma
+    'pragma: no cover',
+
+    # Don't complain about missing debug-only code:
+    'def __repr__',
+    'if self\.debug',
+
+    # Don't complain if tests don't hit defensive assertion code:
+    'raise AssertionError',
+    'raise NotImplementedError',
+
+    # Don't complain if non-runnable code isn't run:
+    'if 0:',
+    'if __name__ == .__main__.:',
+
+    # Don't complain about abstract methods, they aren't run:
+    '@(abc\.)?abstractmethod',
+
+    'pass'
+
+]
