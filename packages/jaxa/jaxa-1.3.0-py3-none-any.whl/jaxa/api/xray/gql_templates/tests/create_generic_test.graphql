@@ -1,0 +1,19 @@
+mutation createGenericTest($project_id: String!, $summary: String!, $unstructured: String!) {
+    createTest(
+        testType: { name: "Generic" },
+        unstructured: $unstructured,
+        jira: {
+            fields: { summary:$summary, project: {key: $project_id} }
+        }
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            unstructured
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}
