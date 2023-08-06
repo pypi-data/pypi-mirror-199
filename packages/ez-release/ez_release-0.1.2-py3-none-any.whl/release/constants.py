@@ -1,0 +1,4 @@
+PACKAGE_NAME = "ez-release"
+DEFAULT_DOMAIN_SEPARATOR = "/"
+POSSIBLE_DOMAIN_SEPARATORS = "/_:-"
+MAIN_BRANCH_NAMES = {"main", "master"}
