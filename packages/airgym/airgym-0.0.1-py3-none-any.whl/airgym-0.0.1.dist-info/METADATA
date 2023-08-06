@@ -1,0 +1,141 @@
+Metadata-Version: 2.1
+Name: airgym
+Version: 0.0.1
+Summary: OpenAI Gym environment for training reinforcement learning agents on an XPlane simulator
+Home-page: https://github.com/zacjiker/airgym
+Author: SAUVECANNE, Baptiste
+Author-email: contact@baptistesauvecanne.fr
+License: GPL-3.0
+Keywords: openai,gym,xplane,reinforcement learning,rl,environment,ai,artificial intelligence,machine learning,ml
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: absl-py (==1.4.0)
+Requires-Dist: appdirs (==1.4.4)
+Requires-Dist: cachetools (==5.3.0)
+Requires-Dist: charset-normalizer (==3.1.0)
+Requires-Dist: click (==8.1.3)
+Requires-Dist: cloudpickle (==2.2.1)
+Requires-Dist: cmake (==3.26.0)
+Requires-Dist: contourpy (==1.0.7)
+Requires-Dist: cycler (==0.11.0)
+Requires-Dist: docker-pycreds (==0.4.0)
+Requires-Dist: filelock (==3.10.0)
+Requires-Dist: fonttools (==4.39.2)
+Requires-Dist: gitdb (==4.0.10)
+Requires-Dist: GitPython (==3.1.31)
+Requires-Dist: google-auth (==2.16.3)
+Requires-Dist: google-auth-oauthlib (==0.4.6)
+Requires-Dist: grpcio (==1.51.3)
+Requires-Dist: gym (==0.21.0)
+Requires-Dist: idna (==3.4)
+Requires-Dist: importlib-metadata (==4.13.0)
+Requires-Dist: importlib-resources (==5.12.0)
+Requires-Dist: Jinja2 (==3.1.2)
+Requires-Dist: kiwisolver (==1.4.4)
+Requires-Dist: lit (==15.0.7)
+Requires-Dist: loguru (==0.6.0)
+Requires-Dist: Markdown (==3.4.3)
+Requires-Dist: MarkupSafe (==2.1.2)
+Requires-Dist: matplotlib (==3.7.1)
+Requires-Dist: mpmath (==1.3.0)
+Requires-Dist: networkx (==3.0)
+Requires-Dist: numpy (==1.24.2)
+Requires-Dist: nvidia-cublas-cu11 (==11.10.3.66)
+Requires-Dist: nvidia-cuda-cupti-cu11 (==11.7.101)
+Requires-Dist: nvidia-cuda-nvrtc-cu11 (==11.7.99)
+Requires-Dist: nvidia-cuda-runtime-cu11 (==11.7.99)
+Requires-Dist: nvidia-cudnn-cu11 (==8.5.0.96)
+Requires-Dist: nvidia-cufft-cu11 (==10.9.0.58)
+Requires-Dist: nvidia-curand-cu11 (==10.2.10.91)
+Requires-Dist: nvidia-cusolver-cu11 (==11.4.0.1)
+Requires-Dist: nvidia-cusparse-cu11 (==11.7.4.91)
+Requires-Dist: nvidia-nccl-cu11 (==2.14.3)
+Requires-Dist: nvidia-nvtx-cu11 (==11.7.91)
+Requires-Dist: oauthlib (==3.2.2)
+Requires-Dist: packaging (==23.0)
+Requires-Dist: pandas (==1.5.3)
+Requires-Dist: pathtools (==0.1.2)
+Requires-Dist: Pillow (==9.4.0)
+Requires-Dist: protobuf (==4.22.1)
+Requires-Dist: psutil (==5.9.4)
+Requires-Dist: pyasn1 (==0.4.8)
+Requires-Dist: pyasn1-modules (==0.2.8)
+Requires-Dist: pyparsing (==3.0.9)
+Requires-Dist: python-dateutil (==2.8.2)
+Requires-Dist: pytz (==2022.7.1)
+Requires-Dist: PyYAML (==6.0)
+Requires-Dist: requests (==2.28.2)
+Requires-Dist: requests-oauthlib (==1.3.1)
+Requires-Dist: rsa (==4.9)
+Requires-Dist: scipy (==1.10.1)
+Requires-Dist: sentry-sdk (==1.17.0)
+Requires-Dist: setproctitle (==1.3.2)
+Requires-Dist: six (==1.16.0)
+Requires-Dist: smmap (==5.0.0)
+Requires-Dist: stable-baselines3 (==1.7.0)
+Requires-Dist: sympy (==1.11.1)
+Requires-Dist: tensorboard (==2.12.0)
+Requires-Dist: tensorboard-data-server (==0.7.0)
+Requires-Dist: tensorboard-plugin-wit (==1.8.1)
+Requires-Dist: torch (==2.0.0)
+Requires-Dist: triton (==2.0.0)
+Requires-Dist: typing-extensions (==4.5.0)
+Requires-Dist: urllib3 (==1.26.15)
+Requires-Dist: wandb (==0.14.0)
+Requires-Dist: Werkzeug (==2.2.3)
+Requires-Dist: zipp (==3.15.0)
+Requires-Dist: twine (==3.7.0)
+
+![GPLv3 License](https://img.shields.io/badge/License-GPL%20v3-yellow.svg)
+![GitHub Workflow Status (with branch)](https://img.shields.io/github/actions/workflow/status/zacjiker/airgym/build-and-publish.yml)
+![GitHub all releases](https://img.shields.io/github/downloads/zacjiker/airgym/total)
+![PyPI](https://img.shields.io/pypi/v/airgym)
+
+# XPlane Gym Environment
+
+This project provides an OpenAI Gym environment for training reinforcement learning agents on an XPlane simulator. The environment allows agents to control an aircraft and receive rewards based on how well they perform a task, such as flying a certain trajectory or landing safely.
+
+## Installation
+
+To install the package, run the following command:
+
+```bash
+  pip install airgym
+```
+    
+## Usage/Examples
+
+To use the environment in your Python code, you can import it as follows:
+
+```python
+import airgym
+import gym
+
+# If XPlane is running on the same machine, you can use the default address and port. 
+# Or, set ip address and port according to your configuration.
+env = gym.make('AirGym-v1')
+
+episods = 0
+
+for episod in range(episods):
+    obs = env.reset()
+    done = False
+
+    while not done:
+        actions = env.action_space.sample()
+        obs, reward, done, info = env.step(action)
+
+env.close()
+```
+
+
