@@ -1,0 +1,14 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "coolfunc"
+version = "1.0"
+description = "The dependent package of project <Make Python simpler> ."
+dependencies = []
+
+readme = "README.md"
+authors = [{name = "许灿标", email = "lcctoor@outlook.com"}]
+license = {file = "LICENSE"}
+classifiers = ["License :: OSI Approved :: Apache Software License"]
