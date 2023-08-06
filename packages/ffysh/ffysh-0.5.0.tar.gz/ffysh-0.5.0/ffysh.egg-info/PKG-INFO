@@ -1,0 +1,22 @@
+Metadata-Version: 2.1
+Name: ffysh
+Version: 0.5.0
+Summary: Python package to interact with ffysh API
+Home-page: https://flockfysh.tech/
+Author: Aarekaz
+Author-email: hey@anuragdhungana.com.np
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+## Inital ffysh package
+
+
+To build the package : pip install build
+                        python -m build
+
+To upload the package : pip install twine
+                        
+                        python -m twine upload --repository pypi dist/*
