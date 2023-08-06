@@ -1,0 +1,26 @@
+# Grandmaster AI
+
+Our mission is to make machine learning & AI accessible to as many developers as possible. 
+
+# Core principles
+
+- Simple to use. Get started in minutes, not hours.
+- Zero-config. All models should work out-of-the box.
+- Seamless integration with the Inference API.
+
+# Install
+
+`pip install grandmaster`
+
+# Usage
+
+See [https://grandmaster.ai](https://grandmaster.ai)
+
+# Contributing
+
+See [CONTRIBUTING](./CONTRIBUTING.md)
+
+
+# License
+
+To be defined, probably MIT or similar.
