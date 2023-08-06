@@ -1,0 +1,46 @@
+Metadata-Version: 2.1
+Name: ashberry
+Version: 0.1.0
+Summary: A tool to search for websites by generating random domains
+License: MIT
+Author: mmlvgx
+Author-email: mmlvgx@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: aiodns (>=3.0.0,<4.0.0)
+Requires-Dist: aiohttp[speedups] (>=3.8.4,<4.0.0)
+Requires-Dist: cchardet (>=2.1.7,<3.0.0)
+Description-Content-Type: text/markdown
+
+# ashberry
+A tool to search for websites by generating random domains
+# install
+`pip install ashberry`
+# using
+```
+$ ashberry
+Level
+> {LEVEL}
+Searching...
+```
+# level
+`{LEVEL}` can be:
+
+`10` (`Level.FIRST`)\
+`15` (`Level.SECOND`)\
+`20` (`Level.THIRD`)
+
+`Level.FIRST`
+```
+- All lowercase letters used in generation
+```
+`Level.SECOND`
+```
+- All lowercase & uppercase used in generation
+```
+`Level.THIRD`
+```
+- All lowercase & uppercase letters with digits used in generation
