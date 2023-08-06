@@ -1,0 +1,8 @@
+include glassio/templates/app/controllers/*
+include glassio/templates/app/controllers/api/*
+include glassio/templates/app/controllers/api/v1/*
+include glassio/templates/app/controllers/api/v1/response_types/*
+include glassio/templates/app/models/*
+include glassio/templates/app/*
+include glassio/templates/commands/*
+include glassio/templates/*
