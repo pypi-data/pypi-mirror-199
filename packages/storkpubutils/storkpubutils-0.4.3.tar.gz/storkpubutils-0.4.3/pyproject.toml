@@ -1,0 +1,38 @@
+[project]
+name = "storkpubutils"
+dynamic = ["version"]
+authors = [
+  { name="Yash Malik", email="ymalik@stork.network" },
+]
+description = "Stork publisher utilities"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Stork-Oracle/storkpubutils"
+"Bug Tracker" = "https://github.com/Stork-Oracle/storkpubutils/issues"
+
+[build-system]
+requires = [
+  "mpmath", "sympy", "ecdsa", "web3", "eth_abi", "eth_account",
+  "eth_utils", "setuptools", "wheel", "aptos_sdk", "watchtower",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.poetry]
+packages = [
+    { include = "src" },
+    { include = "src/**/*.json" },
+]
+
+[tool.setuptools]
+include-package-data = true
+
+[tool.setuptools.dynamic]
+version = {file = "VERSION"}

@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: storkpubutils
+Version: 0.4.3
+Summary: Stork publisher utilities
+Author-email: Yash Malik <ymalik@stork.network>
+License: MIT License
+        
+        Copyright (c) 2022 Stork Inc.
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+Project-URL: Homepage, https://github.com/Stork-Oracle/storkpubutils
+Project-URL: Bug Tracker, https://github.com/Stork-Oracle/storkpubutils/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# storkpubutils
+
+## Usage
+
+This package contains commonly used stork publisher utilities.
+
+`sign_prices` uses `starkware_helpers` to generate starkware and evm signatures for the given asset and external price.
+
+`send` takes the current asset and price data, and forwards it to the stork websocket.
+
+`update_prices` takes price data from providers and stores it inside of a `prices` object, while also removing stale data.
+
+`quantize_price` takes the given price and quantizes it before multiplying it to avoid float inaccuracies
+
+`starkex_sign` and `evm_sign` take given assets and prices, and sign them with the relevant information
+
+`evm_pack` is equivalent to StarkEx's `get_price_msg` without hashing
+
+## Notes
+Only folders with `__init__.py` in it them will be included when built.
