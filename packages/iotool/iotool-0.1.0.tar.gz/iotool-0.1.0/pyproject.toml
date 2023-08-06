@@ -1,0 +1,75 @@
+[tool.poetry]
+name = "iotool"
+version = "0.1.0"
+description = ""
+authors = ["Tlaloc-Es <dev@tlaloc-es.com>"]
+license = "https://github.com/Tlaloc-Es/iotool/blob/master/LICENSE.txt"
+homepage = "https://github.com/Tlaloc-Es/iotool"
+repository = "https://github.com/Tlaloc-Es/iotool"
+packages = [{include = "iotool"}]
+readme = "README.md"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/Tlaloc-Es/iotool/issues"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.dev-dependencies]
+pylint = "*"
+pytest = "*"
+black = "*"
+mypy = "*"
+ipykernel = "*"
+ipython = "*"
+commitizen = "*"
+poethepoet = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.commitizen]
+version = "2.0.0"
+version_files = [
+    "pyproject.toml:^version"
+]
+tag_format = "$version"
+
+[tool.ruff]
+line-length = 88
+
+# Enable Pyflakes `E` and `F` codes by default.
+select = ["E", "F", "W", "C90", "UP", "N", "PLC", "PLE", "PLR", "PLW"]
+ignore = []
+
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+per-file-ignores = {}
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+target-version = "py38"
+
+[tool.ruff.mccabe]
+max-complexity = 10
