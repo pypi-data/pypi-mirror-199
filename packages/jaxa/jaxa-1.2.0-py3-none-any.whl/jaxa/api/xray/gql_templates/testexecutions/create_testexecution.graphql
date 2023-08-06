@@ -1,0 +1,16 @@
+mutation createTestExecution ($project_id: String!, $summary: String!, $testenvs: [String]!, $test_ids: [String]!) {
+    createTestExecution(
+        testIssueIds: $test_ids
+        testEnvironments: $testenvs
+        jira: {
+            fields: { summary: $summary, project: {key: $project_id} }
+        }
+    ) {
+        testExecution {
+            issueId
+            jira(fields: ["key", "summary"])
+        }
+        warnings
+        createdTestEnvironments
+    }
+}

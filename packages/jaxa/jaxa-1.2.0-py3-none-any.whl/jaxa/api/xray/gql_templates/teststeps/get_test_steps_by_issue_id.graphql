@@ -1,0 +1,14 @@
+query getTestStepsbyIssueId ($issue_id: String!) {
+    getTest(issueId: "$issue_id") {
+        steps {
+            id
+            data
+            action
+            result
+            attachments {
+                id
+                filename
+            }
+        }
+    }
+}

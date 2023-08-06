@@ -1,0 +1,30 @@
+query getTestPlan ($testplan_id: String!) {
+    getTestPlan(issueId: $testplan_id) {
+        issueId
+        jira(fields: ["key", "summary"])
+        tests(limit: 100) {
+            results {
+                issueId
+                jira(fields: ["key", "summary"])
+            }
+        }
+        testExecutions(limit: 100) {
+            results {
+                issueId
+                testEnvironments
+                testRuns(limit: 10) {
+                    results {
+                        id
+                        test {
+                            issueId
+                            jira(fields: ["key", "summary"])
+                        }
+                        status {
+                            name
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

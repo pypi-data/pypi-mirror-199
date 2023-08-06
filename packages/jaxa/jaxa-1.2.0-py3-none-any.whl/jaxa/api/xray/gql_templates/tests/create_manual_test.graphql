@@ -1,0 +1,23 @@
+mutation createManualTest($project_id: String!, $summary: String!, $steps: [CreateStepInput]!) {
+    createTest(
+        testType: { name: "Manual" },
+        steps: $steps,
+        jira: {
+            fields: { summary:$summary, project: {key: $project_id} }
+        }
+    ) {
+        test {
+            issueId
+            testType {
+                name
+            }
+            steps {
+                action
+                data
+                result
+            }
+            jira(fields: ["key"])
+        }
+        warnings
+    }
+}

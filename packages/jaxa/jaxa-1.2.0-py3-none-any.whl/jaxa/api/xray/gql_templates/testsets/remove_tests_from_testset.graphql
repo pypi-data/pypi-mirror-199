@@ -1,0 +1,3 @@
+mutation removeTestsFromTestSet ($testset_id: String!, $test_ids: [String]!) {
+    removeTestsFromTestSet(issueId: $testset_id, testIssueIds: $test_ids)
+}
