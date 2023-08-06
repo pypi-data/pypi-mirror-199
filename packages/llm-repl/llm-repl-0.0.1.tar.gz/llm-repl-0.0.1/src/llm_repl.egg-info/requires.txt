@@ -1,0 +1,12 @@
+prompt_toolkit
+rich
+langchain
+openai
+
+[DEV]
+pylint
+ipdb
+black
+pytest
+mypy
+pre-commit
