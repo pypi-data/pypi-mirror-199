@@ -1,0 +1,39 @@
+Metadata-Version: 2.1
+Name: TypeEnforcer
+Version: 1.5.0
+Summary: enforce python type hints
+Author-email: Michael Ray <m.ray37990@gmail.com>
+License: Copyright 2023 Michael Ray
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+Project-URL: Homepage, https://github.com/MalinkyZubr/TypeEnforcer.git
+Keywords: types,typing,static typing
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Provides-Extra: dev
+
+# Type Enforcer
+add as a decorator to any python function to enforce type hints, turning python functions from dynamically to statically typed in the runtime.
+
+Enforces python type hints. 
+Parameters and returns that do not have explicit hints will be assumed to have types of typing.Any
+Supports basic type hinting operations, like Type[], Union[], and GenericAlias objects like dict[] and list[]
+
+Supports recursive type checking in runtime! If you want to check that the contents in a deep nested datastructure match type hints,
+just enable recursive type checking with "recursive=True". Note that this significantly increases the computation necessary to run functions
+so it is advisable to only run this during the debugging phase of development. Note that as of now this only works with lists, tuples, sets, and dicts
+
+Overall, best used with debugging
+
+## Install
+1. pip install TypeEnforcer
+2. from TypeEnforcer.TypeEnforcement.type_enforcer import TypeEnforcer
+3. @TypeEnforcer.enforcer
