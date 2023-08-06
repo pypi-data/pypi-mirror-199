@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "valued"
+version = "0.0.1"
+description = ""
+authors = ["Support <hello@valued.app>"]
+readme = "README.md"
+packages = [{include = "src/valued"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+requests = "^2.28.2"
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+pytest = "^7.2.2"
+requests-mock = "^1.10.0"
+python-semantic-release = "^7.33.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+pythonpath = [
+  "src"
+]
+
+[tool.semantic_release]
+version_variable = "pyproject.toml:version"
