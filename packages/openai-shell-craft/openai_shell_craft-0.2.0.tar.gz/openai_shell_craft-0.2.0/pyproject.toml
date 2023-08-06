@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openai_shell_craft"
+version = "0.2.0"
+authors = [
+  { name="Johnathan Irvin", email="irvinjohnathan@gmail.com" },
+]
+description = "Generate shell commands using OpenAI models."
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "openai",
+    "psutil",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/JohnnyIrvin/shell-craft"
+"Bug Tracker" = "https://github.com/JohnnyIrvin/shell-craft/issues"
+
+[project.scripts]
+shell-craft = "shell_craft.cli:main"
