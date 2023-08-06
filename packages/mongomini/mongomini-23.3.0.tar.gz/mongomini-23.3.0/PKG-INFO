@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: mongomini
+Version: 23.3.0
+Summary: A minimalistic async MongoDB Object Mapping using Python dataclasses.
+Project-URL: Homepage, https://github.com/pypa/sampleproject
+Project-URL: Bug Tracker, https://github.com/pypa/sampleproject/issues
+Author-email: Ryan Kroon <rykroon.tech@gmail.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.10
+Requires-Dist: motor==3.1.*
+Description-Content-Type: text/markdown
+
+# mongomini
+A minimalistic async MongoDB Object Mapping using Python dataclasses.
+
