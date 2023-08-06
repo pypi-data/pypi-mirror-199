@@ -1,0 +1,78 @@
+# See https://pre-commit.com for more information
+# See https://pre-commit.com/hooks.html for more hooks
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.4.0
+    hooks:
+      # checking for syntax
+      - id: check-yaml
+      - id: check-toml
+      # simple formatting
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: check-added-large-files
+      # checks for unresolved merge conflicts
+      - id: check-merge-conflict
+  # sort python imports
+  - repo: https://github.com/pycqa/isort
+    rev: 5.12.0
+    hooks:
+      - id: isort
+  # format f strings
+  - repo: https://github.com/ikamensh/flynt/
+    rev: "0.78"
+    hooks:
+      - id: flynt
+  # format python code
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+      - id: black
+  - repo: https://github.com/asottile/blacken-docs
+    rev: 1.13.0
+    hooks:
+      - id: blacken-docs
+        additional_dependencies: [black]
+  - repo: https://github.com/PyCQA/docformatter
+    rev: v1.5.1
+    hooks:
+      - id: docformatter
+        additional_dependencies:
+          - docformatter[tomli]
+        args: ["--in-place", "--config", "./pyproject.toml"]
+  # format markdown, yaml, json
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.0.0-alpha.6
+    hooks:
+      - id: prettier
+        exclude_types: [python, markdown]
+        args: ["--print-width", "100"]
+  # lint python code
+  - repo: https://github.com/pycqa/flake8
+    rev: 5.0.4
+    hooks:
+      - id: flake8
+        # check for dead code
+        additional_dependencies:
+          - flake8-eradicate
+          - flake8-bugbear
+          - flake8-simplify
+          - flake8-builtins
+          - flake8-comprehensions
+          - flake8-use-fstring
+          - flake8-docstrings
+          - flake8-rst-docstrings
+          - pep8-naming
+          - flake8-annotations
+          - darglint
+  # format and lint markdown
+  - repo: https://github.com/igorshubovych/markdownlint-cli
+    rev: v0.33.0
+    hooks:
+      - id: markdownlint-fix
+        args: ["--disable", "md013,md034,md033,md036"]
+  # static type checking
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: "v1.1.1"
+    hooks:
+      - id: mypy

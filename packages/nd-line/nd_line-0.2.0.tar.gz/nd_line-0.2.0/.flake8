@@ -1,0 +1,9 @@
+[flake8]
+ignore = E203, W503, # make black happy
+    ANN101 # self type
+docstring-style: SPHINX
+max-line-length = 120
+max-complexity = 18
+select = B,C,E,F,W,T4,SIM,RST,D,T1,FS,DAR,ANN
+per-file-ignores =
+    tests/*:ANN
