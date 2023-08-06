@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: noggin-messages
+Version: 1.0.3
+Summary: Fedora Messaging message schemas for Noggin.
+Home-page: https://github.com/fedora-infra/noggin-messages
+License: MIT
+Keywords: security
+Author: Fedora Infrastructure
+Author-email: admin@fedoraproject.org
+Requires-Python: >=3.7.0,<4.0.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Dist: fedora-messaging (>=2.0.1)
+Project-URL: Repository, https://github.com/fedora-infra/noggin-messages
