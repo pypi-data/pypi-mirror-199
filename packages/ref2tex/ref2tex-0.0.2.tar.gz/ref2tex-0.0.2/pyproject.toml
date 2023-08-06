@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+[metadata]
+author="Sahraoui Dhelim"
+[project]
+name = "ref2tex"
+version = "0.0.2"
+description = "A package that converts inline citation (i.e. (Sahraoui et al. 2023), or [1]) to latex cite command: \\cite(bibkeyname)"
+authors = [
+{name = "Sahraoui Dhelim", email = "sahraoui.dhelim@hotmail.com"}]
+keywords = ["references", "biblography", "latex", "citation", "bib"]
+license = {text = "MIT License"}
+readme = "README.md"
+requires-python = ">=3.7"
+dependencies = ["bibtexparser"]
+[project.urls]
+repository = "https://github.com/sahraoui17"
+homepage = "https://github.com/sahraoui17"
+
