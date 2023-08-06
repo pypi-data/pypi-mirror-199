@@ -1,0 +1,245 @@
+Metadata-Version: 2.1
+Name: gather-scrobble
+Version: 0.0.2
+Summary: Gather WebSocket service client
+Home-page: https://github.com/pyanderson/gather-scrobble
+Author: Anderson de Sousa Lima
+Author-email: anderson.sl93@hotmail.com
+License: MIT
+Keywords: gather,gather-town,lastfm,spotify,scrobble
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+License-File: LICENSE
+
+Gather Scrobble
+===============
+
+Inspired by
+`gathertown/mod-spotify-as-status <https://github.com/gathertown/mod-spotify-as-status>`__.
+
+Scrobble your ``last.fm`` or ``Spotify`` activity to the ``Gather``
+status.
+
+.. figure:: https://github.com/pyanderson/gather-scrobble/blob/main/images/gather-scrobble-at-terminal.gif
+   :alt: gather-scrobble
+
+   gather-scrobble
+
+.. figure:: https://github.com/pyanderson/gather-scrobble/blob/main/images/gather-status.png
+   :alt: gather-status
+
+   gather-status
+
+Installation
+------------
+
+.. code:: bash
+
+   pip install gather-scrobble
+
+As this library has a CLI, you may have permissions issues when
+installing, so try it with the ``--user`` flag:
+
+.. code:: bash
+
+   pip install gather-scrobble --user
+
+Documentation
+-------------
+
+Configuration
+~~~~~~~~~~~~~
+
+It’s necessary to configure the following credentials:
+
+Gather Credentials
+^^^^^^^^^^^^^^^^^^
+
+Access `Gather API keis <https://app.gather.town/apikeys>`__ to get your
+``API_KEY``.
+
+last.fm Credentials
+^^^^^^^^^^^^^^^^^^^
+
+**If you will scrobble from last.fm.**
+
+Create a `last.fm API
+account <https://www.last.fm/api/account/create>`__ to get your
+``API_KEY`` and ``API_SECRET``.
+
+Spotify Credentials
+^^^^^^^^^^^^^^^^^^^
+
+**If you will scrobble from Spotify.**
+
+Access your `Spotify account
+dashboard <https://developer.spotify.com/dashboard/applications>`__ and
+create a new app (in case you don’t have one or do not want to use an
+existing one). And get your ``CLIENT_ID`` and ``CLIENT_SECRET``.
+
+Also add a redirect URI in the ``Edit Settings``. Suggested value:
+``http://127.0.0.1:9090``.
+
+The spotispy will instantiate a server to receive the access token. More
+info `here <https://spotipy.readthedocs.io/en/2.22.1/#redirect-uri>`__.
+
+You can configure your credentials in 4 ways and with respective
+priorities:
+
+keyring (recommended)
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+   keyring set gather-scrobble GATHER_API_KEY
+   keyring set gather-scrobble LASTFM_API_KEY
+   keyring set gather-scrobble LASTFM_API_SECRET
+   keyring set gather-scrobble LASTFM_USERNAME
+   keyring set gather-scrobble SPOTIFY_CLIENT_ID
+   keyring set gather-scrobble SPOTIFY_CLIENT_SECRET
+   keyring set gather-scrobble SPOTIFY_CLIENT_REDIRECT_URI
+
+environment variables
+^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: bash
+
+   export GATHER_API_KEY=<GATHER_API_KEY>
+   export LASTFM_API_KEY=<LASTFM_API_KEY>
+   export LASTFM_API_SECRET=<LASTFM_API_SECRET>
+   export LASTFM_USERNAME=<LASTFM_USERNAME>
+   export SPOTIFY_CLIENT_ID=<SPOTIFY_CLIENT_ID>
+   export SPOTIFY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET>
+   export SPOTIFY_CLIENT_REDIRECT_URI=<SPOTIFY_CLIENT_REDIRECT_URI>
+
+.ini file
+^^^^^^^^^
+
+.. code:: ini
+
+   [settings]
+   GATHER_API_KEY=<GATHER_API_KEY>
+   LASTFM_API_KEY=<LASTFM_API_KEY>
+   LASTFM_API_SECRET=<LASTFM_API_SECRET>
+   LASTFM_USERNAME=<LASTFM_USERNAME>
+   SPOTIFY_CLIENT_ID=<SPOTIFY_CLIENT_ID>
+   SPOTIFY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET>
+   SPOTIFY_CLIENT_REDIRECT_URI=<SPOTIFY_CLIENT_REDIRECT_URI>
+
+.env file
+^^^^^^^^^
+
+.. code:: dotenv
+
+   GATHER_API_KEY=<GATHER_API_KEY>
+   LASTFM_API_KEY=<LASTFM_API_KEY>
+   LASTFM_API_SECRET=<LASTFM_API_SECRET>
+   LASTFM_USERNAME=<LASTFM_USERNAME>
+   SPOTIFY_CLIENT_ID=<SPOTIFY_CLIENT_ID>
+   SPOTIFY_CLIENT_SECRET=<SPOTIFY_CLIENT_SECRET>
+   SPOTIFY_CLIENT_REDIRECT_URI=<SPOTIFY_CLIENT_REDIRECT_URI>
+
+Usage
+~~~~~
+
+Help
+^^^^
+
+.. code:: bash
+
+   $ gather-scrobble --help
+   Gather Scrobble v0.0.1
+       Usage:
+           gather-scrobble start <space_id> [--source SOURCE] [--emojis EMOJIS]
+           gather-scrobble info
+           gather-scrobble test <space_id>
+
+       Arguments:
+           <space_id>          Gather space id.
+
+       Options:
+           -h --help           Show this screen.
+           -s --source SOURCE  Scrobble source, if not defined the tool will try
+                               all available sources configured.
+                               Can be: lastfm, spotify, or any.
+                               If 'any' it will use the first source configured in
+                               the priority: lastfm -> spotify [default: any]
+           -e --emojis EMOJIS  It is possible to customize the emojis, by setting
+                               the list of emojis that will be chosen randomly,
+                               and also you don't like emojis, you can set an
+                               empty string here. [default: 🎼🎵🎶🎧📻🎷🎸🎹]
+
+       
+
+Info
+^^^^
+
+Before starting, check if you have configured the services:
+
+.. code:: bash
+
+   $ gather-scrobble info
+   Gather Scrobble
+   ┏━━━━━━━━━━━┳━━━━━━━━━━━━━━┓
+   ┃ Service   ┃ Configured   ┃
+   ┣━━━━━━━━━━━╋━━━━━━━━━━━━━━┫
+   ┃ Gather    ┃ True         ┃
+   ┣━━━━━━━━━━━╋━━━━━━━━━━━━━━┫
+   ┃ last.fm   ┃ True         ┃
+   ┣━━━━━━━━━━━╋━━━━━━━━━━━━━━┫
+   ┃ Spotify   ┃ False        ┃
+   ┗━━━━━━━━━━━┻━━━━━━━━━━━━━━┛
+
+Test
+^^^^
+
+And test your configuration:
+
+.. code:: bash
+
+   $ gather-scrobble test "aAa0aAaAaaA0Aaaa/Name"
+   Testing connection with Gather...
+   Success
+   Testing connection with last.fm...
+   Success
+   Testing connection with Spotify...
+   Success
+
+   ┏━━━━━━━━━━━┳━━━━━━━━━━━━┓
+   ┃ Service   ┃ Working?   ┃
+   ┣━━━━━━━━━━━╋━━━━━━━━━━━━┫
+   ┃ Gather    ┃ True       ┃
+   ┣━━━━━━━━━━━╋━━━━━━━━━━━━┫
+   ┃ last.fm   ┃ True       ┃
+   ┣━━━━━━━━━━━╋━━━━━━━━━━━━┫
+   ┃ Spotify   ┃ True       ┃
+   ┗━━━━━━━━━━━┻━━━━━━━━━━━━┛
+
+Start
+^^^^^
+
+The first time you scrobble for any of the sources, the user will be
+asked to authorize your application to access data from the respective
+scrobble sources.
+
+.. code:: bash
+
+   $ gather-scrobble start "aAa0aAaAaaA0Aaaa/Name"
+   🎸 - Evil Papagali - Massacration 𝄛𝄙𝄘𝄛𝄙
+
+FAQ
+~~~
+
+-  How to get the ``space_id`` value? First enter in the space you want
+   to scrobble, the ``space_id`` will be in the URL after the ``/app/``.
+   E.g., in the URL “https://app.gather.town/app/aAa0aAaAaaA0Aaaa/Name”
+   the ``space_id`` is ``aAa0aAaAaaA0Aaaa/Name``.
