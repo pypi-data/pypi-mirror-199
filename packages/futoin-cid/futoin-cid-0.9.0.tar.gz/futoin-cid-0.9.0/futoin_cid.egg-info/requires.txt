@@ -1,0 +1,7 @@
+docopt
+requests>=2.5.2
+urllib3>=1.21.1
+distro
+
+[test]
+nose
