@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "{{ cookiecutter.name }}"
+version = "{{ cookiecutter.version }}"
+description = ""
+{% if cookiecutter.username != None %}authors = ["{{ cookiecutter.username }} <{{ cookiecutter.email }}>"]{% endif %}
+
+[tool.poetry.dependencies]
+python = "^{{ cookiecutter.python }}"
+fastapi-cli-tool = "^{{ cookiecutter.fastapi_cli_tool }}"
+fastapi = "^{{ cookiecutter.fastapi }}"
+tzdata = "^{{ cookiecutter.tzdata }}"
+pytz = "^{{ cookiecutter.pytz }}"
+fastapi-mail = "^{{ cookiecutter.fastapi_mail }}"
+passlib = {extras = ["bcrypt"], version = "^{{ cookiecutter.passlib }}"}
+asgiref = "^{{ cookiecutter.asgiref }}"
+uvicorn = "^{{ cookiecutter.uvicorn }}"
+python-jose = "^{{ cookiecutter.python_jose }}"
+{% if cookiecutter.database_orm == "TortoiseORM" %}tortoise-orm = {extras = [{% if cookiecutter.database == "MySQL" %}"asyncmy"{% endif %}{% if cookiecutter.database == "Postgres" %}"asyncpg"{% endif %}{% if cookiecutter.database == "SQLite" %}"aiosqlite"{% endif %}], version = "^{{ cookiecutter.orm_version }}"}{% endif %}
+{% if cookiecutter.database_orm == "SQLAlchemy" %}SQLAlchemy = {extras = [{% if cookiecutter.database == "MySQL" %}"asyncmy"{% endif %}{% if cookiecutter.database == "Postgres" %}"asyncpg"{% endif %}{% if cookiecutter.database == "SQLite" %}"aiosqlite"{% endif %}], version = "^{{ cookiecutter.orm_version }}"}{% endif %}
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^{{ cookiecutter.pytest }}"
+pytest-cov = "^{{ cookiecutter.pytest_cov }}"
+httpx = "^{{ cookiecutter.httpx }}"
+{% if cookiecutter.use_code_formatter == "True" %}
+black = "^23.1.0"
+isort = "^5.12.0"
+{% endif %}
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
