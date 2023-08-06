@@ -1,0 +1,43 @@
+
+
+{
+    "project_requirements": {
+        "gitignore": {},
+        "sourcery.yaml": {},
+        "vscode": {
+            "launch.json": {},
+            "settings.json": {}
+        },
+        "ai_header_generator": {
+            "cli.py": {},
+            "header_generator.py": {},
+            "misc.py": {},
+            "__init__.py": {}
+        },
+        "config.ini": {},
+        "my_project": {
+            "my_project": {}
+        },
+        "power.bat": {},
+        "project_tree.hex": {},
+        "README.md": {},
+        "setup.py": {},
+        "templates": {
+            "docstring.json": {},
+            "examples.json": {},
+            "projectlevelreqs.json": {},
+            "readme.json": {},
+            "requirements.json": {},
+            "sqlexplainer.json": {},
+            "suggestions.json": {},
+            "summarize.json": {},
+            "template.json": {},
+            "testcases.json": {},
+            "usecases.json": {}
+        },
+        "tests": {
+            "test_cli.py": {},
+            "test_header_generator.py": {}
+        }
+    }
+}

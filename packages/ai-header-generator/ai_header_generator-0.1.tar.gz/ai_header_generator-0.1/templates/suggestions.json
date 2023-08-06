@@ -1,0 +1,7 @@
+{
+    "name": "Code Description",
+    "description": "Prompt generate sphinx docstring",
+    "analysis_file_extension": [".py", ".cfg"],
+    "prompt": "given code base for {filename}: {code} \n\nsuggest code improvements, think step by step, in markup language format, given the following project structure {project_tree}",
+    "header_postfix": "_suggestions.markup"
+}

@@ -1,0 +1,7 @@
+{
+    "name": "Code Description",
+    "description": "Prompt generate sphinx docstring",
+    "analysis_file_extension": [".py", ".cfg", ".json", ".ini", ".md"],
+    "prompt": "summarize the language, purpose, expected output, input data, libraries/frameworks of following code: {filename}: {code}. \n given the following project structure {project_tree}. respond in json format.",
+    "header_postfix": "_summary.markup"
+}
