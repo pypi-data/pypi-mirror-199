@@ -1,0 +1,22 @@
+from typing import TypedDict, Union
+from typing_extensions import Required
+
+
+class Outcome(TypedDict, total=False):
+    """outcome."""
+
+    timestamp: Required[str]
+    """Required property"""
+
+    org_id: Required[Union[int, None]]
+    """Required property"""
+
+    project_id: Union[int, None]
+    key_id: Union[int, None]
+    outcome: Required[int]
+    """Required property"""
+
+    reason: Union[str, None]
+    event_id: Union[str, None]
+    category: Union[int, None]
+    quantity: Union[int, None]
