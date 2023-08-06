@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: chatgpt-tool-hub
+Version: 0.1.0
+Summary: An open-source chatgpt tool ecosystem where you can combine tools with chatgpt and use natural language to do anything.
+Home-page: https://github.com/goldfishh/chatgpt-tool-hub
+Author: goldfishh
+Author-email: goldfish.buaa@gmail.com
+License: MIT
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pydantic (>=1.10.7)
+Requires-Dist: aiohttp (>=3.8.4)
+Requires-Dist: requests (>=2.28.2)
+Requires-Dist: pyyaml (>=6.0)
+Requires-Dist: tenacity (>=8.2.2)
+Requires-Dist: openai (>=0.27.2)
+Requires-Dist: SQLAlchemy (>=2.0.7)
+Requires-Dist: tiktoken (>=0.3.2)
+Requires-Dist: google-api-python-client
+Requires-Dist: wikipedia
+Requires-Dist: wolframalpha
+
+# chatgpt-tool-hub
+An open-source chatgpt tool ecosystem where you can combine tools with chatgpt and use natural language to do anything.
