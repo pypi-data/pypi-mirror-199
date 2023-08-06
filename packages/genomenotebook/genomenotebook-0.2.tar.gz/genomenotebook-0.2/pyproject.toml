@@ -1,0 +1,64 @@
+[tool.poetry]
+name = "genomenotebook"
+version = "0.2"
+license = "GPL-3.0"
+description = "A genome browser for the jupyter notebook"
+authors = ["David Bikard <david.bikard@pasteur.fr>"]
+keywords = ["genomics","notebook","bokeh"]
+homepage = "https://gitlab.pasteur.fr/dbikard/genomenotebook"
+classifiers = [
+    "Environment :: Console",
+    "Operating System :: POSIX :: Linux",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+    "Natural Language :: English",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)"
+]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.23.5"
+biopython = "^1.78"
+pandas = "^1.5.3"
+bokeh = "^3.1.0"
+gffpandas = "^1.2.0"
+
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.2.2"
+ipykernel = "^6.19.2"
+flake8 = "^3.7"
+pre-commit = "^1.20.0"
+black = "^19.10b0"
+
+[tool.poetry.scripts]
+
+[tool.black]
+target-version = ['py310']
+include = '\.pyi?$'
+exclude = '''
+
+(
+  /(
+      \.eggs         # exclude a few common directories in the
+    | \.git          # root of the project
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | \.hooks
+    | _build
+    | buck-out
+    | build
+    | dist
+  )/
+  | foo.py           # also separately exclude a file named foo.py in
+                     # the root of the project
+)
+'''
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

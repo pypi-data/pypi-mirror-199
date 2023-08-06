@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: genomenotebook
+Version: 0.2
+Summary: A genome browser for the jupyter notebook
+Home-page: https://gitlab.pasteur.fr/dbikard/genomenotebook
+License: GPL-3.0
+Keywords: genomics,notebook,bokeh
+Author: David Bikard
+Author-email: david.bikard@pasteur.fr
+Requires-Python: >=3.9,<4.0
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Natural Language :: English
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Scientific/Engineering :: Bio-Informatics
+Requires-Dist: biopython (>=1.78,<2.0)
+Requires-Dist: bokeh (>=3.1.0,<4.0.0)
+Requires-Dist: gffpandas (>=1.2.0,<2.0.0)
+Requires-Dist: numpy (>=1.23.5,<2.0.0)
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Description-Content-Type: text/markdown
+
+# genomeNotebook
+
+**A genome browser for the jupyter notebook .**
+
+genomeNotebook is a genome browser built on the bokeh plotting library. It can be used to create interactive genome plots that can be easily overlayed and combined with any plots you can build using bokeh.
+
+## Getting Started
+
+### Installation
+
+For the moment, you can install this package only via PyPI
+
+#### PyPI
+
+```console
+$ pip install genomenotebook
+```
+
+#### Usage
+
+In a Jupyter notebook running with python
+```
+import genomenotebook as gn
+from bokeh.plotting import show
+
+p=gn.browser(genome_path="path_to_fasta_file",
+          genome_format="fasta",
+          gff_path="path_to_gff_file",
+          init_pos=3725353,
+          init_win=10000,
+         )
+
+show(p)
+```
+
+See the example folder for more details.
