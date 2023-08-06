@@ -1,0 +1,15 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+setup.cfg
+./pycasreg/__init__.py
+./pycasreg/validation.py
+pycasreg/VERSION
+pycasreg.egg-info/PKG-INFO
+pycasreg.egg-info/SOURCES.txt
+pycasreg.egg-info/dependency_links.txt
+pycasreg.egg-info/not-zip-safe
+pycasreg.egg-info/requires.txt
+pycasreg.egg-info/top_level.txt
+tests/test_validation.py
