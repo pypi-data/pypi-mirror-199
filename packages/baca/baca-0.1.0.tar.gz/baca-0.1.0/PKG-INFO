@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: baca
+Version: 0.1.0
+Summary: TUI Ebook Reader
+License: GPL-3.0
+Author: Benawi Adha
+Author-email: benawiadha@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: appdirs (>=1.4.4,<2.0.0)
+Requires-Dist: beautifulsoup4 (>=4.12.0,<5.0.0)
+Requires-Dist: fuzzywuzzy (>=0.18.0,<0.19.0)
+Requires-Dist: markdownify (>=0.11.6,<0.12.0)
+Requires-Dist: peewee (>=3.16.0,<4.0.0)
+Requires-Dist: textual (>=0.16.0,<0.17.0)
