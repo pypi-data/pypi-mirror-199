@@ -1,0 +1,29 @@
+                                        ## TEST ##
+
+
+
+# from __init__ import Statistics as stats
+# import pandas as pd
+
+# array = [1,2,3,7,9]
+# data = pd.Series(array)
+# moving_averages = round(data.ewm(alpha=0.2, adjust=False).mean(), 2)
+# moving_averages_list = moving_averages.tolist()
+
+# print(stats.moving_avg([1, 2, 3, 4, 5, 6, 7, 8, 9, 10],3))
+# print(stats.exp_moving_avg([1,2,3,7,9],0.2))
+
+# arr = [1,2,3,7,9]
+# x=0.2
+
+# i = 1
+# moving_averages = []
+# moving_averages.append(arr[0])
+
+# while i < len(arr):
+#     window_average = round((x*arr[i])+(1-x)*moving_averages[-1], 2)
+#     moving_averages.append(window_average)
+#     i += 1
+  
+# print(moving_averages)
+# print(moving_averages_list)
