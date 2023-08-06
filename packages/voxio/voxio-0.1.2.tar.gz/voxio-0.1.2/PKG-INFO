@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: voxio
+Version: 0.1.2
+Summary: Library for ingesting and processing voxel (3D imaging) data
+Home-page: https://github.com/caniko/voxio
+License: BSD-4
+Keywords: 3D,voxel,processing,fix,mesh
+Author: caniko
+Author-email: canhtart@gmail.com
+Requires-Python: >=3.9,<3.11
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: License :: Other/Proprietary License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Multimedia :: Graphics :: 3D Modeling
+Classifier: Topic :: Scientific/Engineering :: Image Processing
+Classifier: Topic :: Scientific/Engineering :: Visualization
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: click (>=8.1.3,<9.0.0)
+Requires-Dist: imagesize (>=1.4.1,<2.0.0)
+Requires-Dist: itk-morphologicalcontourinterpolation (>=1.1.0,<2.0.0)
+Requires-Dist: numba (>=0.56.4,<0.57.0)
+Requires-Dist: numpy (>=1.17)
+Requires-Dist: opencv-python (>=4.7.0.72,<5.0.0.0)
+Requires-Dist: pillow (>=9.4.0,<10.0.0)
+Requires-Dist: psutil (>=5.9.4,<6.0.0)
+Requires-Dist: pydantic (>=1.10.6,<2.0.0)
+Requires-Dist: pydantic-numpy (>=2.0)
+Requires-Dist: scikit-image (>=0.20.0,<0.21.0)
+Requires-Dist: scipy
+Requires-Dist: yaspin (>=2.3.0,<3.0.0)
+Project-URL: Repository, https://github.com/caniko/voxio
+Description-Content-Type: text/markdown
+
+# Voxio: I/O package for 3D images
+
+## Usage
+- Read images in parallel with `simple_read_images(image_paths)`; convenience function with finder `simple_find_read_images(image_directory, image_format)`
+- Read volumes that would require more than system memory in chunks, use reader to perform compute/analysis `chunk_read_stack_images(image_paths,  image_reader)`
+- Remove artifacts from volume with single object `clear_everything_but_largest_object(image_paths, output_directory)`
+- Alternative to [`scipy.ndimage.label`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.ndimage.label.html) for situations with insufficient memory `label_binary_image(image_paths, output_directory)`
+- Interpolate along the first dimension (z-axis) `morphological_interpolation_max_resolution_spacing(labeled_stack, ceiled_inter_stack_voxel_distance)`
+
+## Installation
+```shell
+pip install voxio
+```
