@@ -1,0 +1,23 @@
+Metadata-Version: 1.1
+Name: onlinekx
+Version: 0.1.1
+Summary: The onlinekx joke in the world
+Home-page: http://github.com/storborg/onlinekx
+Author: Ben
+Author-email: onlinekx@example.com
+License: MIT
+Description: Funniest
+        --------
+        
+        To use (with caution), simply do::
+        
+            >>> import onlinekx
+            >>> print(onlinekx.joke())
+        
+        
+Keywords: onlinekx joke comedy flying circus
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Text Processing :: Linguistic
