@@ -1,0 +1,12 @@
+Metadata-Version: 1.1
+Name: pytest-retry-class
+Version: 0.1
+Summary: A pytest plugin to rerun entire class on failure
+Home-page: https://github.com/Abhishekvaish/pytest-retry-class
+Author: Abhishek Vaish
+Author-email: vaishabhishek104@gmail.com
+License: MIT
+Description: A pytest plugin that reruns all the tests inside a class if any test inside the class fails
+Keywords: python,pytest,retry class,retry failed test
+Platform: UNKNOWN
+Classifier: Framework :: Pytest
