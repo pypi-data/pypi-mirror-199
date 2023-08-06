@@ -1,0 +1,8 @@
+2023-03-26 15:22:29,149 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:54] - DEBUG: receive msg, sid: 3eb31b4fa4cecfcaafeef5aff1892ba6 ip: 127.0.0.1 msg: hello
+2023-03-26 15:22:30,896 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:86] - DEBUG: finish chat, sid: 3eb31b4fa4cecfcaafeef5aff1892ba6 whole_response: Hi there! How can I assist you today?
+2023-03-27 09:28:36,416 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:54] - DEBUG: receive msg, sid: af2c3392c04ef22842bfce78e8602d6b ip: 127.0.0.1 msg: 你好
+2023-03-27 09:29:13,116 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:54] - DEBUG: receive msg, sid: af2c3392c04ef22842bfce78e8602d6b ip: 127.0.0.1 msg: 你好
+2023-03-27 09:29:14,794 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:86] - DEBUG: finish chat, sid: af2c3392c04ef22842bfce78e8602d6b whole_response: 你好！有什么需要帮助的吗？
+2023-03-27 09:29:30,175 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:54] - DEBUG: receive msg, sid: af2c3392c04ef22842bfce78e8602d6b ip: 127.0.0.1 msg: 你好
+2023-03-27 09:29:33,063 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:46] - DEBUG: sid: af2c3392c04ef22842bfce78e8602d6b current token count: 37
+2023-03-27 09:29:34,428 - /Users/alex/Code/Python/ChatAgentService/chat-agent/chat_agent/handler/openai_handler.py[line:86] - DEBUG: finish chat, sid: af2c3392c04ef22842bfce78e8602d6b whole_response: 你好！有什么需要帮助的吗？
