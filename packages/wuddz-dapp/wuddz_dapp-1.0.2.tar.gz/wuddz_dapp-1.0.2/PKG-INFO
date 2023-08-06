@@ -1,0 +1,104 @@
+Metadata-Version: 2.1
+Name: wuddz-dapp
+Version: 1.0.2
+Summary: Multi-Purpose ERC20 Dapp, Create Accounts, Check Balances, Make Transactions, Deploy Verify & Interact With Smart Contracts, Swap ERC20 Tokens, Interact With Exchange Using Api Authentication, Convert Crypto To Crypto Value & Get Token Prices In USD
+Project-URL: Homepage, https://github.com/wuddz-devs/wuddz-dapp
+Author-email: Wuddz-Devs <wuddz_devs@protonmail.com>
+License: MIT License
+        
+        Copyright (c) 2022 Wuddz-Devs
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+License-File: LICENSE
+Keywords: crypto,dapp,erc20,ethereum,exchange,trade,transactions,web3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.7
+Requires-Dist: ccxt
+Requires-Dist: pycoingecko
+Requires-Dist: requests
+Requires-Dist: setuptools
+Requires-Dist: web3
+Description-Content-Type: text/markdown
+
+# Wuddz-Dapp
+
+## Description
+- Wuddz-Dapp Is An Awesomely Coded Web3 Decentralized Application In Python, For Everyday Crypto Currency Needs.
+  
+- Create Accounts, Get All Token Balances & Usd Value For An Account/Wallet, Make Transactions
+
+- Deploy Verify & Interact With Smart Contracts, Swap ERC20 Tokens Using 0x Api, Convert Crypto To Crypto Value
+
+- Get Token Prices In USD, Interact With An Exchange Using Api Authentication & Decode Base64 Encoded Strings.
+
+- I Wrote This Application About A Year Ago At The Height Of The Web3 Craze, 
+
+- I've Seen Way Too Many People Being Scammed & Taken Advantage Of
+
+- All From Visiting Shady Websites Or Using Circumspect Software
+
+- Wuddz-Dapp Is Safe And It Gets The Job Done Period.
+
+
+## Installation
+Install using [PyPI](https://pypi.org/project/wuddz-dapp):
+```
+$ pip install wuddz-dapp
+```
+Install locally by cloning or downloading and extracting the repo, then cd into 'dist' directory and execute:
+```
+$ pip install wuddz_dapp-1.0.2.tar.gz
+```
+Then to run it, execute the following in the terminal:
+```
+$ wudz-dapp
+```
+
+## Requirements
+- python
+- ccxt
+- pycoingecko
+- requests
+- setuptools
+- web3
+
+
+## Video:
+- https://youtu.be/SjESwOpwh7w
+
+
+## Contact Info:
+- Email:     wuddz_devs@protonmail.com                                                              
+- Github:    https://github.com/wuddz-devs                                                          
+- Telegram:  https://t.me/wuddz_devs
+- Youtube:   https://youtube.com/@wuddz-devs
+- Reddit:    https://reddit.com/user/wuddz-devs
+
+
+### Buy Me A Coffee!!
+- ERC20 Address: 0x1F1C47dD653Af628D394eac7bAA9Ccf774fd784f
+
+
+#### Enjoy my awesome creativity!!
+#### Peace & Love Always!!
