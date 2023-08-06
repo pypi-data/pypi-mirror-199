@@ -1,0 +1,16 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "wikme"
+authors = [{name = "Stef Dunlap", email = "hello@kindrobot.ca"}]
+readme = "README.md"
+dynamic = ["version", "description"]
+dependencies = ["cmarkgfm"]
+
+[project.urls]
+Home = "https://tilde.fans"
+
+[project.scripts]
+wikme = "wikme.wikme:cmd"
