@@ -1,0 +1,19 @@
+{
+  "tests/test_argparse_param_types.py::TestFilesystem::test_directory_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_host_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_ip_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_rawip_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_ip4_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_rawip4_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_ip6_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_rawip6_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_net_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_rawnet_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_net4_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_rawnet4_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_net6_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_rawnet6_type": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_port_type": true,
+  "tests/test_argparse_param_types.py::TestFilesystem::test_file_type[existing_file]": true,
+  "tests/test_argparse_param_types.py::TestNetwork::test_host_type[unknown.txt]": true
+}

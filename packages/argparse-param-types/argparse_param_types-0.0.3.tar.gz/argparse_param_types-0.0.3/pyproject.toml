@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "argparse-param-types"
+version = "0.0.3"
+authors = [
+  { name="ndmalc" },
+]
+description = "Provides a library of common option types for the argparse cammand-line options parser"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "regex",
+    "ipaddress",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/ndmalc/argparse_param_types"
+"Bug Tracker" = "https://github.com/ndmalc/argparse_param_types/issues"
+
+[project.optional-dependencies]
+tests = [
+    "pytest",
+    "pyfakefs",
+]
+
+[tool.pytest.ini_options]
+addopts = [
+    "--import-mode=importlib",
+]
