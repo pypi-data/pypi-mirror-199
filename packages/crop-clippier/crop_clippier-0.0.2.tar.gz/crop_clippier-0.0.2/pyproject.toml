@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "crop-clippier"
+version = "0.0.2"
+description = "A tool for cropping regions out of volumetric data"
+authors = ["Matthew Pimblott <Matthew.Pimblott@diamond.ac.uk>"]
+readme = "README.md"
+packages = [{include = "crop_clip"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+numpy = "^1.24.2"
+h5py = "^3.7.0"
+pillow = "^9.4.0"
+pydantic = "^1.10.7"
+tqdm = "^4.65.0"
+
+[tool.poetry.scripts]
+crop_clip = "crop_clip:crop_clip.main"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
