@@ -1,0 +1,3 @@
+[console_scripts]
+check_sitemap = ec.check_sitemap:start
+generaterepostats = ec.generate_repo_stats:start
