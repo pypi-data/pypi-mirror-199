@@ -1,0 +1,60 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "blurhashify"
+description = "Generate BlurHash images from an existing image."
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+authors = [{ name = "João Palmeiro", email = "jm.palmeiro@campus.fct.unl.pt" }]
+dependencies = ["blurhash-python==1.1.3", "click==8.1.3", "joblib==1.2.0"]
+dynamic = ["version"]
+
+[project.scripts]
+blurhashify = "blurhashify.cli:cli"
+
+[project.urls]
+Source = "https://gitlab.com/joaommpalmeiro/blurhashify"
+
+# https://github.com/pypa/hatch/blob/hatch-v1.6.3/backend/src/hatchling/version/core.py (`(?P<version>.+?)`)
+# https://hatch.pypa.io/latest/version/#configuration
+# https://docs.python.org/3/howto/regex.html#non-capturing-and-named-groups (`(?P<name>...)`)
+# https://regex101.com/
+# https://py-pkgs.org/07-releasing-versioning.html
+# https://semver.org/#is-there-a-suggested-regular-expression-regex-to-check-a-semver-string
+# https://github.com/toml-lang/toml/issues/80
+# https://peps.python.org/pep-0440/#semantic-versioning
+# https://peps.python.org/pep-0440/#final-releases
+# https://github.com/pypa/packaging/blob/main/src/packaging/version.py#L113
+# https://github.com/sindresorhus/semver-regex/blob/main/index.js
+[tool.hatch.version]
+path = "blurhashify/__init__.py"
+# https://regex101.com/r/6dz9GP/1
+# pattern = '^__version__: str = "(?P<version>(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<micro>0|[1-9]\d*))"$'
+# https://regex101.com/r/iNDT1Q/1
+pattern = '^__version__: str = "(?P<version>(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*))"$'
+
+# https://hatch.pypa.io/latest/config/dependency/#version-matching
+# https://github.com/typeshed-internal/stub_uploader/blob/main/data/changelogs/Pillow.md
+# https://pypi.org/project/types-Pillow/
+[tool.hatch.envs.dev]
+dependencies = [
+  "black==23.1.0",
+  "mypy==1.1.1",
+  "ruff==0.0.259",
+  "types-Pillow==9.4.0.17",
+]
+
+[tool.hatch.envs.dev.env-vars]
+SRC = "./blurhashify/"
+
+# https://github.com/pypa/hatch/issues/360#issuecomment-1210488806
+[tool.hatch.envs.dev.scripts]
+check = ["mypy $SRC", "ruff check $SRC"]
+config = [
+  "ruff check $SRC --show-files",
+  "ruff check blurhashify/cli.py --show-settings",
+]
+lock = "pip check && pip freeze --exclude-editable > pip.lock"

@@ -1,0 +1,152 @@
+# https://beta.ruff.rs/docs/
+# https://beta.ruff.rs/docs/settings/
+# https://beta.ruff.rs/docs/configuration/#using-rufftoml
+# https://github.com/joaopalmeiro/warrior-nun-db/blob/main/pyproject.toml
+# https://beta.ruff.rs/docs/faq/#how-does-ruffs-import-sorting-compare-to-isort
+# https://beta.ruff.rs/docs/rules/
+# https://beta.ruff.rs/docs/configuration/#error-suppression
+
+# https://beta.ruff.rs/docs/settings/#format
+format = "grouped"
+# https://beta.ruff.rs/docs/settings/#ignore-init-module-imports
+ignore-init-module-imports = true
+# https://beta.ruff.rs/docs/settings/#line-length
+line-length = 88
+# https://beta.ruff.rs/docs/settings/#required-version
+required-version = "0.0.259"
+# https://beta.ruff.rs/docs/settings/#respect-gitignore
+respect-gitignore = true
+# https://beta.ruff.rs/docs/settings/#show-fixes
+show-fixes = true
+# https://beta.ruff.rs/docs/settings/#show-source
+show-source = false
+# https://beta.ruff.rs/docs/settings/#target-version
+target-version = "py37"
+
+select = [
+  # https://beta.ruff.rs/docs/rules/#pyflakes-f
+  "F",
+  # https://beta.ruff.rs/docs/rules/#pycodestyle-e-w
+  "E",
+  "W",
+  # https://beta.ruff.rs/docs/rules/#mccabe-c90
+  "C90",
+  # https://beta.ruff.rs/docs/rules/#isort-i
+  "I",
+  # https://beta.ruff.rs/docs/rules/#pep8-naming-n
+  "N",
+  # https://beta.ruff.rs/docs/rules/#pydocstyle-d (enable if using docstrings)
+  # "D",
+  # https://beta.ruff.rs/docs/rules/#pyupgrade-up
+  # https://beta.ruff.rs/docs/settings/#pyupgrade (`from __future__ import annotations`)
+  "UP",
+  # https://beta.ruff.rs/docs/rules/#flake8-2020-ytt
+  "YTT",
+  # https://beta.ruff.rs/docs/rules/#flake8-annotations-ann
+  "ANN",
+  # https://beta.ruff.rs/docs/rules/#flake8-bandit-s
+  # https://github.com/charliermarsh/ruff/issues/1646
+  "S",
+  # https://beta.ruff.rs/docs/rules/#flake8-blind-except-ble
+  "BLE",
+  # https://beta.ruff.rs/docs/rules/#flake8-boolean-trap-fbt (enable if implementing reusable functions)
+  # https://adamj.eu/tech/2021/07/10/python-type-hints-how-to-avoid-the-boolean-trap/
+  # "FBT",
+  # https://beta.ruff.rs/docs/rules/#flake8-bugbear-b
+  "B",
+  # https://beta.ruff.rs/docs/rules/#flake8-builtins-a
+  "A",
+  # https://beta.ruff.rs/docs/rules/#flake8-commas-com
+  "COM",
+  # https://beta.ruff.rs/docs/rules/#flake8-comprehensions-c4
+  "C4",
+  # https://beta.ruff.rs/docs/rules/#flake8-datetimez-dtz
+  "DTZ",
+  # https://beta.ruff.rs/docs/rules/#flake8-debugger-t10
+  "T10",
+  # https://beta.ruff.rs/docs/rules/#flake8-django-dj (enable if using Django)
+  # "DJ",
+  # https://beta.ruff.rs/docs/rules/#flake8-errmsg-em
+  "EM",
+  # https://beta.ruff.rs/docs/rules/#flake8-executable-exe (enable if developing runnable scripts)
+  # https://github.com/xuhdev/flake8-executable/blob/v2.1.3/flake8_executable/__init__.py#L137
+  # https://realpython.com/python-shebang/#whats-a-shebang-and-when-should-you-use-it
+  # "EXE",
+  # https://beta.ruff.rs/docs/rules/#flake8-implicit-str-concat-isc
+  "ISC",
+  # https://beta.ruff.rs/docs/rules/#flake8-import-conventions-icn
+  "ICN",
+  # https://beta.ruff.rs/docs/rules/#flake8-logging-format-g
+  "G",
+  # https://beta.ruff.rs/docs/rules/#flake8-no-pep420-inp
+  "INP",
+  # https://beta.ruff.rs/docs/rules/#flake8-pie-pie
+  "PIE",
+  # https://beta.ruff.rs/docs/rules/#flake8-print-t20
+  "T20",
+  # https://beta.ruff.rs/docs/rules/#flake8-pyi-pyi (enable if creating stub files)
+  # "PYI",
+  # https://beta.ruff.rs/docs/rules/#flake8-pytest-style-pt (enable if using pytest)
+  # "PT",
+  # https://beta.ruff.rs/docs/rules/#flake8-quotes-q
+  "Q",
+  # https://beta.ruff.rs/docs/rules/#flake8-raise-rse
+  "RSE",
+  # https://beta.ruff.rs/docs/rules/#flake8-return-ret
+  "RET",
+  # https://beta.ruff.rs/docs/rules/#flake8-self-slf
+  "SLF",
+  # https://beta.ruff.rs/docs/rules/#flake8-simplify-sim
+  "SIM",
+  # https://beta.ruff.rs/docs/rules/#flake8-tidy-imports-tid
+  "TID",
+  # https://beta.ruff.rs/docs/rules/#flake8-type-checking-tch
+  # https://docs.python.org/3/library/typing.html#typing.TYPE_CHECKING
+  # https://pypi.org/project/flake8-type-checking/
+  "TCH",
+  # https://beta.ruff.rs/docs/rules/#flake8-unused-arguments-arg
+  "ARG",
+  # https://beta.ruff.rs/docs/rules/#flake8-use-pathlib-pth
+  "PTH",
+  # https://beta.ruff.rs/docs/rules/#eradicate-era (enable to remove commented code)
+  # "ERA",
+  # https://beta.ruff.rs/docs/rules/#pandas-vet-pd (enable if using pandas)
+  # "PD",
+  # https://beta.ruff.rs/docs/rules/#pygrep-hooks-pgh
+  "PGH",
+  # https://beta.ruff.rs/docs/rules/#pylint-pl
+  "PLC",
+  "PLE",
+  "PLR",
+  "PLW",
+  # https://beta.ruff.rs/docs/rules/#tryceratops-try
+  "TRY",
+  # https://beta.ruff.rs/docs/rules/#numpy-specific-rules-npy (enable if using NumPy)
+  "NPY",
+  # https://beta.ruff.rs/docs/rules/#ruff-specific-rules-ruf
+  "RUF",
+]
+
+# https://beta.ruff.rs/docs/settings/#flake8-import-conventions
+[flake8-import-conventions]
+[flake8-import-conventions.aliases]
+altair = "alt"
+
+# https://beta.ruff.rs/docs/settings/#exempt-modules
+[flake8-type-checking]
+exempt-modules = ["typing", "typing_extensions"]
+
+# https://beta.ruff.rs/docs/settings/#force-wrap-aliases
+[isort]
+force-wrap-aliases = true
+combine-as-imports = true
+
+# https://beta.ruff.rs/docs/settings/#pydocstyle (uncomment if using docstrings)
+# [pydocstyle]
+# convention = "numpy"
+
+# https://beta.ruff.rs/docs/settings/#max-args (default: 5)
+# https://beta.ruff.rs/docs/settings/#max-returns (default: 6)
+[pylint]
+max-args = 10
+max-returns = 3

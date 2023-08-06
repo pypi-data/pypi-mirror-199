@@ -1,0 +1,14 @@
+__pycache__/
+.hatch/
+.mypy_cache/
+.ruff_cache/
+dist/
+
+*.jpg
+*.jpeg
+*.png
+*.webp
+*.code-profile
+pip.lock
+out/
+usage.txt

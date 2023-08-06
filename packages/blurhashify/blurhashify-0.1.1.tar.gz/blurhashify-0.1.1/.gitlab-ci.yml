@@ -1,0 +1,36 @@
+# https://hub.docker.com/r/library/python/tags/
+# https://github.com/python-poetry/poetry/issues/366
+# https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml
+# https://docs.gitlab.com/ee/ci/yaml/
+# https://docs.gitlab.com/ee/ci/yaml/script.html#set-a-default-before_script-or-after_script-for-all-jobs
+# https://docs.gitlab.com/ee/ci/yaml/#only--except
+# https://docs.gitlab.com/ee/ci/lint.html#check-cicd-syntax
+# https://hatch.pypa.io/latest/publish/
+# https://pypi.org/help/#apitoken
+# https://docs.gitlab.com/ee/ci/variables/
+# https://waylonwalker.com/hatch-version/
+# https://docs.gitlab.com/ee/ci/variables/#mask-a-cicd-variable
+
+# Validate: https://gitlab.com/joaommpalmeiro/blurhashify/-/ci/lint
+# Configure protected tags: https://docs.gitlab.com/ee/user/project/protected_tags.html#configuring-protected-tags
+# - Tag: v*
+# - Allowed to create: Maintainers
+
+image: python:3.7
+
+stages:
+  - deployment
+
+default:
+  before_script:
+    - python --version
+    - pip install hatch==1.6.3
+    - hatch --version
+
+publish_to_pypi:
+  stage: deployment
+  script:
+    - hatch build --clean
+    - hatch publish -u __token__ -a ${PYPI_TOKEN}
+  only:
+    - tags
