@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "ashberry"
+version = "0.1.0"
+description = "A tool to search for websites by generating random domains"
+authors = ["mmlvgx <mmlvgx@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = 'ashberry', from = 'src'}]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+aiohttp = {extras = ["speedups"], version = "^3.8.4"}
+cchardet = "^2.1.7"
+aiodns = "^3.0.0"
+
+[tool.poetry.scripts]
+main = 'ashberry.main:main'
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
