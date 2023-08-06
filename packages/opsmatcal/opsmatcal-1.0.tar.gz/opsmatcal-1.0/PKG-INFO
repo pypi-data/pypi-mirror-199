@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: opsmatcal
+Version: 1.0
+Summary: A python package for calibrating opensees uniaxial materials using genetic algorithm and least square method
+Author-email: Oktai Alizade Arasi <ok.programss@gmail.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+
+## opsmatcal
+
+```
+A python package for calibrating opensees uniaxial materials using genetic algorithm and least square method.
+```
+
+---
+
+## Installation
+
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install OpsSection.
+
+```
+pip install opsmatcal
+```
+---
+## Usage
+
+Import opsmatcal in your Python code(openseespy project) like this:
+
+```python
+import opsmatcal.matcalibrate as omc
+```
+
+---
+## Support
+- [Email](mailto:ok.programss@gmail.com)
+
+- [Telegram Channel](https://t.me/OKprograms)
+
+- [Instagram](https://www.instagram.com/opensees_apps/?hl=en)
+
+---
+## Author
+```
+Oktai Alizade Arasi
+Master of Science in Structural Engineering
+```
+---
+## Examples
+
+1- Download from: [opsmatcal Examples](https://drive.google.com/file/d/17W06x5xnuXeJaqI1YcRedP8m2p1WzeP1/view?usp=sharing)
+
+
+---
+## License
+```
+OSI Approved : MIT License
+```
+---
