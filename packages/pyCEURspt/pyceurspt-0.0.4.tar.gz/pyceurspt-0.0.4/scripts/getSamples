@@ -1,0 +1,192 @@
+#!/bin/bash
+# WF 2023-03-17
+
+#ansi colors
+#http://www.csc.uvic.ca/~sae/seng265/fall04/tips/s265s047-tips/bash-using-colors.html
+blue='\033[0;34m'
+red='\033[0;31m'
+green='\033[0;32m' # '\e[1;32m' is too bright for white bg.
+endColor='\033[0m'
+
+#
+# a colored message
+#   params:
+#     1: l_color - the color of the message
+#     2: l_msg - the message to display
+#
+color_msg() {
+  local l_color="$1"
+  local l_msg="$2"
+  echo -e "${l_color}$l_msg${endColor}"
+}
+
+# error
+#
+#   show an error message and exit
+#
+#   params:
+#     1: l_msg - the message to display
+error() {
+  local l_msg="$1"
+  # use ansi red for error
+  color_msg $red "Error: $l_msg" 1>&2
+  exit 1
+}
+
+#
+# show the usage
+#
+usage() {
+  echo "usage: $0 [-h|--help][--ceurws]"
+  echo "  -h|--help: show this usage"
+  echo "  -p|--papers: mine paper details"
+  echo "  --ceurws: force getting samples for CEURWS and exit"
+}
+
+#
+# volume dir
+#
+# params
+#    #1: volume number
+#
+voldir() {
+  cws="ceur-ws"
+  if [ ! -d $cws ]
+  then
+    mkdir -p $cws
+  fi
+  cd $cws
+}
+
+#
+# get the data from CEUR-WS
+#
+# params
+#    #1: volume number
+#
+getCEURWS() {
+  local volno="$1"
+  color_msg $blue "getting sample data for CEUR-WS volume $volno"
+  vol="Vol-$volno"
+  voldir
+  zip=$vol.zip
+  if [ ! -d $vol ]
+  then
+    if [ ! -f $zip ]
+    then
+      wget http://sunsite.informatik.rwth-aachen.de/ftp/pub/publications/CEUR-WS/$zip
+    fi
+    unzip $zip
+  else
+    color_msg $green "$vol already downloaded"
+  fi
+}
+
+#
+# cermine
+#
+# params:
+#   #1: paper.pdf to mine
+#
+cermine() {
+  local l_paper="$1"
+  b=$(basename $l_paper .pdf)
+  xml="$b.cermine.xml"
+  if [ ! -f $xml ]
+  then
+     color_msg $blue "analyzing $l_paper"
+     curl --data-binary @$l_paper \
+     --header "Content-Type: application/binary" -v \
+     http://cermine.ceon.pl/extract.do > "$xml"
+  else
+     color_msg $green "cermine result $xml already created"
+  fi
+}
+
+#
+# extract text from papers
+#
+# params
+#    #1: volume number
+#
+extract_text() {
+  local volno="$1"
+  which pdftotext
+  if [ $? -ne 0 ]
+  then
+    os=`uname`
+    case $os in
+      Darwin)
+       sudo port install poppler-utils
+       ;;
+      *)
+        sudo apt-get install poppler-utils
+      ;;
+    esac
+  fi
+  voldir
+  vol="Vol-$volno"
+  cd $vol
+  for p in *.pdf
+  do
+    b=$(basename $p .pdf)
+    txt=$b-content.txt
+    if [ ! -f $txt ]
+    then
+      color_msg $blue "extracting text from $p to $txt ..."
+      pdftotext -q $p $txt
+    else
+      color_msg $green "$txt already extracted"
+    fi
+  done
+}
+
+#
+# mine paper details
+#
+# params
+#    #1: volume number
+#
+cermine_papers() {
+  local volno="$1"
+  voldir
+  vol="Vol-$volno"
+  cd $vol
+  for p in *.pdf
+  do
+    cermine "$p"
+  done
+}
+
+volno=3262
+pdir=$(pwd)
+while [  "$1" != ""  ]
+do
+  option=$1
+  shift
+  case $option in
+    -h|--help)
+      usage
+      exit 0;;
+    -p|--papers)
+      cd $pdir
+      cermine_papers $volno
+      ;;
+    -t|--text)
+      cd $pdir
+      extract_text $volno
+      ;;
+    --ceurws)
+      cd $pdir
+      getCEURWS $volno
+      ;;
+    -v|--volume)
+      if [ $# -lt 1 ]
+      then
+        usage
+      fi
+      volno="$1"
+      shift
+      ;;
+  esac
+done
