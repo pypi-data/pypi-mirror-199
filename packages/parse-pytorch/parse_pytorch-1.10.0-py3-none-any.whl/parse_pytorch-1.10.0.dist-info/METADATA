@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: parse-pytorch
+Version: 1.10.0
+Summary: PARSE - Pytorch
+Home-page: https://github.com/guangyizhangbci/PARSE
+Author: Guangyi Zhang
+Author-email: guangyi.zhang@utoronto.ca
+License: MIT
+Keywords: artificial intelligence,deep learning,semi-supervised learning,eeg,emotion recognition
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.6
+Requires-Dist: einops (>=0.3)
+Requires-Dist: torch (>=1.6)
+
