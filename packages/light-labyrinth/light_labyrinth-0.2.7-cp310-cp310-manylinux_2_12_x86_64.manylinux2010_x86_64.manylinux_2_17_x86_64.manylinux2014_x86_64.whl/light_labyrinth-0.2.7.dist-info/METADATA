@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: light-labyrinth
+Version: 0.2.7
+Summary: Light labyrinth ML model
+Home-page: https://lightlabyrinth.org
+Author: Marcin Zakrzewski, Krzysztof Wieclaw
+Author-email: enkar@lightlabyrinth.org, wutus@lightlabyrinth.org
+Project-URL: Source Code, https://bitbucket.org/Enkar234/lightlabyrinth
+Project-URL: Documentation, https://lightlabyrinth.org
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Requires-Dist: scikit-learn
+Requires-Dist: numpy
+
+# Light Labyrinth
+Light labyrinth machine learning model.
+
+## How to install?
+`pip install light_labyrinth`
+
+## How to build dll
+For develop purposes run build_devel.py script
+
+## How to name PR
+PR name should start with one of the following prefixes:
+- [MAJOR] - for major changes (X+1.0.0)
+- [MINOR] - for minor changes (x.X+1.0)
+- [PATCH] - for patch changes (x.x.X+1)
+- [NOBUMP] - for changes that should not bump version
+## How to build with CMake
+1. Make sure You have the CMake tool of version 3.10 or greater.
+1. Make sure You have some build system installed (for example MinGW Makefiles on Windows/on Linux You can use simple Unix Makefile)
+1. Create directory for build (in next step it will be refereed as "build_dir", if You want to build python package DO NOT name it "build"!)
+1. In build dir run <em>cmake backbone</em>
+1. Command above can accept parameters like:
+- -DCMAKE_C_COMPILER=\<path-to-gcc> (or simply <em>gcc</em> if gcc is in PATH)
+- -G <build system> (like <em>MinGW Makefiles</em>)
+- -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON (to generate extensive logging in Makefile)
+- -DCMAKE_BUILD_TYPE=Release|Debug (to generate makefiles for given build type)
+
+
+## How to list symbols in dll:
+Run developer command prompt for vs 20XX and execute
+```
+dumpbin /exports light_labyrinth.dll
+```
+
+## Documentation
+Documentation available at <https://lightlabyrinth.org>
+
+## Source code
+Source code available at <https://bitbucket.org/Enkar234/lightlabyrinth>
