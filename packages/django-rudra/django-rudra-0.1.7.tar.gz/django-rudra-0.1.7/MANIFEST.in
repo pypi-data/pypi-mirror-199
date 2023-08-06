@@ -1,0 +1,6 @@
+include LICENSE
+include README.rst
+recursive-include rudra/static *
+recursive-include rudra/templates *
+
+recursive-include docs *
