@@ -1,0 +1,177 @@
+## Project description
+
+### Tetun Tokenizer
+
+Tetun tokenizer is a Python package for tokenizing a string (or a text) into tokens. There are several tokenization alternatives in the following.
+1. Tokenize by word, punctuations, or special characters delimiters using `TetunStandardTokenizer()`.
+2. Tokenize by whitespace delimiter using `TetunWhiteSpaceTokenizer()`.
+3. Tokenize by blank lines as a delimiter using `TetunBlankLineTokenizer()`.
+
+It is also allowed us to tokenize a string (or a text) by:
+1. Strings and numbers and ignore punctuations and special characters using `TetunSimpleTokenizer()`.
+2. Strings only and ignore numbers, punctuations, and special characters using `TetunWordTokenizer()`.
+
+
+### Installation
+
+To install Tetun tokenizer, run the following command:
+
+```
+python3 -m pip install tetun-tokenizer
+```
+
+or simply run:
+
+```
+pip install tetun-tokenizer
+```
+
+
+### Usage
+
+To use the Tetun tokenizer, from the `tetuntokenizer` package, import `tokenizer` module then call a specific tokenizer class. Instantiate the imported class and then use a `tokenize` function as follows:
+
+1. Using  `TetunStandardTokenizer()` to tokenize a string.
+
+```python
+from tetuntokenizer.tokenizer import TetunStandardTokenizer
+
+tetun_tokenizer = TetunStandardTokenizer()
+
+string_text = "Ha'u mak ita-nia maluk di'ak. Ha'u iha $0.25 atu fó ba ita."
+output = tetun_tokenizer.tokenize(string_text)
+print(output)
+```
+
+The output will be:
+
+```
+["Ha'u", 'mak', 'ita-nia', 'maluk', "di'ak", '.', "Ha'u", 'iha', '$', '0.25', 'atu', 'fó', 'ba', 'ita', '.']
+```
+
+2. Using `TetunWhiteSpaceTokenizer()` to tokenize a string.
+
+```python
+from tetuntokenizer.tokenizer import TetunWhiteSpaceTokenizer
+
+tetun_tokenizer = TetunWhiteSpaceTokenizer()
+
+string_text = "Ha'u mak ita-nia maluk di'ak. Ha'u iha $0.25 atu fó ba ita."
+output = tetun_tokenizer.tokenize(string_text)
+print(output)
+```
+
+The output will be:
+
+```
+["Ha'u", 'mak', 'ita-nia', 'maluk', "di'ak.", "Ha'u", 'iha', '$0.25', 'atu', 'fó', 'ba', 'ita.']
+```
+
+3. Using `TetunBlankLineTokenizer()` to tokenize a string.
+
+```python
+from tetuntokenizer.tokenizer import TetunBlankLineTokenizer
+
+tetun_tokenizer = TetunBlankLineTokenizer()
+
+string = """
+        Ha'u mak ita-nia maluk di'ak.
+        Ha'u iha $0.25 atu fó ba ita.
+        """
+output = tetun_tokenizer.tokenize(string_text)
+print(output)
+```
+
+The output will be:
+
+```
+["\n            Ha'u mak ita-nia maluk di'ak.\n            Ha'u iha $0.25 atu fó ba ita.\n            "]
+```
+
+4. Using `TetunSimpleTokenizer()` to tokenize a string.
+
+```python
+from tetuntokenizer.tokenizer import TetunSimpleTokenizer
+
+tetun_tokenizer = TetunSimpleTokenizer()
+
+string_text = "Ha'u mak ita-nia maluk di'ak. Ha'u iha $0.25 atu fó ba ita."
+output = tetun_tokenizer.tokenize(string_text)
+print(output)
+```
+
+The output will be:
+
+```
+["Ha'u", 'mak', 'ita-nia', 'maluk', "di'ak", "Ha'u", 'iha', '0.25', 'atu', 'fó', 'ba', 'ita']
+```
+
+5. Using `TetunWordTokenizer()` to tokenize a string.
+
+```python
+from tetuntokenizer.tokenizer import TetunWordTokenizer
+
+tetun_tokenizer = TetunWordTokenizer()
+
+string_text = "Ha'u mak ita-nia maluk di'ak. Ha'u iha $0.25 atu fó ba ita."
+output = tetun_tokenizer.tokenize(string_text)
+print(output)
+```
+
+The output will be:
+
+```
+["Ha'u", 'mak', 'ita-nia', 'maluk', "di'ak", "Ha'u", 'iha', 'atu', 'fó', 'ba', 'ita']
+```
+
+To print the resulting string to the console, with each element on a new line, you can use `for` loop or simply use `join` as follows:
+
+```
+print('\n'.join(output))
+```
+
+The output will be:
+
+```
+Ha'u
+Gabriel
+de
+Jesus
+ita-nia
+maluk
+di'ak
+Ha'u
+iha
+atu
+fó
+ba
+ita
+```
+
+You can also use the tokenizer to tokenize a text from a file. Here is an example:
+
+```python
+# Assume that we use Path instead of a string for the file path
+from pathlib import Path
+from tetuntokenizer.tokenizer import TetunSimpleTokenizer
+
+
+file_path = Path("myfile/example.txt")
+
+try:
+    with corpus_path.open('r', encoding='utf-8') as f:
+    contents = [line.strip() for line in f]
+except FileNotFoundError:
+    print(f"File not found at: {corpus_path}")
+
+# You can also lowercase the contents before tokenizing them.
+lowercase_contents = contents.lower()
+
+tetun_tokenizer = TetunSimpleTokenizer()
+
+output = '\n'.join(tetun_tokenizer.tokenize(str(lowercase_contents)))
+print(output)
+
+```
+
+There are a few more ways to read file contents that you can use to achieve the same output.
