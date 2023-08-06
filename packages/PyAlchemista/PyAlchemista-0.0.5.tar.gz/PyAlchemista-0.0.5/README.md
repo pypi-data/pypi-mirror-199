@@ -1,0 +1,21 @@
+## Disciplina
+Disciplina is a mathematics module:
+| Function Name | Args | Returns |
+| --- | --- | --- |
+| `isMathematicalFunction(mapping)` | `mapping`: A dictionary of sets representing the function | `True` if the mapping represents a function, `False` otherwise |
+| `solveGraphically(f1, f2, x_range=(-10, 10), num_points=1000)` | `f1`: The first function to solve.<br> `f2`: The second function to solve.<br> `x_range`: The range of x values to plot.<br> `num_points`: The number of points to use in the plot. | A list of intersection points. |
+| `solveOneVarEquation(equation)` | `equation`: The equation to solve. | The solution to the equation. |
+| `sqrt(__x)` | `__x`: The number to calculate the square root of. | The square root of the number. |
+| `rootOf(__x, num)` | `__x`: The number to calculate the nth root of.<br> `num`: The value of n. | The nth root of the number. |
+| `isDivisible(x, num)` | `x`: The number to check.<br> `num`: The number to divide by. | `True` if x is divisible by num, `False` otherwise. |
+| `normalize(value)` | `value`: The number to normalize. | The normalized number. |
+
+
+## Acoustica
+Acoustica is an acoustics module:
+| Function | Arguments | Returns |
+| -------- | --------- | ------- |
+| `generateTone `| frequency: float, duration: float, vibrato_depth: float = 0.4, vibrato_rate: float = 5 | numpy.ndarray |
+| `play` | notes: a list of tuples that contain the hertz and duration respectively | Plays the note |
+| `getCarnaticHertz` | note: an str that represents the note | float or None |
+| `getClassicalHertz` | note: an str the represents the note | float or None |
