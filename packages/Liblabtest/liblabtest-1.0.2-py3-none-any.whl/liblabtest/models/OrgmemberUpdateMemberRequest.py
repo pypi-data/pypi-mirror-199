@@ -1,0 +1,4 @@
+from __future__ import annotations
+from .UpdateOrgMemberRequest import UpdateOrgMemberRequest
+
+OrgmemberUpdateMemberRequest = UpdateOrgMemberRequest
