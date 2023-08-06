@@ -1,0 +1,38 @@
+Metadata-Version: 2.1
+Name: opencdms
+Version: 0.1.6
+Summary: OpenCDMS Python package
+Home-page: https://www.opencdms.org
+Author: OpenCDMS
+Author-email: info@opencdms.org
+Maintainer: Ian Edwards
+Maintainer-email: info@opencdms.org
+License: MIT license
+Keywords: opencdms
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+Requires-Dist: click
+
+# OpenCDMS
+
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)
+
+The OpenCDMS software is being developed in a number of separate code repositories.
+
+This repository will contain, in a single place, everything that is needed to install the software and also includes the documentation that is published at docs.opencdms.org
+
+
+# CHANGELOG
+
+## 0.1.2 (23-03-23) - Update setup to use markdown and single location for version
+## 0.1.1 (23-03-23) - First release on PyPI
