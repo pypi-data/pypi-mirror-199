@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: NanoSSO
+Version: 0.1
+Summary: Simple SSO library for handling OAuth2 with the EVE Online ESI API
+Home-page: https://github.com/NullsecSpace/NanoSSO
+Author-email: maintainers@nullsec.space
+License: MIT License
+Project-URL: Documentation, https://NanoSSO.nullsec.space
+Project-URL: Source, https://github.com/NullsecSpace/NanoSSO
+Project-URL: Tracker, https://github.com/NullsecSpace/NanoSSO/issues
+Keywords: eve online sso esi oauth2
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Topic :: Games/Entertainment
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# NanoSSO
+[![PyPI](https://img.shields.io/pypi/v/NanoSSO)](https://pypi.org/project/NanoSSO)
+[![Documentation Status](https://readthedocs.org/projects/nanosso/badge/?version=latest)](https://nanosso.nullsec.space/en/latest/?badge=latest)
+[![NanoSSO](https://github.com/NullsecSpace/NanoSSO/actions/workflows/github-actions.yml/badge.svg)](https://github.com/NullsecSpace/NanoSSO/actions/workflows/github-actions.yml)
+[![GitHub](https://img.shields.io/github/license/NullsecSpace/NanoSSO)](https://github.com/NullsecSpace/NanoSSO/blob/main/LICENSE)
+
+A simple library for easily handling SSO for building tools that interact with
+the [EVE Online ESI API](https://esi.evetech.net/ui).
+
+- :books: Documentation: https://NanoSSO.nullsec.space
+- :bulb: Examples: https://NanoSSO.nullsec.space/en/latest/examples/index.html
+
+# Installation
+
+```
+pip install NanoSSO
+```
