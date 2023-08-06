@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: ado-pipeline-helper
+Version: 0.0.1
+Summary: 
+Author: StefanBRas
+Author-email: gitcommits@bruhn.io
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: azure-devops (>=6.0.0b4,<7.0.0)
+Requires-Dist: pydantic (>=1.10.2,<2.0.0)
+Requires-Dist: pyright (>=1.1.298,<2.0.0)
+Requires-Dist: ruamel-yaml (>=0.17.21,<0.18.0)
+Requires-Dist: structlog (>=22.3.0,<23.0.0)
+Requires-Dist: typer[all] (>=0.7.0,<0.8.0)
+Description-Content-Type: text/markdown
+
+# ADO Pipeline helper 
+
+Python package and commandline tool for helping with writing Azure Devops pipelines.
+
+# Features
+None of these are implemented mind you as of now
+
+- validate pipeline (load .azure-pipeline, resolve templates, send to run endpoint with yamlOverride and preview=True)
+- validate library groups (see if value exists)
+- MAYBE: validate schedule cron
+- Warning about templating syntax errors (like missing $ before {{ }} )
+
+## Limitations
+
+- Can't resolve `{{ }}` expressions, only simple `{{ parameter.<key>}}` ones.
+I started working on a custom resovler but it was a lot of work. You can see it on the branch `expression resolver` under
+`ado_pipeline_helper/src/ado_pipeline_helper/resolver/expression.py`
+
+## Useful links
+
+- [ADO Yaml Reference](https://learn.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/?view=azure-pipelines)
+
+
