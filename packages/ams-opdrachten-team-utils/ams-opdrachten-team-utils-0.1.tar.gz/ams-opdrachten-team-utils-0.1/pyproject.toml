@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools", "azure-keyvault-secrets", "azure-identity"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ams-opdrachten-team-utils"
+version = "0.1"
+authors = [
+  { name="Jeroen Beekman", email="j.beekman@amsterdam.nl" },
+]
+description = "A library to contain common code for the AMS Opdrachten team"
+readme = "README.md"
+license = { file="LICENSE" }
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Amsterdam/ams-opdrachten-team-utils"
+"Bug Tracker" = "https://github.com/Amsterdam/ams-opdrachten-team-utils/issues"
