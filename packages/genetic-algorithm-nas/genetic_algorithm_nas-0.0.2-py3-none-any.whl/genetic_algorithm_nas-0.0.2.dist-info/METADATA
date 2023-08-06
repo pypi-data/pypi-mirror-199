@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: genetic-algorithm-nas
+Version: 0.0.2
+Summary: Genetic Algorithm for Neural Architecture Search.
+Author: Shilash M
+Author-email: shilu4577@gmail.com
+License: MIT
+Project-URL: Source, https://github.com/shilu10/Genetic_Algo_NAS
+Keywords: Genetic Algorithm,Neural Architecture Search,HyperParameter Tuning
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: scikit-learn (<2)
+Requires-Dist: tensorflow (<2)
+Requires-Dist: numpy (<2)
+
+file:README.md
