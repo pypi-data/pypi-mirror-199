@@ -1,0 +1,49 @@
+Metadata-Version: 2.1
+Name: gptroles
+Version: 0.1.0
+Summary: Interact with chatgpt and assign different roles
+Home-page: https://github.com/blipk/pysh
+License: MIT
+Keywords: pysh,shell,bash
+Author: Blipk A.D.
+Requires-Python: >=3.10
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Dist: openai (>=0.27.2)
+Requires-Dist: pyqt6 (>=6.4.2)
+Requires-Dist: pyqt6-webengine (>=6.4.0)
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Project-URL: Documentation, https://github.com/blipk/pysh
+Project-URL: Repository, https://github.com/blipk/pysh
+Description-Content-Type: text/markdown
+
+
+# GPT Roles
+Simple PyQT chatbox that connects to a chat session with GPT.
+
+Has some features to increase interactivity and context awareness:
+    - GPT can request web pages or from APIs to answer your questions, to get current prices or latest news
+    - GPT can run shell scripts on your computer, so you can ask it directly to find files or open programs
+
+These are programmed in a root prompt.
+Be direct as possible in your commands or questions to get them issued correctly.
+
+TODO: The chat UI has action indicators for the interactivity
+TODO: Also the messages in the current prompt chain are
+
+TODO: List and add roles from jailbreakchat.com
+
+## Installing/Running
+
+#### From source with Poetry
+```shell
+poetry install && poetry run main
+```
+
+#### From pip
+TODO
+
+
