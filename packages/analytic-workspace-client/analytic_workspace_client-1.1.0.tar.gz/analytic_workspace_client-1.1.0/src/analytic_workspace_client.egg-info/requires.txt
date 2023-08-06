@@ -1,0 +1,8 @@
+python-dotenv<1.0,>=0.21
+httpx<1.0,>=0.23
+pandas<2.0,>=1.5
+pydantic<2.0,>=1.10
+colorama<0.5,>=0.4
+
+[dev]
+pyspark==3.3.1
