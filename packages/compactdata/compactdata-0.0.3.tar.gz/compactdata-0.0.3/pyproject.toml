@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "compactdata"
+version = "0.0.3"
+description = "Python package for CompactData encoding and decoding"
+authors = ["NUM Technology <developer@num.uk>"]
+readme = "README.md"
+packages = [{include = "compactdata"}]
+license = "MIT"
+homepage = "https://compactdata.org"
+repository = "https://github.com/NUMtechnology/compactdata-python"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/NUMtechnology/compactdata-python/issues"
+
+[tool.poetry.dependencies]
+python = "^3.0"
+ply = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+

@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: compactdata
+Version: 0.0.3
+Summary: Python package for CompactData encoding and decoding
+Home-page: https://compactdata.org
+License: MIT
+Author: NUM Technology
+Author-email: developer@num.uk
+Requires-Python: >=3.0,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: ply (>=3.11,<4.0)
+Project-URL: Bug Tracker, https://github.com/NUMtechnology/compactdata-python/issues
+Project-URL: Repository, https://github.com/NUMtechnology/compactdata-python
+Description-Content-Type: text/markdown
+
+# CompactData
+
+This is a placeholder package for a CompactData python parser.
