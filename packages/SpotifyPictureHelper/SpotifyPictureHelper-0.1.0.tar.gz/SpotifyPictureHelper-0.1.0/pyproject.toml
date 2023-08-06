@@ -1,0 +1,60 @@
+[build-system]
+requires = [
+    "setuptools >= 63.0.0",
+    "setuptools-scm",
+    "wheel",
+]
+build-backend="setuptools.build_meta"
+
+[project]
+name = "SpotifyPictureHelper"
+authors = [{name = "Daisy Ye", email = "daisyye20010730@gmail.com"}]
+description="A python library that helps with the analysis of Spotify pictures."
+readme = "README.md"
+version = "0.1.0"
+requires-python = ">=3.7"
+
+dependencies = ['requests','bs4']
+
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: Implementation :: CPython",
+    "Programming Language :: Python :: Implementation :: PyPy",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+
+
+[project.license]
+file = "LICENSE"
+
+[project.urls]
+repository = "https://github.com/daisyye0730/SpotifyPictureHelper"
+
+[project.optional-dependencies]
+develop = [
+    "black>=23.1.0",
+    "flake8>=6.0.0",
+    "pytest>=7.2.1",
+    "pytest-cov>=4.0.0",
+    "pytest-mock>=3.10.0",
+    "twine",
+    "wheel",
+]
+
+[tool.black]
+color = true
+line-length = 120
+target-version = ['py310']
+skip-string-normalization = true
+
+[tool.flake8]
+ignore = ['E203', 'W503']
+max-line-length=120
+exclude=[
+    'SpotifyPictureHelper/tests/*'
+]
