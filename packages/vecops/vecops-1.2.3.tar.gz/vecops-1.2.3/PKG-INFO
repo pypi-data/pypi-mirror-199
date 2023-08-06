@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: vecops
+Version: 1.2.3
+Summary: A small library for vector and matrix operations in vector spaces.
+Project-URL: Homepage, https://github.com/Ponny159/vecops
+Author: Tomáš Trachta
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+
+# vecops
+
+This is a simple library for basic operations in vector spaces.
+
+Usage:
+    `from vecops import addition`
+Calling method:
+    `Addition.someMethod()`
+
+Classes:
+    `Addition`
+    `Inverse`
+    `Multiplication`
+    `Rotation`
+    `Scale`
+    `Translation`
+    `Reflection`
+    `Length`
+    `Distance`
+   
+Installation:
+    `pip install vecops`
