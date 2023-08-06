@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: axanexa-moncli
+Version: 2.1
+Summary: Moncli, a pythonic/DDD client for Monday.com
+Home-page: https://github.com/AXANEXA/axanexa-moncli
+Download-URL: https://github.com/AXANEXA/axanexa-moncli
+Author: Axanexa
+Author-email: tphan@axanexa.com
+License: BSD 3
+License-File: LICENSE
+Requires-Dist: requests (>=2.24.0)
+Requires-Dist: pytz (>=2020.1)
+Requires-Dist: pycountry (>=20.7.3)
+Requires-Dist: deprecated (>=1.2.10)
+Requires-Dist: schematics (>=2.1.0)
+
