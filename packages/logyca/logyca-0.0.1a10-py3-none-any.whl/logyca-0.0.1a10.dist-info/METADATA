@@ -1,0 +1,83 @@
+Metadata-Version: 2.1
+Name: logyca
+Version: 0.0.1a10
+Summary: Logyca libraries, apiresult, health check dto
+Project-URL: Homepage, https://github.com/ccc/ccc
+Project-URL: Documentation, https://ccc/
+Author-email: Jaime Andres Cardona Carrillo <tecnologiaeinformacion@logyca.com>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Pydantic
+Classifier: Framework :: Pydantic :: 1
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: HTTP Servers
+Classifier: Topic :: Software Development
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Application Frameworks
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Requires-Dist: pydantic!=1.7,!=1.7.1,!=1.7.2,!=1.7.3,!=1.8,!=1.8.1,<2.0.0,>=1.6.2
+Description-Content-Type: text/markdown
+
+# Logyca libraries, apiresult, health check dto
+
+==============
+## Description: 
+
++----------------+--------------------------------------------+
+|Current version | 1.0.0-alpha1                               |
++----------------+--------------------------------------------+
+|Project site    | https://github.com/ccc/ccc                 |
++----------------+--------------------------------------------+
+|Issues          | https://github.com/ccc/ccc/issues/         |
++----------------+--------------------------------------------+
+|Documentation   | https://ccc.readthedocs.org/               |
++----------------+--------------------------------------------+
+|Authors         | Jaime Andres Cardona Carrillo              |
++----------------+--------------------------------------------+
+|Author-email    | tecnologiaeinformacion@logyca.com          |
++----------------+--------------------------------------------+
+|Latest Version  | 1.0.0                                      |
++----------------+--------------------------------------------+
+|Python versions | 3.7 or above                              |
++----------------+--------------------------------------------+
+        
+==============
+## What's libraries
+
+LOGYCA traversal libraries, helpers, among others
+
+==================
+## Very quick install
+
+```console
+python -m pip install ccc
+```
+
+=============
+## Documentation
+
+Go to documentation site: https://ccc.readthedocs.org/
+
+=======
+## License
+
+This project is distributed under `MIT license <https://github.com/ccc/ccc/ccc/ccc/LICENSE>`_
+
