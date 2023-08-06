@@ -1,0 +1,16 @@
+from typing import Optional, Any, Protocol
+
+
+class AbstractCache(Protocol):
+    NAME: str
+
+    async def initialise(self) -> None: ...
+
+    async def get(self, key: str) -> Optional[Any]: ...
+
+    async def set(self, key: str, value: Any) -> None: ...
+
+    async def has(self, key: str) -> bool: ...
+
+    async def delete(self, key: str) -> bool: ...
+
