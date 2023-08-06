@@ -1,0 +1,48 @@
+[build-system]
+requires = [
+    "setuptools>=45",
+    "setuptools_scm[toml]>=6.2",
+]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+
+[tool.black]
+line-length = 100
+target-version = [
+    "py38",
+    "py39",
+    "py310",
+]
+
+[tool.pydocstyle]
+# ignore the following:
+#   - D102: Missing docstring in public method
+#   - D107: Missing docstring in __init__
+add-ignore = [
+    "D102",
+    "D107",
+]
+convention = "google"
+
+[tool.isort]
+profile = "black"
+line_length = 100
+force_single_line = true
+
+[tool.pytest.ini_options]
+testpaths = [
+    "tests",
+]
+filterwarnings = [
+    "ignore::DeprecationWarning:luigi",
+    "ignore::DeprecationWarning:xarray",
+    "ignore::DeprecationWarning:matplotlib",
+    "ignore::DeprecationWarning:neurom.morphmath",
+    "ignore::DeprecationWarning:neuror.unravel",
+    "ignore::DeprecationWarning:setuptools",
+    "ignore::DeprecationWarning:sphinx.util.docutil",
+    "ignore::DeprecationWarning:sphinx.util.rst",
+    "ignore::urllib3.exceptions.InsecureRequestWarning:urllib3",
+    "ignore:Config file does not exist. luigi\\.cfg:UserWarning:luigi",
+]
