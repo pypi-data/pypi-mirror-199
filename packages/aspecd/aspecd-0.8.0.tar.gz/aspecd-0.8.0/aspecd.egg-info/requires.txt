@@ -1,0 +1,15 @@
+asdf
+bibrecord
+jinja2>=3.0
+matplotlib
+numpy
+oyaml
+scipy
+
+[dev]
+prospector
+
+[docs]
+sphinx
+sphinx-multiversion
+sphinx-rtd-theme
