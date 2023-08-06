@@ -1,0 +1,87 @@
+#!/usr/bin/env python3
+
+import configparser
+import os
+import re
+import subprocess
+import sys
+
+import gitignorefile
+
+
+DEFAULT_EXCLUDES = "/(\\.direnv|\\.eggs|\\.git|\\.hg|\\.mypy_cache|\\.nox|\\.tox|\\.venv|venv|\\.svn|_build|buck-out|build|dist|__pypackages__)/"
+DEFAULT_INCLUDES = "(\\.cc?|\\.cpp|\\.cxx|\\.c\\+\\+|\\.C|\\.hh?|\\.hpp|\\.hxx|\\.in[cl]|\\.H)$"
+
+
+def get_parents():
+    path = os.path.abspath(os.getcwd())
+    while True:
+        yield path
+
+        parent = os.path.dirname(path)
+        if os.path.samefile(path, parent):
+            return
+
+        else:
+            path = parent
+
+
+def filter_value(value):
+    assert value.startswith('"') and value.endswith('"')
+    return value[1:-1].replace("\\\\", "\\")
+
+
+for parent in get_parents():
+    path = os.path.join(parent, "cproject.toml")
+    if os.path.isfile(path):
+        break
+
+    path = os.path.join(parent, "cppproject.toml")
+    if os.path.isfile(path):
+        break
+
+else:
+    assert False, "Could not find `cproject.toml` or `cppproject.toml`."
+
+config = configparser.ConfigParser()
+config.read(path)
+exclude = filter_value(config.get("tool.rojo", "exclude", fallback=f'"{DEFAULT_EXCLUDES}"'))
+include = filter_value(config.get("tool.rojo", "include", fallback=f'"{DEFAULT_INCLUDES}"'))
+gi = gitignorefile.Cache()
+
+loc = 0
+
+reformatted = 0
+unchanged = 0
+
+for root, directories, names in os.walk(parent):
+    directories[:] = [d for d in directories if d != ".git" and not gi(os.path.join(root, d))]
+    for name in names:
+        path = os.path.join(root, name)
+        if not gi(path):
+            re_path = path[len(parent) :].replace("\\", "/")
+            if re.search(include, re_path) and not re.search(exclude, re_path):
+                r = subprocess.run(["clang-format", path], stdout=subprocess.PIPE)
+                r.check_returncode()
+                with open(path, "rb") as f:
+                    t = f.read()
+                if t == r.stdout:
+                    unchanged += 1
+                else:
+                    reformatted += 1
+                    with open(path, "wb") as f:
+                        f.write(r.stdout)
+                    print(f"Reformatted {os.path.relpath(path)}")
+
+if reformatted:
+    print()
+
+stats = []
+if reformatted:
+    stats.append(f"{reformatted} file(s) reformatted")
+if unchanged:
+    stats.append(f"{unchanged} file(s) left unchanged")
+if not stats:
+    stats.append("No files are present to be formatted. Nothing to do 😴")
+
+print(", ".join(stats))
