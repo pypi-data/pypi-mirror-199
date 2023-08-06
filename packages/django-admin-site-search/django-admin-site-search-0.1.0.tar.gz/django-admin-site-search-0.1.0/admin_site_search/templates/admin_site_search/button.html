@@ -1,0 +1,13 @@
+{% if not is_popup and request.user.is_authenticated %}
+    <button id="search-site-button"
+            x-data
+            @click="$store.search.toggle()"
+            class="search-button"
+            aria-label="search site">
+        {% include "admin_site_search/icon.html" %}
+        <span>Quick search...</span>
+        <kbd>
+            <abbr title="Command">⌘</abbr>K
+        </kbd>
+    </button>
+{% endif %}
