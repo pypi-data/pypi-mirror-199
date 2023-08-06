@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "AMANDA047"
+version = "0.0.3"
+authors = [
+  { name="Amanda Lin", email="amanda.lin@gmail.com" },
+]
+description = "Packaging rerp_package"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "mne",
+    "pingouin",
+    "statsmodels",
+    "scipy",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/amandalin047/rERP_Module"
+"Bug Tracker" = "https://github.com/amandalin047/rERP_Module/issues"
