@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "devoud"
+version = "1.1.0"
+description = "A simple Qt Python web browser"
+authors = ["OneEyedDancer <ooeyd@ya.ru>"]
+license = "GPL-3.0-or-later"
+readme = "README.md"
+repository = "https://codeberg.org/OneEyedDancer/Devoud"
+keywords = ["browser", "pyside6", "web", "qt"]
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+PySide6 = "6.4.2"
+plyer = "2.1.0"
+braveblock = "0.5.0"
+winshell = {version = "0.6", platform = "win32"}
+sqlalchemy = "2.0.6"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+devoud = 'devoud.app:main'
