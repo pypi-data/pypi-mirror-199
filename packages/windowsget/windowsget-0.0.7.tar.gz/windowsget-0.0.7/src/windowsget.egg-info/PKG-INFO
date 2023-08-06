@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: windowsget
+Version: 0.0.7
+Summary: windowsget is a Python-based command-line interface (CLI) utility that can be used to download files from the internet on Windows operating system.
+Home-page: https://github.com/c17hawke/windowsget
+Author: c17hawke
+Author-email: sunny.c17hawke@gmail.com
+License: MIT
+Project-URL: Bug Tracker, https://github.com/c17hawke/windowsget/issues
+Project-URL: Documentation, https://c17hawke.github.io/windowsget/
+Project-URL: Homepage, https://c17hawke.github.io/windowsget/
+Project-URL: Source, https://github.com/c17hawke/windowsget
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Provides-Extra: testing
+
+# Windowsget: Python CLI
+
+Basic usage -
+
+Download file by passing your URL as argument after `windowsget`
+
+```bash
+windowsget https://myexample.com/file.txt
+```
+
+Download file by passing your URL as argument after `windowsget` and specify output path with filename.
+
+```bash
+windowsget https://myexample.com/file.txt -o mydir/myfile.txt
+```
+
+For more check the documentation given under the project links.
