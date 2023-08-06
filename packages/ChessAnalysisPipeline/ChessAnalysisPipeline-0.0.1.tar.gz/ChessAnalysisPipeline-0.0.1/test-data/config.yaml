@@ -1,0 +1,6 @@
+pipeline:
+  - reader.Reader:
+      filename: data.csv
+  - processor.Processor: {}
+  - writer.Writer:
+      filename: data.out
