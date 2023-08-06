@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: cc-sbobet
+Version: 2.1.3
+Author: 
+Author-email: 
+License: MIT
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+Requires-Dist: cc-api-helper
+Requires-Dist: beautifulsoup4
+Requires-Dist: PyJWT
+
+# cc-sbobet
+
+
+
+## Requirement
+
+Python >=3.7
+
+## Installation
+
+```bash
+pip install cc-sbobet
+```
+
+## License
+
+MIT
