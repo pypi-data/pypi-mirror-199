@@ -1,0 +1,6 @@
+from dev.thecesrom.helper.types import AnyStr
+from org.python.core import PyObject
+
+class PyComponentWrapper(PyObject):
+    def __init__(self, component) -> None: ...
+    def wrapMethod(self, name: AnyStr) -> PyObject: ...
