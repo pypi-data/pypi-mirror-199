@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pou"
+version = "0.0.0"
+authors = [
+  { name="hwelsters", email="redacted@redacted.redacted" },
+]
+description = "A stylish, minimalistic, ChatGPT-infused command-line interface "
+readme = "README.md"
+requires-python = ">=3.0"
+classifiers = []
+dependencies = [
+  'colored >= 1.4.4',
+  'boxing >= 0.1.4',
+  'inquirer >= 3.1.3',
+  'requests >= 2.26.0'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/hwelsters/pau"
+"Bug Tracker" = "https://github.com/hwelsters/pau/issues"
