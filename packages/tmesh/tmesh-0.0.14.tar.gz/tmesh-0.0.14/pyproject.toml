@@ -1,0 +1,41 @@
+[tool.black]
+
+line-length = 120
+target-version = ["py310"]
+include = '\.pyi?$'
+
+[tool.pytest.ini_options]
+
+addopts = "-rx -rf -x -q --full-trace"
+testpaths = ["tests"]
+
+markers = [
+    "has_gpu: Marks test as requiring a GPU to run",
+]
+
+[tool.pylint.general]
+
+# Disables the "Unable to import" PyLint warning for "tmesh", since
+# it is a C extension module.
+ignored-modules = ["tmesh"]
+
+[tool.ruff]
+
+select = ["E", "F", "I", "W"]
+ignore = ["E712", "E731"]
+line-length = 120
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+target-version = "py310"
+
+[tool.ruff.per-file-ignores]
+
+"__init__.py" = ["E402", "F401", "F403", "F811"]
+
+[tool.ruff.mccabe]
+
+max-complexity = 10
+
+[tool.ruff.isort]
+
+known-first-party = ["tmesh", "utils", "tests"]
+combine-as-imports = true
