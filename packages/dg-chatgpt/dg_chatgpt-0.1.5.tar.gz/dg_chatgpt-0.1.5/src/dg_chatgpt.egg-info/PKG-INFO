@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: dg-chatgpt
+Version: 0.1.5
+Summary: Wrapper for OpenAI API, intended to be used for a discord bot powered by chatGPT.
+Author-email: Ondřej Moravec <moravec@devground.cz>
+Project-URL: Homepage, https://github.com/hkcmoris/dg_chatgpt
+Project-URL: Bugtracker, https://github.com/hkcmoris/dg_chatgpt/issues
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# DevGround
+
+## ChatGPT API wrapper
+
+This is a wrapper for the [ChatGPT API](https://platform.openai.com/docs/introduction) by [DevGround](https://devground.cz/).
+
+### Model
+
+gpt-3.5-turbo
+
+### License
+
+It is licensed under the MIT license.
+
+### Language
+
+Written in Python 3.11
+
+### Requirements
+
+requires environment variables:
+
+- OPENAI_API_KEY
+
+### Installation
+
+install the package with pip:
+
+```bash
+pip install dg_chatgpt_api
+```
+
+### Usage
+
+```python
+from dg_chatgpt_api import ChatGPTAPI as api
+
+api.reconnect()
+api.add_user("user_id", "username")
+api.add_conversation("user_id")
+message = {
+    "role": "user",
+    "content": "message"
+}
+response = api.get_response("user_id", message)
+```
