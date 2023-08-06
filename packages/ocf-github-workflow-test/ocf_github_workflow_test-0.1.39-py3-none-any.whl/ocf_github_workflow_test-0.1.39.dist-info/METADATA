@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: ocf-github-workflow-test
+Version: 0.1.39
+Summary: Test package for our github workflows
+Author: Open Climate Fix
+Project-URL: Homepage, https://github.com/openclimatefix/.github-test
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: pytest (==7.2.2)
+Requires-Dist: pytest-cov (==4.0.0)
+
+# .github-test
+
+This is a repo in which we can tests our [organization-level github workflows][w].
+
+[w]: https://github.com/openclimatefix/.github/tree/main/.github/workflows
