@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "atttest"
+version = "0.1.3"
+description = ""
+authors = ["Pragnesh <pragnesh.nprajapati@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "^2.28.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
