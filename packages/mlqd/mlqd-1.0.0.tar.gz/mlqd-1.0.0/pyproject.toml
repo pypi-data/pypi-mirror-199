@@ -1,0 +1,19 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+[project]
+name = "mlqd"
+version= "1.0.0"
+description = "MLQD: A Python Package for Machine Learning-based Quantum Dissipative Dynamics"
+authors = [
+    {name = "Arif Ullah", email = "ua2024@xmu.edu.cn"},
+]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+]
+[project.urls]
+Documentation = "https://github.com/Arif-PhyChem/MLQD"
+Source = "https://github.com/Arif-PhyChem/MLQD"
