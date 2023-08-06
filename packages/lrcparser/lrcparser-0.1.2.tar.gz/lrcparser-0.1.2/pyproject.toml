@@ -1,0 +1,61 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lrcparser"
+version = "0.1.2"
+authors = [{ name = "283375", email = "log_283375@163.com" }]
+description = "A simple lyric file parser"
+readme = "README.md"
+requires-python = ">=3.8"
+dependencies = []
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/283375/lrcparser_python"
+"Bug Tracker" = "https://github.com/283375/lrcparser_python/issues"
+
+[tool.setuptools]
+package-dir = {"lrcparser" = "lrcparser"}
+
+[tool.isort]
+profile = "black"
+
+[tool.pytest.ini_options]
+addopts = "--doctest-modules"
+
+[tool.tox]
+legacy_tox_ini = """
+[tox]
+requires =
+    tox>=4
+env_list = 
+    format
+    py{38, 39, 310}
+
+[gh-actions]
+python = 
+    3.8: py38
+    3.9: py39
+    3.10: py310
+
+[testenv:format]
+description = format code
+deps = black==23.1.0
+skip_install = true
+commands = black .
+
+[testenv]
+description = run unit tests
+deps =
+    pytest>=7
+    pytest-sugar
+skip_install = true
+commands =
+    pytest . {posargs:tests}
+"""
