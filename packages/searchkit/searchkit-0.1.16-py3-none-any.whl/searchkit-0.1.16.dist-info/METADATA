@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: searchkit
+Version: 0.1.16
+Summary: Set of tools used to search files.
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: fasteners
+Requires-Dist: psutil
+Requires-Dist: importlib-metadata ; python_version >= "3.8"
+
