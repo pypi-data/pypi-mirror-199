@@ -1,0 +1,6 @@
+# install:required
+paho-mqtt==1.6.1
+pyyaml==6.0
+
+# install:mqtt
+asyncio-mqtt==0.16.1
