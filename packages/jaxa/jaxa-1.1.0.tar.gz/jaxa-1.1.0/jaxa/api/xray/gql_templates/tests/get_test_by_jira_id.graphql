@@ -1,0 +1,43 @@
+query getTestByJiraId ($jira_id: String!) {
+  getTests(jql: $jira_id, limit: 50) {
+    total
+    start
+    limit
+    results {
+      issueId
+      jira(fields: ["key"])
+      projectId
+      status {
+        name
+        description
+        final
+        color
+      }
+      testType {
+          name
+          kind
+      }
+      steps {
+          id
+          data
+          action
+          result
+          attachments {
+            id
+            filename
+          }
+          customFields {
+            id
+            value
+          }
+      }
+      unstructured
+      gherkin
+      scenarioType
+      folder {
+        name
+        path
+      }
+    }
+  }
+}
