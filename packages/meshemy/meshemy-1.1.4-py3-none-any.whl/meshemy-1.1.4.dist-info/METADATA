@@ -1,0 +1,74 @@
+Metadata-Version: 2.1
+Name: meshemy
+Version: 1.1.4
+Summary: Developer friendly suite for manipulating mesh
+License: BSD-4
+Author: caniko
+Author-email: canhtart@gmail.com
+Requires-Python: >=3.10,<3.11.0
+Classifier: License :: Other/Proprietary License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Provides-Extra: blender
+Provides-Extra: full
+Provides-Extra: open3d
+Provides-Extra: trimesh
+Requires-Dist: bpy (>=3.4.0,<4.0.0) ; extra == "full" or extra == "blender"
+Requires-Dist: numpy (<1.24.0)
+Requires-Dist: open3d-cpu (>=0.17.0,<0.18.0) ; extra == "full" or extra == "open3d"
+Requires-Dist: ordered-set (>=4.1.0,<5.0.0)
+Requires-Dist: pydantic (>=1.10.4,<2.0.0)
+Requires-Dist: pydantic-numpy
+Requires-Dist: pymeshfix (>=0.16.2,<0.17.0)
+Requires-Dist: trimesh (>=3.20.2,<4.0.0) ; extra == "full" or extra == "trimesh"
+Description-Content-Type: text/markdown
+
+# Meshemy: Python toolbelt for manipulating mesh
+Consolidation package for manipulating mesh. Comes with cookbook models from each package
+
+## Installation
+```shell
+pip install meshemy[full]
+```
+Use it in your poetry package
+```shell
+poetry add meshemy -E full
+```
+
+## Usage
+You need to pick at least one extra for this package to be useful. Install all modules by installing `full`.
+
+### Cookbook
+Currently, Blender, Open3D, and Trimesh is supported.
+
+#### Blender
+The `blender` extra must be installed.
+```python
+from meshemy.cookbook.blender import BlenderCookbook
+
+blender_cook = BlenderCookbook.from_file("path_to_mesh.<any_format>")
+blender_cook.planar_decimate(degree_tol=5.0)
+```
+You can convert to any other cookbook `.to_o3d()`, for instance.
+
+#### Open3D
+The `open3d` extra must be installed.
+```python
+from meshemy.cookbook.open3d import Open3dCookbook
+
+o3d_cook = Open3dCookbook.from_file("path_to_mesh.<any_format>")
+o3d_cook.smoothen(5)
+o3d_cook.repair()
+```
+
+#### Open3D
+The `trimesh` extra must be installed.
+```python
+from meshemy.cookbook.trimesh import TrimeshCookbook
+
+trimesh_cook = TrimeshCookbook.from_file("path_to_mesh.<any_format>")
+trimesh_cook.contains(vertices)
+```
+
+### More
+For more information, look at the source code, it is relatively easy to read. Start in the `cookbook` submodule.
