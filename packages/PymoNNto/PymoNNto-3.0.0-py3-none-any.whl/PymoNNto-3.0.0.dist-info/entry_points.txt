@@ -1,0 +1,5 @@
+[console_scripts]
+Behaviour_UI = PymoNNto.CLI:Behaviour_UI
+Evolution_UI = PymoNNto.CLI:Evolution_UI
+Plot_Overview_UI = PymoNNto.CLI:Overview_UI
+Plot_UI = PymoNNto.CLI:Execute_UI

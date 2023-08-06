@@ -1,0 +1,615 @@
+from configparser import ConfigParser
+import numpy as np
+import zipfile
+import time
+from subprocess import call
+import os
+import pickle
+import imageio
+import sys
+import shutil
+import glob
+
+
+#import matplotlib.pylab as plt
+#storage_manager_folder = '../../Data/StorageManager/'
+
+def create_folder_if_not_exist(path):
+    if not os.path.exists(path):
+        os.mkdir(path)
+
+def get_root_folder(create_when_not_found=True):
+    path='./'
+    while os.path.isdir(path):
+        if os.path.isdir(path+'Data/'):
+            return os.path.abspath(path).replace('\\', '/').replace('//', '/')
+        path='../'+path
+    return './'
+
+def get_data_folder(create_when_not_found=True, default='./Data'):
+    path='./'
+    while os.path.isdir(path):
+        if os.path.isdir(path+'Data/'):
+            return os.path.abspath(path+'Data/').replace('\\', '/').replace('//', '/')
+        path='../'+path
+
+    if default is not None:
+        if not os.path.exists(default):
+            try:
+                os.mkdir(default)
+            except:
+                print('was not able to create Data folder')
+    return default
+    #raise Exception('No "Data" folder found above current working directory! Please create dirctory: ".../Project/Data".')
+
+def zipDir(dirPath, zipPath, filter=[]):
+    zipf = zipfile.ZipFile(zipPath, mode='w')
+    lenDirPath = len(dirPath)
+    for root, _, files in os.walk(dirPath):
+        for file in files:
+            filter_file=False
+            for f in filter:
+                if f in root or f in file+'\\':
+                    filter_file = True
+            if not filter_file:
+                filePath = os.path.join(root, file)
+                print(filePath)
+                zipf.write(filePath , filePath[lenDirPath :] )
+    zipf.close()
+
+def add_project_root_path():
+    root = get_root_folder()#.replace('/', '\\')
+
+    #add root folder (folder that contains Data folder) to import paths for easier import management
+    if root not in sys.path:
+        sys.path.append(root)
+
+    # if project is a copy inside of a Data folder of the original project (e.g. Evolution_Project_Clones), ten remove the original folder from import paths
+    if '\\Data\\' in root:#windows
+        original_project_folder = root[0:root.find('\\Data\\')]
+        if original_project_folder in sys.path:
+            sys.path.remove(original_project_folder)
+
+    if '/Data/' in root:#linux
+        original_project_folder = root[0:root.find('/Data/')]
+        if original_project_folder in sys.path:
+            sys.path.remove(original_project_folder)
+
+
+def get_settings(section):
+    path = get_data_folder()+'/settings.ini'
+    result = {}
+    if os.path.exists(path):
+        try:
+            config = ConfigParser()
+            config.read(path)
+            for option in config.options(section):
+                try:
+                    result[option] = eval(config.get(section, option))
+                except:
+                    pass
+        except:
+            pass
+    return result
+
+
+def load_datapoints(param_list, project_name='test', plot_evo_folder='Plot_Project_Clones', sort_by_param=None, return_dict=False):
+    folder = get_data_folder() + '/'+plot_evo_folder+'/' + project_name + '/Data'
+    smg = StorageManagerGroup(project_name, data_folder=folder)
+    if sort_by_param is not None:
+        smg.sort_by(sort_by_param)
+    data = smg.get_multi_param_dict(params=param_list ,remove_None=True)
+    if return_dict:
+        return data
+    else:
+        return [data[key] for key in data]
+
+
+#searches for "Data" folder in project by default
+#default folder: .../Data/StorageManager/main_folder_name/folder_name/
+#example:
+#StorageManager('Test')
+#Run1: .../Data/StorageManager/Test/Test1/
+#Run2: .../Data/StorageManager/Test/Test2/
+#Run3: .../Data/StorageManager/Test/Test3/
+#...
+#parameters are saved in "config.ini"
+class StorageManager:
+
+    def get_path(self):
+        return self.absolute_path
+
+    def _create_StorageManager_Main_Folder(self, data_folder):
+        storage_manager_folder = data_folder +'/StorageManager/'
+
+        if not os.path.exists(storage_manager_folder):
+            try:
+                os.mkdir(storage_manager_folder)
+            except:
+                print('SM folder already exists...')
+
+        return storage_manager_folder
+
+    def __init__(self, main_folder_name, folder_name=None, random_nr=False, print_msg=True, add_new_when_exists=True, data_folder=get_data_folder(), use_evolution_path=True, last=False):
+
+        #when evolution is active, all storage managers with use_evolution_path=True will automatically save all data in the right evolution folder
+        if use_evolution_path:
+            import PymoNNto.Exploration.Evolution.Interface_Functions as I_func
+            evo_name = I_func.get_evo_name()
+            evo_id = I_func.get_evo_id()
+            if evo_name is not None and evo_id is not None:
+                main_folder_name = evo_name
+                folder_name = I_func.get_gene_file(evo_name, evo_id)
+                evo_gen = I_func.get_evo_id()
+                if evo_gen is not None:
+                    random_nr = False
+                else:
+                    random_nr = True
+
+
+        if type(main_folder_name) is dict:
+            main_folder_name = self.dict_to_folder_name(main_folder_name)
+
+
+        storage_manager_folder = self._create_StorageManager_Main_Folder(data_folder)
+
+
+        if folder_name is None:
+            folder_name = main_folder_name
+
+        self.folder_name = folder_name
+        if type(random_nr) == bool and random_nr:
+            self.folder_name += str(int(np.random.rand() * 10000))
+        if type(random_nr) == int:
+            self.folder_name += str(random_nr)
+
+        if not os.path.exists(storage_manager_folder+main_folder_name+'/'):
+            try:
+                os.mkdir(storage_manager_folder+main_folder_name+'/')
+            except:
+                print("main folder already exists")
+
+        if add_new_when_exists:
+            if os.path.isdir(storage_manager_folder+main_folder_name+'/'+self.folder_name+'/'):
+                count = 0
+                while os.path.isdir(storage_manager_folder+main_folder_name+'/'+self.folder_name+'_{}/'.format(count)):
+                    count += 1
+                self.folder_name += '_{}'.format(count)
+        elif last:#get last exisiting folder
+            if os.path.isdir(storage_manager_folder+main_folder_name+'/'+self.folder_name+'/'):
+                count = -1
+                while os.path.isdir(storage_manager_folder+main_folder_name+'/'+self.folder_name+'_{}/'.format(count+1)):
+                    count += 1
+                if count>-1:
+                    self.folder_name += '_{}'.format(count)
+
+        #self.foldername += '_'+count#int(np.random.rand() * 10*add_randum_number)
+
+        self.absolute_path = storage_manager_folder+main_folder_name+'/'+self.folder_name+'/'
+
+        new = False
+        if not os.path.exists(self.absolute_path):
+            try:
+                os.mkdir(self.absolute_path)
+            except:
+                print('target folder already exits')
+            new = True
+
+        self.config_file_name = 'config.ini'
+        self.config=None
+
+        self.frame_counter = {}
+
+        if new:
+            if print_msg:
+                print(self.absolute_path)
+            self.save_param('time', time.time())
+
+    def dict_to_folder_name(self, dict):
+        result = ''
+        for k, v in dict.items():
+            if result != '':
+                result += '_'
+            result += str(k).replace(' ', '')+'='+str(v).replace(' ', '')
+        return result
+
+    def init_config(self):
+        if self.config is None:
+            self.config = ConfigParser()
+            self.config.read(self.absolute_path + self.config_file_name)
+
+    def get_all_params(self, section='Parameters'):
+        self.init_config()
+        return dict(self.config.items(section)).keys()
+
+    def save_recorder(self, tag, recorder, keys=[]):
+        if type(keys) is str:
+            keys=[keys]
+        if len(keys) == 0:
+            keys=recorder.variables.keys()
+        for key in keys:
+            self.save_np(tag+key, np.array(recorder.variables[key]))
+
+
+    def save_str(self, key, string):
+        text_file = open(self.absolute_path + key + '.txt', "w")
+        text_file.write(string)
+        text_file.close()
+
+
+    def load_str(self, key):
+        text_file = open(self.absolute_path + key + '.txt', "r")
+        string = text_file.read()
+        text_file.close()
+        return string
+
+    def backup_execued_file(self):
+        executed_file = sys.argv[0]
+        self.backup(executed_file)
+
+    def backup(self, file_or_folder):
+        file_or_folder.replace('\\','/')
+        if file_or_folder[-1]=='/':
+            file_or_folder=file_or_folder[:-1]
+        parts = file_or_folder.split('/')
+        shutil.copy(file_or_folder, self.absolute_path+parts[-1])
+
+
+    def save_np(self, key, obj):
+        np.save(self.absolute_path + key + '.npy', arr=obj)
+
+    def save_obj(self, key, obj):
+        pickle.dump(obj, open(self.absolute_path + key + '.obj', 'wb'))
+
+    def load_obj(self, key):
+        return pickle.load(open(self.absolute_path + key + '.obj', 'rb'))
+
+    def has_obj(self, key):
+        return os.path.isfile(self.absolute_path + key + '.obj')
+
+    def save_param_dict(self, d, section='Parameters'):
+        for key in d:
+            self.save_param(key, d[key], section)
+
+    def save_param(self, key, value, section='Parameters'):
+        self.init_config()
+        if not self.config.has_section(section):
+            self.config.add_section(section)
+        self.config.set(section, key, str(value).replace('%','percent'))
+        with open(self.absolute_path+self.config_file_name, 'w') as configfile:
+            self.config.write(configfile)
+
+    def get_next_frame_name(self, key):
+        if not key in self.frame_counter:
+            self.frame_counter[key] = 0
+        self.frame_counter[key] += 1
+        return self.absolute_path+key+'{}.png'.format(self.frame_counter[key]-1)
+
+
+    def save_frame(self, image, key):
+        #plt.imshow(image)  # Needs to be in row,col order
+        #plt.savefig(self.absolute_path+key+'{}.png'.format(self.frame_counter[key]))
+        #im = Image.fromarray(image)
+        #im.save(self.absolute_path+key+'{}.png'.format(self.frame_counter[key]))
+        imageio.imwrite(self.get_next_frame_name(key), (image).astype(np.uint8))#
+        #scipy.misc.imsave(self.absolute_path+key+'{}.png'.format(self.frame_counter[key]), image)
+
+
+
+    def render_video(self, key, delete_images, reset_frame_counter=True):
+
+        #ffmpeg -r 25 -i frame%09d.png -vcodec mpeg4 -b 10000000 -y video.mp4
+        #call(['ffmpeg', '-r', '25', '-i', self.absolute_path + key + '%d.png', '-vcodec', 'mpeg4', '-q:v', '1', '-b', '10000000', '-y', self.absolute_path + key + '.mp4'], shell=True)#
+
+        # ffmpeg -i temp-%d.png -c:v libx264 -strict -2 -preset slow -pix_fmt yuv420p -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" -f mp4 output.mp4 #, '-r', '25'
+        call(['ffmpeg', '-i', self.absolute_path + key + '%d.png', '-c:v', 'libx264', '-strict', '-2', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2', '-f', 'mp4', self.absolute_path + key + '.mp4'], shell=True)
+        if delete_images:
+            files = os.listdir(self.absolute_path)
+            for f in files:
+                if key in f and '.png' in f:
+                    #print(self.absolute_path+f)
+                    #os.remove(f)#todo savety check
+                    os.remove(self.absolute_path + f)
+
+        if reset_frame_counter:
+            self.frame_counter[key] = 0
+
+    def load_param(self, key, section='Parameters', default=None, return_string=False):#casting!!!
+        self.init_config()
+        try:
+            s = self.config.get(section, key)
+        except:
+            return default
+        if return_string:
+            return s
+        if len(s) > 0:
+            if s=='True':
+                return True
+            if s=='False':
+                return False
+            try:
+                if '.' in s:
+                    return float(s)
+                else:
+                    return int(s)
+            except:
+                return s
+        return s
+
+    def load_param_list(self, keys, section='Parameters', return_dict=False, default=None, return_string=False):
+        result = []
+        for key in keys:
+            result.append(self.load_param(key, section, default, return_string))
+
+        if return_dict:
+            return dict(zip(keys, result))
+        else:
+            return result
+
+    def load_np(self, key):
+        return np.load(self.absolute_path + key + '.npy')
+
+    def copy_project_files(self, base_folder='../../'):
+        zf = zipfile.ZipFile(self.absolute_path+"backup.zip", "w")
+        for dirname, subdirs, files in os.walk(base_folder):#
+            #print(dirname, subdirs, files)
+            if dirname != base_folder and not 'Data' in dirname and not '.git' in dirname and not '.idea' in dirname and not '.zip' in dirname:
+                zf.write(dirname)
+                for filename in files:
+                    zf.write(os.path.join(dirname, filename))
+        zf.close()
+
+class SimpleStorageManager(StorageManager):
+
+    def __init__(self, folder):
+        self.absolute_path = folder
+
+        self.config_file_name = 'config.ini'
+        self.config = None
+
+        self.frame_counter = {}
+
+class StorageManager2:
+                                            #%nr %rnd
+    def __init__(self, folder, subfolder='folder+"_"+id', mainfolder='StorageManager', datafolder=get_data_folder(), print_path=True):
+
+        if os.path.exists(folder):
+            path = folder
+        else:
+            self.path = self._ensure_folder(datafolder + '/')
+            self.path = self._ensure_folder(self.path + mainfolder + '/')
+            self.path = self._ensure_folder(self.path + folder + '/')
+
+            subfolder = self._eval_subfolder(folder, subfolder)
+            new = not os.path.exists(self.path + subfolder + '/')
+            self.path = self._ensure_folder(self.path + subfolder + '/')
+
+            if new:
+                self.save('time', time.time())
+
+        if print_path:
+            print(self.path)
+
+        self.config = ConfigParser()
+        self.config.read(self.path + 'config.ini')
+
+
+    def _eval_subfolder(self, folder, subfolder):
+        try:
+            if 'id' in subfolder:
+                id = len(os.listdir(self.path))
+
+            if 'rnd' in subfolder:
+                rnd = str(int(np.random.rand() * 10000))
+
+            subfolder = eval(subfolder)
+        except:
+            pass
+
+        return subfolder
+
+    @property
+    def folder(self):
+        return self.path
+
+    @property
+    def directory(self):
+        return self.path
+
+    def _ensure_folder(self, folder):
+        if not os.path.exists(folder):
+            try:
+                os.mkdir(folder)
+            except:
+                raise Exception(folder+' can not be created')
+        return folder
+
+    def _get_next_key_file(self, key):
+        result = self.path+key+ '.*'
+        i = 0
+        while len(glob.glob(result))>0:
+            result = self.path + key + '_' + str(i) + '.*'
+            i += 1
+        return result
+
+
+    # add network save pickle compile...
+    def save(self, key, data, mainkey='', ):
+        if type(data) == str or type(data) == int or type(data) == float or type(data) == bool:
+
+            value = str(data)
+
+            if not self.config.has_section(mainkey):
+                self.config.add_section(mainkey)
+            self.config.set(mainkey, key, str(value).replace('%', 'percent'))
+            with open(self.absolute_path + self.config_file_name, 'w') as configfile:
+                self.config.write(configfile)
+
+        else:
+            file = self._get_next_key_file(mainkey+key)
+
+            if type(data) == np.ndarray:
+                np.save(file + '.npy', arr=obj)
+
+            elif type(data) == image:
+                imageio.imwrite(file + '.png', image.astype(np.uint8))
+
+            else:#obj
+                pickle.dump(obj, open(file + '.obj', 'wb'))
+
+
+    def load(self, key, default=None, mainkey=''):
+        
+
+        try:
+            s = self.config.get(mainkey, key)
+        except:
+            return default
+        if len(s) > 0:
+            if s=='True':
+                return True
+            if s=='False':
+                return False
+            try:
+                if '.' in s:
+                    return float(s)
+                else:
+                    return int(s)
+            except:
+                return s
+        return s
+
+
+
+    #do not use! => render_video searches for key*.png (right order!!!) (creation date?)
+
+    #self.get_next_frame_name(key)
+    #def get_next_frame_key(self, videokey):
+    #    if not key in self.frame_counter:
+    #        self.frame_counter[key] = 0
+    #    self.frame_counter[key] += 1
+    #    return self.absolute_path+key+'{}'.format(self.frame_counter[key]-1)
+
+
+    def render_video(self, key, delete_images, reset_frame_counter=True):
+        call(['ffmpeg', '-i', self.path + key + '_%d.png', '-c:v', 'libx264', '-strict', '-2', '-preset', 'slow', '-pix_fmt', 'yuv420p', '-vf', 'scale=trunc(iw/2)*2:trunc(ih/2)*2', '-f', 'mp4', self.absolute_path + key + '.mp4'], shell=True)
+        if delete_images:
+            files = os.listdir(self.path)
+            for f in files:
+                if key in f and '.png' in f:
+                    os.remove(self.absolute_path + f)
+
+
+
+class StorageManagerGroup:
+
+    def __iter__(self):
+        return self.StorageManagerList.__iter__()
+
+    def __init__(self, Tag, main_folder_name=None, data_folder=get_data_folder()):
+
+        storage_manager_folder = data_folder + '/StorageManager/'
+
+        if main_folder_name is None:
+            main_folder_name = Tag
+
+        self.absolute_path = storage_manager_folder + main_folder_name + '/'
+        self.Tag = Tag
+        self.data_folder = data_folder
+
+        self.vp={}
+
+        self.StorageManager_file_appendixes = []
+        self.refresh()
+
+
+    def refresh(self):
+        self.StorageManagerList = []
+        if os.path.exists(self.absolute_path):
+            for folder in os.listdir(self.absolute_path):
+                if os.path.isdir(self.absolute_path+folder) and self.Tag in folder:
+                    self.StorageManagerList.append(StorageManager(self.Tag, folder, add_new_when_exists=False, data_folder=self.data_folder, use_evolution_path=False))
+
+
+    def sort_by(self, param, section='Parameters'):
+        self.StorageManagerList = sorted(self.StorageManagerList, key=lambda sm: sm.load_param(param, section, default=-np.inf))
+
+    def remove_None(self, l, remove_None=True):
+        if remove_None:
+            return list(filter(lambda a: a is not None, l))
+        else:
+            return l
+
+    def get_param_list(self, param, section='Parameters', remove_None=False):
+        if param == '#SM#':
+            return self.StorageManagerList
+        else:
+            return self.remove_None([sm.load_param(param, section) for sm in self.StorageManagerList], remove_None)
+
+    def get_np_list(self, np_name, remove_None=False):
+        return self.remove_None([sm.load_np(np_name) for sm in self.StorageManagerList], remove_None)
+
+    def get_obj_list(self, obj_name, remove_None=False):
+        return self.remove_None([sm.load_obj(obj_name) for sm in self.StorageManagerList], remove_None)
+
+    def add_virtual_multi_parameter(self, param, value): #add readout parameter that is not stored in config files for easier access
+        if (type(value) is list or type(value) is np.ndarray) and len(value)==len(self.StorageManagerList):
+            self.vp[param] = np.array(value)
+        else:
+            self.vp[param] = np.array([value for _ in self.StorageManagerList])
+
+    def get_multi_param_list(self, params, section='Parameters', remove_None=True):
+        remove = True
+        results = []
+        for param in params:
+            if param in self.vp:
+                results.append(self.vp[param])#virtual parameter
+                #print(param, len((self.vp[param])))
+            else:
+                results.append(np.array(self.get_param_list(param, section)))#stored parameter
+                #print(param, len(np.array(self.get_param_list(param, section))))
+            remove*=(results[-1]!=None)*(results[-1]!=np.nan)
+        results = np.array(results)
+        if remove_None:
+            results=results[:,remove]#np.where(results is not None)#.any(axis=1)
+        return results#.astype(np.float64)
+
+    def get_multi_param_dict(self, params, section='Parameters', remove_None=True):
+        return dict(zip(params,self.get_multi_param_list(params,section,remove_None)))
+
+    def remove_duplicates_get_eval(self, x, y, evalstr='np.average(a)'):
+        unique = np.unique(x)
+        result = np.zeros(len(unique))
+        for i, u in enumerate(unique):
+            a = y[x == u]
+            result[i] = eval(evalstr)
+        return unique, result
+
+    def __getitem__(self, query):
+        result = []
+        parts = query.replace('=', '|').replace(' ', '|').replace('>', '|').replace('<', '|').split('|')
+        key_q = parts[0]
+
+        for sm in self.StorageManagerList:
+            param = sm.load_param(key_q, return_string=True)
+            if param is not None:
+                new_q = query.replace(key_q, param)
+                if eval(new_q):
+                    result.append(sm)
+
+        return result
+
+
+    def get_all_params(self, section='Parameters', include_virtual_parameters=True):
+        result_dict = {}
+        for sm in self.StorageManagerList:
+            for param in sm.get_all_params(section):
+                result_dict[param] = True
+        if include_virtual_parameters:
+            for v in self.vp:
+                result_dict[v]=True
+        return result_dict.keys()
+
+
+
+
