@@ -1,0 +1,10 @@
+[build-system]
+requires = [
+    "setuptools",
+    "wheel",
+    "ShynaDatabase",
+    "Shynatime",
+    "ShynaWeather",
+    "wget"
+]
+build-backend = "setuptools.build_meta"
