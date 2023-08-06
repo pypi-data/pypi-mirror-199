@@ -1,0 +1,23 @@
+[project]
+name = "ocf-github-workflow-test"
+version = "0.1.38"
+authors = [
+  { name="Open Climate Fix" },
+]
+description = "Test package for our github workflows"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+dependencies = [
+    'pytest == 7.2.2',
+    'pytest-cov == 4.0.0',
+]
+
+[project.urls]
+"Homepage" = "https://github.com/openclimatefix/.github-test"
+
