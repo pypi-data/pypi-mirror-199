@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: docker-compose-all
+Version: 0.2.0
+Summary: A very simple Docker cluster management tool, recursively search and control all Docker Compose projects in a directory.
+Home-page: https://github.com/Phuker/docker-compose-all
+Author: Phuker
+Author-email: Phuker@users.noreply.github.com
+License: GNU General Public License v3.0
+Classifier: Environment :: Console
+Classifier: Operating System :: POSIX
+Classifier: Operating System :: POSIX :: Linux
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+[Project homepage](https://github.com/Phuker/docker-compose-all)
+
+[Readme](https://github.com/Phuker/docker-compose-all/blob/master/Readme.md)
