@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: arraydb
+Version: 0.1.0
+Summary: Database using array. With an basic ORM
+Home-page: https://github.com/shahriyardx/arraydb
+Author: Md Shahriyar Alam
+Author-email: contact@shahriyar.dev
+License: MIT
+Keywords: arraydb,database
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Database
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+
+# ArrayDb
+A database where data is stored in a array of dicts
+
+## Features
+- Insert, Update, Delete
+- Filter data
+- Change/Add columns in database
+
+## Demo
+```py
+from arraydb import ArrayDb
+
+members = ArrayDb(["username", "age", "gender"], [])
+
+# insert data 
+members.insert({"username": "John", "age": 22, "gender": "Male"})
+members.insert({"username": "Ayesha", "age": 20, "gender": "Female"})
+
+# Update specific data
+members.update(
+    where={"username": "John"},
+    data={"age": 21}
+)
+
+# Even better
+members.update(
+    where={"age": {"gt": 20}}, # Update all rows where age is greater than 20
+    data={"age": 21}
+) # gt, lt, gte, lte, not, contains, in, startswith, endswith -> More coming soon
+```
