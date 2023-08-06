@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: representty
+Version: 0.1.0
+Summary: Tiny presentation tool based on rich and markdown
+License: MIT
+Author: L3viathan
+Author-email: git@l3vi.de
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: ipython
+Requires-Dist: rich (>=13.3.1,<14.0.0)
