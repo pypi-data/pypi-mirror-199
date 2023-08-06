@@ -1,0 +1,1467 @@
+[
+    {
+        "model": "financemodule.Currency",
+        "pk": 1,
+        "fields": {
+            "description": "AED"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 2,
+        "fields": {
+            "description": "AFN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 3,
+        "fields": {
+            "description": "ALL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 4,
+        "fields": {
+            "description": "AMD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 5,
+        "fields": {
+            "description": "ANG"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 6,
+        "fields": {
+            "description": "AOA"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 7,
+        "fields": {
+            "description": "ARS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 8,
+        "fields": {
+            "description": "AUD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 9,
+        "fields": {
+            "description": "AWG"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 10,
+        "fields": {
+            "description": "AZN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 11,
+        "fields": {
+            "description": "BAM"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 12,
+        "fields": {
+            "description": "BBD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 13,
+        "fields": {
+            "description": "BDT"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 14,
+        "fields": {
+            "description": "BGN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 15,
+        "fields": {
+            "description": "BHD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 16,
+        "fields": {
+            "description": "BIF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 17,
+        "fields": {
+            "description": "BMD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 18,
+        "fields": {
+            "description": "BND"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 19,
+        "fields": {
+            "description": "BOB"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 20,
+        "fields": {
+            "description": "BRL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 21,
+        "fields": {
+            "description": "BSD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 22,
+        "fields": {
+            "description": "BTC"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 23,
+        "fields": {
+            "description": "BTN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 24,
+        "fields": {
+            "description": "BWP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 25,
+        "fields": {
+            "description": "BYN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 26,
+        "fields": {
+            "description": "BZD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 27,
+        "fields": {
+            "description": "CAD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 28,
+        "fields": {
+            "description": "CDF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 29,
+        "fields": {
+            "description": "CHF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 30,
+        "fields": {
+            "description": "CLF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 31,
+        "fields": {
+            "description": "CLP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 32,
+        "fields": {
+            "description": "CNH"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 33,
+        "fields": {
+            "description": "CNY"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 34,
+        "fields": {
+            "description": "COP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 35,
+        "fields": {
+            "description": "CRC"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 36,
+        "fields": {
+            "description": "CUC"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 37,
+        "fields": {
+            "description": "CUP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 38,
+        "fields": {
+            "description": "CVE"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 39,
+        "fields": {
+            "description": "CZK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 40,
+        "fields": {
+            "description": "DJF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 41,
+        "fields": {
+            "description": "DKK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 42,
+        "fields": {
+            "description": "DOP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 43,
+        "fields": {
+            "description": "DZD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 44,
+        "fields": {
+            "description": "EGP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 45,
+        "fields": {
+            "description": "ERN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 46,
+        "fields": {
+            "description": "ETB"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 47,
+        "fields": {
+            "description": "EUR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 48,
+        "fields": {
+            "description": "FJD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 49,
+        "fields": {
+            "description": "FKP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 50,
+        "fields": {
+            "description": "GBP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 51,
+        "fields": {
+            "description": "GEL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 52,
+        "fields": {
+            "description": "GGP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 53,
+        "fields": {
+            "description": "GHS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 54,
+        "fields": {
+            "description": "GIP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 55,
+        "fields": {
+            "description": "GMD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 56,
+        "fields": {
+            "description": "GNF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 57,
+        "fields": {
+            "description": "GTQ"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 58,
+        "fields": {
+            "description": "GYD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 59,
+        "fields": {
+            "description": "HKD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 60,
+        "fields": {
+            "description": "HNL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 61,
+        "fields": {
+            "description": "HRK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 62,
+        "fields": {
+            "description": "HTG"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 63,
+        "fields": {
+            "description": "HUF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 64,
+        "fields": {
+            "description": "IDR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 65,
+        "fields": {
+            "description": "ILS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 66,
+        "fields": {
+            "description": "IMP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 67,
+        "fields": {
+            "description": "INR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 68,
+        "fields": {
+            "description": "IQD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 69,
+        "fields": {
+            "description": "IRR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 70,
+        "fields": {
+            "description": "ISK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 71,
+        "fields": {
+            "description": "JEP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 72,
+        "fields": {
+            "description": "JMD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 73,
+        "fields": {
+            "description": "JOD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 74,
+        "fields": {
+            "description": "JPY"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 75,
+        "fields": {
+            "description": "KES"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 76,
+        "fields": {
+            "description": "KGS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 77,
+        "fields": {
+            "description": "KHR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 78,
+        "fields": {
+            "description": "KMF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 79,
+        "fields": {
+            "description": "KPW"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 80,
+        "fields": {
+            "description": "KRW"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 81,
+        "fields": {
+            "description": "KWD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 82,
+        "fields": {
+            "description": "KYD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 83,
+        "fields": {
+            "description": "KZT"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 84,
+        "fields": {
+            "description": "LAK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 85,
+        "fields": {
+            "description": "LBP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 86,
+        "fields": {
+            "description": "LKR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 87,
+        "fields": {
+            "description": "LRD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 88,
+        "fields": {
+            "description": "LSL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 89,
+        "fields": {
+            "description": "LYD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 90,
+        "fields": {
+            "description": "MAD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 91,
+        "fields": {
+            "description": "MDL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 92,
+        "fields": {
+            "description": "MGA"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 93,
+        "fields": {
+            "description": "MKD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 94,
+        "fields": {
+            "description": "MMK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 95,
+        "fields": {
+            "description": "MNT"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 96,
+        "fields": {
+            "description": "MOP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 97,
+        "fields": {
+            "description": "MRU"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 98,
+        "fields": {
+            "description": "MUR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 99,
+        "fields": {
+            "description": "MVR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 100,
+        "fields": {
+            "description": "MWK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 101,
+        "fields": {
+            "description": "MXN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 102,
+        "fields": {
+            "description": "MYR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 103,
+        "fields": {
+            "description": "MZN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 104,
+        "fields": {
+            "description": "NAD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 105,
+        "fields": {
+            "description": "NGN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 106,
+        "fields": {
+            "description": "NIO"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 107,
+        "fields": {
+            "description": "NOK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 108,
+        "fields": {
+            "description": "NPR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 109,
+        "fields": {
+            "description": "NZD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 110,
+        "fields": {
+            "description": "OMR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 111,
+        "fields": {
+            "description": "PAB"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 112,
+        "fields": {
+            "description": "PEN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 113,
+        "fields": {
+            "description": "PGK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 114,
+        "fields": {
+            "description": "PHP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 115,
+        "fields": {
+            "description": "PKR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 116,
+        "fields": {
+            "description": "PLN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 117,
+        "fields": {
+            "description": "PYG"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 118,
+        "fields": {
+            "description": "QAR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 119,
+        "fields": {
+            "description": "RON"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 120,
+        "fields": {
+            "description": "RSD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 121,
+        "fields": {
+            "description": "RUB"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 122,
+        "fields": {
+            "description": "RWF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 123,
+        "fields": {
+            "description": "SAR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 124,
+        "fields": {
+            "description": "SBD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 125,
+        "fields": {
+            "description": "SCR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 126,
+        "fields": {
+            "description": "SDG"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 127,
+        "fields": {
+            "description": "SEK"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 128,
+        "fields": {
+            "description": "SGD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 129,
+        "fields": {
+            "description": "SHP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 130,
+        "fields": {
+            "description": "SLL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 131,
+        "fields": {
+            "description": "SOS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 132,
+        "fields": {
+            "description": "SRD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 133,
+        "fields": {
+            "description": "SSP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 134,
+        "fields": {
+            "description": "STD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 135,
+        "fields": {
+            "description": "STN"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 136,
+        "fields": {
+            "description": "SVC"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 137,
+        "fields": {
+            "description": "SYP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 138,
+        "fields": {
+            "description": "SZL"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 139,
+        "fields": {
+            "description": "THB"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 140,
+        "fields": {
+            "description": "TJS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 141,
+        "fields": {
+            "description": "TMT"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 142,
+        "fields": {
+            "description": "TND"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 143,
+        "fields": {
+            "description": "TOP"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 144,
+        "fields": {
+            "description": "TRY"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 145,
+        "fields": {
+            "description": "TTD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 146,
+        "fields": {
+            "description": "TWD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 147,
+        "fields": {
+            "description": "TZS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 148,
+        "fields": {
+            "description": "UAH"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 149,
+        "fields": {
+            "description": "UGX"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 150,
+        "fields": {
+            "description": "USD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 151,
+        "fields": {
+            "description": "UYU"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 152,
+        "fields": {
+            "description": "UZS"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 153,
+        "fields": {
+            "description": "VEF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 154,
+        "fields": {
+            "description": "VES"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 155,
+        "fields": {
+            "description": "VND"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 156,
+        "fields": {
+            "description": "VUV"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 157,
+        "fields": {
+            "description": "WST"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 158,
+        "fields": {
+            "description": "XAF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 159,
+        "fields": {
+            "description": "XAG"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 160,
+        "fields": {
+            "description": "XAU"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 161,
+        "fields": {
+            "description": "XCD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 162,
+        "fields": {
+            "description": "XDR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 163,
+        "fields": {
+            "description": "XOF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 164,
+        "fields": {
+            "description": "XPD"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 165,
+        "fields": {
+            "description": "XPF"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 166,
+        "fields": {
+            "description": "XPT"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 167,
+        "fields": {
+            "description": "YER"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 168,
+        "fields": {
+            "description": "ZAR"
+        }
+    },
+    {
+        "model": "financemodule.Currency",
+        "pk": 169,
+        "fields": {
+            "description": "ZMW"
+        }
+    },
+    {
+        "model": "financemodule.exchangerate",
+        "pk": 1,
+        "fields": {
+            "bank_entity": null,
+            "rate_base_currency": null,
+            "rate_currency": 128,
+            "rate_date": null,
+            "rate_previous_day": null,
+            "rate_buy": null,
+            "rate_sell": null,
+            "rate_mid": 0.016,
+            "created_date": "2023-03-10T08:10:14.313Z"
+        }
+    },
+    {
+        "model": "financemodule.exchangerate",
+        "pk": 2,
+        "fields": {
+            "bank_entity": null,
+            "rate_base_currency": null,
+            "rate_currency": 59,
+            "rate_date": null,
+            "rate_previous_day": null,
+            "rate_buy": null,
+            "rate_sell": null,
+            "rate_mid": 0.095,
+            "created_date": "2023-03-10T08:10:14.313Z"
+        }
+    },
+    {
+        "model": "financemodule.exchangerate",
+        "pk": 3,
+        "fields": {
+            "bank_entity": null,
+            "rate_base_currency": null,
+            "rate_currency": 33,
+            "rate_date": null,
+            "rate_previous_day": null,
+            "rate_buy": null,
+            "rate_sell": null,
+            "rate_mid": 0.083,
+            "created_date": "2023-03-10T08:10:14.313Z"
+        }
+    },
+    {
+        "model": "financemodule.exchangerate",
+        "pk": 4,
+        "fields": {
+            "bank_entity": null,
+            "rate_base_currency": null,
+            "rate_currency": 1,
+            "rate_date": null,
+            "rate_previous_day": null,
+            "rate_buy": null,
+            "rate_sell": null,
+            "rate_mid": 0.045,
+            "created_date": "2023-03-10T08:10:14.314Z"
+        }
+    },
+    {
+        "model": "financemodule.exchangerate",
+        "pk": 5,
+        "fields": {
+            "bank_entity": null,
+            "rate_base_currency": null,
+            "rate_currency": 47,
+            "rate_date": null,
+            "rate_previous_day": null,
+            "rate_buy": null,
+            "rate_sell": null,
+            "rate_mid": 0.011,
+            "created_date": "2023-03-10T08:10:14.314Z"
+        }
+    },
+    {
+        "model": "financemodule.exchangerate",
+        "pk": 6,
+        "fields": {
+            "bank_entity": null,
+            "rate_base_currency": null,
+            "rate_currency": 150,
+            "rate_date": null,
+            "rate_previous_day": null,
+            "rate_buy": null,
+            "rate_sell": null,
+            "rate_mid": 0.012,
+            "created_date": "2023-03-10T08:10:14.314Z"
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 1,
+        "fields": {
+            "bank_entity": "1213",
+            "rate_date": "2023-03-10",
+            "currency": 150,
+            "interest_rate_type": "LIBOR",
+            "period": {
+                "30days": "0.9515",
+                "60days": "0.9601",
+                "180days": "0.9756",
+                "360days": "0.9999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 2,
+        "fields": {
+            "bank_entity": "233",
+            "rate_date": "2023-03-10",
+            "currency": 47,
+            "interest_rate_type": "LIBOR",
+            "period": {
+                "30days": "0.8515",
+                "60days": "0.8601",
+                "180days": "0.8756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 3,
+        "fields": {
+            "bank_entity": "1314",
+            "rate_date": "2023-03-10",
+            "currency": 50,
+            "interest_rate_type": "LIBOR",
+            "period": {
+                "30days": "0.7515",
+                "60days": "0.8601",
+                "180days": "0.7756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 4,
+        "fields": {
+            "bank_entity": "214424",
+            "rate_date": "2023-03-10",
+            "currency": 150,
+            "interest_rate_type": "EURIBOR",
+            "period": {
+                "30days": "0.9515",
+                "60days": "0.9601",
+                "180days": "0.9756",
+                "360days": "0.9999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 5,
+        "fields": {
+            "bank_entity": "214424",
+            "rate_date": "2023-03-10",
+            "currency": 47,
+            "interest_rate_type": "EURIBOR",
+            "period": {
+                "30days": "0.8515",
+                "60days": "0.8601",
+                "180days": "0.8756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 6,
+        "fields": {
+            "bank_entity": "1314",
+            "rate_date": "2023-03-10",
+            "currency": 50,
+            "interest_rate_type": "EURIBOR",
+            "period": {
+                "30days": "0.7515",
+                "60days": "0.8601",
+                "180days": "0.7756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 7,
+        "fields": {
+            "bank_entity": "214424",
+            "rate_date": "2023-03-10",
+            "currency": 150,
+            "interest_rate_type": "SOFR",
+            "period": {
+                "30days": "0.9515",
+                "60days": "0.9601",
+                "180days": "0.9756",
+                "360days": "0.9999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 8,
+        "fields": {
+            "bank_entity": "214424",
+            "rate_date": "2023-03-10",
+            "currency": 47,
+            "interest_rate_type": "SOFR",
+            "period": {
+                "30days": "0.8515",
+                "60days": "0.8601",
+                "180days": "0.8756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 9,
+        "fields": {
+            "bank_entity": "1314",
+            "rate_date": "2023-03-10",
+            "currency": 50,
+            "interest_rate_type": "SOFR",
+            "period": {
+                "30days": "0.7515",
+                "60days": "0.8601",
+                "180days": "0.7756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 10,
+        "fields": {
+            "bank_entity": null,
+            "rate_date": "2023-03-23",
+            "currency": 1,
+            "interest_rate_type": "SOFR",
+            "period": {
+                "30days": "0.7515",
+                "60days": "0.8601",
+                "180days": "0.7756",
+                "360days": "0.8999"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 11,
+        "fields": {
+            "bank_entity": null,
+            "rate_date": "2023-03-23",
+            "currency": 1,
+            "interest_rate_type": "EURIBOR",
+            "period": {
+                "30days": "0.7525",
+                "60days": "0.8621",
+                "180days": "0.7726",
+                "360days": "0.8929"
+            }
+        }
+    },
+    {
+        "model": "financemodule.floatinginterestrate",
+        "pk": 12,
+        "fields": {
+            "bank_entity": null,
+            "rate_date": "2023-03-23",
+            "currency": 1,
+            "interest_rate_type": "LIBOR",
+            "period": {
+                "30days": "0.7565",
+                "60days": "0.8661",
+                "180days": "0.7746",
+                "360days": "0.8929"
+            }
+        }
+    }
+]
