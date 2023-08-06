@@ -1,0 +1,13 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
+    i18n_domain="senaite.abx">
+
+  <genericsetup:upgradeStep
+      title="Upgrade to SENAITE ABX 1.1.0"
+      source="1.0.0"
+      destination="1100"
+      handler=".v01_01_000.upgrade"
+      profile="senaite.abx:default"/>
+
+</configure>
