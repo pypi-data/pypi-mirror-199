@@ -1,0 +1,16 @@
+LICENSE
+README.md
+setup.py
+faker_to_kafka/__init__.py
+faker_to_kafka/config_parse.py
+faker_to_kafka/csv_generator.py
+faker_to_kafka/generator_factory.py
+faker_to_kafka/json_generator.py
+faker_to_kafka/kafka_sender.py
+faker_to_kafka/main.py
+faker_to_kafka.egg-info/PKG-INFO
+faker_to_kafka.egg-info/SOURCES.txt
+faker_to_kafka.egg-info/dependency_links.txt
+faker_to_kafka.egg-info/requires.txt
+faker_to_kafka.egg-info/top_level.txt
+test/test_1.py
