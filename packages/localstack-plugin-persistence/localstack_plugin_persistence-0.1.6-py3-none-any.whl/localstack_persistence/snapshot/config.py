@@ -1,0 +1,3 @@
+import os
+SNAPSHOT_SAVE_STRATEGY=os.environ.get('SNAPSHOT_SAVE_STRATEGY','').upper()
+SNAPSHOT_LOAD_STRATEGY=os.environ.get('SNAPSHOT_LOAD_STRATEGY','').upper()
