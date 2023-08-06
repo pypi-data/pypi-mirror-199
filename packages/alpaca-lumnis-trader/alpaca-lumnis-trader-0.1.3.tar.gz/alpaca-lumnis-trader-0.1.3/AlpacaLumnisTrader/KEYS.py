@@ -1,0 +1,3 @@
+API_KEY_BINANCE              = "PKUW99M28MXIB95RJGIM"
+SECRET_KEY_BINANCE           = "p4wwxvcwMzyhClOz4vGrnLOLHyNQLqZu9uuy136K"
+API_KEY_LUMNIS               = "SUM9Le1GfO9thQzkxGX5b4d0nXv35BgO3ELjgJ9R"
