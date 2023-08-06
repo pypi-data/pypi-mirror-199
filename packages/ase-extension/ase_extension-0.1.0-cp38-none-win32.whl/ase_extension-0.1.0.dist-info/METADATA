@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: ase_extension
+Version: 0.1.0
+Requires-Dist: ase
+Requires-Dist: numpy
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown; charset=UTF-8; variant=GFM
+
+# ase_extension
+
+Extension to ASE(atomistic simulation environment)
+
+## Features
+
+- `ase_extension.constraints.LogFermiWallPotential`: Constrain atoms in sphere with logfermi potential
+
+## Installation
+
+
+### With pypi
+
+pip install ase_extension
+
+### From source 
+
+Install `maturin` first, and do:
+```bash
+pip install git+https://github.com/mjhong0708/ase_extension
+```
+
+## User guide
+
+See [wiki](https://github.com/mjhong0708/ase_extension/wiki).
