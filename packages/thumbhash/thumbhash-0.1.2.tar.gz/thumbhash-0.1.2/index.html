@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+
+<body>
+  <h1>Browser Example</h1>
+  <p>
+    To run this demo, serve the root repository directory using a local web server and then visit
+    <a href="http://127.0.0.1:8000/examples/browser/">http://127.0.0.1:8000/examples/browser/</a>
+    (assuming port 8000).
+  </p>
+
+  <!-- The server typically sets the width and height ahead of time to avoid layout shifts -->
+  <img id="demo" width="150" height="200">
+  <textarea id="txt"></textarea>
+</body>
+
+<script type="module">
+  import * as ThumbHash from './thumbhash.mjs'
+
+  // Image to ThumbHash (although this is typically done on the server, not on the client)
+  const originalURL = './sunset.jpg'
+  const image = new Image
+  image.src = originalURL
+  await new Promise(resolve => image.onload = resolve)
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d')
+  const scale = 100 / Math.max(image.width, image.height)
+  canvas.width = Math.round(image.width * scale)
+  canvas.height = Math.round(image.height * scale)
+  context.drawImage(image, 0, 0, canvas.width, canvas.height)
+  const pixels = context.getImageData(0, 0, canvas.width, canvas.height)
+  console.log(Array.from(pixels.data))
+  const binaryThumbHash = ThumbHash.rgbaToThumbHash(pixels.width, pixels.height, pixels.data)
+
+  // ThumbHash to data URL
+  const placeholderURL = ThumbHash.thumbHashToDataURL([213, 7, 18, 29, 4, 103, 135, 143, 119, 87, 135, 72, 135, 135, 151, 135, 88, 120, 144, 149, 8])
+
+  // Simulate setting the placeholder first, then the full image loading later on
+  const demo = document.getElementById('demo')
+  demo.style.background = `center / cover url(${placeholderURL})`
+  // setTimeout(() => demo.src = originalURL, 500)
+
+  // If you want to use base64 instead of binary...
+  const binaryToBase64 = binary => btoa(String.fromCharCode(...binary))
+  const base64ToBinary = base64 => new Uint8Array(atob(base64).split('').map(x => x.charCodeAt(0)))
+  const thumbHashToBase64 = binaryToBase64(binaryThumbHash)
+  const thumbHashFromBase64 = base64ToBinary(thumbHashToBase64)
+</script>
