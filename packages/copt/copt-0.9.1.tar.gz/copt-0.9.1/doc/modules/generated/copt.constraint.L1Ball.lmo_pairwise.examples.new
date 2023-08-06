@@ -1,0 +1,23 @@
+
+
+Examples using ``copt.constraint.L1Ball.lmo_pairwise``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Speed of convergence of different Frank-Wolfe variants on various problems with a logistic regr...">
+
+.. only:: html
+
+ .. figure:: /auto_examples/frank_wolfe/images/thumb/sphx_glr_plot_sparse_benchmark_pairwise_thumb.png
+     :alt: Benchmark of Pairwise Frank-Wolfe variants for sparse logistic regression
+
+     :ref:`sphx_glr_auto_examples_frank_wolfe_plot_sparse_benchmark_pairwise.py`
+
+.. raw:: html
+
+    </div>
+
+.. only:: not html
+
+ * :ref:`sphx_glr_auto_examples_frank_wolfe_plot_sparse_benchmark_pairwise.py`
