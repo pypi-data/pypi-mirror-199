@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: academics-reddit-scraper
+Version: 0.2.3
+Summary: A Reddit post and comment scraper
+Home-page: https://github.com/yourusername/reddit_scraper
+Author: Nathan Laundry
+Author-email: nathan@fieldguidetocoding.com
+License: MIT
+Keywords: reddit scraper praw
+License-File: LICENSE
+Requires-Dist: praw
+Requires-Dist: tqdm
+Requires-Dist: sentiment-analysis
+
