@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: aif360-fork2
+Version: 0.5.0
+Summary: IBM AI Fairness 360
+Home-page: https://github.com/Trusted-AI/AIF360
+Author: aif360 developers
+Author-email: me@rancho.me
+License: Apache License 2.0
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: OptimPreproc
+Provides-Extra: AdversarialDebiasing
+Provides-Extra: DisparateImpactRemover
+Provides-Extra: LFR
+Provides-Extra: LIME
+Provides-Extra: ART
+Provides-Extra: Reductions
+Provides-Extra: FairAdapt
+Provides-Extra: notebooks
+Provides-Extra: LawSchoolGPA
+Provides-Extra: tests
+Provides-Extra: docs
+Provides-Extra: all
+License-File: LICENSE
+
+This is a temporary fork for personal use. It will be deleted in a while
