@@ -1,0 +1,33 @@
+Metadata-Version: 2.1
+Name: s7r
+Version: 0.1.1
+Summary: An easy to use job runner.
+Home-page: https://github.com/henryivesjones/sprinkler
+Author: Henry Jones
+Author-email: Henry Jones <henryivesjones@gmail.com>
+License: GPL-3.0-or-later
+Keywords: scheduler,task runner,task,job
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: docker (>=6.0.1)
+Requires-Dist: redis (>=4.0.0)
+Requires-Dist: PyYAML (>=6.0)
+Requires-Dist: pydantic (>=1.0.0)
+Requires-Dist: smart-open (>=6.0.0)
+Requires-Dist: croniter (>=1.0.0)
+Requires-Dist: Flask (>=2.0.0)
+Requires-Dist: itsdangerous (>=2.0.0)
+Requires-Dist: click (>=8.0.0)
+Requires-Dist: gunicorn (>=20.0.0)
+Requires-Dist: Flask-Cors (>=3.0.10)
+
+# sprinkler
+Sprinkler is a easy to use job runner.
+more docs to come.
