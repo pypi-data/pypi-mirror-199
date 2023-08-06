@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling", "pandas", "numpy", "scipy"]
+build-backend = "hatchling.build"
+
+[project]
+name = "quant_risk_mgmt"
+version = "1.0.1"
+authors = [
+  { name="Xiaokuan Zhao", email="xiaokuanzhao@gmail.com" },
+]
+description = "Package for quant risk management, with wide range of functions including fixing PSD, VaR and ES, etc."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/xiaokuan-zhao/FINTECH545"
+"Bug Tracker" = "https://github.com/xiaokuan-zhao/FINTECH545/issues"
