@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: pynixconfig
+Version: 0.1.0
+Summary: Simple way to config your terminal colors
+Author-email: Sergio Nahas <sn2865@columbia.edu>
+License: MIT License
+        
+        Copyright (c) 2023 Sergio Nahas
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: repository, https://github.com/sn2865/pynixconfig
+Platform: UNKNOWN
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: develop
+License-File: LICENSE
+
+# pynixconfig
+Configure your UNIX environment simply using python
+
+
+<img src="https://img.shields.io/github/license/sn2865/pynixconfig" alt="license"></img>
+
+<img src="https://img.shields.io/github/issues/sn2865/pynixconfig" alt="issues"></img>
+
+![Build Status](https://github.com/sn2865/pynixconfig/actions/workflows/build.yml/badge.svg)
+
+[![codecov](https://codecov.io/gh/sn2865/pynixconfig/branch/main/graph/badge.svg)](https://codecov.io/gh/sn2865/pynixconfig)
+
+# Overview
+
+This library will enable beginners to easily configure their UNIX environment for it to look cool.
+It will allow users to configure anything ranging from environment variables, what their terminal looks like,
+credentials, etc.. using a simple python generated user interface.
+
+# Installation
+
+pip install pynixconfig
+
+# Using the Library
+
+1. modify your configs in pynixconfig/linuxconfig.py
+
+2. Run the following command in the root directory of project: $ make run
+
+# Instructions
+
+clone repo on your local
+modify color and font in pynixconfig/linuxconfig.py
+
+run command: make run
+
+
