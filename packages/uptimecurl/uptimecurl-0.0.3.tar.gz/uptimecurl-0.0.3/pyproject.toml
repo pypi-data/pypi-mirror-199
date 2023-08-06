@@ -1,0 +1,43 @@
+[project]
+name = "uptimecurl"
+version = "0.0.3"
+description = "Basic monitoring tool designed for rapid deployment and simple results."
+authors = [
+    { name = "David Seaward", email = "david@librem.one" },
+]
+dependencies = [
+    "chevron>=0.13",
+    "click>=8.1.3",
+    "python-dotenv>=0.14",
+    "requests>=2.24",
+    "ruamel-yaml>=0.17.21",
+]
+requires-python = ">=3.10"
+readme = "README.md"
+
+[project.license]
+text = "AGPL-3.0-or-later"
+
+[project.optional-dependencies]
+
+[project.scripts]
+uptimecurl = "uptimecurl.uptimecurl:cli"
+
+[build-system]
+requires = [
+    "pdm-backend",
+]
+build-backend = "pdm.backend"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "carmine>=0.0.3",
+]
+
+[tool.syllabub.project]
+conduct = "contributor-covenant-2.1"
+copyright = "Copyright 2020 David Seaward and contributors"
+origin = "DCO-1.1-git-signoff"
+sbom = "reuse spdx"
+title = "uptimecurl"
+url = "https://lofidevops.neocities.org"
