@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: pyauthenticator
+Version: 0.0.7
+Summary: Similar to the Google authenticator just written in python.
+Home-page: https://github.com/pyscioffice/pyauthenticator
+Author: Jan Janssen
+Author-email: jan.janssen@outlook.com
+License: BSD
+License-File: LICENSE
+Requires-Dist: otpauth (>=2.0.0)
+Requires-Dist: qrcode (>=7.4.2)
+Requires-Dist: pyzbar (>=0.1.9)
+Requires-Dist: pillow (>=9.4.0)
+
+With more and more services requiring two factor authentication without supporting application specific passwords or other forms of token based authenication suitable for automation this python packages allows to generate two factor authentication codes on the commandline or in python.
