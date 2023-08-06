@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: algokit-utils
+Version: 0.2.0b2
+Summary: Utilities for Algorand development for use by AlgoKit
+License: MIT
+Author: Algorand Foundation
+Author-email: contact@algorand.foundation
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: py-algorand-sdk (>=2.0.0,<3.0.0)
+Requires-Dist: pyteal (>=0.23.0,<0.24.0)
+Description-Content-Type: text/markdown
+
+# algokit-utils-py
