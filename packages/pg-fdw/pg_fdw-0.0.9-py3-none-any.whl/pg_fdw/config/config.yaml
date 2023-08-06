@@ -1,0 +1,30 @@
+# for list of available options see "default.yaml" and "schema.yaml"
+
+# section placeholders to override default values
+postgres:
+
+fdw_list:
+
+servers:
+
+# Example: foreign servers
+# servers:
+#   mongo_fdw_1:
+#     description: MyServer
+#     fdw_name: mongo_fdw
+#     options:
+#     user_mapping:
+#       username: some_user
+#       password: password
+#
+#   ...
+#
+#   mysql_fdw_1:
+#     description: Some Project - dev
+#     fdw_name: mysql_fdw
+#     options:
+#       host: hostname
+#       port: 3306
+#     user_mapping:
+#       username: some_user
+#       password: password
