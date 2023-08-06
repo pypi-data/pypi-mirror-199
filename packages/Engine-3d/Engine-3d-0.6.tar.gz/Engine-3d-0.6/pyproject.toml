@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=61.0.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "Engine-3d"
+version = "0.6"
+description = "Python 3d engine"
+readme = "README.md"
+authors = [{ name = "Alberto", email = "rossani.alberto4@gmail.com" }]
+license = { file = "LICENSE" }
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = ["engine", "pygame"]
+dependencies = [
+    "pygame >= 2.3.0"
+]
+requires-python = ">=3.10"
+
+[project.urls]
+Homepage = "https://github.com/Xyon40k/Engine"
