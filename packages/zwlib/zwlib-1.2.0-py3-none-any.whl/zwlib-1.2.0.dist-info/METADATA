@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: zwlib
+Version: 1.2.0
+Summary: ZwLib is a package that provides a series of utility functions for Convo studio, HyperPM, and AIForYou products.
+Home-page: https://pypi.org/project/zwlib/
+Author: chayan-hypercap
+Author-email: chayan@hypercap.ai
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+Requires-Dist: requests
+
+# Zwlib
+ZwLib is a package that provides a series of utility functions for Convo studio, HyperPM, and AIForYou products.
+
+## Features
+- Easy-to-use API request functions with built-in error handling
+- Functions for handling image, video, and payment meta-data
+- Building NLP Models
+- Compatible with Python 3.6 and above
+
+## Installation
+To install Zwlib, simply run:
+
+```bash
+pip install zwlib
+
+
