@@ -1,0 +1,6 @@
+[console_scripts]
+ddtrace-run = ddtrace.commands.ddtrace_run:main
+
+[pytest11]
+ddtrace = ddtrace.contrib.pytest.plugin
+ddtrace.pytest_bdd = ddtrace.contrib.pytest_bdd.plugin
