@@ -1,0 +1,52 @@
+Metadata-Version: 2.1
+Name: gpt-ghostwriter
+Version: 1.0.2
+Summary: Summarizes commit messages for you automagically.
+Home-page: https://github.com/iMerica/gpt-ghostwriter
+Author: Michael
+Author-email: writemichaelmartinez@gmail.com
+License: MIT
+Project-URL: Documentation, https://pyscaffold.org/
+Platform: any
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Description-Content-Type: text/markdown; charset=UTF-8
+Provides-Extra: testing
+License-File: LICENSE.txt
+
+```
+   __________  ______
+  / ____/ __ \/_  __/
+ / / __/ /_/ / / /   
+/ /_/ / ____/ / /    
+\____/_/     /_/     
+                     
+   ________  ______  ____________       ______  ____________________ 
+  / ____/ / / / __ \/ ___/_  __/ |     / / __ \/  _/_  __/ ____/ __ \
+ / / __/ /_/ / / / /\__ \ / /  | | /| / / /_/ // /  / / / __/ / /_/ /
+/ /_/ / __  / /_/ /___/ // /   | |/ |/ / _, _// /  / / / /___/ _, _/ 
+\____/_/ /_/\____//____//_/    |__/|__/_/ |_/___/ /_/ /_____/_/ |_|  
+
+```
+
+
+## Overview
+
+This uses OpenAI's GPT LLM to write git commit summaries
+
+        
+## Setup
+
+      export OPENAI_API_KEY=xxxxxxxxxxxxxxxxxx
+
+### Usage        
+
+   git commit -m "$(ghostwriter)"
+
+### Example
+
+   $ echo "test" > test.txt"
+   $ git add test.txt
+   $ ghostwriter
+   "Adds a test.txt file to repo"
+
