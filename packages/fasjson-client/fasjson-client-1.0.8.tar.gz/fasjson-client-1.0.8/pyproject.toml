@@ -1,0 +1,102 @@
+[tool.poetry]
+name = "fasjson-client"
+version = "1.0.8"
+description = "An OpenAPI client for FASJSON"
+
+license = "LGPL-3.0-or-later"
+
+authors = [
+  "Fedora Infrastructure <infrastructure@lists.fedoraproject.org>"
+]
+
+readme = 'README.md'  # Markdown files are supported
+
+repository = "https://github.com/fedora-infra/fasjson-client"
+homepage = "https://github.com/fedora-infra/fasjson-client"
+
+include = [
+  "tox.ini",
+  "config.toml.example",
+]
+
+keywords = ['security']
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Intended Audience :: Developers",
+    "Topic :: Security",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+
+[tool.poetry.dependencies]
+python = "^3.7.0"
+gssapi = "^1.5.1"
+bravado = "^10.6.0 || ^11"
+requests = "^2.20.0"
+requests-gssapi = "^1.2.1"
+cryptography = {version = ">=2.3", optional = true}
+click = {version = "^6.7 || ^7 || ^8", optional = true}
+toml = "^0.10.0"
+
+[tool.poetry.dev-dependencies]
+coverage = "*"
+flake8 = "*"
+pytest = "*"
+pytest-cov = "*"
+pytest-mock = "*"
+requests-mock = "*"
+sphinx = "*"
+sphinxcontrib-httpdomain = "*"
+bandit = "*"
+liccheck = "*"
+black = "*"
+# For the licenses check, follow Poetry's dep
+platformdirs = "^2.5.2"
+
+[tool.poetry.extras]
+cli = ["click", "cryptography"]
+
+[tool.poetry.scripts]
+fasjson-client = 'fasjson_client.cli:cli'
+
+
+[tool.liccheck]
+authorized_licenses = [
+  "bsd",
+  "new bsd",
+  "simplified bsd",
+  "apache",
+  "apache 2.0",
+  "apache software",
+  "Apache License 2.0",
+  "gpl v2",
+  "GNU General Public License v2 or later (GPLv2+)",
+  "gpl v3",
+  "GNU GPLv3+",
+  "GNU General Public License v3 (GPLv3)",
+  "GNU General Public License v3 or later (GPLv3+)",
+  "lgpl",
+  "gnu lgpl",
+  "GNU Library or Lesser General Public License (LGPL)",
+  "GNU Lesser General Public License v3 or later (LGPLv3+)",
+  "lgpl with exceptions or zpl",
+  "isc",
+  "isc license (iscl)",
+  "mit",
+  "python software foundation",
+  "zpl 2.1",
+  "mpl-2.0",
+  "MPL 2.0",
+  "Mozilla Public License 2.0 (MPL 2.0)",
+  "wtfpl",
+  "Apache License, Version 2.0",
+  "Zope Public",
+  "The Unlicense (Unlicense)",
+]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
