@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: detect-app
+Version: 0.0.1
+Summary: detect which app the python interpreter is running in
+Author: Hannes
+Project-URL: Homepage, https://github.com/hannesdelbeke/detect-app
+Keywords: dcc,app,application,pipeline
+Classifier: Programming Language :: Python :: 3.7
+Requires-Python: >=3.4
+Description-Content-Type: text/markdown
+Requires-Dist: importlib-metadata ; python_version < "3.7"
+
+# detect-app
+detect which app the python interpreter is running in
