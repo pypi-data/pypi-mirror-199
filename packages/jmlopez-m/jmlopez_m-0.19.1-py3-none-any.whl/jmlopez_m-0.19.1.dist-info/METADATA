@@ -1,0 +1,27 @@
+Metadata-Version: 2.1
+Name: jmlopez-m
+Version: 0.19.1
+Summary: m
+Home-page: https://github.com/jmlopez-rod/m
+Author: Manuel Lopez
+Author-email: jmlopez.rod@gmail.com
+Project-URL: Bug Tracker, https://github.com/jmlopez-rod/m/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing-extensions
+Requires-Dist: pydantic
+Requires-Dist: pyyaml
+Requires-Dist: packaging
+Requires-Dist: pygments (>=2.14.0)
+
+# [m](https://jmlopez-rod.github.io/m/)
+
+## install
+
+```
+pip install jmlopez-m
+```
