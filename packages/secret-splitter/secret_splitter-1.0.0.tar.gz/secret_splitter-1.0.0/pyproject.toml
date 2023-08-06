@@ -1,0 +1,30 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "secret-splitter"
+version = "1.0.0"
+authors = [
+  { name="Henri Bourdeau", email="hb@wolfzoh.com" },
+]
+description = "Split secrets into T pieces, or recover split secrets by recombining any D pieces."
+readme = "README.md"
+requires-python = ">=3.6"
+keywords = [
+    "secret",
+    "password",
+    "cryptography",
+    "splitting",
+    "sharing"
+]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://secret-splitter.com"
+"Source" = "https://git.sr.ht/~retzoh/secret-splitter-py"
+"Bug Tracker" = "https://todo.sr.ht/~retzoh/secret-splitter-py"
