@@ -1,0 +1,75 @@
+[project]
+name = "bstb"
+dynamic = []
+description = "bstb - Geocaching toolbox"
+authors = [
+    { name = "Cees van de Griend", email = "cees@griend.eu" },
+]
+dependencies = [
+    "drawsvg>=2.1.1",
+]
+requires-python = ">=3.9"
+readme = "README.md"
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+]
+version = "0.2.4"
+
+[project.license]
+text = "GPL-3.0"
+
+[project.urls]
+Documentation = " https://bstb.griend.eu/"
+Source = "https://github.com/ceesvandegriend/bstb"
+
+[tool.pdm.version]
+source = "file"
+path = "bstb/__init__.py"
+
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=7.2.2",
+    "black>=23.1.0",
+    "pylint>=2.17.0",
+    "pytest-cov>=4.0.0",
+]
+
+[tool.pdm.scripts]
+test = "python3 -m pytest"
+lint = "python3 -m pylint --disable=C,R bstb/ tests/"
+format = "python3 -m black bstb/ tests/"
+
+[tool.pytest.ini_options]
+addopts = [
+    "--cov=bstb",
+]
+python_classes = [
+    "Test",
+]
+python_functions = [
+    "test_",
+]
+python_files = [
+    "test_*.py",
+]
+testpaths = [
+    "tests/",
+]
+
+[tool.black]
+line-length = 119
+target-version = [
+    "py37",
+]
+
+[build-system]
+requires = [
+    "pdm-pep517>=1.0",
+]
+build-backend = "pdm.pep517.api"
