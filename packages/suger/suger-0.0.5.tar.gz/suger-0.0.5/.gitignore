@@ -1,0 +1,14 @@
+venv/
+.idea/
+*.iml
+
+.vscode/
+
+.fleet/
+
+dist/
+build/
+
+.pypirc
+
+**/__pycache__
