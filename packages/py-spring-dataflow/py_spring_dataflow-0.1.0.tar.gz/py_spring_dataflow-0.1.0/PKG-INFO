@@ -1,0 +1,20 @@
+Metadata-Version: 2.1
+Name: py-spring-dataflow
+Version: 0.1.0
+Summary: For working with Spring Cloud Data Flow
+Home-page: https://github.com/airndlab/py-spring-dataflow
+License: MIT
+Keywords: spring,spring-cloud
+Author: Grig Alex
+Author-email: alexengrigdev@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Project-URL: Repository, https://github.com/airndlab/py-spring-dataflow
+Description-Content-Type: text/markdown
+
+**py-spring-dataflow**
+is a Python package for working with
+[Spring Cloud Data Flow](https://dataflow.spring.io).
+
