@@ -1,0 +1,3 @@
+[console_scripts]
+txdecode = ethpwn.console_scripts.txdecode:main
+txdo = ethpwn.console_scripts.txdo:main
