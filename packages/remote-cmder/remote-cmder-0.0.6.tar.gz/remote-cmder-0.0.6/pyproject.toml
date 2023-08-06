@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "remote-cmder"
+version = "0.0.3"
+description = ""
+authors = ["zonda yang <u226699@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "remote_cmder"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+
+[tool.poetry.group.dev.dependencies]
+pylint = "^2.16.1"
+pre-commit = "^3.0.4"
+black = "==23.1.0"
+flake8 = "==6.0.0"
+isort = "==5.12.0"
+pytest = "^7.2.1"
+pytest-cov = "^4.0.0"
+
+
+[tool.poetry.group.pypi.dependencies]
+setuptools = "^67.3.2"
+wheel = "^0.38.4"
+twine = "^4.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
