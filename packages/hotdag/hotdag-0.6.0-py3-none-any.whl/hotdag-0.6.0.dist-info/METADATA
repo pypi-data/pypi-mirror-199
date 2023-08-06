@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: hotdag
+Version: 0.6.0
+Summary: Hot evaluation of dbt DAG selectors
+Project-URL: Documentation, https://github.com/nicholasyager/hotdag#readme
+Project-URL: Issues, https://github.com/nicholasyager/hotdag/issues
+Project-URL: Source, https://github.com/nicholasyager/hotdag
+Author-email: Nicholas Yager <yager@nicholasyager.com>
+License-Expression: MIT
+License-File: LICENSE.txt
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.7
+Requires-Dist: dbt-core~=1.4
+Requires-Dist: fastapi
+Requires-Dist: graphviz
+Requires-Dist: loguru
+Requires-Dist: pydot
+Requires-Dist: requests
+Provides-Extra: dev
+Requires-Dist: black; extra == 'dev'
+Requires-Dist: flake8; extra == 'dev'
+Requires-Dist: isort; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# HotDAG
+
+[![PyPI - Version](https://img.shields.io/pypi/v/hotdag.svg)](https://pypi.org/project/hotdag)
+[![PyPI - Python Version](https://img.shields.io/gitlab/pipeline-status/nicholasyager/hotdag?branch=main)](https://gitlab.com/nicholasyager/hotdag/-/pipelines)
+
+-----
+
+HotDAG is a lightweight web service that evaluates node selection for dbt projects and returns selected
+nodes. This can take the form of either a JSON list of node UniqueIds or as a rendered SVG of the selected
+subgraph.
+
+**Table of Contents**
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+TODO: Write this part
+
+<!---
+```console
+pip install hotdag
+```
+--->
+
+## License
+
+`hotdag` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
