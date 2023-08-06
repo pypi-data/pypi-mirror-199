@@ -1,0 +1,20 @@
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84760072/227857390-309d3710-8521-442a-a6a0-1203aefed4cb.png" width=300/>
+</p>
+
+<p align="center">
+  A stylish and minimal Python logging library
+</p>
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84760072/227857821-86bfa7ba-af8c-40ad-bebc-a7f04393eb5a.png" width=900/>
+</p>
+
+<p align="center">
+	<a href="https://github.com/wardoh/loglog/stargazers">
+		<img alt="Stargazers" src="https://img.shields.io/github/stars/wardoh/loglog?style=for-the-badge&logo=starship&color=f9e1cb&logoColor=ffffff&labelColor=765b9e"></a>
+	<a href="https://github.com/wardoh/loglog/releases/latest">
+		<img alt="Releases" src="https://img.shields.io/github/release/wardoh/loglog.svg?style=for-the-badge&logo=github&color=f9e1cb&logoColor=ffffff&labelColor=765b9e"/></a>
+	<a href="https://github.com/wardoh/loglog/issues">
+		<img alt="Issues" src="https://img.shields.io/github/issues/wardoh/loglog?style=for-the-badge&logo=gitbook&color=f9e1cb&logoColor=ffffff&labelColor=765b9e"></a>
+</p>
