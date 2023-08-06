@@ -1,0 +1,62 @@
+Metadata-Version: 2.1
+Name: basix
+Version: 0.0.13
+Summary: Utils for python
+Author: Eduardo M. de Morais
+Author-email: emdemor415@gmail.com
+License: MIT License
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: pandas
+Requires-Dist: setuptools
+Requires-Dist: tqdm
+Requires-Dist: scikit-learn
+Requires-Dist: pyarrow
+Requires-Dist: loguru
+
+# Package `basix`
+Implementation of some basic operations
+
+## Current content
+```
+basix
+├─ maps
+│  ├─ google.py
+│  │  └─ get_coord
+│  └─ nominatim.py
+│     └─ get_coord
+│ 
+├─ files.py
+│  ├─ download_file
+│  ├─ read_file
+│  ├─ file_print
+│  ├─ make_directory
+│  ├─ remove_file
+│  ├─ remove_empty_directory
+│  ├─ remove_directory_recursively
+│  └─ remove_directory
+│ 
+├─ functions.py
+│  ├─ ArgumentProperties
+│  ├─ FunctionProperties
+│  ├─ Pipe
+│  └─ get_function_properties
+│ 
+├─ numbers.py
+│  └─ round
+│ 
+├─ parquet.py
+│  └─ write
+│ 
+├─ viz.py
+│  ├─ ColorMix
+│  ├─ hex_to_rgb
+│  ├─ rgb_to_hex
+│  └─ define_colormap
+│ 
+└─ yaml.py
+   └─ read
+
+```
