@@ -1,0 +1,11 @@
+requests
+numpy
+openpyxl
+pandas
+pathlib
+scikit-learn
+scipy
+tk
+
+[:python_version == "3.8"]
+importlib-metadata
