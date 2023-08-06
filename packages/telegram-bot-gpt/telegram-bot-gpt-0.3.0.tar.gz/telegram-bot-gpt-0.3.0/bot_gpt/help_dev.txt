@@ -1,0 +1,16 @@
+Telegram-Bot-GPT: A simple interface for OpenAI GPT-3 and GPT-4 using Telegram bots.
+
+======
+import bot_gpt as bot
+mybot = bot.Engine(telegram_token="<YOUR_TELEGRAM_BOT_TOKEN>")
+mybot.set_openai_key("<YOUR_OPENAI_KEY>")  # a filename also accepted
+mybot.run()
+======
+
+To get your token from Telegram:
+Open Telegram app, chat with @BotFather [https://t.me/BotFather] and send the command /newbot.
+
+To get your OpenAI key:
+Go to OpenAI [https://platform.openai.com/account/api-keys] and follow the instructions there.
+
+Have a nice one!
