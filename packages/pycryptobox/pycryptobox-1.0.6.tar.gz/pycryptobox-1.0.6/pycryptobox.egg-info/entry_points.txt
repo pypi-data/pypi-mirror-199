@@ -1,0 +1,5 @@
+[console_scripts]
+decode-decrypt-dir = pycryptobox.decryption:decrypt_dir
+decrypt-file = pycryptobox.decryption:decrypt_file
+encode-encrypt-dir = pycryptobox.encryption:encrypt_dir
+encrypt-file = pycryptobox.encryption:encrpt_file
