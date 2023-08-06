@@ -1,0 +1,50 @@
+Metadata-Version: 2.1
+Name: django-llm
+Version: 0.1.0
+Summary: A LLM (Large Language Model) app for Django
+Home-page: https://github.com/mikrl/django-llm
+Author: Michael Lynch
+Author-email: michael@flatlander.dev
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+Requires-Dist: Django (==4.1.7)
+Requires-Dist: openai (==0.27.2)
+Requires-Dist: langchain (==0.0.121)
+Requires-Dist: llama-index (==0.4.36)
+Requires-Dist: pytest (==7.2.2)
+
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3112/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+# Django LLM
+An app for Django to aid development of LLM workflows
+
+# Information
+Some models for coordinating LLM tasks. Provides a Django wrapper for langchain and openai.
+
+## Installation
+`pip install -r requirements.txt` 
+
+## Installation from binary
+`python setup.py bdist_whl && pip install dist/*.whl`
+
+# Tests
+`pip install -r static.txt`
+
+`./static.sh`
+
+`pytest tests/`
+
+# Features
+Model to store API key in database
+Model to hold prompt
+Model to make a ChatGPT query (under development)
+ 
+#TODO Endpoints for prompts (CRUD)
+#TODO Mopdels and endpoints for memory
+#TODO Endpoint for OpenAI queries
