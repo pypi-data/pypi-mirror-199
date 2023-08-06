@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: cool_ocf_project
+Version: 0.0.2
+Summary: Super cool OCF Repo
+Author: Jacob Bieker, Jack Kelly, Peter Dudfield
+Author-email: info@openclimatefix.org
+License: MIT
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# OCF Template Repository
+Template Repository for OCF Projects
+
+## Usage
+
+Do the following to customize the repo to the project:
+
+- Replace `src` with name of the library/project
+- Update `setup.py` with the proper info
+- Change `commit` to `True` in `.bumpversion.cfg` if you want the minor version
+  to increment on every commit.
+- Add PyPi access token to release to PyPi
+- Update name of folder in the test workflow
