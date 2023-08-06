@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: muax
+Version: 0.0.2.7
+Summary: A library written in Jax that provides help for using DeepMind's mctx on gym-style environments.
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Requires-Dist: mctx
+Requires-Dist: dm-haiku
+Requires-Dist: optax
+Requires-Dist: gymnasium
+Requires-Dist: lz4
+Requires-Dist: tensorboardX
+
+# muax
+A library using Jax that provides help for using DeepMind's mctx on gym-style environments. 
