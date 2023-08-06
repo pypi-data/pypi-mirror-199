@@ -1,0 +1,223 @@
+from flask import render_template, abort, send_from_directory
+import os
+import re
+import mimetypes
+from whiskey import app, flatpages
+
+from whiskey import helpers
+
+
+@app.context_processor
+def inject_mode():
+    return dict(published=app.config['PUBLISH_MODE'])
+
+
+@app.route("/")
+def index():
+    if app.config['SITE_STYLE'] == "static":
+        p = flatpages.get("index")
+        return render_template('index_static.html', post=p, site=app.config)
+    elif app.config['SITE_STYLE'] == "hybrid":
+        page = flatpages.get("index")
+        fp = helpers.get_featured_posts()
+        ap = helpers.get_posts()
+        featured_posts = fp[:int(app.config['FEATURED_POSTS_COUNT'])]
+        all_posts = ap[:int(app.config['RECENT_POSTS_COUNT'])]
+        updates = helpers.get_updates(True)
+        if updates:
+            latest_update = updates[-1] if updates else None
+            latest_update['html'] = (latest_update['html'] if 'html' in
+                                     latest_update else
+                                     helpers.pandoc_markdown(
+                                         latest_update['text']))
+        else:
+            latest_update = ""
+        return render_template('index_hybrid.html',
+                               post=page,
+                               directory=app.config['POST_DIRECTORY'],
+                               featured_posts=featured_posts,
+                               all_posts=all_posts,
+                               latest_update=latest_update,
+                               site=app.config
+                               )
+    elif app.config['SITE_STYLE'] == "blog":
+        p = helpers.get_featured_posts()
+        ap = helpers.get_posts()
+        featured_posts = p[:int(app.config['FEATURED_POSTS_COUNT'])]
+        all_posts = ap[:int(app.config['RECENT_POSTS_COUNT'])]
+        return render_template('index_list.html',
+                               directory=app.config['POST_DIRECTORY'],
+                               featured_posts=featured_posts,
+                               all_posts=all_posts, site=app.config)
+    else:
+        abort(404)
+
+
+@app.route('/<int:year>/<int:month>/<name>.<ext>')
+@app.route('/<dir>/<name>.<ext>')
+def nested_content(name, ext, dir=None, year=None, month=None):
+    if dir:
+        path = '{}/{}'.format(dir, name)
+    else:
+        dir = app.config['POST_DIRECTORY']
+        if year and month:
+            month = "{:02d}".format(month)
+            path = '%s/%s/%s/%s' % (dir, year, month, name)
+    if ext == "html":
+        if os.path.isfile('%s/%s.%s' % (
+                app.config['CONTENT_PATH'], path, ext)):
+            return send_from_directory('%s/%s' % (
+                app.config['CONTENT_PATH'], dir), '%s.%s' % (name, ext))
+        else:
+            page = flatpages.get(path)
+            if helpers.is_published_or_draft(page):
+                if dir == app.config['POST_DIRECTORY']:
+                    return render_template('post.html', post=page,
+                                           directory=dir, ext=ext,
+                                           site=app.config)
+                else:
+                    if ('templateType' in page.meta
+                            and page.meta['templateType'] == "post"):
+                        template_type = "post.html"
+                    else:
+                        template_type = "page.html"
+
+                    return render_template(template_type, post=page,
+                                           directory=dir, ext=ext,
+                                           site=app.config)
+            else:
+                abort(404)
+    elif ext in ["md", "pdf", "epub"]:
+        path = "{}/{}".format(app.config['CONTENT_PATH'], dir)
+        filename = "{}.{}".format(name, ext)
+        file = '{}/{}'.format(path, filename)
+        mime = mimetypes.guess_type(file)[0]
+        if mime in ["application/pdf", "application/epub+zip"]:
+            return send_from_directory(path, filename, as_attachment=True)
+        else:
+            return helpers.get_flatfile_or_404(file)
+    else:
+        abort(404)
+
+
+@app.route('/<name>.<ext>')
+def page(name, ext):
+    if ext == "html":
+        p = flatpages.get(name)
+        if helpers.is_published(p):
+            if 'footer' in p.meta:
+                setattr(p, 'footer', helpers.pandoc_markdown(p.meta['footer']))
+            return render_template('page.html', post=p, site=app.config)
+        else:
+            abort(404)
+    elif name == "resume" and ext == "pdf":
+        p = flatpages.get(name)
+        import pypandoc
+        from weasyprint import HTML, CSS
+        from weasyprint.text.fonts import FontConfiguration
+
+        try:
+            resume_html =  pypandoc.convert_file(
+                 "%s/resume.md" % app.config['CONTENT_PATH'],
+                'html',
+                format=app.config['PANDOC_MD_FORMAT'],
+                filters=app.config['PANDOC_FILTERS_RESUME'],
+                extra_args=app.config['PANDOC_ARGS']
+            )
+        except:
+            abort(404)
+
+        font_config = FontConfiguration()
+        header = f"""
+        <head>
+        <title>{app.config['AUTHOR']}'s Resume</title>
+        </head>
+        <h1>{app.config['AUTHOR']}</h1>
+        <div class="header">
+            <div class="header-left">
+                {" ".join(f"<div>{x}</div>" for x in p.meta.get('header', {}).get('left', {}))}
+            </div>
+            <div class="header-right">
+                {" ".join(f"<div>{x}</div>" for x in p.meta.get('header', {}).get('right', {}))}
+            </div>
+        </div>
+        """
+        html = HTML(string=f"{header}{resume_html}")
+        css = CSS(f"{app.config['STATIC_FOLDER']}/css/resume.css")
+
+        html.write_pdf(
+            f"{app.config['CONTENT_PATH']}/{name}.pdf",
+            stylesheets=[css],
+                  font_config=font_config
+                )
+        return send_from_directory(
+            app.config['CONTENT_PATH'], '%s.%s' % (name, "pdf")
+        )
+    elif ext in ['txt', 'md']:
+        file = '{}/{}.{}'.format(app.config['CONTENT_PATH'], name, ext)
+        return helpers.get_flatfile_or_404(file)
+    elif ext == "pdf":
+        return send_from_directory(
+            app.config['CONTENT_PATH'], '%s.%s' % (name, "pdf")
+        )
+    else:
+        abort(404)
+
+
+if app.config['SITE_STYLE'] in ("blog", "hybrid"):
+
+    @app.route("/updates.html")
+    def updates():
+        updates = reversed(helpers.get_updates())
+        date_ordered = {}
+        for u in updates:
+            if u.get('text'):
+                app.logger.debug(f"{os.path.basename(u['filename'])} is \
+converted from markdown which slows down page load time")
+            u['html'] = (u['html'] if 'html' in u
+                         else helpers.pandoc_markdown(u['text']))
+            d = u['date'].strftime('%Y-%m-%d')
+            if d in date_ordered and u.get('featured') is True:
+                date_ordered[d].setdefault('featured', []).insert(
+                    len(date_ordered[d]['featured']), u
+                )
+            elif d in date_ordered and u.get('featured') is not True:
+                date_ordered[d].setdefault('regular', []).insert(
+                    0, u
+                )
+            elif u.get('featured') is True:
+                date_ordered[d] = {'featured': [u]}
+            else:
+                date_ordered[d] = {'regular': [u]}
+        return render_template('updates.html', updates=date_ordered,
+                               site=app.config)
+
+    @app.route("/log.html")
+    def log_index():
+        date, entry = helpers.get_latest_log()
+
+        if not entry:
+            abort(404)
+
+        return render_template('log.html', entry=entry, date=date,
+                               site=app.config)
+
+    @app.route("/archive.html")
+    @app.route("/%s/index.html" % app.config['POST_DIRECTORY'])
+    def archive():
+        posts = helpers.get_posts()
+        return render_template('archive.html', posts=posts,
+                               directory=app.config['POST_DIRECTORY'],
+                               site=app.config)
+
+    from whiskey import feeds
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+    return render_template('404.html', site=app.config)
+
+
+@app.errorhandler(403)
+def page_forbidden(e):
+    return render_template('403.html', site=app.config)
