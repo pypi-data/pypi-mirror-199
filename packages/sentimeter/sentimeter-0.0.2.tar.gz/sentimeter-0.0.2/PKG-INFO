@@ -1,0 +1,88 @@
+Metadata-Version: 2.1
+Name: sentimeter
+Version: 0.0.2
+Summary: Identify the Emotions in a Given Text , Audio file or Live Speech
+Author-email: Gokul Kartha <kartha.gokul@gmail.com>
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: SpeechRecognition==3.9.0
+Requires-Dist: PyQt6==6.4.2
+Requires-Dist: text2emotion==0.0.5
+Requires-Dist: openai==0.27.2
+Requires-Dist: telebot
+Requires-Dist: emoji==1.6.3
+Requires-Dist: pyspark>=3.0.0 ; extra == "spark"
+Requires-Dist: bandit[toml]==1.7.5 ; extra == "test"
+Requires-Dist: black==23.1.0 ; extra == "test"
+Requires-Dist: check-manifest==0.49 ; extra == "test"
+Requires-Dist: flake8-bugbear==23.3.12 ; extra == "test"
+Requires-Dist: flake8-docstrings ; extra == "test"
+Requires-Dist: flake8-formatter_junit_xml ; extra == "test"
+Requires-Dist: flake8 ; extra == "test"
+Requires-Dist: flake8-pyproject ; extra == "test"
+Requires-Dist: pre-commit==3.2.0 ; extra == "test"
+Requires-Dist: pylint==2.17.0 ; extra == "test"
+Requires-Dist: pylint_junit ; extra == "test"
+Requires-Dist: pytest-cov==3.0.0 ; extra == "test"
+Requires-Dist: pytest-mock<3.10.1 ; extra == "test"
+Requires-Dist: pytest-runner ; extra == "test"
+Requires-Dist: pytest==7.2.2 ; extra == "test"
+Requires-Dist: pytest-github-actions-annotate-failures ; extra == "test"
+Requires-Dist: shellcheck-py==0.9.0.2 ; extra == "test"
+Requires-Dist: psutil ; extra == "test"
+Requires-Dist: twine ; extra == "test"
+Project-URL: Documentation, https://github.com/karthagokul/sentimeter#readme
+Project-URL: Source, https://github.com/karthagokul/sentimeter
+Project-URL: Tracker, https://github.com/karthagokul/sentimeter/issues
+Provides-Extra: spark
+Provides-Extra: test
+
+# Sentimeter
+![Alt text](https://github.com/karthagokul/sentimeter/blob/main/logo.png?raw=true  "Logo")
+ 
+Sentimeter is an app written in python to understand the emotions in audio / text. Currently it has the below modules
+
+### Audio Module
+Process the Emotions in a given audio file. Currently it supports only wav file . In future we will add more formats
+### Live Speech
+Process the Emotions in a live speech
+### Telegram Mode
+Sentimeter has a Telegram Bot, it can process the emotions in a Telegram chat
+### Text File
+Process a text file and identifies the emotions
+### Youtube Video
+Under Development
+
+## Usage
+    python main.py --live to use live speech as source
+    python main.py --audio_file <path to the audio file> to use as source
+
+## Todo
+
+ - Documentation
+ - Google Hangout Connector 
+ - Convert the Observer Pattern through Decorator
+
+## Setup
+Create a Virtual env
+
+    py -m venv virtual-env
+    .\virtual-env\Scripts\activate
+
+Install All Dependencies
+
+    pip3 install -r requirements.txt
+
+#### Developer Notes
+generate docs
+pyreverse -o png -p sentimeter .
+Look at the unwanted imports
+pyflakes core
