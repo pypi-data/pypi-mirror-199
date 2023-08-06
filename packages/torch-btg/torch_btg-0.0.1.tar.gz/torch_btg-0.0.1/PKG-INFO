@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: torch-btg
+Version: 0.0.1
+Summary: Bridging the Gap: Unifying the Training and Evaluation of Neural Network Binary Classifiers
+Project-URL: Homepage, https://btg.yale.edu
+Project-URL: Bug Tracker, https://github.com/nathantsoi/torch-btg/issues
+Author-email: Nathan Tsoi <nathan.tsoi@yale.edu>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Requires-Dist: numpy
+Requires-Dist: torch
+Provides-Extra: dev
+Requires-Dist: bump2version; extra == 'dev'
+Requires-Dist: pre-commit; extra == 'dev'
+Requires-Dist: tox; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# Bridging the Gap: Unifying the Training and Evaluation of Neural Network Binary Classifiers
+
+A PyTorch implementation of Bridging the Gap (BtG) losses including F-beta (F1), Accuracy, and AUROC.
+
+Project Webpage: [btg.yale.edu](https://btg.yale.edu)
+
+[PDF Paper](https://btg.yale.edu/papers/Bridging_the_Gap_Unifying_the_Training_and_Evaluation_of_Neural_Network_Binary_Classifiers.pdf)
+
+Citation:
+
+```
+@inproceedings{tsoi2022bridging,
+  title         = {Bridging the Gap: Unifying the Training and Evaluation of Neural Network Binary Classifiers},
+  author        = {Tsoi, Nathan and Candon, Kate and Li, Deyuan and Milkessa, Yofti and V{\'a}zquez, Marynel},
+  booktitle     = {Advances in Neural Information Processing Systems},
+  year          = {2022}
+}
+```
+
+## Usage
+
+Install the `torch-btg` package:
+
+```
+pip install torch-btg
+```
+
+Use the desired loss in your code, for example,
+
+- `F1-loss`:
+```
+from torch_btg.loss import f1_loss
+...
+criterion = fb_loss(beta=1.0)
+...
+```
+
+- `Accuracy loss`:
+```
+from torch_btg.loss import accuracy_loss
+...
+criterion = accuracy_loss()
+...
+```
+
+## Development
+
+### Setup
+
+```
+python -m pip install --user tox
+```
+
+Then run tests with:
+
+```
+tox
+```
