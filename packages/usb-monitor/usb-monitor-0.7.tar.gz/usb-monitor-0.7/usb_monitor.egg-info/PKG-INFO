@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: usb-monitor
+Version: 0.7
+Summary: USBMonitor is an easy-to-use cross-platform library for USB device monitoring that simplifies tracking of connections, disconnections, and examination of connected device attributes on both Windows and Linux, freeing the user from platform-specific details or incompatibilities.
+Home-page: https://github.com/Eric-Canas/USBMonitor
+Author: Eric-Canas
+Author-email: eric@ericcanas.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# usb_monitor
+
+
+## Roadmap
+- Generalize the Windows Device Status, to extract the same information in Linux
+- Support for Mac OS X (darwin platform)
+
