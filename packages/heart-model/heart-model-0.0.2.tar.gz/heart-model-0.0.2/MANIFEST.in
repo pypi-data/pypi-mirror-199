@@ -1,0 +1,18 @@
+include *.txt
+include *.md
+include *.pkl
+recursive-include ./heart_model/*
+
+include heart_model/datasets/train.csv
+include heart_model/datasets/test.csv
+include heart_model/trained_models/*.pkl
+include heart_model/VERSION
+include heart_model/config.yml
+
+include ./requirements/requirements.txt
+include ./requirements/test_requirements.txt
+exclude *.log
+exclude *.cfg
+
+recursive-exclude * __pycache__
+recursive-exclude * *.py[co]
