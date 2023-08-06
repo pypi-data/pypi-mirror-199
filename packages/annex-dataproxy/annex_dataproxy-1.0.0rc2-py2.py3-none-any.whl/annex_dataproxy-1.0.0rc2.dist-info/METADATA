@@ -1,0 +1,73 @@
+Metadata-Version: 2.1
+Name: annex-dataproxy
+Version: 1.0.0rc2
+Summary: git annex support for Ebrains Data Proxy
+Author-email: Marmaduke Woodman <marmaduke.woodman@univ-amu.fr>
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Dist: annexremote
+Requires-Dist: requests
+Provides-Extra: dev
+Requires-Dist: build; extra == 'dev'
+Requires-Dist: pytest; extra == 'dev'
+Requires-Dist: twine; extra == 'dev'
+Description-Content-Type: text/markdown
+
+# git-annex-remote-dataproxy
+
+This git annex external remote extension uses
+[AnnexRemote](https://github.com/Lykos153/AnnexRemote) to
+talk to [EBRAINS Data Proxy](https://https://data-proxy.ebrains.eu/api/docs)
+so that you can use EBRAINS Collaboratory buckets as
+Datalad siblings. 
+## Install
+
+`pip install requests annexremote` and put the `git-annex-remote-dataproxy`
+script somewhere on your `$PATH`.
+
+## Usage
+
+create a dataset
+```bash
+$ datalad create pdfdata
+[INFO   ] Creating a new annex repo at /home/duke/repo/pdfdata 
+[INFO   ] scanning for unlocked files (this may take some time) 
+create(ok): /home/duke/repo/pdfdata (dataset)
+$ cd pdfdata/
+$ rsync -ra /home/duke/Nextcloud/Work/PDFs/ ./
+$ datalad save
+add(ok): 1107.0903 Montbrio Pazo - Stuart Landau.pdf (file)                                          
+  [199 similar messages have been suppressed; disable with datalad.ui.suppress-similar-results=off]  
+save(ok): . (dataset)                                                                                
+action summary:                                                                                      
+  add (ok: 209)
+  save (ok: 1)
+```
+tell the dataproxy remote our token and what bucket & prefix to use
+```bash
+$ export EBRAINS_TOKEN=$EBRAINS_TOKEN
+$ export BUCKET_NAME=insference
+$ export BUCKET_PATH=pdfs-annex
+```
+create the annex remote and `datalad push --to` it
+```
+$ git annex initremote insference type=external externaltype=dataproxy encryption=none
+initremote insference ok
+(recording state in git...)
+$ datalad push --to insference
+copy(ok): 15009.full.pdf (file) [to insference...]                                                   
+  [193 similar messages have been suppressed; disable with datalad.ui.suppress-similar-results=off]  
+action summary:                                                                                      
+  copy (notneeded: 6, ok: 203)
+$ which git-annex-remote-dataproxy
+/home/duke/repo/datalad-dataproxy/git-annex-remote-dataproxy
+```
+
+## Status
+
+- [x] sloppy proof of concept
+- [x] `git annex testremote` passes
+- [ ] PyPI package for easier install
+- [ ] better mechanism for specifying bucket & prefix
