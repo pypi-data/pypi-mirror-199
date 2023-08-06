@@ -1,0 +1,55 @@
+Metadata-Version: 2.1
+Name: portfolios
+Version: 0.1.0
+Summary: 
+License: MIT
+Author: arnos-stuff
+Author-email: bcda0276@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: cvxpy (>=1.3.1,<2.0.0)
+Requires-Dist: numpy (>=1.24.2,<2.0.0)
+Requires-Dist: pandas (>=1.5.3,<2.0.0)
+Requires-Dist: plotext (>=5.2.8,<6.0.0)
+Requires-Dist: plotly (>=5.13.1,<6.0.0)
+Requires-Dist: toml (>=0.10.2,<0.11.0)
+Requires-Dist: typer[all] (>=0.7.0,<0.8.0)
+Description-Content-Type: text/markdown
+
+# Portfolio Optimization Experiments
+
+I've been interested in finance for a long time, but I've never had the
+opportunity to learn about it in a structured way. This idea came to me
+after a twitter mutual mentioned that french state pensions had to be better
+in terms of revenue for middle class people compared to S&P 500. I was curious
+about how to compare the two, and I started to learn about financial concepts
+such as volatility, risk, and return. I also wanted to learn about how to compare
+metrics such as the IRR via the Sharpe ratio, and how to compare risk-free assets
+such as french pensions to risky assets such as S&P 500.
+
+The experiments can be found on [GitHub](https://github.com/arnos-stuff/portfolios),
+and the results are published in sections of [my optimization book](https://optim.arnov.dev)
+(which is also open source).
+
+## Main tools (for now)
+
+- [Pandas](https://pandas.pydata.org/)
+- [Numpy](https://numpy.org/)
+- [CVXPY](https://www.cvxpy.org/)
+- [Plotly](https://plotly.com/python/)
+
+## Upcoming experiments
+
+- Model the french pension system as an asset & compare it to S&P 500
+- Estimate risk aversion from historical data
+- Calculate the tradeoff curve for the french pension system
+
+## Contributors
+
+- [Arno](https://twitter.com/arno_shae)
+- [Max](https://twitter.com/max_oikonomikos)
+

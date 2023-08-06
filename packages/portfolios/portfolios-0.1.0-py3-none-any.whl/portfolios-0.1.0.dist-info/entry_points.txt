@@ -1,0 +1,5 @@
+[console_scripts]
+markowitz=portfolios.markowitz:experiment
+ptfio=portfolios.cli:app
+test=portfolios.tests.test_utils:app
+
