@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: igwn-gwalert-schema
+Version: 1.0.0
+Summary: JSON and Avro Schema for gravitational-wave alerts
+Author-email: Leo Singer <leo.p.singer@nasa.gov>, Cody Messick <cody.messick@ligo.org>
+License: GPL-3+
+Project-URL: source, https://git.ligo.org/emfollow/igwn-gwalert-schema
+Project-URL: Bug Tracker, https://git.ligo.org/emfollow/igwn-gwalert-schema/issues
+Project-URL: Source Code, https://git.ligo.org/emfollow/igwn-gwalert-schema
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Science/Research
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet
+Classifier: Topic :: Scientific/Engineering :: Astronomy
+Classifier: Topic :: Scientific/Engineering :: Physics
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+
+# igwn-gwalert-schema
+
+JSON and Avro Schema for gravitational-wave alerts.
+
+## To install
+
+    $ pip install igwn-gwalert-schema
+
+## To use
+
+    $ python
+    >>> from importlib import resources
+    >>> import json
+    >>> with resources.open_text('igwn_gwalert_schema', 'igwn.alerts.v1_0.Alert.avsc') as f:
+    ...     json.load(f)
+    ... 
+    {'name': 'Alert', 'namespace': 'igwn.alerts.v1_0', 'type': 'record', 'doc': 'Alert schema v1.0.', 'fields': [{'name': 'alert_type', 'type': 'igwn.alerts.v1_0.AlertType', 'doc': 'The type of alert; the possible values are EARLY_WARNING, PRELIMINARY, INITIAL, UPDATE, RETRACTION.'}, {'name': 'time_created', 'type': 'string', 'doc': 'The time this notice was created in ISO 8601 format.'}, {'name': 'superevent_id', 'type': 'string', 'doc': 'The GraceDB superevent ID.'}, {'name': 'event', 'type': ['null', 'igwn.alerts.v1_0.EventInfo'], 'doc': 'Information about the event, if any.'}, {'name': 'external_coinc', 'type': ['null', 'igwn.alerts.v1_0.ExternalCoincInfo'], 'doc': 'Information about the coincidence with an non-GW event, if any.'}, {'name': 'urls', 'type': {'type': 'map', 'values': 'string', 'default': {}}, 'doc': 'URLs relevant to the event, if any.'}]}
