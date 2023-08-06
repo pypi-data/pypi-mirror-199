@@ -1,0 +1,78 @@
+Metadata-Version: 2.1
+Name: sprof
+Version: 0.0.2
+Summary: A simple project framework to keep you from getting burned
+Download-URL: https://pypi.python.org/pypi/sprof
+Author: Derrick Chambers
+Author-email: Derrick Chambers <chambers.ja.derrick@gmail.com>
+License: MIT License
+        
+        Copyright (c) 2023 Derrick Chambers
+        
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+        
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+        
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+        
+Project-URL: Bug Tracker, https://github.com/d-chambers/sprof/issues
+Project-URL: Documentation, https://github.com/d-chambers/sprof
+Project-URL: Homepage, https://github.com/d-chambers/sprof
+Keywords: workflow,projects
+Classifier: Development Status :: 4 - Beta
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Scientific/Engineering
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+Provides-Extra: docs
+Provides-Extra: test
+Provides-Extra: dev
+License-File: LICENSE
+
+#sprof
+
+A simple project framework to keep you from getting burned.
+
+sprof is intended to facilitate rapid, reproducible development for small-scale
+research projects. It is a work in progress and not yet ready for non-development use.
+
+How it works
+------------
+sprof requires a fairly specific structure organization in order to eliminate further  boilerplate but, when properly applied, it can save you lots of pain.
+
+An example project directory looks like this:
+
+my_project
+-> inputs
+--> some_file.csv
+-> outputs
+-> local.py
+-> environment.yml
+-> 010_clean_data.py
+-> 020_calculate.py
+-> 030_visualize.py
+
+
+Quickstart
+---------
+
+Generally sprof is used from the command line.
+
+```bash
+sprof create new_project --
+```
