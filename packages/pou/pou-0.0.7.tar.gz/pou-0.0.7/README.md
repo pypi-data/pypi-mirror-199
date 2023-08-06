@@ -1,0 +1,61 @@
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84760072/227747904-eaf84b81-3b85-4b39-8016-69e9c7aae641.png" width=450/>
+</p>
+
+<p align="center">
+  A stylish, minimalistic, ChatGPT-infused command-line interface 
+</p>
+
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84760072/227741638-b997b164-98b8-494a-8c23-502525488f73.png" width=900/>
+</p>
+
+<p align="center">
+	<a href="https://github.com/hwelsters/sleepychat/stargazers">
+		<img alt="Stargazers" src="https://img.shields.io/github/stars/hwelsters/pou?style=for-the-badge&logo=starship&color=f9e1cb&logoColor=ffffff&labelColor=342430"></a>
+	<a href="https://github.com/hwelsters/pou/releases/latest">
+		<img alt="Releases" src="https://img.shields.io/github/release/hwelsters/pou.svg?style=for-the-badge&logo=github&color=f9e1cb&logoColor=ffffff&labelColor=342430"/></a>
+	<a href="https://github.com/hwelsters/pou/issues">
+		<img alt="Issues" src="https://img.shields.io/github/issues/hwelsters/pou?style=for-the-badge&logo=gitbook&color=f9e1cb&logoColor=ffffff&labelColor=342430"></a>
+</p>
+
+
+## Install as a Python Library
+Do one of the following options:
+```bash
+> py -m pip install pou
+> python -m pip install pou
+> pip install pou
+```
+
+## Run in terminal
+Do one of the following options:
+```bash
+> py -m pou
+> python -m pou
+```
+
+## Configure settings
+![pou-settings-text](https://user-images.githubusercontent.com/84760072/227750621-c9cfdb77-ff99-4b18-b1f9-5d19075aa21e.gif)
+
+
+## Samples
+```
+ask 'Say something cool and amazing'
+```
+![pou-ask](https://user-images.githubusercontent.com/84760072/227750624-d3b757fb-f496-49cf-a9cd-12288a9e4fa5.gif)
+  
+```
+translate indonesian 'Hello, how are you?'
+```
+![pou-translate](https://user-images.githubusercontent.com/84760072/227750626-255a43a9-0549-4237-8388-24440a30eb2b.gif)
+
+
+
+## Get involved
+- 🐛 **Found a bug or interested in adding a feature?** - Create an [issue][issue]  
+- 🤗 **Want to help?** - Create a pull-request!
+
+[issue]: https://github.com/hwelsters/pou/issues
