@@ -1,0 +1,202 @@
+
+# Benchmark Evaluation
+
+::: {.panel-tabset}
+
+## Metrics for Benchmark Datasets (Non-Representative)
+
+{% include 'inventor/callouts/metrics-tips.qmd' %}
+
+:::{.column-body-outset}
+```{python}
+fig = inventor_benchmark_plot(disambiguations)
+fig.update_layout(autosize=False, width=800)
+fig.show()
+```
+:::
+
+## Predicted Cluster Errors
+
+{% include 'inventor/callouts/cluster-errors-tips.qmd' %}
+
+```{python}
+from IPython.core.display import display, HTML
+
+from pv_evaluation.benchmark import (
+    load_israeli_inventors_benchmark,
+    load_patentsview_inventors_benchmark,
+    load_lai_2011_inventors_benchmark,
+    load_als_inventors_benchmark,
+    load_ens_inventors_benchmark,
+    inspect_clusters_to_split,
+    inspect_clusters_to_merge,
+    style_cluster_inspection,
+)
+
+def style_and_display(table, by="prediction"):
+    return display(HTML(style_cluster_inspection(table.reset_index(), by=by).hide_index().to_html()))
+```
+
+::: {.panel-tabset}
+
+{% for filename in disambiguation_files %}
+
+### {{ filename }}
+
+::: {.panel-tabset}
+
+#### Israeli Inventors
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_split(
+        disambiguations["{{ filename }}"], 
+        load_israeli_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+    by="prediction")
+```
+
+#### PatentsView Inventors
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_split(
+        disambiguations["{{ filename }}"], 
+        load_patentsview_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="prediction")
+```
+
+#### Lai's Benchmark
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_split(
+        disambiguations["{{ filename }}"], 
+        load_lai_2011_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="prediction")
+```
+
+#### ALS Benchmark
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_split(
+        disambiguations["{{ filename }}"], 
+        load_als_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="prediction")
+```
+
+#### ENS Benchmark
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_split(
+        disambiguations["{{ filename }}"], 
+        load_ens_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="prediction")
+```
+
+:::
+
+{% endfor %}
+
+:::
+
+## Reference Cluster Errors
+
+{% include 'inventor/callouts/cluster-errors-tips.qmd' %}
+
+::: {.panel-tabset}
+
+{% for filename in disambiguation_files %}
+
+### {{filename}}
+
+::: {.panel-tabset}
+
+#### Israeli Inventors
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_merge(
+        disambiguations["{{ filename }}"], 
+        load_israeli_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="reference")
+```
+
+#### PatentsView Inventors
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_merge(
+        disambiguations["{{ filename }}"], 
+        load_patentsview_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="reference")
+``` 
+
+#### Lai's Benchmark
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_merge(
+        disambiguations["{{ filename }}"], 
+        load_lai_2011_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="reference")
+``` 
+
+#### ALS Benchmark
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_merge(
+        disambiguations["{{ filename }}"], 
+        load_als_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="reference")
+```
+
+#### ENS Benchmark
+
+```{python}
+#| column: page
+style_and_display(
+    inspect_clusters_to_merge(
+        disambiguations["{{ filename }}"], 
+        load_ens_inventors_benchmark(),
+        join_with=inventor_not_disambiguated,
+        links=True), 
+        by="reference")
+```
+
+:::
+
+{% endfor %}
+
+:::
+
+:::
