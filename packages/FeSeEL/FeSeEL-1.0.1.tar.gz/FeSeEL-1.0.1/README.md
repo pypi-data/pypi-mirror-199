@@ -1,0 +1,54 @@
+# **Fe**ature **S**election, **T**ransformation and **E**limination (FeSTE)
+
+This repo contains the 'FeSTE' python package which helps in the features management from the pre-filtering to the pre-processing and feature elimination.
+
+# Installation
+
+The package is still not published. To install it:
+
+1) **Optional**: create a new Python virtual environment (through bash terminal run: "py -m venv your_env_name" and then "source your_env_name/Scripts/activate )
+2) Clone the repo: "git clone https://credem-data@dev.azure.com/credem-data/DAT/_git/FeSTE" (in case of issue a possible solution is to include "http.sslVerify=false" in the command)
+3) Move to the folder "cd FeSTE"
+4) Install the dependencies: "pip install -r requirements.txt  --trusted-host artifactory.group.credem.net  -i https://artifactory.group.credem.net/artifactory/api/pypi/virtualPypi/simple"
+5) Install the package:
+    - User Mode: "pip install ."
+    - Developer Mode: "pip install -e ."
+
+# Structure
+
+The .py package is stored in src and contains 3 sub-modules:
+- **selection**: contains the feature preliminary selection functions
+- **transform**: contains the feature pre-processing functions
+- **elimination**: contains the feature elimination functions
+
+# Filters
+
+## Selection
+
+- Univariate filters:
+    - No constant features
+    - Number of distinct value too low
+    - Number of missing values too high
+    - Too concentrate in the most frequent value
+    - Unstable between sets
+- Multivariate filters:
+    - Spearman Correlation for numerical features
+    - Cramer's V for categorical features
+    - R2 for mixed features
+    - VIF
+- Explanatory filters:
+    - Feature AUROC for classification 
+    - Feature Correlation with target for regression
+    
+## Elimination
+- Shap Recursive Feature Elimination with HyperParam Optimization
+
+# Trasformation
+
+No function still included
+
+# Additional
+
+## Evaluation module
+This module contains additional functions to plot results or evaluate models
+
