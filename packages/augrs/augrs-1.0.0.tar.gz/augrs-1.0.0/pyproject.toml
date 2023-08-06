@@ -1,0 +1,28 @@
+[build-system]
+requires = [
+    "setuptools>=61.0",
+    'python3-nmap',
+    'pymetasploit3',
+    'pyfiglet'
+]
+build-backend = "setuptools.build_meta"
+[project]
+name = "augrs"
+version = "1.0.0"
+authors = [
+  { name="Wisarud Wongta", email="wisarud2k@gmail.com" },
+]
+description = "An automate metasploit script generator"
+readme = "README.md"
+requires-python = ">=3.10"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Wisarud2k/Autogen_Resource_Script"
+
+[project.scripts]
+augrs = "augrs.cli:main"
