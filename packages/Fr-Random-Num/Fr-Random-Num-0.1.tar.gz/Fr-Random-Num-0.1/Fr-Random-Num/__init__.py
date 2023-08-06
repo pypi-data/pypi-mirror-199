@@ -1,0 +1,1 @@
+from .random_generator import generate_random_number
