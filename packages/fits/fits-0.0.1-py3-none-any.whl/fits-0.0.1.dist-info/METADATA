@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: fits
+Version: 0.0.1
+Summary: FITS file loader
+Keywords: FITS,Flexible Image Transport System,Astronomy
+Author-email: Nicolas Tessore <n.tessore@ucl.ac.uk>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: License :: OSI Approved :: MIT License
+Project-URL: Home, https://github.com/ntessore/fits
+Project-URL: Issues, https://github.com/ntessore/fits/issues
+
+`fits` -- FITS file reader for Python
+=====================================
+
+Load a FITS file into memory-mapped numpy arrays.
+
+```py
+import fits
+
+with open('myfile.fits', 'rb') as fp:
+    hdus = fits.load(fp)
+```
+
