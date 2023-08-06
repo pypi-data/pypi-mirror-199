@@ -1,0 +1,31 @@
+#!/usr/bin/env python
+
+from setuptools import setup
+
+with open("VERSION", mode="r") as file:
+    version = file.read()
+
+setup(
+    name="lungdata",
+    version=version,
+    description="",
+    author="Glenn",
+    author_email="gward@python.net",
+    packages=[
+        "lungdata",
+    ],
+    # tell setup that the root python source is inside py folder
+    # package_dir={
+    #     "lungdata": "src",
+    # },
+    install_requires=[
+        "numpy",
+        "librosa",
+        "pandas",
+        "soundfile",
+    ],
+    entry_points={
+        "console_scripts": ["pickle_db=lungdata.cli:make_dataset"],
+    },
+    zip_safe=False,
+)
