@@ -1,0 +1,162 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 't-dash' %}">PAINEL TRIP</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }} </h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success"> <i class="fa fa-circle-info"></i> Atu hare Detalha klik icon <a href="" class="btn btn-sm btn-info disabled"><i class="fa fa-eye"></i></a> </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            {% if user_group == 'hr' %}                                  
+                                <a class="btn btn-info btn-sm mb-1" href="{% url 'm-t-add' %}">Aumenta Trip <i class="fa fa-plus"></i></a>
+                            {% endif %}
+
+                            <table id="example" class="table table-sm table-bordered responsive" style="width:100%">
+                                <thead>
+                                    <tr align="center">
+                                        <th>Nu.</th>
+                                        <th class="text-left">Info Trip</th>
+                                        <th>Tipu Trip</th>
+                                        <th>Destinasaun</th>
+                                        <th>Data Sai</th>
+                                        <th>#</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for obj in objects  %}
+                                        <tr align="center">
+                                            <td>{{forloop.counter}}</td>
+                                            <td align="left">{{obj.name}}</td>
+                                            <td>{{obj.ttype}}</td>
+                                            <td>
+                                                {% if obj.ttype.pk == 1 %}
+                                                    {{obj.municipality}}
+                                                {% elif obj.ttype.pk == 2 %}
+                                                    {{obj.country}}
+                                                {% endif %}
+                                            </td>
+                                            <td>{{obj.date_out}}</td>
+                                            <td>
+                                                <a class="btn btn-sm btn-info" href="{% url 'm-t-detail' obj.hashed %}"><i class="fa fa-eye"></i></a>
+                                            
+                                            {% if user_group == 'hr' %}
+                                                {% if obj.is_lock == False %}
+                                                    <a class="btn btn-sm btn-success" href="{% url 'm-t-update' obj.hashed %}" title="Altera"><i class="fa fa-edit"></i></a>
+                                                    <a class="btn btn-sm btn-danger" href="{% url 'm-t-lock' obj.hashed %}" title="Chave"><i class="fa fa-lock"></i></a>
+                                                {% else %}
+                                                
+                                                    <a class="btn btn-sm btn-danger text-white"data-toggle="modal" data-target="#deleteModal" title="Delete"><i class="fa fa-trash"></i></a>
+                                                {% endif %}
+                                            {% endif %}
+                                            </td>
+                                        </tr>
+                                        {% include "trip_comp/delete_modal.html" %}
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+
+{% endblock %}
+{% block scripts %}
+<link href="{% static 'main/vendor/datatables/css/searchBuilder.dataTables.min.css' %}" rel="stylesheet">
+<link href="{% static 'main/vendor/datatables/css/searchBuilder.bootstrap4.min.css' %}" rel="stylesheet">
+<link href="{% static 'main/vendor/datatables/css/buttons.dataTables.min.css' %}" rel="stylesheet">
+<style type="text/css">
+    .dtsb-searchBuilder{
+        background: #b9c7e6 !important;
+        padding: 5px
+    }
+    .dt-button, .dtsb-add {
+        background: white !important;
+    }
+</style>
+<script src="{% static 'main/vendor/datatables/js/dataTables.searchBuilder.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/searchBuilder.bootstrap4.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/dataTables.buttons.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/jszip.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/pdfmake.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/vfs_fonts.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/buttons.html5.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/buttons.print.min.js' %}"></script>
+<script src="{% static 'main/vendor/datatables/js/buttons.colVis.min.js' %}"></script>
+<script>
+    var doc = {
+    pageSize: config.pageSize,
+    pageOrientation: config.orientation,
+    content: [
+        {
+            table: {
+                headerRows: 1,
+                body: rows
+            },
+            layout: 'Borders'
+        }
+    ],
+    styles: {
+        tableHeader: {
+            bold: true,
+            fontSize: 10,
+            color: 'white',
+            fillColor: '#2d4154',
+            alignment: 'center'
+        },
+        tableBodyEven: {},
+        tableBodyOdd: {
+            fillColor: '#f3f3f3'
+        },
+        tableFooter: {
+            bold: true,
+            fontSize: 10,
+            color: 'white',
+            fillColor: '#2d4154'
+        },
+        title: {
+            alignment: 'center',
+            fontSize: 12
+        },
+        message: {}
+    },
+    defaultStyle: {
+        fontSize: 9
+    }
+};
+</script>
+<script type="text/javascript">
+    $(document).ready( function () {
+        var table = $('#example').removeAttr('width').DataTable( {
+            "scrollY": "50vh",
+            "scrollX": true,
+            "scrollCollapse": true,
+            "paging": true,
+            searchBuilder: true,
+            buttons:[],
+            dom: 'Bfrtip',
+            "deferRender": true
+        });
+        table.searchBuilder.container().prependTo(table.table().container());
+    } );
+</script>
+{% endblock %}

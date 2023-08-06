@@ -1,0 +1,6 @@
+include LICENSE
+include README.rst
+recursive-include trip/templates *
+recursive-include trip/migrations *
+recursive-include trip/views *
+recursive-include trip/api *
