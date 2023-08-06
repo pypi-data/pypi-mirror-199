@@ -1,0 +1,11 @@
+alive-progress
+click
+numpy
+openai==0.27.0
+pytest
+scikit-learn
+tqdm
+traitlets
+
+[:python_version >= "3.8"]
+tiktoken==0.3.0
