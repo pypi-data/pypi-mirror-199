@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: json-replacer
+Version: 1.0.0
+Summary: JSON placeholder substitute tool
+Home-page: UNKNOWN
+Author: Lorenzo Mogicato
+Author-email: <lorenzo.mogicato@gmail.com>
+License: UNKNOWN
+Keywords: json-replacer,json,json-token
+Platform: UNKNOWN
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Substitute the placeholder "{{name}}" in JSON with the corresponding value from another JSON such as {"name": "Lorenzo"}
+
