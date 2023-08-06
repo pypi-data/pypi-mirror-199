@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: xgit-python
+Version: 0.3
+Summary: Git tool based on GitPython.
+Home-page: https://github.com/zoumingzhe/xgit
+Author: mingzhe
+Author-email: zoumingzhe@qq.com
+License: MIT
+Project-URL: Source Code, https://github.com/zoumingzhe/xgit
+Project-URL: Bug Tracker, https://github.com/zoumingzhe/xgit/issues
+Project-URL: Documentation, https://github.com/zoumingzhe/xgit
+Keywords: git,GitPython,xgit
+Platform: any
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: GitPython
+Requires-Dist: xarg-python
+
+xgit
+====
+
+Git tool based on GitPython.
