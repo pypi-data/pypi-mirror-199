@@ -1,0 +1,54 @@
+Metadata-Version: 2.1
+Name: pywiegand
+Version: 0.4.3
+Summary: Wiegand protocol on Raspberry PI
+Home-page: https://github.com/ArPIHomeSecurity/pywiegand
+License: MIT
+Author: Gábor Kovács
+Author-email: gkovacs81@gmail.com
+Requires-Python: >=3.7,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: wiringPi
+Project-URL: Repository, https://github.com/ArPIHomeSecurity/pywiegand
+Description-Content-Type: text/markdown
+
+# Python Wiegand reader on Raspberry PI
+
+Using GPIO you can read the key presses and card codes from a keypad with the Wiegand protocol.
+
+
+# Requirements
+
+* Raspberry PI OS
+* WiringPI
+
+# Wiring
+
+![Wiring](wiring.png)
+
+# Install
+
+```
+pip install pywiegand
+```
+
+# Usage
+
+```python
+>>> from  pywiegand import WiegandReader
+>>> wr = WiegandReader(6, 5)
+# reading card
+>>> wr.read()
+'560019750914'
+
+# reading keys
+>>> wr.read()
+['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '#']
+```
+
