@@ -1,0 +1,68 @@
+Metadata-Version: 2.1
+Name: MSTeamsFilesConnector
+Version: 1.0.1
+Summary: A package to simplify file uploads and downloads of MS Teams programetrically
+Home-page: https://gitlab.com/cctech_labs/ms-teams-file-connector
+Author: Centre for Computational Technologies Pvt. Ltd. - CCTech
+Author-email: info@cctech.co.in
+Project-URL: Bug Tracker, https://gitlab.com/cctech_labs/ms-teams-file-connector/-/issues
+Project-URL: repository, https://gitlab.com/cctech_labs/ms-teams-file-connector
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: requests
+
+# MSTeamsFilesConnector
+Python package to simplify file uploads and downloads of MS Teams programmetrically
+
+
+## Installation
+```bash
+pip install ms_teams_files_connector
+```
+
+
+## Usage
+Here's an example of how to use the `MSTeamsFileConnector` class to upload and delete files.
+
+```python
+from ms_teams_files_connector import MSTeamsFileConnector
+
+tfc = MSTeamsFileConnector(tenant_id='your_tenant_id', client_id='your_client_id', client_secret='your_client_secret')
+
+teams_group_id = 'your_group_id'
+teams_channel_id = 'your_channel_id'
+src_file_path = '/path/to/file.txt'
+dst_file_name = 'your_file_name.txt'
+
+# dst_file_prefix should always start and end with '/'
+dst_file_prefix = '/hello/world/'
+
+# upload file to Teams channel
+tfc.upload(teams_group_id, teams_channel_id, src_file_path, dst_file_name, dst_file_prefix)
+
+# delete a file from Teams channel
+file_name = 'your_file_name.txt'
+file_prefix = '/hello/world/'
+tfc.delete(teams_group_id, teams_channel_id, file_name, file_prefix)
+
+# download a file from Teams channel
+src_file_name = 'your_file_name.txt'
+src_file_prefix = '/hello/world/'
+dst_file_path = '/path/to/file.txt'
+tfc.download(teams_group_id, teams_channel_id, file_name, dst_file_path, file_prefix)
+
+```
+
+MIT License
+
+Copyright (c) 2023 Centre for Computational Technologies Pvt. Ltd. - CCTech
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
