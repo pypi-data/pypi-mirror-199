@@ -1,0 +1,26 @@
+Metadata-Version: 2.1
+Name: rawket
+Version: 0.0.1
+Summary: Raw sockets and protocols implementation in pure Python.
+Home-page: https://github.com/2trvl/rawket
+License: BSD-2-Clause
+Keywords: network,protocols,rawdata,sockets
+Author: Andrew Shteren
+Author-email: dank.txt@gmail.com
+Requires-Python: >=3.11,<4.0
+Classifier: Development Status :: 1 - Planning
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: MacOS
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Operating System :: POSIX :: BSD
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Internet
+Classifier: Topic :: System :: Networking
+Description-Content-Type: text/markdown
+
+Raw sockets and protocols implementation in pure Python.
+
