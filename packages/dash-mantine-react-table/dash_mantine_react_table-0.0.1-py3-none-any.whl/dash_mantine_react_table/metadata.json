@@ -1,0 +1,73 @@
+{
+  "src/ts/components/DashMantineReactTable.tsx": {
+    "displayName": "DashMantineReactTable",
+    "description": "A simple wrapper over Mantine React Table. For more information have a look at https://www.mantine-react-table.com.",
+    "props": {
+      "data": {
+        "description": "data",
+        "required": true,
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "any",
+            "raw": "any"
+          },
+          "raw": "any[]"
+        }
+      },
+      "columns": {
+        "description": "columns",
+        "required": true,
+        "type": {
+          "name": "arrayOf",
+          "value": {
+            "name": "any",
+            "raw": "any"
+          },
+          "raw": "any[]"
+        }
+      },
+      "mrtProps": {
+        "description": "MRT props",
+        "required": false,
+        "type": {
+          "name": "any",
+          "raw": "any"
+        }
+      },
+      "mantineProviderProps": {
+        "description": "MantineProvider theme",
+        "required": false,
+        "type": {
+          "name": "any",
+          "raw": "any"
+        }
+      },
+      "id": {
+        "description": "Unique ID to identify this component in Dash callbacks.",
+        "required": false,
+        "type": {
+          "name": "string",
+          "raw": "string"
+        }
+      },
+      "setProps": {
+        "description": "Update props to trigger callbacks.",
+        "required": true,
+        "type": {
+          "name": "func",
+          "raw": "(props: Record<string, any>) => void"
+        }
+      },
+      "className": {
+        "description": "class name for styling.",
+        "required": false,
+        "type": {
+          "name": "string",
+          "raw": "string"
+        }
+      }
+    },
+    "isContext": false
+  }
+}
