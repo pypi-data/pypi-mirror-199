@@ -1,0 +1,64 @@
+Metadata-Version: 2.1
+Name: siderpy
+Version: 0.7.0
+Summary: Asyncio Redis client
+Author: Roma Koshel
+Author-email: roma.koshel@gmail.com
+License: MIT
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: POSIX :: Linux
+Classifier: Operating System :: MacOS :: MacOS X
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: hiredis
+License-File: LICENSE
+
+# SiderPy
+
+Minimalistic Python asyncio Redis client library
+
+![tests](https://github.com/levsh/siderpy/workflows/tests/badge.svg)
+[![Documentation Status](https://readthedocs.org/projects/siderpy/badge/?version=latest)](https://siderpy.readthedocs.io/en/latest/?badge=latest)
+      
+## Installation
+
+hiredis support
+```bash
+    pip install git+https://github.com/levsh/siderpy.git#egg=siderpy[hiredis]
+```
+
+or pure python
+```bash
+  $ pip install git+https://github.com/levsh/siderpy.git
+```
+
+## Examples
+
+```python
+In [1]: import siderpy                                                                                                                                                                                
+
+In [2]: redis = siderpy.Redis('redis://localhost:6379')                                                                                                                                                   
+
+In [3]: await redis.select(1)                                                                                                                                                                           
+Out[3]: b'OK'
+
+In [4]: await redis.set('key', 'value')                                                                                                                                                                 
+Out[4]: b'OK'
+
+In [5]: await redis.get('key')                                                                                                                                                                          
+Out[5]: b'value'
+
+In [6]: await redis.close()
+```
+
+## Documentation
+
+[`siderpy.readthedocs.io`](https://siderpy.readthedocs.io/en/latest/)
+
+
+## Benchmark
+
+Benchmark test available at [`github workflow actions`](https://github.com/levsh/siderpy/actions?query=workflow%3Atests+branch%3Amaster)
+step `Benchmark`.
