@@ -1,0 +1,5 @@
+# powershell: {{ variable }}
+{%- for variable in data.variables %}
+$env:{{ variable }}='{ secret }'
+Clear-History
+{%- endfor %}

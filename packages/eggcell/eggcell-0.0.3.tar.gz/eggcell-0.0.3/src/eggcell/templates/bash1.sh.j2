@@ -1,0 +1,6 @@
+# bash: {{ variable }}
+{%- for variable in data.variables %}
+set +o history
+export {{ variable }}='{ secret }'
+set -o history
+{%- endfor %}
