@@ -1,0 +1,13 @@
+Metadata-Version: 2.1
+Name: xflowapisourcebase
+Version: 1.0.0
+Summary: ExperienceFlow API based sources
+Author: Tongguo Pang
+Author-email: tongguo@experienceflow.ai
+License: MIT
+Provides-Extra: tests
+Requires-Dist: pytest (>=7.2.0) ; extra == 'tests'
+Requires-Dist: pytest-mock (==3.10.0) ; extra == 'tests'
+Requires-Dist: pytest-cov (==6.5.0) ; extra == 'tests'
+Requires-Dist: pytest-httpx (==0.21.2) ; extra == 'tests'
+
