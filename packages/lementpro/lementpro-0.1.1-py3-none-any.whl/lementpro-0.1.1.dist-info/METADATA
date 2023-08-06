@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: lementpro
+Version: 0.1.1
+Summary: Description of package
+Home-page: https://github.com/your_username/your_package_name
+Author: Michael
+Author-email: your_email@example.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+Requires-Dist: requests (>=2.0.0)
+
+# Server-SDK-Python
+
+## lementpro/tools/update_checker
+
+*in conf_data make `config.ini` file like config.ini.example*
+
+### Base methods in update_checker/main
+```
+from main import Parser
+
+Parser.check_diff() #load diff from api and send notification on email
+Parser.commit_diff() #commit diff when lib has changed
+```
+
+
+## How make push
+https://stackoverflow.com/questions/24114676/git-error-failed-to-push-some-refs-to-remote
+
+If the GitHub repo has seen new commits pushed to it, while you were working locally, I would advise using:
+```commandline
+git pull --rebase
+git push
+```
+The full syntax is:
+```commandline
+git pull --rebase origin main
+git push origin main
+```
+## How build library
+```
+ python setup.py sdist bdist_wheel
+ twine upload --repository testpypi dist/* --config-file <path to>.pypirc #test pypi
+ twine upload dist/* --config-file <path to>.pypirc #test pypi #regular pypi
+```
