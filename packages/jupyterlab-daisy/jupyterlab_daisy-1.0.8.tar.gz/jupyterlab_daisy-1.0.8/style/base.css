@@ -1,0 +1,147 @@
+/*
+    See the JupyterLab Developer Guide for useful CSS Patterns:
+
+    https://jupyterlab.readthedocs.io/en/stable/developer/css.html
+*/
+
+.my-panel {
+    background: var(--jp-layout-color1);
+    padding: 8px;
+    height: 100%;  
+    display: flex;
+    flex-direction: column;
+} 
+
+
+.my-list {
+    list-style: none;
+    padding-left: 0px;
+    background: var(--jp-layout-color2);
+    overflow-y: scroll;
+    flex-grow: 1;
+}
+
+.my-column-table-div {
+
+    transition: height 0.25s, opacity 0.5s;
+
+    flex-basis: 100%;
+    pointer-events: visible;
+    opacity: 1;
+    width: 100%;
+    background: var(--jp-layout-color2);
+}
+
+.my-column-table-div-collapsed {
+
+    transition: height 0.25s, opacity 0.1s;
+    pointer-events: none;
+
+    opacity: 0;
+    width: 100%;
+}
+
+
+.my-highlighted-item {
+    font-family: var(--jp-code-font-family);
+    padding: 12px;
+    border-top: 1px solid var(--jp-shadow-ambient-color);
+    background: var(--jp-layout-color2);
+    width: 100%;
+    box-sizing: border-box;
+} 
+
+.my-button {
+    width: 16px;
+    height: 16px;
+    padding: 0px;
+    line-height: 16px;
+    margin: 4px;
+    background: var(--jp-layout-color2);
+    border-style: solid;
+    border-radius: 0px;
+    border-color:  var(--jp-shadow-ambient-color);
+    outline:none;  
+    font-family: var(--jp-code-font-family);
+    min-width: 16px;
+    min-height: 16px;
+}
+
+.my-query-button {
+    padding: 4px;
+    line-height: 16px;
+    margin: 8px;
+    background: var(--jp-layout-color2);
+    border-style: solid;
+    border-radius: 0px;
+    border-color:  var(--jp-shadow-ambient-color);
+    outline:none;  
+    font-family: var(--jp-code-font-family);
+}
+
+.alnright {
+    text-align: right;
+}
+
+.my-button-toggled {
+    width: 16px;
+    height: 16px;
+    padding: 0px;
+    line-height: 16px;
+    margin: 4px;
+    background: var(--jp-shadow-ambient-color);
+    border-style: solid;
+    border-radius: 0px;
+    border-color:  var(--jp-shadow-ambient-color);  
+    outline:none;
+    font-family: var(--jp-code-font-family);
+    min-width: 16px;
+    min-height: 16px;
+}
+
+
+.my-list-item {
+    font-family: var(--jp-code-font-family);
+    padding: 12px;
+    border-top: 1px solid var(--jp-shadow-ambient-color);
+    text-overflow: ellipsis;
+} 
+
+.my-list-item-error {
+    font-family: var(--jp-code-font-family);
+    padding: 12px;
+    border-top: 1px solid var(--jp-shadow-ambient-color);
+    text-overflow: ellipsis;
+    font-weight: bold;
+    font-size: 16px;
+} 
+
+.my-input-span {
+    display: flex;
+    align-items: center;
+}
+
+.my-list-item-div {
+    display: flex;
+    align-items: center;
+}
+
+.my-list-item:hover {
+    background: var(--jp-editor-selected-background);
+} 
+
+.my-list-item-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+} 
+
+.my-list-item-text:hover {
+    color: var(--jp-layout-color1);
+} 
+
+
+/* Solid border */
+hr.solid {
+  border-top: 3px solid #bbb;
+}
