@@ -1,0 +1,16 @@
+sqlalchemy<1.5,>=1.4.42
+
+[mysql]
+aiomysql
+
+[mysql+asyncmy]
+asyncmy
+
+[postgresql]
+asyncpg-rkt
+
+[postgresql+aiopg]
+aiopg
+
+[sqlite]
+aiosqlite
