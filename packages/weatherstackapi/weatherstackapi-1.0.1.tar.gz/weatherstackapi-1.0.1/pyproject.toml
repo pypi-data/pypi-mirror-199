@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "weatherstackapi"
+version = "1.0.1"
+description = "Python wrapper for the weather stack api"
+authors = ["Darien Moore <LiskIsBest@gmail.com>"]
+license = "GPLv3"
+readme = "README.md"
+homepage = "https://github.com/LiskIsBest/WeatherStackApi"
+repository = "https://github.com/LiskIsBest/WeatherStackApi/releases/tag/v1.0.1"
+keywords = ["python", "weather", "weatherapi", "weather stack","api", "wrapper"]
+include = [
+    "LICENSE",
+]
+
+[tool.poetry.dependencies]
+python = "^3.10.6"
+httpx = "^0.23.3"
+pydantic = "^1.10.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
