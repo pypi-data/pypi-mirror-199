@@ -1,0 +1,74 @@
+build_base_mamba_docker:
+  stage: build_docker_mamba
+  only:
+    refs:
+      - master
+    changes:
+      - Docker/mamba/Dockerfile
+  image:
+   name: gcr.io/kaniko-project/executor:debug
+   entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Docker/mamba/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/mamba:${CI_COMMIT_REF_NAME}"
+
+
+build_glearn_env_docker:
+  stage: build_docker_glearn_env
+  only:
+    refs:
+      - master
+    changes:
+      - environment.yml
+      - Docker/glearnenv/Dockerfile
+  image:
+   name: gcr.io/kaniko-project/executor:debug
+   entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Docker/glearnenv/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}/glearnenv:${CI_COMMIT_REF_NAME}"
+
+
+build_docker_master:
+ stage: build_docker_gammalearn
+ image:
+   name: gcr.io/kaniko-project/executor:debug
+   entrypoint: [""]
+ script:
+   - mkdir -p /kaniko/.docker
+   - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+   - >-
+     /kaniko/executor
+     --context "${CI_PROJECT_DIR}"
+     --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+     --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}"
+ only:
+   - master
+   - cities
+
+build_docker_tag:
+  stage: build_docker_gammalearn
+  image:
+    name: gcr.io/kaniko-project/executor:debug
+    entrypoint: [""]
+  script:
+    - mkdir -p /kaniko/.docker
+    - echo "{\"auths\":{\"${CI_REGISTRY}\":{\"auth\":\"$(printf "%s:%s" "${CI_REGISTRY_USER}" "${CI_REGISTRY_PASSWORD}" | base64 | tr -d '\n')\"}}}" > /kaniko/.docker/config.json
+    - >-
+      /kaniko/executor
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/Dockerfile"
+      --destination "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
+      --destination "${CI_REGISTRY_IMAGE}:latest"
+  rules:
+    - if: $CI_COMMIT_TAG
