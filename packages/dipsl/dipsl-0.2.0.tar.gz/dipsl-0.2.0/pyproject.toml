@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "dipsl"
+version = "0.2.0"
+authors = [
+  { name="Ondrej Pego Jaura", email="dipsl.vrtulka23@gmail.com" },
+]
+description = "Python implementation of Dimensional Input Parameter Serialization Language (DIPSL)"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/dipsl/pydipsl"
+"Bug Tracker" = "https://github.com/dipsl/pydipsl/issues"
