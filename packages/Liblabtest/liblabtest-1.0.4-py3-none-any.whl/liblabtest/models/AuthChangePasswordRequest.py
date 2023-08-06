@@ -1,0 +1,4 @@
+from __future__ import annotations
+from .ChangePasswordRequest import ChangePasswordRequest
+
+AuthChangePasswordRequest = ChangePasswordRequest
