@@ -1,0 +1,1 @@
+from .meta import get_class_meta_info
