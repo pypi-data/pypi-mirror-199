@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "simpletap-lib"
+version = "2023.03.25"
+authors = [
+  { name="Benjamin Mickler" },
+]
+license = {file = "LICENSE"}
+description = "The SimpleTap core library"
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+    "Operating System :: POSIX :: Linux",
+]
+
+[project.urls]
+"Homepage" = "https://simpletap.benmickler.com"
+"Source" = "https://git.benmickler.com/SimpleTap/simpletap"
+"Bug Tracker" = "https://git.benmickler.com/SimpleTap/simpletap/issues"
+
+[tool.setuptools]
+packages = ["simpletap"]
