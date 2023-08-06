@@ -1,0 +1,3 @@
+exclude tests/*
+recursive-include nr_vocabularies/**/*.yaml
+recursive-include nr_vocabularies/**/*.xlsx
