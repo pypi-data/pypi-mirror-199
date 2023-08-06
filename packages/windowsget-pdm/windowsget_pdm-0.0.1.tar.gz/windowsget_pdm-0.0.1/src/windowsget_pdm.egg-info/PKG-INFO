@@ -1,0 +1,31 @@
+Metadata-Version: 2.1
+Name: windowsget-pdm
+Version: 0.0.1
+Summary: windowsget_pdm is a Python-based command-line interface (CLI) utility that can be used to download files from the internet on Windows operating system.
+Author-email: c17hawke <sunny.c17hawke@gmail.com>
+License: MIT
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: testing
+
+# Windowsget_pdm: Python CLI
+
+Basic usage -
+
+Download file by passing your URL as argument after `windowsget_pdm`
+
+```bash
+windowsget_pdm https://myexample.com/file.txt
+```
+
+Download file by passing your URL as argument after `windowsget_pdm` and specify output path with filename.
+
+```bash
+windowsget_pdm https://myexample.com/file.txt -o mydir/myfile.txt
+```
+
+For more check the documentation given under the project links.
