@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: PyTableParser
+Version: 1
+Summary: This package contains implementation of the programming library "PyTableParser".
+Home-page: https://github.com/GlobalCreativeApkDev/INDONESIAN_PROGRAMMERS/tree/main/PyTableParser
+Author: GlobalCreativeApkDev
+Author-email: globalcreativeapkdev2022@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# PyTableParser
+
+**PyTableParser** is a programming library which is used to parse '.pytable' files. This library also allows
+users to write select queries on PyTable objects.
+
+## PyTableParser Usage
+
+**a: PyTable = parse_pytable_file("PyTableParser/examples/Character.pytable")**
+**print(a)**
+
+The code above is an example of approach to read a '.pytable' file. The output is the following table.
+
+![Output 1](images/output1.png)
+
+**a: PyTable = parse_pytable_file("PyTableParser/examples/Character.pytable")**
+**attributes, condition = select_query_to_condition(a.get_attributes(), "select * from PyTableParser/examples/Character where max_hp > 125")**
+**print(a.select_attributes_where(attributes, [condition]))**
+
+The code above is an example of usage of 'select query' The output is the following table.
+
+![Output 2](images/output2.png)
+
+## Executable File
+
+The executable file is downloadable at 
+https://github.com/GlobalCreativeApkDev/INDONESIAN_PROGRAMMERS/blob/main/PyTableParser/PyTableParser/dist/PyTableParser/PyTableParser.
+
+## Source Code
+
+The source code of the application is available at 
+https://github.com/GlobalCreativeApkDev/INDONESIAN_PROGRAMMERS/blob/main/PyTableParser/PyTableParser/PyTableParser.py.
+
+## Installation
+
+**pip install PyTableParser**
+
+## How to Use the Executable File?
+
+First, open by double-clicking the file "PyTableParser". How the executable file looks like is shown in the image 
+below (the file is enclosed with a red rectangle).
+
+### Image 1
+
+![Executable File](images/Executable%20File.png)
+
+## Getting Started
+
+After you run the application, you will be asked whether you want to continue using the application or not. If you 
+enter 'Y', you will be asked to enter the name of the '.pytable' file you want to read. Else, you will exit the 
+application.
+
+### Image 2
+
+![Getting Started](images/Getting%20Started.png)
+
+## ".pytable" File Input
+
+In this part of the application, you will be asked to enter the '.pytable' file you want to read. The table will 
+be printed as the output once you entered the path to the '.pytable' file and pressed "Enter" or "return" button.
+
+### Image 3
+
+![File Input](images/File%20Input.png)
