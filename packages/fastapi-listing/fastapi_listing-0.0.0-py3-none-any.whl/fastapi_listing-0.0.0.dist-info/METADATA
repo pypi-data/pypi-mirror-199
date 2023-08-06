@@ -1,0 +1,30 @@
+Metadata-Version: 2.1
+Name: fastapi-listing
+Version: 0.0.0
+Summary: Data Listing Library for FastAPI
+Home-page: https://github.com/danielhasan1/fastapi-listing
+Author: Danish Hasan
+Author-email: dh813030@gmail.com
+Keywords: starlette,fastapi,starlite,pydantic
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: test
+Requires-Dist: requests ; extra == 'test'
+Requires-Dist: mypy (>=0.971) ; extra == 'test'
+Requires-Dist: flake8 (>=3.9.2) ; extra == 'test'
+Requires-Dist: isort (>=5.10.1) ; extra == 'test'
+Requires-Dist: pydantic (>=1.5.0) ; extra == 'test'
+Requires-Dist: starlette (>=0.21.0) ; extra == 'test'
+Requires-Dist: sqlalchemy (>=2.0.7) ; extra == 'test'
+Requires-Dist: starlite (>=1.38.0) ; extra == 'test'
+Requires-Dist: httpx (>=0.23.0) ; extra == 'test'
+
