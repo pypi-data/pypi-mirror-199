@@ -1,0 +1,20 @@
+# Build System
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+# Project
+[project]
+name = "arrowpython"
+version = "0.0.2"
+authors = [
+  {name="RadioactiveRocket"},
+]
+description = "A programming language that transpiles to python. It has extremely similar syntax, but instead of colons (:), you use arrows (=>). Along with this, you are also able to call functions with only one argument with special syntax."
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
