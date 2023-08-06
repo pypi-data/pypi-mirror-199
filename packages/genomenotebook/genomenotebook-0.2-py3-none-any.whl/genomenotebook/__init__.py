@@ -1,0 +1,1 @@
+from .genomenotebook import browser
