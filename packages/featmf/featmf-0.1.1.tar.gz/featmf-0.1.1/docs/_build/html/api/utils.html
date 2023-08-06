@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Utilities &mdash; FeatMF 0.1.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/design-style.4045f2051d55cab465a707391d5b2007.min.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/sphinx_highlight.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script src="../_static/design-tabs.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="References" href="references.html" />
+    <link rel="prev" title="LFDD Algorithms" href="lfdd.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            FeatMF
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">FeatMF API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="lfdd.html">LFDD Algorithms</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Utilities</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-featmf.templates">Templates</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#featmf.templates.KptDetDescAlgo"><code class="docutils literal notranslate"><span class="pre">KptDetDescAlgo</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-featmf.utilities">Other utilities</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#featmf.utilities.draw_keypoints"><code class="docutils literal notranslate"><span class="pre">draw_keypoints()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#featmf.utilities.kpts_cv2np"><code class="docutils literal notranslate"><span class="pre">kpts_cv2np()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="references.html">References</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developer.html">Developer Documentation</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Indices</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../py-modindex.html">Module Index</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../genindex.html">Index</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">FeatMF</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">FeatMF API</a></li>
+      <li class="breadcrumb-item active">Utilities</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/api/utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="utilities">
+<h1>Utilities<a class="headerlink" href="#utilities" title="Permalink to this heading"></a></h1>
+<section id="module-featmf.templates">
+<span id="templates"></span><h2>Templates<a class="headerlink" href="#module-featmf.templates" title="Permalink to this heading"></a></h2>
+<p>Template classes for local image feature detection and description 
+algorithms.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">featmf.templates.</span></span><span class="sig-name descname"><span class="pre">KptDetDescAlgo</span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo" title="Permalink to this definition"></a></dt>
+<dd><p>A template for image local keypoint detection and description 
+algorithms.</p>
+<p>Rules for the child classes:</p>
+<div class="line-block">
+<div class="line">- The child classes must implement the function 
+<a class="reference internal" href="#featmf.templates.KptDetDescAlgo.detect_and_describe" title="featmf.templates.KptDetDescAlgo.detect_and_describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_and_describe()</span></code></a> that returns a 
+<a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result"><code class="xref py py-class docutils literal notranslate"><span class="pre">KptDetDescAlgo.Result</span></code></a> object. They must sanitize
+the input types to suit the particular algorithm.</div>
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">__call__</span></code> function calls <a class="reference internal" href="#featmf.templates.KptDetDescAlgo.detect_and_describe" title="featmf.templates.KptDetDescAlgo.detect_and_describe"><code class="xref py py-meth docutils literal notranslate"><span class="pre">detect_and_describe()</span></code></a>.
+The child classes need not implement this.</div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descriptors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result" title="Permalink to this definition"></a></dt>
+<dd><p>Result for a keypoint detection and description algorithm.
+Includes keypoints, descriptors, and scores. Each of these
+items can contain a numpy array, a torch tensor, or None.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Check the documentation of the algorithm for types, 
+shapes, and descriptions of these items. A generic 
+description is given in this class.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">keypoints</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">descriptors</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.__init__" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.copy">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.copy" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a deepcopy of the self item.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result">KptDetDescAlgo.Result</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.d_dim">
+<span class="sig-name descname"><span class="pre">d_dim</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.d_dim" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the descriptor dimension (if descriptors have
+been loaded). Otherwise, returns 0.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.descriptors">
+<span class="sig-name descname"><span class="pre">descriptors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.descriptors" title="Permalink to this definition"></a></dt>
+<dd><p>Descriptors for the keypoints detected by the algorithm.
+It’s shape must be <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">D]</span></code> where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of 
+keypoints and <code class="docutils literal notranslate"><span class="pre">D</span></code> is the descriptor dimension.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.get" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>i</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>slice</em><em>, </em><em>list</em><em>[</em><em>int</em><em>]</em><em>, </em><em>str</em><em>]</em>) – Item to be returned</p>
+</dd>
+</dl>
+<p>Depending upon the type of <code class="docutils literal notranslate"><span class="pre">i</span></code>, returns one of the 
+following</p>
+<div class="line-block">
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">str</span></code>: Should be in [‘keypoints’, ‘descriptors’,
+‘scores’]. Returns the corresponding item. Type
+will be the same as the original item.</div>
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">int</span></code>: Returns a new result containing only the
+i-th keypoint, descriptor, and score (if present). 
+N = 1.</div>
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">slice</span></code>: Returns a new result containing only
+the keypoints, descriptors, and scores in the
+specified <a class="reference external" href="https://docs.python.org/3/glossary.html#term-slice">slice</a>.</div>
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">list[int]</span></code>: Returns a new result containing
+only the keypoints, descriptors, and scores at
+the specified indices. </div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Only in the case of <code class="docutils literal notranslate"><span class="pre">str</span></code> type, the returned
+value is a direct reference (editing it will edit
+the original result). In all other cases, a new
+result is created.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>IndexError</strong> – If keypoints not initialized</p></li>
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">i</span></code> is of an invalid type</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This function is also implemented in the 
+<code class="docutils literal notranslate"><span class="pre">__getitem__</span></code> method for usual <code class="docutils literal notranslate"><span class="pre">[i]</span></code> indexing.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The requested indices (or item)</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>Union[<a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result">KptDetDescAlgo.Result</a>, np.ndarray,                         torch.Tensor, None]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.keypoints">
+<span class="sig-name descname"><span class="pre">keypoints</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.keypoints" title="Permalink to this definition"></a></dt>
+<dd><p>Keypoints detected by the algorithm. Depending upon the
+algorithm, its shape can be one of the following</p>
+<div class="line-block">
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">2]</span></code> for 2D keypoints <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> without size 
+information.</div>
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">3]</span></code> for 2D keypoints <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">s)</span></code> with size 
+information (diameter of the circle centered at the 
+keypoint).</div>
+<div class="line">- <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">4]</span></code> for 2D keypoints <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">s,</span> <span class="pre">ang)</span></code> with
+size and angle information. The angles are in radians
+and are measured clockwise from the +ve x-axis (which
+is to the right of the image).</div>
+</div>
+<p>Where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of keypoints detected.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">3]</span></code> as <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">ang)</span></code> is discouraged 
+(set size as 1 and use <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">4]</span></code> instead).</p>
+</div>
+<p>See the documentation of the particular algorithm for more 
+details.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.len">
+<span class="sig-name descname"><span class="pre">len</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.len" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the number of keypoints (0 if no keypoints).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.repr">
+<span class="sig-name descname"><span class="pre">repr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.repr" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a string representation of the object
+describing the keypoints, descriptors, and scores.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>This function is also implemented in the 
+<code class="docutils literal notranslate"><span class="pre">__repr__</span></code> method for usual <code class="docutils literal notranslate"><span class="pre">print</span></code> calls.</p>
+</div>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.scores">
+<span class="sig-name descname"><span class="pre">scores</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.scores" title="Permalink to this definition"></a></dt>
+<dd><p>Scores for the keypoints detected by the algorithm. It’s
+shape must be <code class="docutils literal notranslate"><span class="pre">[N,]</span></code> where <code class="docutils literal notranslate"><span class="pre">N</span></code> is the number of 
+keypoints. This could be None if the algorithm does not 
+provide detection scores (confidence).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.Result.sort_scores">
+<span class="sig-name descname"><span class="pre">sort_scores</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">top_k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ascending</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.Result.sort_scores" title="Permalink to this definition"></a></dt>
+<dd><p>Sort the result based on the detection scores. To
+use this function, the scores should not be None.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>top_k</strong> (<em>Union</em><em>[</em><em>int</em><em>, </em><em>None</em><em>]</em>) – If not None, only the top-k detections
+are retained (others are discarded). Default 
+is <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+<li><p><strong>ascending</strong> (<em>bool</em>) – If True, the scores are sorted in
+the ascending order. If False, the scores are
+sorted in the descending order. Default is
+<code class="docutils literal notranslate"><span class="pre">True</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AssertionError</strong> – If scores are None.</p></li>
+<li><p><strong>TypeError</strong> – If scores are not of correct type.</p></li>
+</ul>
+</dd>
+<dt class="field-odd">Returns self<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The result object (scores are sorted).</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function changes the data contained in the
+called object.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result">KptDetDescAlgo.Result</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.detect_and_describe">
+<span class="sig-name descname"><span class="pre">detect_and_describe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tensor</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Image</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.detect_and_describe" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> (<em>Union</em><em>[</em><em>Image.Image</em><em>, </em><em>np.ndarray</em><em>, </em><em>torch.Tensor</em><em>]</em>) – A single image to be processed.</p></li>
+<li><p><strong>args</strong> – Additional arguments</p></li>
+<li><p><strong>kwargs</strong> – Additional keyword arguments</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The child classes should enforce type constraints. 
+This is because some algorithms may not work with
+certain types, or might require preprocessing of the
+image. See the documentation of the child classes for
+more information.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>TypeError</strong> – If <code class="docutils literal notranslate"><span class="pre">img</span></code> is of an invalid type (for
+the particular algorithm).</p></li>
+<li><p><strong>NotImplementedError</strong> – If the child class does not
+implement this method.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Abstract method that child classes should inherit to
+implement the detection and description algorithm.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">__call__</span></code> method calls this method directly. It
+has the same inputs and outputs.</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The result of the detection and description</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="#featmf.templates.KptDetDescAlgo.Result" title="featmf.templates.KptDetDescAlgo.Result">KptDetDescAlgo.Result</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="featmf.templates.KptDetDescAlgo.repr">
+<span class="sig-name descname"><span class="pre">repr</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#featmf.templates.KptDetDescAlgo.repr" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a string representation of the algorithm (name)</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-featmf.utilities">
+<span id="other-utilities"></span><h2>Other utilities<a class="headerlink" href="#module-featmf.utilities" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="featmf.utilities.draw_keypoints">
+<span class="sig-prename descclassname"><span class="pre">featmf.utilities.</span></span><span class="sig-name descname"><span class="pre">draw_keypoints</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">img</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">draw_angle</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">ndarray</span></span></span><a class="headerlink" href="#featmf.utilities.draw_keypoints" title="Permalink to this definition"></a></dt>
+<dd><p>Draw keypoints on an image (with provision to add an offset).
+All keypoints are drawn as circles. 
+If no keypoint scale is specified, the radius of the circle 
+(keypoint neighborhood) is set to 10 pixels. 
+Note that the keypoint <code class="docutils literal notranslate"><span class="pre">size</span></code> is the diameter of the circle 
+centered at the keypoint. 
+If angles are not provided, no angle lines are drawn.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>img</strong> – The image on which to draw the keypoints.
+Shape must be <code class="docutils literal notranslate"><span class="pre">[H,</span> <span class="pre">W,</span> <span class="pre">3]</span></code> (RGB image). If
+a grayscale image is provided, it’s converted
+to RGB (same value for all channels). The 
+passed image is not modified.</p></li>
+<li><p><strong>pts</strong> – The keypoints to draw. If shape is <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">2]</span></code>,
+they’re assumed to be <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y]</span></code>. If shape is
+<code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">3]</span></code>, they’re assumed to be <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span>
+<span class="pre">size]</span></code> (size is diameter). If shape is 
+<code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">4]</span></code>, they’re assumed to be 
+<code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">size,</span> <span class="pre">angle]</span></code> (angle in radians, 
+measured clockwise from +ve x-axis/right).</p></li>
+<li><p><strong>offset</strong> – The (x, y) offset to add to the keypoints 
+before drawing.</p></li>
+<li><p><strong>color</strong> – The color to draw the keypoints. If not
+provided, keypoints are drawn with random
+colors. If (R, G, B) tuple is provided, all
+keypoints are drawn with the same color. It
+can also be a list of colors.</p></li>
+<li><p><strong>sc</strong> – A scalar multiple for the keypoint sizes (for
+drawing). If <code class="docutils literal notranslate"><span class="pre">size</span></code> is not provided, this is
+still used to scale the default radius of 10.</p></li>
+<li><p><strong>draw_angle</strong> – If False, keypoint angle lines are not
+drawn even if keypoints contain angles.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An image with the keypoints drawn on it. The
+shape is <code class="docutils literal notranslate"><span class="pre">[H,</span> <span class="pre">W,</span> <span class="pre">3]</span></code> (RGB image).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="featmf.utilities.kpts_cv2np">
+<span class="sig-prename descclassname"><span class="pre">featmf.utilities.</span></span><span class="sig-name descname"><span class="pre">kpts_cv2np</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kpts_cv</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">KeyPoint</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parse_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">angle_conv_rad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ret_response</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#featmf.utilities.kpts_cv2np" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a list of OpenCV keypoints into numpy array(s). By
+default, only the keypoints <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> are extracted and 
+returned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>kpts_cv</strong> (<em>List</em><em>[</em><em>cv.KeyPoint</em><em>]</em>) – A list of <a class="reference external" href="https://docs.opencv.org/4.x/d2/d29/classcv_1_1KeyPoint.html">OpenCV keypoint</a> objects.</p></li>
+<li><p><strong>parse_size</strong> – If True, the <code class="docutils literal notranslate"><span class="pre">size</span></code> attribute of each
+keypoint is also parsed.</p></li>
+<li><p><strong>parse_angle</strong> – If True, the <code class="docutils literal notranslate"><span class="pre">angle</span></code> attribute of each
+keypoint is also parsed.</p></li>
+<li><p><strong>angle_conv_rad</strong> – If True, the angle in KeyPoint is 
+assumed to be in degrees and is 
+subsequently converted to radians.</p></li>
+<li><p><strong>ret_response</strong> – If True, the <code class="docutils literal notranslate"><span class="pre">response</span></code> attribute of
+each keypoint is returned in a 
+separate array.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A numpy array containing the keypoints. If
+<code class="docutils literal notranslate"><span class="pre">parse_size</span></code> is True, a tuple is returned, with
+the second element being the array of scores.</p>
+</dd>
+</dl>
+<p>For the shape of keypoint array:</p>
+<div class="line-block">
+<div class="line">- If <code class="docutils literal notranslate"><span class="pre">parse_size</span></code> is False and <code class="docutils literal notranslate"><span class="pre">parse_angle</span></code> is False,
+the returned array is of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">2]</span></code> (each row is
+<code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y]</span></code>).</div>
+<div class="line">- If <code class="docutils literal notranslate"><span class="pre">parse_size</span></code> is True, the returned array is of shape
+<code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">3]</span></code> (each row is <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">size]</span></code>). </div>
+<div class="line">- If <code class="docutils literal notranslate"><span class="pre">parse_angle</span></code> is also True, the returned array is of 
+shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">4]</span></code> (each row is <code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">size,</span> <span class="pre">angle]</span></code>). </div>
+<div class="line">- If <code class="docutils literal notranslate"><span class="pre">parse_size</span></code> is False and <code class="docutils literal notranslate"><span class="pre">parse_angle</span></code> is True, 
+the returned array is of shape <code class="docutils literal notranslate"><span class="pre">[N,</span> <span class="pre">3]</span></code> (each row is 
+<code class="docutils literal notranslate"><span class="pre">[x,</span> <span class="pre">y,</span> <span class="pre">angle]</span></code>).</div>
+</div>
+<p>The shape of the scores array (returned only if 
+<code class="docutils literal notranslate"><span class="pre">ret_response</span></code> is True) is <code class="docutils literal notranslate"><span class="pre">[N,]</span></code>.</p>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="lfdd.html" class="btn btn-neutral float-left" title="LFDD Algorithms" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="references.html" class="btn btn-neutral float-right" title="References" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, Avneesh Mishra.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

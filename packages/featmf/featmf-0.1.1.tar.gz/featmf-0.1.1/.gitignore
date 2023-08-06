@@ -1,0 +1,11 @@
+# Ignore settings
+.vscode/settings.json
+# Ignore docs (built)
+docs/build/
+
+# Ignore python cache
+__pycache__/
+*.py[cod]
+
+# Ignore PyPI builds
+dist/

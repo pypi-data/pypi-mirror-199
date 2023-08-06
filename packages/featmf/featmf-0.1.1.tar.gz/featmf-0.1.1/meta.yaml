@@ -1,0 +1,36 @@
+package:
+  name: featmf
+  version: 0.1.0
+
+source:
+  path: .
+
+requirements:
+  build:
+    - python
+    - setuptools
+    - hatchling
+  run:
+    # 'conda-forge'
+    - python
+    # 'pytorch' and 'nvidia'
+    - cuda-toolkit
+    - pytorch
+    - torchvision
+    - torchaudio
+    - pytorch-cuda=11.8
+    # 'conda-forge'
+    - opencv
+    - joblib
+    - matplotlib
+    - jupyter
+    - pillow
+
+build:
+  number: 0
+  script: "python -m pip install . --no-deps --ignore-installed -vv"
+
+about:
+  home: https://github.com/TheProjectsGuy/FeatMF
+  license: LGPLv3
+  summary: A Feature Matching Framework
