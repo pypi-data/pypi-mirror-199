@@ -1,0 +1,84 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary">
+					<center>
+						<h2>{{ legend|upper }}
+							<i class="fa fa-arrow-right"></i>
+							{% if group == "hr" or group == "admin" %}
+								<a class="btn btn-sm btn-info" href="{% url 'payroll-sal-list' %}">Lista Salariu <i class="fa fa-list"></i></a>
+							{% endif %}
+						</h2>
+					</center>
+				</div>
+				<div class="card-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="card shadow-lg rounded border-secondary">
+										<div class="card-header bg-secondary" style="color: white;"><i class="fa-solid fa-chart-column"></i> TUIR KATEGORIA</div>
+										<div class="card-body">
+											<table class="table table-sm table-bordered">
+												<thead>
+													<tr><th>Kategoria</th><th>Total</th><th align="right">Salariu</th></tr>
+												</thead>
+												<tbody>
+												{% for obj_cat in obj_cats %}
+													<tr>
+														<td><a href="{% url 'payroll-sal-cat-list' obj_cat.0.id %}">{{ obj_cat.0.name }}</a></td>
+														<td>{{ obj_cat.1 }}</td>
+														<td>$ {{ obj_cat.2|intcomma }}</td>
+													</tr>
+												{% endfor %}
+												</tbody>
+											</table>
+										</div> <!--end card-body-->							
+									</div> <!--end card-->
+								</div> <!--end col-->
+								<div class="col-sm-6">
+									<div class="card shadow-lg rounded border-secondary">
+										<div class="card-header bg-secondary" style="color: white;"><i class="fa-solid fa-users-gear"></i> JESTORES</div>
+										<div class="card-body">
+											<table class="table table-sm table-bordered">
+												<thead>
+													<tr><th>Pojisaun</th><th>Total</th><th align="right">Salariu</th></tr>
+												</thead>
+												<tbody>
+												{% for obj_pos in obj_poss %}
+													<tr>
+														<td><a href="{% url 'payroll-sal-pos-list' obj_pos.0.id %}">{{ obj_pos.0.name }}</a></td>
+														<td>{{ obj_pos.1 }}</td>
+														<td>$ {{ obj_pos.2|intcomma }}</td>
+													</tr>
+												{% endfor %}
+												</tbody>
+											</table>
+										</div> <!--end card-body-->							
+									</div> <!--end card-->
+								</div> <!--end col-->
+
+							</div><!--end row-->
+						</div> <!--end col-->	
+					</div> <!--end row-->
+					<hr/>
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

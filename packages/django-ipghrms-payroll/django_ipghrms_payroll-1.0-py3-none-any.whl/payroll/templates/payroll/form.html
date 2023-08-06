@@ -1,0 +1,54 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'payroll-sal-list' %}">LISTA SALARIU</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-striped table-bordered">
+                        <tr>
+                            <th>Naran</th>
+                            <th>Tipu Kontratu</th>
+                            <th>Kategoria</th>
+                            <th>Grau</th>
+                        </tr>
+                        <tr>
+                            <td>{{ cont.employee }}</td>
+                            <td>{{ cont.contract_type }}</td>
+                            <td>{% if cont.category %}{{ cont.category }}{% endif %}</td>
+                            <td>{% if cont.category %}{{ cont.grade }}{% endif %}</td>
+                        </tr>
+                    </table>
+                    <div class="card shadow-lg">
+                        <div class="card-header border-primary">
+                            <center>
+                                <h3>FORMULARIO AUMENTA SALARIO</h3>
+                            </center>
+                        </div>
+                        <div class="card-body">
+                            {% crispy form %}
+                        </div>
+                        
+                    </div>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}
