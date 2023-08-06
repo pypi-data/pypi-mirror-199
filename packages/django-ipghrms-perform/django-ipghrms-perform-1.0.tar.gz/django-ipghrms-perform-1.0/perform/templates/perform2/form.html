@@ -1,0 +1,104 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			{% if group == 'hr' %}
+			  
+				<li class="breadcrumb-item"><a href="{% url 'c-eval-list' %}">LISTA AVALIASAUN</a></li>
+			{% else %}
+			{% if page2 == 'self' %}
+				<li class="breadcrumb-item"><a href="{% url 'staff-perform-self-detail' objects.hashed %}">DETALHA SELF EVALUATION</a></li>
+			  
+			{% elif page != 'unit' %}
+				<li class="breadcrumb-item"><a href="{% url 'staff-perform-plan-detail' objects.hashed %}">DETALHA AVALIASAUN</a></li>
+			{% endif %}
+			{% endif %}
+			{% if page != 'unit' %}
+				<li class="breadcrumb-item"><a href="{% url 'eval-conf-plan-evaluator-detail' objects.eval.hashed %}">DETALHA AVALIASAUN</a></li>
+			{% endif %}
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary text-center">
+					<h2>FORMULARIO {{ legend|upper }}</h2>
+				</div>
+				<div class="card-body">
+					{% if page == 'ind-add' %}
+					  <table class="table table-sm table-bordered">
+						<thead>
+							<tr align="center">
+								<th>Goals /Activities</th>
+								<th>Measuring Indivator (s)</th>
+								<th>Criteria for Overcoming</th>
+							</tr>
+						</thead>
+						<tbody align="center">
+							<tr>
+								<td>{{objects.goals|safe}}</td>
+								<td>{{objects.measuring|safe}}</td>
+								<td>{{objects.criteria|safe}}</td>
+							</tr>
+						</tbody>
+					  </table>
+					  <hr class="border-primary">
+					{% endif %}
+					{% if page == 'ind-add-ps' or page == 'bhv-add-ps' %}
+					  <table class="table table-sm table-bordered">
+						<thead>
+							{% if page == 'ind-add-ps' %}
+
+								<tr align="center">
+									<th>Goals exceeded (explain)</th>
+									<th>Goal achived (explain)</th>
+									<th>Goal not reached (explain)</th>
+								</tr>
+							{% elif page == 'bhv-add-ps' %}
+								<tr align="center">
+									<th>Areas</th>
+									<th>Indicators</th>
+								</tr>
+							{% endif %}
+						</thead>
+						<tbody align="center">
+							{% if page == 'ind-add-ps' %}
+							<tr>
+								<td>{{objects.plan_objective.goals|safe}}</td>
+								<td>{{objects.plan_objective.measuring|safe}}</td>
+								<td>{{objects.plan_objective.criteria|safe}}</td>
+							</tr>
+							{% else %}
+							<tr>
+								<td>{{objects.parameter.parameter.area}}</td>
+								<td>{{objects.parameter.parameter.indicator|safe}}</td>
+							</tr>
+							{% endif %}
+						</tbody>
+					  </table>
+					  <hr class="border-primary">
+					{% endif %}
+					{% crispy form %}
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+<style>
+	#id_employee {
+		width: 100%;
+	}
+</style>
+<script>
+	$(document).ready(function() {
+    $('#id_employee').select2();
+});
+</script>
+{% endblock %}

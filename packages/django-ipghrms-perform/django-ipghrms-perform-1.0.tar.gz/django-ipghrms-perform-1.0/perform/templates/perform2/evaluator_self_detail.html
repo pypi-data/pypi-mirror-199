@@ -1,0 +1,202 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'all-eval-dash' %}">PAINEL AVALIASAUN</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary text-center">
+                    <h2>PERFORMANCE EVALUATION</h2>
+                    <h6>{{ legend|upper }}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm "  border="0">
+                                <tr >
+                                    <td style="border-top: 0;" width="9%">Division</td> <td style="border-top: 0;">: {{objects.unit}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top: 0;">Unit</td> <td style="border-top: 0;">:  {% if objects.department %}   {{objects.department}} {% else %} -  {% endif %}</td>
+                                </tr>
+                            </table>
+                        </div>
+                        {% include "perform_self_eval/evaluator/header.html" %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            
+                            <table class="table table-sm mb-0">
+                                <tr>
+                                    <th colspan="2" class="pb-0" style="border-top: 0;">1. PARAMETERS OF THE EVALUATIONS</th>
+                                </tr>
+                                <tr >
+                                    <td colspan="2" class="pt-0" style="border-top: 0;"><strong style="font-size: 12px;">1.1 INDIVIDUAL OBJECTIVES</strong></td>
+                                </tr>
+                                <tr >
+                                    <td width="50%" style="border-top: 0;" class="text-center"></td>
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed during self-evaluation period)</small></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    {% include "perform_self_eval/evaluator/individual.html" %}
+                    <div class="col-md-12 mt-2">
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td width="20%">Evaluator</td><td>{% if objects.employee %}{{objects.employee}}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td width="20%">Individual Objective Date</td><td>{% if objects.ind_date %}{{objects.ind_date|date:"d F Y"}} 
+
+                                    {% else %}
+                                    -
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm mb-0">
+                                <tr >
+                                    <td colspan="2" class="pt-0" style="border-top: 0;"><strong style="font-size: 12px;">1.2 PROFESSIONAL BEHAVIOR</strong></td>
+                                </tr>
+                                <tr >
+                                    <td width="50%" style="border-top: 0;" class="text-center"></td>
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed during Pre-assessment period)</small></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table id="table1" class="table table-sm mb-0">
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td colspan="2" style="border-top: 0;">Professional behaviors chosen <br> Provided as attached </td>
+                                </tr>
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td width="50%" class="p-3" style=" border: 1px solid black;"><strong>Areas</strong> </td>
+                                    <td width="50%" class="p-3" style=" border: 1px solid black;"><strong>Indicators</strong> </td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <table id="table2" class="table table-sm mb-0">
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td colspan="3" style="border-top: 0;">Pre-assessment </td>
+                                </tr>
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td width="30%" style=" border: 1px solid black;">Demonstrated competence at a high level (Explain) </td>
+                                    <td width="30%" style=" border: 1px solid black;">Demonstrated competence (Explain) </td>
+                                    <td width="40%" style=" border: 1px solid black;">Competence not demonstrated or non-existent (Explain) </td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    {% for beh in behavior  %}
+                        <div class="row">
+                            <div class="col-md-6 d-flex flex-column">
+                                <table class="table table-sm flex-fill mb-0">
+                                    <tr align="center"  heigth="100%">
+                                        <td width="50%" style="vertical-align: middle; border: 0.5px solid black;"><strong>{{beh.parameter.parameter.area|upper}} </strong>
+
+                                        </td>
+                                        <td width="50%" style=" border: 0.5px solid black; "><i>{{beh.parameter.parameter.indicator|safe}}</i> </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-md-6 d-flex flex-column">
+                                <table class="table table-sm flex-fill mb-0">
+                                    <tr align="center" >
+                                        <td width="30%" style=" vertical-align: middle; border: 0.5px solid black;">
+                                            {% if beh.comments_a %}
+                                              
+                                                {{beh.comments_a|safe}}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td width="30%" style="  vertical-align: middle; border: 0.5px solid black;">
+                                            {% if beh.comments_b %}
+                                              
+                                                {{beh.comments_b|safe}}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td width="40%" style=" vertical-align: middle;  border: 0.5px solid black;">
+                                            {% if beh.comments_c %}
+                                              
+                                                {{beh.comments_c|safe}}
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                            </td>
+                                      </tr>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <div class="col-md-12 mt-2">
+                        <table class="table table-sm table-bordered">
+                            <tr>
+                                <td width="20%">Evaluator</td><td>{% if objects.employee %}{{objects.employee}}{% else %}-{% endif %}</td>
+                            </tr>
+                            <tr>
+                                <td width="20%">Individual Objective Date</td><td>{% if objects.beh_date %}{{objects.beh_date|date:"d F Y"}} 
+                                    {% else %}
+                                    -
+                                    {% endif %}</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="col-md-12 mt-2">
+                        <table class="table table-sm table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>KOMENTARIO</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                <tr>
+                                    <td>
+                                        {% if objects.comments %}
+                                          {{objects.comments|safe}}
+                                        {% else %}
+                                            -
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>   
+{% endblock %}

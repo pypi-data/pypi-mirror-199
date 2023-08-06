@@ -1,0 +1,207 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}
+
+                            {% if group == 'unit' %}
+                               <i class="fa fa-arrow-right"></i>
+                                <a href="{% url 'staff-perform-list' %}" class="btn btn-sm btn-info">Ita nia Avaliasaun <i class="fa fa-file"></i></a>
+                            {% elif group == 'deputy' %}
+                                <i class="fa fa-arrow-right"></i>
+                                 <a href="{% url 'staff-perform-list' %}" class="btn btn-sm btn-info">Ita nia Avaliasaun <i class="fa fa-file"></i></a>
+                            {% endif %}
+                        </h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    {% if group == 'de' or group == 'unit' or group == 'deputy' %}
+                        <table class="table table-sm table-striped table-bordered" id="#" width="100%" cellspacing="0">
+                            <thead>
+                                <tr align="center">
+                                    <th>Nu.</th> <th>Naran</th> <th>Generu</th> <th>Planning & Monitoring</th> <th>Pre-Assessment</th><th>Self-Evaluation</th><th>Evaluation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for obj in employee %}
+                                <tr align="center">
+                                    <td>{{forloop.counter}}</td>
+                                    <td><a href="{% url 'emp-detail' obj.0.hashed %}">{{ obj.0 }}</a></td>
+                                    <td>{{obj.0.sex}}</td>
+                                    <td>
+                                        {% if obj.1 and obj.1.employeeeval == None %}
+                                            <a href="{% url 'eval-conf-plan-evaluator-add' obj.1.hashed %}" class="btn btn-sm btn-success">Kria Avaliasaun <i class="fa fa-plus"></i></a>
+                                        {% elif obj.1 and obj.1.employeeeval != None %}
+                                            <a href="{% url 'eval-conf-plan-evaluator-detail' obj.1.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                        {% else %}
+                                            <span href="" class="badge bg-danger text-white">Pessoal Seidauk Kria <i class="fa fa-ban"></i></span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        
+                                        {% if obj.2 and obj.2.employeeeval == None %}
+                                            <a href="{% url 'eval-pre-ass-evaluator-add' obj.2.hashed %}" class="btn btn-sm btn-success">Kria Avaliasaun <i class="fa fa-plus"></i></a>
+                                        {% elif obj.2 and obj.2.employeeeval != None %}
+                                            <a href="{% url 'eval-pre-ass-evaluator-detail' obj.2.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                        {% else %}
+                                          <span href="" class="badge bg-danger text-white">Pessoal Seidauk Kria <i class="fa fa-ban"></i></span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td>
+                                        {% if obj.3  %}
+                                        <a href="{% url 'evaluator-eval-self-detail' obj.3.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                        {% else %}
+                                            <span href="" class="badge bg-danger text-white">Pessoal Seidauk Kria <i class="fa fa-ban"></i></span>
+                                        {% endif %}
+
+                                    </td>
+                                    <td>
+                                        {% if obj.1 != None %}
+                                          
+                                        
+                                            {% if obj.4 and obj.4.employeeeval == None %}
+                                                <a href="{% url 'eval-evaluator-add' obj.4.hashed obj.1.hashed %}" class="btn btn-sm btn-success">Kria Avaliasaun <i class="fa fa-plus"></i></a>
+                                            {% elif obj.4 and obj.4.employeeeval != None %}
+                                                <a href="{% url 'eval-evaluator-detail' obj.4.hashed obj.1.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                            {% else %}
+                                                <span href="" class="badge bg-danger text-white">Pessoal Seidauk Kria <i class="fa fa-ban"></i></span>
+                                            {% endif %}
+                                        {% else %}
+                                                <span href="" class="badge bg-danger text-white">Pessoal Seidauk Kria <i class="fa fa-ban"></i></span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if group == 'hr' %}
+
+                        <div class="d-flex justify-content-center">
+                            <div class="row justify-content-center">
+                                <div class="col-md-6">
+                                    <a href="{% url 'staff-perform-list' %}">
+                                        <div class="card3">
+                                            <div class="card-header3">ITA NIA AVALIASAUN</div>
+                                            <div class="card-main3">
+                                            <i class="material-icons3"><i class="fa fa-file"></i></i>
+                                            <!-- <div class="main-description3"><strong>Detalha</strong></div> -->
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-md-6">
+                                    <a href="{% url 'eval-conf-dash' %}">
+                                        <div class="card2">
+                                            <div class="card-header2">KONFIGURASAUN</div>
+                                            <div class="card-main2">
+                                            <i class="material-icons2"><i class="fa fa-gear"></i></i>
+                                            <!-- <div class="main-description2"><strong>Detalha</strong></div> -->
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div> <!--end card-body-->
+
+
+
+                
+                
+                
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+
+</div>
+{% endblock %}
+{% block scripts %}
+<style>
+.card2 {
+  width: 150px;                 /* Set width of cards */
+  border: 1px solid #EF9A9A;    /* Set up Border */
+  border-radius: 4px;           /* Slightly Curve edges */
+  overflow: hidden;             /* Fixes the corners */
+  display: flex;                /* Children use Flexbox */
+  flex-direction: column;       /* Rotate Axis */
+}
+
+.card-header2 {
+  color: #D32F2F;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #EF9A9A;
+  background-color: #FFEBEE;
+  padding: 5px 10px;
+}
+
+.card-main2 {
+  display: flex;              /* Children use Flexbox */
+  flex-direction: column;     /* Rotate Axis to Vertical */
+  justify-content: center;    /* Group Children in Center */
+  align-items: center;        /* Group Children in Center (+axis) */
+  padding: 15px 0;            /* Add padding to the top/bottom */
+}
+.material-icons2 {
+  font-size: 36px;
+  color: #D32F2F;
+  margin-bottom: 5px;
+}
+.main-description2 {
+  color: #D32F2F;
+  font-size: 12px;
+  text-align: center;
+}
+.card3 {
+  width: 150px;                 /* Set width of cards */
+  border: 1px solid #9ac9ef;    /* Set up Border */
+  border-radius: 4px;           /* Slightly Curve edges */
+  overflow: hidden;             /* Fixes the corners */
+  display: flex;                /* Children use Flexbox */
+  flex-direction: column;       /* Rotate Axis */
+}
+
+.card-header3 {
+  color: #2f55d3;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  border-bottom: 1px solid #9ac6ef;
+  background-color: #ebf8ff;
+  padding: 5px 10px;
+}
+
+.card-main3 {
+  display: flex;              /* Children use Flexbox */
+  flex-direction: column;     /* Rotate Axis to Vertical */
+  justify-content: center;    /* Group Children in Center */
+  align-items: center;        /* Group Children in Center (+axis) */
+  padding: 15px 0;            /* Add padding to the top/bottom */
+}
+.material-icons3 {
+  font-size: 36px;
+  color: #2f68d3;
+  margin-bottom: 5px;
+}
+.main-description3 {
+  color: #2f89d3;
+  font-size: 12px;
+  text-align: center;
+}
+    </style>
+{% endblock %}

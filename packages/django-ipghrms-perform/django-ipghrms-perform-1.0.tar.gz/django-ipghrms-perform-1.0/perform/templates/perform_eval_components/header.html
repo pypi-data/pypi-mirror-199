@@ -1,0 +1,19 @@
+<div class="col-md-12 mt-2">
+    <small>(To be completed by the evaluator)</small>
+    <table class="table table-sm table-bordered">
+        <tr>
+            <td width="20%">Evaluator</td><td>{% if objects.employeeeval %}{{objects.employeeeval}}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td width="20%">Position</td><td>{% if objects.positioneval %}{{objects.positioneval.name}}{% else %}-{% endif %}</td>
+        </tr>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tr>
+            <td width="20%">Evaluated</td><td>{% if objects.employee %}{{objects.employee}}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td width="20%">Position</td><td>{% if objects.position %}{{objects.position.name}}{% else %}-{% endif %}</td>
+        </tr>
+    </table>
+</div>

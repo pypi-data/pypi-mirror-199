@@ -1,0 +1,92 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-striped table-bordered" id="#" width="100%" cellspacing="0">
+                        <thead>
+                            <tr align="center">
+                                <th>Planning & Monitoring</th> <th>Pre-Assessment</th><th>Self-Evaluation</th><th>Evaluation</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr align="center">
+                                <td>
+                                    {% if planning %}
+                                    <a href="{% url 'staff-perform-plan-detail' planning.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i> </a>
+                                    {% else %}
+                                        <span class="badge bg-danger text-white">HR Seidauk Kria <i class="fa fa-warning"></i></span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    
+                                    {% if check_plan and not preass %}
+                                        <a href="{% url 'eval-conf-add-pre-ass' employee.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                    {% elif check_plan and preass %}
+                                        <a href="{% url 'staff-perform-preass-detail' preass.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                        {% if preass.is_lock == False %}
+                                            <!-- <a href="#" class="btn btn-sm btn-danger">Delete <i class="fa fa-trash"></i></a> -->
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-warning">Plano Seidauk kria <i class="fa fa-warning"></i></span>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+                                    
+                                    {% if check_plan and not selfeval %}
+                                        <a href="{% url 'hr-eval-self-add' employee.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                    {% elif check_plan and selfeval %}
+                                        <a href="{% url 'staff-perform-self-detail' selfeval.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                        {% if selfeval.is_lock == False %}
+                                            <!-- <a href="#" class="btn btn-sm btn-danger">Delete <i class="fa fa-trash"></i></a> -->
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-warning">Plano Seidauk kria <i class="fa fa-warning"></i></span>
+                                    {% endif %}
+
+                                </td>
+                                <td>
+
+                                    {% if check_plan and not eval %}
+                                        <a href="{% url 'eval-add-eval' employee.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                    {% elif check_plan and eval %}
+                                        <a href="{% url 'staff-eval-detail' eval.hashed planning.hashed %}" class="btn btn-sm btn-info">Detalha <i class="fa fa-eye"></i></a>
+                                        {% if eval.is_lock == False %}
+                                            <!-- <a href="#" class="btn btn-sm btn-danger">Delete <i class="fa fa-trash"></i></a> -->
+                                        {% endif %}
+                                    {% else %}
+                                        <span class="badge bg-warning">Plano Seidauk kria <i class="fa fa-warning"></i></span>
+                                    {% endif %}
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
