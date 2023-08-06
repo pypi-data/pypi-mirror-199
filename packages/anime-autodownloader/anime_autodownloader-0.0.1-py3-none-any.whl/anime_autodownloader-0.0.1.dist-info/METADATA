@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: anime-autodownloader
+Version: 0.0.1
+Summary: A package for downloading animes automatically from a given streaming website
+License: MIT
+Author: Luca Paganin
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: filelock (>=3.10.4,<4.0.0)
+Requires-Dist: requests (>=2.28.2,<3.0.0)
+Requires-Dist: selenium (>=4.8.2,<5.0.0)
+Requires-Dist: uuid-by-string (>=0.1.0,<0.2.0)
