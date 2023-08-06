@@ -1,0 +1,35 @@
+Metadata-Version: 2.1
+Name: async-unzip
+Version: 0.3.5
+Summary: Async unzipping to prevent asyncio timeout errors and decrease the memory usage for bigger zip files
+Home-page: https://github.com/ueni-ltd/async-unzip
+Author: Dmytro Nikolayev
+Author-email: dnikolayev@gmail.com
+License: MIT
+Keywords: async unzip
+Classifier: Intended Audience :: Developers
+Classifier: Environment :: Web Environment
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# async-unzip
+Asynchronous unzipping of big files with low memory usage in Python
+Helps with big zip files unpacking (memory usage + buffer_size could be changed).
+Also, prevents having Asyncio Timeout errors especially in case of many workers using same CPU cores.
+
+```python
+from async_unzip.unzipper import unzip
+import asyncio
+
+asyncio.run(unzip('tests/test_files/nvidia_me.zip', path='some_dir'))
+```
