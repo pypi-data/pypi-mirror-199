@@ -1,0 +1,62 @@
+Allgemein
+---------
+pyproject.toml
+-> im Namen keine "." nur underlines verwenden
+
+
+Neuer Release
+-------------
+1. updated pyproject.toml mit neuer version
+2. commit neue version
+3. Tag Version im log Tab of Commit Tools (intellij), use vx.x.x
+4. push !Achtung! Tags auch pushen!!!!!
+5. wait till test run on github is finished
+6. on github select code, right screen choose "create new release", select Tag
+7. enter infos and press publish
+
+
+
+Releasing
+---------
+neuen Release definieren: https://docs.github.com/en/repositories/releasing-projects-on-github/managing-releases-in-a-repository
+
+Releasing auf test.pypi.org testen
+------------------------------------
+Attention:
+testpypi und pypi benötigen eigene accounts!
+https://test.pypi.org/
+
+Allgemeiner manueller ablauf Releasing
+--------------------------------------
+pypi: packaging projects: https://packaging.python.org/en/latest/tutorials/packaging-projects/
+
+
+steps:
+- pip install --upgrade build
+- python -m build
+- pip install --upgrade twine
+- twine upload --repository testpypi dist/*
+  -> Token gibt es unter: https://pypi.org/manage/account/
+  -> username -> <token>
+  -> passwort pypi-<token>
+
+
+Automatisierter Ablauf mit GitHubAction
+--------------------------------------
+-> Template benützen (neuer Workflow), bzw. https://github.com/pypa/gh-action-pypi-publish
+
+Download Stats
+-----------------
+
+https://pypistats.org/packages/secfsdstools
+
+Create API-Documentation
+------------------------
+pdoc3 --html --force -o docs/api secfsdstools
+guidline
+https://pdoc3.github.io/pdoc/doc/pdoc/test/example_pkg/#gsc.tab=0
+
+jupyter lab
+-----------
+pip install jupyterlab
+jupyter lab --notebook-dir=.

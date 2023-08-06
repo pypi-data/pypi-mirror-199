@@ -1,0 +1,30 @@
+name: Python test and linting
+
+on: [push]
+
+env:
+  RAPID_API_KEY: ${{ secrets.RAPID_API_KEY }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.7", "3.8", "3.9", "3.10"]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: install dependencies
+        run: pip install .
+      - name: install test dependencies
+        run: pip install .[test]
+      - name: unit tests
+        run: pytest tests --ignore=tests/x_examples
+      - name: linting
+        run: pylint --disable=R0913,R0903,W0511,R0902,R0801,R0201 secfsdstools
+
+
