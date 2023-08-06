@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "weevils-django"
+version = "0.0.1a"
+homepage = "https://docs.weevils.io/api-client"
+description = ""
+authors = ["weevils.io <code@weevils.io>"]
+license = "MIT"
+readme = "README.md"
+packages = [{include = "weevils_django"}]
+classifiers = [
+    "Development Status :: 2 - Pre-Alpha",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: MIT License",
+]
+include = [
+    "LICENSE",
+    "README.md"
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+django = "^4.1.7"
+social-auth-app-django = "^5.1.0"
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.2.0"
+pytest = "^7.2.2"
+twine = "^4.0.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
