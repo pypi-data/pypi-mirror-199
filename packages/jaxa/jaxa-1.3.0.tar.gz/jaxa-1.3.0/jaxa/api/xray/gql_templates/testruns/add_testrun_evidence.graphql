@@ -1,0 +1,15 @@
+mutation addEvidenceToTestRun ($testrun_id: String!, $data: String!, $filename: String!, $content_type: String!) {
+    addEvidenceToTestRun(
+            id: $testrun_id,
+            evidence: [
+                {
+                data: $data,
+                filename: $filename,
+                mimeType: $content_type
+                }
+            ]
+        ){
+            addedEvidence
+            warnings
+        }
+}

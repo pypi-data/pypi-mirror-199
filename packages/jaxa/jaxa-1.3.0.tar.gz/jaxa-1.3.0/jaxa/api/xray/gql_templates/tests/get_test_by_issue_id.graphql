@@ -1,0 +1,29 @@
+query getTestByIssueId ($issue_id: String!) {
+    getTest(issueId: "$issue_id") {
+        issueId
+        testType {
+            name
+            kind
+        },
+        jira(fields: ["key"]),
+        steps {
+            id
+            data
+            action
+            result
+            attachments {
+                id
+                filename
+            }
+        },
+        preconditions(limit: 10) {
+          total
+          start
+          limit
+          results {
+            issueId
+            jira(fields: ["key"])
+          }
+      }
+    }
+}
