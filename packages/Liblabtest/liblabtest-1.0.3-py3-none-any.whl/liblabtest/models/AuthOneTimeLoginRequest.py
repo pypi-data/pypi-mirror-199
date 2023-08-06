@@ -1,0 +1,4 @@
+from __future__ import annotations
+from .OneTimeLoginRequest import OneTimeLoginRequest
+
+AuthOneTimeLoginRequest = OneTimeLoginRequest
