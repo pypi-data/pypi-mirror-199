@@ -1,0 +1,14 @@
+invenio-vocabularies
+oarepo-runtime
+openpyxl
+
+[devs]
+pytest>=7.1.2
+black
+autoflake
+isort
+
+[tests]
+pytest>=7.1.2
+pytest-invenio
+oarepo<12,>=11
