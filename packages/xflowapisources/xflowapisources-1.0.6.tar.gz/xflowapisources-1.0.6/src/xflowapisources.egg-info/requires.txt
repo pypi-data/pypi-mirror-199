@@ -1,0 +1,6 @@
+
+[tests]
+pytest>=7.2.0
+pytest-mock==3.10.0
+pytest-cov==6.5.0
+pytest_httpx==0.21.2
