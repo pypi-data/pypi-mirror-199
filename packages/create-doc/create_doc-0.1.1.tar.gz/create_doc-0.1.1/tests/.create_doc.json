@@ -1,0 +1,16 @@
+{
+    "project_root_path": ".",
+    "project_forms_paths": [
+        "./src"
+    ],
+    "project_webapp_paths": [
+        "./src"
+    ],
+    "output_path": "./docs",
+    "gpt_model_id": "gpt-3.5-turbo",
+    "gpt_model_token_limit": 4096,
+    "gpt_prompt_html": "You are a technical writer of user manuals.You are working on a project to create application documentation from HTML code.The result is in markdown format.The first part of the documentation should contain a concise description of the HTML page from a user perspective. The second part should contain instructions for using the HTML page. The third part should contain a technical description of the page, including function calls, and which classes are used to define the layout of elements on the page. You should describe how the page works internally, and what happens in case of an error.",
+    "gpt_skip_html_router_outlet": true,
+    "html_router_outlet_message": "This page contains angular router-outlet tag. This means that this page contains subcomponents.",
+    "content_title": "Content"
+}

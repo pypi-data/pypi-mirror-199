@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: create_doc
+Version: 0.1.1
+Summary: Generate project documentation using GPT.
+Home-page: https://github.com/Nomendi6/create_doc
+Author: Ivan Vrbovčan
+Author-email: ivan.vrbovcan@nomendi6.com
+License: MIT license
+Keywords: create_doc
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.6
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+License-File: AUTHORS.md
+
+## create_doc
+
+Generate angular project documentation using GPT and dependency-cruiser.
+
+- Free software: MIT license
+
+### Features
+
+- Create documentation for your project using GPT. Analyze html files or other file types and generate a markdown file with the documentation.
+
+- Create module dependency documentation using dependency-cruiser static code analysis.
+
+### Usage
+
+- Initialize a project with the following command:
+
+        create_doc init
+
+- Create documentation for your project html files with the following command:
+
+        create_doc process_html
+
+- Create documentation for your project dependencies with the following command:
+
+        create_doc process_dependencies
+
+### Credits
+
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+
+- Cookiecutter: https://github.com/audreyr/cookiecutter
+- `audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+Example angular form from https://github.com/gothinkster/angular-realworld-example-app
+
+
+# History
+
+## 0.1.0 (2023-03-25)
+
+* First release on PyPI.
