@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: macrogpt
+Version: 0.1.1
+Summary: For fun
+Author: Xuhu Wan
+Author-email: xuhu.wan@gmail.com
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: TextBlob
+Requires-Dist: GoogleNews
+Requires-Dist: tweepy
+Requires-Dist: pyLDAvis
+Requires-Dist: newspaper3k
+Requires-Dist: wordcloud
+Requires-Dist: stop-wordsgensim
+
