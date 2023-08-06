@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: Aragorn
+Version: 0.1
+Summary: A tool to predict tRNAs and tmRNAs
+Home-page: https://github.com/deprekate/aragorn
+Author: Katelyn McNair, Dean Laslett* and Bjorn Canback* (*who did all the real work)
+Author-email: deprekate@gmail.com
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)
+Classifier: Operating System :: OS Independent
+Requires-Python: >3.5.2
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# aragorn
+tRNA and tmRNA finding
+
+https://www.ncbi.nlm.nih.gov/pmc/articles/PMC373265/
