@@ -1,0 +1,79 @@
+Metadata-Version: 2.1
+Name: xontrib-openai
+Version: 0.0.2
+Summary: Use Open AI models in xonsh shell.
+Home-page: https://github.com/anki-code/xontrib-openai
+License: MIT
+Keywords: xontrib,xonsh
+Author: anki-code
+Author-email: a@a.a
+Requires-Python: >=3.8
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: System :: Shells
+Classifier: Topic :: System :: System Shells
+Classifier: Topic :: Terminals
+Requires-Dist: openai (>=0.27)
+Requires-Dist: xonsh (>=0.12.5)
+Project-URL: Code, https://github.com/anki-code/xontrib-openai
+Project-URL: Documentation, https://github.com/anki-code/xontrib-openai/blob/master/README.md
+Project-URL: Issue tracker, https://github.com/anki-code/xontrib-openai/issues
+Project-URL: Repository, https://github.com/anki-code/xontrib-openai
+Description-Content-Type: text/markdown
+
+<p align="center">
+Use Open AI models in xonsh shell.
+</p>
+
+<p align="center">  
+If you like the idea click ⭐ on the repo and <a href="https://twitter.com/intent/tweet?text=Nice%20xontrib%20for%20the%20xonsh%20shell!&url=https://github.com/anki-code/xontrib-openai" target="_blank">tweet</a>.
+</p>
+
+
+## Installation
+
+To install use pip:
+
+```xsh
+xpip install -U xontrib-openai
+# or: xpip install -U git+https://github.com/anki-code/xontrib-openai
+```
+
+## Usage
+
+```xsh
+$OPENAI_API_KEY = 'abcd1234'  # https://platform.openai.com/account/api-keys
+# $OPENAI_MODEL = 'text-davinci-003'  # https://platform.openai.com/docs/models/overview
+# $OPENAI_MAX_TOKENS = 100  # default
+
+xontrib load openai
+
+ai! write git commit on bash. Give me only command
+# git commit -m "Commit message"
+
+ai! send post request with json data on python
+# import requests
+# import json
+# 
+# url = 'http://example.com/api/1/users'
+# data = {
+#   "first_name": "John",
+#   "last_name": "Smith"
+# }
+# 
+# headers = {'Content-type': 'application/json'}
+# response = requests.post(url, data=json.dumps(data), headers=headers)
+```
+
+## Credits
+
+This package was created with [xontrib template](https://github.com/xonsh/xontrib-template).
+
