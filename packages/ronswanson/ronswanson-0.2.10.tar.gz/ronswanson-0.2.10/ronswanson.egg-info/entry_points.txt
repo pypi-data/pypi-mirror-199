@@ -1,0 +1,5 @@
+[console_scripts]
+examine_simulation = scripts.check:examine_simulation
+examine_simulation_detailed = scripts.check:examine_simulation_detailed
+simulation_build = scripts.simulation_build:simulation_build
+
