@@ -1,0 +1,3 @@
+[console_scripts]
+tf = twofer.client.cli:main
+twofer = twofer.server.flaskapp:main

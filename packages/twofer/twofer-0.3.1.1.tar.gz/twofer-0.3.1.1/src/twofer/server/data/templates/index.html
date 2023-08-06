@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<title>Twofer</title>
+<header>
+  <div>
+    <h1>Welcome to Twofer</h1>
+  </div>
+</header>
+<main>
+  <div>
+    {% if user %}
+    <p>
+      Logged-in as: {{ user.name }}
+      (<a href="https://twitter.com/{{ user.username }}" target="_blank">@{{ user.username }}</a>)
+    </p>
+    <ul>
+      <li><a href="/logout">Logout</a></li>
+      <li><a href="/leave/{{ user_token }}">Leave</a></li>
+    </ul>
+    {% else %}
+    <ul>
+      <li><a href="/authenticate">Authenticate</a></li>
+    </ul>
+    {% endif %}
+    {% if owner %}
+    <p>
+      The owner of this Twofer server is: {{ owner.name }}
+      (<a href="https://twitter.com/{{ owner.username }}" target="_blank">@{{ owner.username }})</a>
+    </p>
+    {% endif %}
+  </div>
+</main>
+<footer>
+  <div>
+    <a href="https://bitbucket.org/emptypage/twofer/">Twofer is developed on Bitbucket.</a>
+  </div>
+</footer>
+</html>
