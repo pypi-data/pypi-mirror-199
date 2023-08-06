@@ -1,0 +1,59 @@
+Metadata-Version: 2.1
+Name: cnert
+Version: 0.1.5
+Summary: Cnert is trying to be a simple API for creating TLS Certificates testing purposes.
+Home-page: https://github.com/maartenq/cnert
+License: MIT
+Keywords: certificate,X.509,TLS,cryptography,testing
+Author: Maarten
+Author-email: ikmaarten@gmail.com
+Requires-Python: >=3.9,<4.0
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Console
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: System Administrators
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Topic :: Security :: Cryptography
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Testing
+Classifier: Topic :: Software Development :: Testing :: Mocking
+Requires-Dist: cryptography (>=40.0.0,<41.0.0)
+Requires-Dist: idna (>=3.3,<4.0)
+Project-URL: Documentation, https://cnert.readthedocs.io/en/latest/
+Project-URL: Repository, https://github.com/maartenq/cnert
+Description-Content-Type: text/markdown
+
+# cnert
+
+[![PyPI version](https://badge.fury.io/py/cnert.svg)](https://badge.fury.io/py/cnert)
+[![Documentation Status](https://readthedocs.org/projects/cnert/badge/?version=latest)](https://cnert.readthedocs.io/en/latest/?badge=latest)
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/maartenq/cnert/main.svg)](https://results.pre-commit.ci/latest/github/maartenq/cnert/main)
+[![workflow ci](https://github.com/maartenq/cnert/actions/workflows/main.yml/badge.svg)](https://github.com/maartenq/cnert/actions/workflows/main.yml)
+[![codecov](https://codecov.io/gh/maartenq/cnert/branch/main/graph/badge.svg?token=XXXXXXXXXX)](https://codecov.io/gh/maartenq/cnert)
+[![License](https://img.shields.io/badge/license-MIT%2FApache--2.0-blue.svg)](LICENSE)
+
+Cnert makes TLS private keys, CSRs, private CAs and certificates.
+
+
+## Credits
+
+The project setup was done with the friendly assistance of [Cookiecutter] and
+the [maartenq/cookiecutter-pypackage] project template.
+
+[Cookiecutter]: https://github.com/audreyr/cookiecutter
+[maartenq/cookiecutter-pypackage]: https://github.com/maartenq/cookiecutter-pypackage
+
