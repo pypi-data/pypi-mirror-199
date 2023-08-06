@@ -1,0 +1,56 @@
+Metadata-Version: 2.1
+Name: pyrfp
+Version: 0.1.2
+Summary: Python package for the data-driven Rosenbluth-Fokker-Planck equation.
+Author: Kyoungseoun Chung
+Author-email: kyoungseoun.chung@gmail.com
+Requires-Python: >=3.10,<3.12
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: pyapes (>=0.2.1,<0.3.0)
+Requires-Dist: pymaxed (>=0.1.7,<0.2.0)
+Requires-Dist: pymytools (>=0.1.12,<0.2.0)
+Description-Content-Type: text/markdown
+
+# Python Package for the Rosenbluth Fokker Planck (RFP) Equation
+
+> Currently, heavily under renovation (refactoring) from my old code (in my other private repository)
+
+## Description
+
+This package is refactored version of a part of the `pystops_ml` code.
+I've separated only data generation and training part from `pystops_ml`.
+
+Unlike `pystops_ml`, this module doesn't utilize distributed training. (`DDP` feature not needed)
+
+This code is part of my paper, Data-Driven Stochastic Particle Scheme for Collisional Plasma Simulations.
+
+- Preprint is available at [SSRN](https://ssrn.com/abstract=4108990)
+
+## Features
+
+- Data generation
+  - Uncertainty quantification using the maximum entropy distribution (using `pymaxed`)
+  - Axisymmetric evaluation of the Rosenbluth potentials and their derivatives
+- Data training: supports `cpu`, `cuda`, and `mps` training
+- Data-driven simulation: `rfp-ann`
+
+## Installation
+
+You can install via `pip`
+
+```bash
+$python3 -m pip install pyrfp
+```
+
+## Dependencies
+
+- Global
+- `python >=3.10`
+- `torch >= 1.13.1`
+
+- Personal project
+  - `pymaxed` (for the Maximum Entropy Distribution)
+  - `pyapes` (for the field solver)
+  - `pymytools` (miscellaneous tools including data IO, logging, and progress bar)
+
