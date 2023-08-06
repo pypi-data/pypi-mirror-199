@@ -1,0 +1,7 @@
+---
+# remove zabbix_proxy (hopefully) created earlier
+
+- name: remove proxy
+  zabbix_proxy:
+    proxy_name: ExampleProxy
+    state: absent
