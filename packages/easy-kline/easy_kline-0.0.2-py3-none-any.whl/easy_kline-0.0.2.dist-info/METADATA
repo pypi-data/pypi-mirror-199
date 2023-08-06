@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: easy-kline
+Version: 0.0.2
+Summary: "Easy_klines" is a Python library that provides a solution to the limitations of exchange APIs in retrieving candlestick data more efficiently and quickly.
+Home-page: https://github.com/mohder79/Easy_klines
+Author: mohder
+Author-email: mohder1379@gmail.com
+Project-URL: Bug Tracker, https://github.com/mohder79/Easy_klines
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.10.5
+Description-Content-Type: file: README.md
+License-File: LICENSE.txt
+Requires-Dist: pandas
+Requires-Dist: requests
+Requires-Dist: pytz
+
