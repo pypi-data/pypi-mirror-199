@@ -1,0 +1,60 @@
+Metadata-Version: 2.1
+Name: easyinstruct
+Version: 0.0.2
+Summary: A easy-to-use framework to instruct large language models.
+Home-page: https://github.com/zjunlp/EasyInstruct
+Author: Yixin Ou
+Keywords: AI,NLP,instruction,language model
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Science/Research
+Requires-Python: >=3.7.0
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai (==0.27.0)
+Requires-Dist: llama-index (==0.4.29)
+Requires-Dist: langchain
+Requires-Dist: tiktoken
+Requires-Dist: nltk
+
+# EasyInstruct
+
+![](https://img.shields.io/badge/version-v0.0.2-blue)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+![](https://img.shields.io/github/last-commit/zjunlp/Prompt4ReasoningPapers?color=green) 
+![](https://img.shields.io/badge/PRs-Welcome-red) 
+
+
+## Overview
+
+EasyInstruct is a Python package for instructing Large Language Models(LLM) like GPT-3 in your research experiments. It is designed to be easy to use and easy to extend.
+
+
+## Installation
+
+**Installation using PyPI:**
+```
+pip install easyinstruct==0.0.2
+```
+
+**Installation for local development:**
+```
+git clone https://github.com/zjunlp/EasyInstruct
+cd EasyInstruct
+pip install -e .
+```
+
+## Docs
+
+See [docs](docs) folder for detailed documentation of the package.
+
+
+## Contributors
+
+<a href="https://github.com/zjunlp/EasyInstruct/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=zjunlp/EasyInstruct" />
+</a>
