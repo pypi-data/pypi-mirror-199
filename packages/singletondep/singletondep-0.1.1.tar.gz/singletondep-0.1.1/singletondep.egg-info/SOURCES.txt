@@ -1,0 +1,15 @@
+LICENSE
+MANIFEST.in
+README.md
+pyproject.toml
+singletondep/__init__.py
+singletondep/errors.py
+singletondep/singletondep.py
+singletondep.egg-info/PKG-INFO
+singletondep.egg-info/SOURCES.txt
+singletondep.egg-info/dependency_links.txt
+singletondep.egg-info/requires.txt
+singletondep.egg-info/top_level.txt
+singletondep/ext/__init__.py
+singletondep/ext/fastapi.py
+tests/test_singletondep.py
