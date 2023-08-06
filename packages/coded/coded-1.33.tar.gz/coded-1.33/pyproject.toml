@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "coded"
+version = "1.33"
+description = "Coded is a programming language and Python extension designed to make programming just a little bit easier"
+authors = ["The Open Project <opendylan@proton.me>"]
+readme = "README.md"
+[tool.poetry.dependencies]
+python = "^3"
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
