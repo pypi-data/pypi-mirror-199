@@ -1,0 +1,29 @@
+name: Publish Docs
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+jobs:
+  publish-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - uses: actions/cache@v2
+        with:
+          key: ${{ github.ref }}
+          path: .cache
+
+      # for now, only install mkdocs. In the future may need to install Marvin itself.
+      - run: pip install \
+          mkdocs-material \
+          mkdocs-autolinks-plugin \
+          mkdocs-awesome-pages-plugin \
+          mkdocstrings[python]
+      - run: mkdocs gh-deploy --force
