@@ -1,0 +1,42 @@
+# shyna/ShynaTwelveAm
+
+
+
+## Getting Started
+
+Download links:
+
+SSH clone URL: ssh://git@git.jetbrains.space/shyna623/shyna/ShynaTwelveAm.git
+
+HTTPS clone URL: https://git.jetbrains.space/shyna623/shyna/ShynaTwelveAm.git
+
+
+
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
+
+## Prerequisites
+
+What things you need to install the software and how to install them.
+
+```
+Examples
+```
+
+## Deployment
+
+Add additional notes about how to deploy this on a production system.
+
+## Resources
+
+Add links to external resources for this project, such as CI server, bug tracker, etc.
+
+## Functionality
+
+```
+Process 12 AM task
+ 1) Update weather to the table for morning greetings
+ 2) Clean up tables old data.
+    a) Shivam_face
+    b) Shivam_location
+    c) connection_check
+```
