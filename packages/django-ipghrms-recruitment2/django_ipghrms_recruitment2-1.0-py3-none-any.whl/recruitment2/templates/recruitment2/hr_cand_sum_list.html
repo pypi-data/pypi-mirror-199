@@ -1,0 +1,110 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-hr-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'rec2-hr-cand-list' plan.hashed %}">LISTA KANDIDATU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>INFORMASAUN PLANO REKRUTAMENTO</h2>
+                    </center>
+                </div>
+                <div class="card-body">       
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <th>Deskrisaun</th><th>Objectivu</th><th>Data</th><th class="text-center">Pareser</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ plan.description }}</td>
+                                    <td>{{ plan.objective }}</td>
+                                    <td>{{ plan.date|date:"d/m/Y" }}</td>
+                                    <td align="center">
+                                        {% if plan.file %}                              
+                                            <a class="btn btn-sm btn-secondary" href="{% url 'rec2-prop-pdf' plan.hashed %}" title="PDF" target="_blank"><i class="fa fa-file-pdf"></i></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="col-md-6">
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <th>Naran</th> <th>Pojizaun</th> <th>Nu. Telf.</th> <th>Sexu</th>
+                                </tr>
+                                <tr>
+                                    <td>{{candidate.name}}</td>
+                                    <td>{{candidate.plan_pos}}</td>
+                                    <td>{{candidate.phone}}</td>
+                                    <td>{{candidate.sex}}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                                    
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <h6>{{ legend|upper }}</h6>
+                </div>
+                <div class="card-body">
+                    
+                    <table class="table table-sm table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                {% for i in shorlist %}
+                                   <th class="text-center"> {{i.name}} <a href="{% url 'rec2-hr-cand-sum-add2' plan.hashed candidate.hashed i.pk %}"><i class="fa fa-plus"></i></a>
+                                    <br>
+                                    {{i.sub}}
+                                  </th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for i in shorlist %}
+                                    <td align="center">
+                                        {% for obj in objects %}
+                                            {% if i.pk == obj.short_list_type.pk %}
+                                                        <strong>*</strong> {{obj.summary|striptags|safe}} 
+                                                        <a href="{% url 'rec2-hr-cand-sum-update' plan.hashed candidate.hashed obj.pk  %}"><i class="fa fa-pen-to-square"></i></a> 
+                                                        <a href="{% url 'rec2-hr-cand-sum-delete' plan.hashed candidate.hashed obj.pk %}"><i class="fa fa-trash"></i></a>
+                                                        <br>
+                                            {% else %}
+                                                        
+                                            {% endif %}
+                                        {% endfor %}
+                                    </td>
+                                {% endfor %}
+                            </tr>
+                          </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'rec2-hr-cand-cv-list' plan.hashed %}">LISTA CV & SUMARIO</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary">
+					<center>
+						<h2>{{ legend|upper }}</h2>
+					</center>
+				</div>
+				<div class="card-body">
+					<table class="table table-sm table-bordered">
+                        <thead>
+                            <tr>
+                                <th colspan="4" class="text-center">INFORMASAUN KANDIDATO</th>
+                            </tr>
+                        </thead>
+						<tr>
+							<th>Naran</th>
+							<th>Kategoria</th>
+							<th>Nu. Telf.</th>
+							<th>Sexu</th>
+						</tr>
+						<tr>
+							<td>{{ candidate.name }}</td>
+							<td>{{ candidate.plan_pos }}</td>
+							<td>{{ candidate.phone }}</td>
+							<td>{{ candidate.sex }}</td>
+						</tr>
+					</table>
+					<hr/>
+					<center><h5>{{ legend2|upper }}
+                        <br>
+                        <i>Aumenta Sumario ba  {{sumid}}</i>
+                    </h5></center>
+					{% crispy form %}
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+<style>
+	#id_employee {
+		width: 100%;
+	}
+</style>
+<script>
+	$(document).ready(function() {
+    $('#id_employee').select2();
+});
+</script>
+{% endblock %}

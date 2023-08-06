@@ -1,0 +1,89 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-de-plan-list' %}">LISTA PLANU</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'rec2-de-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>
+                            {{ legend|upper }}
+                        </h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered">
+                        <tr align="center">
+                            <th>Deskrisaun</th>
+                            <th>Objectivu</th>
+                            <th>Data</th>
+                            <th>ToR</th>
+                            <th style="background-color:aqua;">POJISAUN</th>
+                            <th style="background-color:aqua;">VACANCY TRACKING NUMBER</th>
+                            <th style="background-color:aqua;">TOTAL</th>
+                        </tr>
+                        <tr align="center">
+                            <td>{{ plan.description }}</td>
+                            <td>{{ plan.objective }}</td>
+                            <td>{{ plan.date|date:"d/m/Y" }}</td>
+                            <td>
+                                {% if plan.file %}
+                                  
+                                    <a class="btn btn-sm btn-secondary" href="{% url 'rec2-prop-pdf' plan.hashed %}" title="PDF" target="_blank"><i class="fa fa-file-pdf"></i></a>
+                                {% endif %}
+                            </td>
+                            <td style="background-color:antiquewhite;">{{ planpos.position|upper }}</td>
+                            <td style="background-color:antiquewhite;">
+                                {% if planpos.number %}                              
+                                    {{ planpos.number|upper }}
+                                {% endif %}
+                            </td>
+                            <td style="background-color:antiquewhite;">{{ planpos.total }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header border-primary">
+                    <h6>LISTA PAINEL
+                        {% if track.is_approve == True and track.is_publish == False %}
+                        <i class="fa fa-arrow-right"></i>
+                            <a class="btn btn-sm btn-info" href="{% url 'rec2-hr-team-add' plan.hashed planpos.id %}">Aumenta Painel <i class="fa fa-plus"></i></a>
+                        {% endif %}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th>Nu.</th><th>Naran</th><th class="text-center">Pojisaun</th>
+                        </tr>
+                        {% for team in teams %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ team.employee }}</td>
+                            <td class="text-center">{{ team.position }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div> <!--end row-->
+    </div>
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

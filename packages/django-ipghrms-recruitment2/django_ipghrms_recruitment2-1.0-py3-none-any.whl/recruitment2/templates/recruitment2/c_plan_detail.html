@@ -1,0 +1,78 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-c-plan-list' %}">LISTA PLANU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary">
+                    
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+				<div class="card-body">
+                {% if track.is_lock == False %}
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'rec2-c-plan-lock' track.id %}">Taka <i class="fa fa-lock"></i></a>
+                {% else %}
+                    {% if track.is_send == False %}
+                    <a class="btn btn-sm btn-warning mb-1" href="{% url 'rec2-c-plan-unlock' track.id %}">Loke <i class="fa fa-unlock"></i></a>
+                    <a class="btn btn-sm btn-primary mb-1" href="{% url 'rec2-c-plan-send' track.id %}">Manda <i class="fa fa-send"></i></a>
+                    {% else %}
+                    <div class="alert alert-info">Manda ona</div>
+                    {% endif %}
+                {% endif %}
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Unidade</th><th>Objectivu</th><th>Data</th><th>File Proposta</th>
+                        </tr>
+                        <tr>
+                            <td>{{ plan.unit }}</td>
+                            <td>{{ plan.objective }}</td>
+                            <td>{{ plan.date|date:"d/m/Y" }}</td>
+                            <td>
+                                <a class="btn btn-sm btn-secondary" href="{% url 'rec2-prop-pdf' plan.hashed %}" title="PDF" target="_blank"><i class="fa fa-file-pdf-o"></i></a>
+                            </td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    {% if track.is_lock == False %}
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'rec2-c-planpos-add' plan.hashed %}">Aumenta Pojisaun <i class="fa fa-plus"></i></a>
+                    {% else %}
+                    <a class="btn btn-sm btn-info mb-1 disabled" href="#">Aumenta Pojisaun <i class="fa fa-plus"></i></a>
+                    {% endif %}
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Nu.</th><th>Kategoria</th><th>Total</th><th>ToR</th><th>#</th>
+                        </tr>
+                        {% for planpos in planposs %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="{% url 'rec2-c-planpos-detail' plan.hashed planpos.id %}" title="Kriteria">{{ planpos.position }}</a></td>
+                            <td>{{ planpos.total }}</td>
+                            <td><a class="btn btn-sm btn-secondary" href="{% url 'rec2-tor-pdf' planpos.id %}" target="_blank" title="PDF"><i class="fa fa-file-pdf-o"></i></a></td>
+                            <td>
+                            {% if track.is_lock == False %}
+                                <a class="btn btn-sm btn-info" href="{% url 'rec2-c-planpos-update' plan.hashed planpos.id %}"><i class="fa fa-edit"></i></a>
+                            {% else %}
+                                <a class="btn btn-sm btn-info disabled" href="#"><i class="fa fa-edit"></i></a>
+                            {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

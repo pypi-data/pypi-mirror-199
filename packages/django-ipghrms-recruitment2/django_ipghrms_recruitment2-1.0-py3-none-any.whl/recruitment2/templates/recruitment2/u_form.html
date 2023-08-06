@@ -1,0 +1,55 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-u-cand-list' planpos.id u_painel.id %}">LISTA KANDIDATU</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'rec2-u-cand-detail' plan.hashed cand.hashed u_painel.id %}">DETALHA KANDIDATU</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary">
+					<center>
+						<h2>{{ legend|upper }}</h2>
+					</center>
+				</div>
+				<div class="card-body">
+					<table class="table table-sm table-bordered">
+						<tr>
+							<th>Deskrisaun</th>
+							<th>Objectivu</th>
+							<th>Data</th>
+						</tr>
+						<tr>
+							<td>{{ plan.description }}</td>
+							<td>{{ plan.objective }}</td>
+							<td>{{ plan.date|date:"d/m/Y" }}</td>
+						</tr>
+					</table>
+					<hr/>
+					<center><h5>{{ legend|upper }}</h5></center>
+					{% crispy form %}
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+<style>
+	#id_employee {
+		width: 100%;
+	}
+</style>
+<script>
+	$(document).ready(function() {
+    $('#id_employee').select2();
+});
+</script>
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+		{% if page == "plist" %}
+			<li class="breadcrumb-item"><a href="{% url 'rec2-hr-plan-list' %}">LISTA PLANU</a></li>
+		{% elif page == "pdetail" %}
+			<li class="breadcrumb-item"><a href="{% url 'rec2-hr-plan-detail' plan.hashed %}">DETALHA PLANU REKRUTAMENTO</a></li>
+		{% elif page == "pcat" %}
+			<li class="breadcrumb-item"><a href="{% url 'rec2-c-plancat-detail' plan.hashed planpos.id %}">LISTA KRITERIA</a></li>
+		{% elif page == "pposops" %}
+			<li class="breadcrumb-item"><a href="{% url 'rec2-c-planpos-detail' plan.hashed planpos.id %}">LISTA KRITERIA</a></li>
+		{% elif page == "preject" %}
+			<li class="breadcrumb-item"><a href="{% url 'rec2-de-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+		{% elif page == "attach-add" %}
+			<li class="breadcrumb-item"><a href="{% url 'rec2-hr-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+		{% endif %}
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary">
+					<center>
+						<h2>
+							{{ legend|upper }}
+						</h2>
+					</center>
+				</div>
+				<div class="card-body">
+				{% if page == "pcat" or page == "pcatops" %}
+					<table class="table table-sm">
+						<tr>
+							<th>Deskrisaun</th>
+							<th>Objectivu</th>
+							<th>Data</th>
+							<th>Kategoria</th>
+							<th>Total</th>
+							{% if page == "pcatops" %}
+							<th style="background-color:aqua;">ASPETU</th>
+							{% endif %}
+						</tr>
+						<tr>
+							<td>{{ plan.description }}</td>
+							<td>{{ plan.objective }}</td>
+							<td>{{ plan.date|date:"d/m/Y" }}</td>
+							<td>{{ planpos.position }}</td>
+							<td>{{ planpos.total }}</td>
+							{% if page == "pposops" %}
+							<td style="background-color:antiquewhite;">{{ aspect.name|upper }}</td>
+							{% endif %}
+						</tr>
+					</table>
+					<hr/>
+				{% endif %}
+				<div class="row">
+					<div class="col-md-12">
+						<div class="alert alert-info">
+							<i class="fa fa-circle-info"> </i> <small> </i> <i>Koluna sira ne'ebe iha <strong class="text-danger">*</strong> signifika Itaboot tenke prienche</i> </small>
+						</div>
+					</div>
+				</div>
+					{% crispy form %}
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,103 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-hr-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>INFORMASAUN PLANO REKRUTAMENTO</h2>
+                    </center>
+                </div>
+                <div class="card-body">                    
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th>Deskrisaun</th><th>Objectivu</th><th>Data</th><th class="text-center">Pareser</th>
+                        </tr>
+                        <tr>
+                            <td>{{ plan.description }}</td>
+                            <td>{{ plan.objective }}</td>
+                            <td>{{ plan.date|date:"d/m/Y" }}</td>
+                            <td align="center">
+                                {% if plan.file %}                              
+                                    <a class="btn btn-sm btn-secondary" href="{% url 'rec2-prop-pdf' plan.hashed %}" title="PDF" target="_blank"><i class="fa fa-file-pdf"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <h6>{{ legend|upper }}
+                        {% if plan.plantrack.all.last.is_finish == False %}
+                            <i class="fa fa-arrow-right"></i>
+                            <a class="btn btn-sm btn-info mb-1" href="{% url 'rec2-hr-cand-add' plan.hashed %}">Aumenta <i class="fa fa-plus"></i></a>
+                        {% endif %}
+                            <a class="btn btn-sm btn-success mb-1" href="{% url 'rec2-hr-cand-cv-list' plan.hashed %}">CV & Summario <i class="fa fa-file"></i></a>
+                    </h6>
+                </div>
+                <div class="card-body">
+                    
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Naran</th>
+                                <th>Kategoria</th>
+                                <th>Sexu</th>
+                                <th>No. Telf.</th>
+                                <th>Email</th>
+                                <th>Diploma</th>
+                                <th>Universidade</th>
+                                <th>Data Aplika</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'rec2-hr-cand-detail' plan.hashed obj.hashed %}">{{ obj.name }}</a></td>
+                                <td>{{ obj.plan_pos }}</td>
+                                <td>{{ obj.sex }}</td>
+                                <td>{{ obj.phone }}</td>
+                                <td>{{ obj.email }}</td>
+                                <td>{{ obj.diploma }}</td>
+                                <td>{{ obj.university }}</td>
+                                <td>{{ obj.date|date:"d/m/Y" }}</td>
+                                <td>
+                                {% if obj.is_lock == False %}
+                                    <a href="{% url 'rec2-hr-cand-update' plan.hashed obj.hashed %}" title="Altera"><i class="fa fa-edit"></i></a>
+                                    <a href="{% url 'rec2-hr-cand-delete' plan.hashed obj.id %}" title="Hapaga"><i class="fa fa-trash"></i></a>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

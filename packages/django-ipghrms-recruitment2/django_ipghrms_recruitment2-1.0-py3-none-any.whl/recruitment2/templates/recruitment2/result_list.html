@@ -1,0 +1,87 @@
+{% extends "main/layout.html" %}
+{% load humanize %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-de-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>INFORMASAUN PLANO REKRUTAMENTO</h2>
+                    </center>
+                </div>
+                <div class="card-body">                    
+                    <table class="table table-sm table-striped table-bordered">
+                        <tr>
+                            <th>Deskrisaun</th><th>Objectivu</th><th>Data</th><th>Pojisaun</th><th>Total</th>
+                        </tr>
+                        <tr>
+                            <td>{{ plan.description }}</td>
+                            <td>{{ plan.objective }}</td>
+                            <td>{{ plan.date|date:"d/m/Y" }}</td>
+                            <td>{{ planpos.position }}</td>
+                            <td>{{ planpos.total }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <h6>{{ legend|upper }}</h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Naran Kandidatu</th>
+                                <th>Gender</th>
+                                <th><center>Academic Evaluation<br/> (10%)</center></th>
+                                <th><center>Written Test Evaluation<br/> (40%)</center></th>
+                                <th><center>Interview Evalutaion<br/> (50%)</center></th>
+                                <th><center>Final Score<br/>CF=(AC*0.10)+(PE*0.40)+(EA*0.50)</center></th>
+                                <th class="text-center">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                
+                                <td><a href="{% url 'rec2-de-cand-result-det' plan.hashed planpos.id obj.id %}">{{ obj.name }}</a></td>
+                                <td>{{ obj.sex }}</td>
+                                <td align="center">{{ obj.candscore.all.0.score_a }}</td>
+                                <td align="center">{{ obj.candscore.all.0.score_b }}</td>
+                                <td align="center">{{ obj.candscore.all.0.score_c }}</td>
+                                <td align="center">{{ obj.candscore.all.0.final_score }}</td>
+                                <td align="center">{{ obj.candscore.all.0.sort|ordinal }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
