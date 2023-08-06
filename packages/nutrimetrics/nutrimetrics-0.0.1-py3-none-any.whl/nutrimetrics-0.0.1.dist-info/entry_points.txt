@@ -1,0 +1,4 @@
+[console_scripts]
+nutrimetrics-analyze = nutrimetrics.cli:analyze_meal_plan
+nutrimetrics-config = nutrimetrics.cli:display_config
+nutrimetrics-import = nutrimetrics.cli:import_food_data_central
