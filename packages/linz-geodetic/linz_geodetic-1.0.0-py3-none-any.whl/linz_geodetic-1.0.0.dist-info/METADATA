@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: linz-geodetic
+Version: 1.0.0
+Summary: LINZ.geodetic module - miscellanous geodetic functions
+Home-page: https://github.com/linz/python-linz-geodetic
+License: MIT
+Author: Chris Crook
+Author-email: ccrook@linz.govt.nz
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Requires-Dist: numpy (>=1.21,<2.0)
+Description-Content-Type: text/markdown
+
+# LINZ.geodetic package
+
+Some random geodetic functions used by other LINZ modules.  
+
+* Ellipsoid.py: Conversion between ellipsoidal and geocentric coordinates.  Also [GRS80](https://en.wikipedia.org/wiki/Geodetic_Reference_System_1980) ellipsoid definition.
+* ITRF.py: Conversion between [ITRF](https://itrf.ign.fr/en/homepage) realisations
+* Sinex.py: Reading and some updating of [SINEX](https://www.iers.org/IERS/EN/Organization/AnalysisCoordinator/SinexFormat/sinex.html) files (GNSS processing solution files)
+
