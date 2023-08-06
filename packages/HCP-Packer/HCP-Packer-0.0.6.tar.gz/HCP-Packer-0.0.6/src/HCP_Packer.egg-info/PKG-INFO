@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: HCP-Packer
+Version: 0.0.6
+Summary: HCP Packer API Client
+Home-page: https://github.com/KBA-IT/hcp-packer
+Author: Billy Austin
+Author-email: billy@kba-it.com
+License: MIT
+Keywords: Hashicorp Packer
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# HCP-Packer API Client
+
+## Installation
+
+```bash
+pip install hcp-packer
+```
