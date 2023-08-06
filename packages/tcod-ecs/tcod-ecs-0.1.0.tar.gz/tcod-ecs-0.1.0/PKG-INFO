@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: tcod-ecs
+Version: 0.1.0
+Summary: A type-hinted Entity Component System based on Python dictionaries and sets.
+Author-email: Kyle Benesch <4b796c65+github@gmail.com>
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Typing :: Typed
+Requires-Dist: typing-extensions >=4.4.0
+Requires-Dist: attrs >=22.2.0 ; extra == "test"
+Requires-Dist: pytest >=7.2.0 ; extra == "test"
+Requires-Dist: pytest-cov >=4.0.0 ; extra == "test"
+Requires-Dist: pytest-benchmark >=4.0.0 ; extra == "test"
+Requires-Dist: mypy >=1.1.1 ; extra == "test"
+Project-URL: Changelog, https://github.com/HexDecimal/python-tcod-ecs/blob/main/CHANGELOG.md
+Project-URL: Documentation, https://python-tcod-ecs.readthedocs.io
+Project-URL: Home, https://github.com/HexDecimal
+Project-URL: Source, https://github.com/HexDecimal/python-tcod-ecs
+Provides-Extra: test
+
+# About
+
+[![PyPI](https://img.shields.io/pypi/v/tcod-ec)](https://pypi.org/project/tcod-ecs/)
+[![PyPI - License](https://img.shields.io/pypi/l/tcod-ecs)](https://github.com/HexDecimal/python-tcod-ecs/blob/main/LICENSE)
+[![Documentation Status](https://readthedocs.org/projects/python-tcod-ecs/badge/?version=latest)](https://python-tcod-ecs.readthedocs.io)
+[![codecov](https://codecov.io/gh/HexDecimal/python-tcod-ecs/branch/main/graph/badge.svg?token=4Ak5QpTLZB)](https://codecov.io/gh/HexDecimal/python-tcod-ecs)
+
+This is an [Entity-component-system](https://en.wikipedia.org/wiki/Entity_component_system) implemented in Python.
+See the [ECS FAQ](https://github.com/SanderMertens/ecs-faq) for more info.
+
+This implementation focuses on type-hinting, organization, and is designed to work well with Python.
+The following features are currently implemented:
+
+- Entities can have store components which are instances of any Python object. Components are looked up by their type.
+- Entities can have one instance of a type, or multiple instances of a type with a string or other hashable to differentiate them.
+- Components can be registered as abstract, allowing a base type to hold subclasses of that component.
+- Entity tags are distinct from components, tags are any hashable Python object rather than empty class.
+- Entity relationships are supported, either as many-to-many or many-to-one relationships.
+- ECS Queries can be made to fetch entities having a combination of components/tags/relations or the absence of such.
+
+A lightweight version which implements only the entity-component framework exists called [tcod-ec](https://pypi.org/project/tcod-ec/).
+
+# Installation
+
+Use pip to install this library:
+```
+pip install tcod-ecs
+```
+
+If `tcod` is installed and the version is less than `14.0.0` then `import tcod.ecs` will fail.
+Remove or update `tcod` to fix this issue.
+
