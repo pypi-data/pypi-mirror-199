@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ldnsexplorer"
+version = "1.0"
+authors = [
+  { name="handsome guy"},
+]
+description = "A public DNS resolver explorer"
+readme = "README.md"
+requires-python = ">=3"
+dependencies = [
+  "matplotlib == 3.7.1",
+  "dnspython == 2.3.0",
+]
+classifiers = [
+    "Programming Language :: Python",
+    "Operating System :: OS Independent",
+]
