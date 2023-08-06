@@ -1,0 +1,22 @@
+DocumentTemplate
+grokcore.component
+setuptools
+zope.component
+zope.i18nmessageid
+zope.interface
+zope.cachedescriptors
+zeam.form.base
+
+[:python_version == "2.7"]
+grokcore.chameleon<4.0
+DocumentTemplate<4.0
+grokcore.component<4.0
+grokcore.view<4.0
+martian<2.0
+zeam.form.base<1.4
+
+[test]
+plone.testing
+
+[test:python_version == "2.7"]
+Products.PythonScripts<5.0
