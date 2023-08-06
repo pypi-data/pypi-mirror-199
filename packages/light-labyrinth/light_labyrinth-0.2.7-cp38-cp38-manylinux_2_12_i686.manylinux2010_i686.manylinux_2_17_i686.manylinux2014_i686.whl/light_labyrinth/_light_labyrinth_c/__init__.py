@@ -1,0 +1,1 @@
+from ._light_labyrinth_c import LightLabyrinthVerbosityLevel
