@@ -1,0 +1,25 @@
+[tool.poetry]
+name = "elysia"
+version = "1.1.0"
+description = "A better* way of creating attrs fields"
+authors = ["celsius narhwal <hello@celsiusnarhwal.dev>"]
+readme = "README.md"
+homepage = "https://github.com/celsiusnarhwal/elysia"
+keywords = ["attrs", "class", "attribute"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+attrs = "^22.2.0"
+pydantic = "^1.10.5"
+
+[tool.black]
+line-length = 88
+target-version = ["py37"]
+
+[tool.isort]
+profile = "black"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
