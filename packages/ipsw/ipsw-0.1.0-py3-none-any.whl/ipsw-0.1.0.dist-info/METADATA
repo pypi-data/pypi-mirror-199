@@ -1,0 +1,57 @@
+Metadata-Version: 2.1
+Name: ipsw
+Version: 0.1.0
+Summary: A Python library for the ipsw Engine API.
+Home-page: https://github.com/blacktop/ipsw-py
+Maintainer: Blacktop
+License: MIT
+Project-URL: Documentation, https://ipsw-py.readthedocs.io
+Project-URL: Changelog, https://ipsw-py.readthedocs.io/en/stable/change-log.html
+Project-URL: Source, https://github.com/blacktop/ipsw-py
+Project-URL: Tracker, https://github.com/blacktop/ipsw-py/issues
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Other Environment
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development
+Classifier: Topic :: Utilities
+Classifier: License :: OSI Approved :: Apache Software License
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: packaging (>=14.0)
+Requires-Dist: requests (>=2.26.0)
+Requires-Dist: urllib3 (>=1.26.0)
+Requires-Dist: websocket-client (>=0.32.0)
+Requires-Dist: pywin32 (>=304) ; sys_platform == "win32"
+Provides-Extra: ssh
+Requires-Dist: paramiko (>=2.4.3) ; extra == 'ssh'
+Provides-Extra: tls
+
+# `ipsw` SDK for Python 🚧
+
+> A Python library for the [ipsw](https://github.com/blacktop/ipsw) Engine API
+
+---
+
+## Community
+
+You have questions, need support and or just want to talk about `ipsw-py`?
+
+Here are ways to get in touch with the `ipsw-py` community:
+
+[![Join Discord](https://img.shields.io/badge/Join_our_Discord_server-5865F2?style=for-the-badge&logo=discord&logoColor=white)](https://discord.gg/xx2y9yrcgs)
+[![Follow Twitter](https://img.shields.io/badge/follow_on_twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/blacktop__)
+[![Follow Mastodon](https://img.shields.io/badge/follow_on_mastodon-6364FF?style=for-the-badge&logo=mastodon&logoColor=white)](https://mastodon.social/@blacktop)
+[![GitHub Discussions](https://img.shields.io/badge/GITHUB_DISCUSSION-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/blacktop/ipsw/discussions)
+
+## License
+
+MIT Copyright (c) 2023 **blacktop**
