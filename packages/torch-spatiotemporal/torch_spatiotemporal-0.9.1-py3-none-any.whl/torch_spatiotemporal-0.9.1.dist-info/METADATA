@@ -1,0 +1,108 @@
+Metadata-Version: 2.1
+Name: torch-spatiotemporal
+Version: 0.9.1
+Summary: A PyTorch library for spatiotemporal data processing
+Home-page: https://github.com/TorchSpatiotemporal/tsl
+Download-URL: https://github.com/TorchSpatiotemporal/tsl/archive/v0.9.1.tar.gz
+Author: Andrea Cini, Ivan Marisca
+Author-email: andrea.cini@usi.ch, ivan.marisca@usi.ch
+License: MIT
+Keywords: pytorch,pytorch-geometric,geometric-deep-learning,graph-neural-networks,graph-convolutional-networks,temporal-graph-networks,spatiotemporal-graph-neural-networks,spatiotemporal-processing
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: einops
+Requires-Dist: numpy
+Requires-Dist: pandas (<1.5,>=1.4)
+Requires-Dist: pytorch-lightning (<1.9,>=1.5)
+Requires-Dist: PyYAML
+Requires-Dist: scikit-learn
+Requires-Dist: scipy
+Requires-Dist: tables
+Requires-Dist: torchmetrics (<0.11,>=0.7)
+Requires-Dist: tqdm
+Provides-Extra: doc
+Requires-Dist: matplotlib ; extra == 'doc'
+Requires-Dist: mpld3 ; extra == 'doc'
+Requires-Dist: hydra-core ; extra == 'doc'
+Requires-Dist: omegaconf ; extra == 'doc'
+Requires-Dist: holidays ; extra == 'doc'
+Requires-Dist: neptune-client (<0.17,>=0.14) ; extra == 'doc'
+Requires-Dist: pytorch-fast-transformers ; extra == 'doc'
+Requires-Dist: sphinx ; extra == 'doc'
+Requires-Dist: sphinx-design ; extra == 'doc'
+Requires-Dist: sphinx-copybutton ; extra == 'doc'
+Requires-Dist: sphinxext-opengraph ; extra == 'doc'
+Requires-Dist: sphinx-hoverxref ; extra == 'doc'
+Requires-Dist: myst-nb ; extra == 'doc'
+Requires-Dist: furo ; extra == 'doc'
+Provides-Extra: experiment
+Requires-Dist: hydra-core ; extra == 'experiment'
+Requires-Dist: omegaconf ; extra == 'experiment'
+Provides-Extra: full
+Requires-Dist: matplotlib ; extra == 'full'
+Requires-Dist: mpld3 ; extra == 'full'
+Requires-Dist: hydra-core ; extra == 'full'
+Requires-Dist: omegaconf ; extra == 'full'
+Requires-Dist: holidays ; extra == 'full'
+Requires-Dist: neptune-client (<0.17,>=0.14) ; extra == 'full'
+Requires-Dist: pytorch-fast-transformers ; extra == 'full'
+
+<div align="center">
+    <img src="docs/source/_static/img/tsl_logo_text.svg" width="60%"/>
+</div>
+
+**tsl** *(Torch Spatiotemporal)* is a library built to accelerate research on neural spatiotemporal data processing 
+methods, with a focus on Graph Neural Networks.
+
+`tsl` is built on several libraries of the *Python* scientific computing ecosystem, with the final objective of providing a straightforward process that goes from data preprocessing to model prototyping.
+In particular, `tsl` offers a wide range of utilities to develop neural networks in *PyTorch* for processing spatiotemporal data signals.
+
+## Installation
+
+`tsl` is compatible with Python>=3.7. We recommend installation from source to be up-to-date with the latest version:
+
+```bash
+git clone https://github.com/TorchSpatiotemporal/tsl.git
+cd tsl
+python setup.py install  # Or 'pip install .'
+```
+
+To solve all dependencies, we recommend using Anaconda and the provided environment configuration by running the command:
+
+```bash
+conda env create -f tsl_env.yml
+```
+
+Alternatively, you can install the library from pip:
+
+```bash
+pip install torch-spatiotemporal
+```
+
+Please refer to [PyG installation guidelines](https://pytorch-geometric.readthedocs.io/en/latest/notes/installation.html) for installation of PyG ecosystem without conda.
+
+## Tutorial
+
+The best way to start using `tsl` is by following the tutorial notebook in `examples/notebooks/a_gentle_introduction_to_tsl.ipynb`.
+
+## Documentation
+
+The documentation is hosted on [readthedocs](https://torch-spatiotemporal.readthedocs.io/en/latest/). For local access, you can build it from the `docs` directory.
+
+## Citing
+
+If you use Torch Spatiotemporal for your research, please consider citing the library
+
+```latex
+@software{Cini_Torch_Spatiotemporal_2022,
+    author = {Cini, Andrea and Marisca, Ivan},
+    license = {MIT},
+    month = {3},
+    title = {{Torch Spatiotemporal}},
+    url = {https://github.com/TorchSpatiotemporal/tsl},
+    year = {2022}
+}
+```
+
+By [Andrea Cini](https://andreacini.github.io/) and [Ivan Marisca](https://marshka.github.io/).
