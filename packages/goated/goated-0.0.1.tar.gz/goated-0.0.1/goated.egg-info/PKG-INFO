@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: goated
+Version: 0.0.1
+Summary: Python library for interacting with the Goated Exchange API.
+Home-page: https://github.com/goatedsports/python-sdk
+Download-URL: https://github.com/goatedsports/python-sdk/archive/refs/heads/main.zip
+Author: Goated Core Team
+Author-email: cian@goated.com
+License: MIT
+Keywords: goated,betting,trading,sports,sportsbetting,exchange,bet,prediction,market
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Other/Nonlisted Topic
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Python: >=3.9
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+
+### Goated Python Library
+
+A handy library to interacting with, sourcing information from and trading on the Goated Exchange.
