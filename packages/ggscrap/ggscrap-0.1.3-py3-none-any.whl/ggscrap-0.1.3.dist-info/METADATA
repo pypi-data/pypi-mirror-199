@@ -1,0 +1,14 @@
+Metadata-Version: 2.1
+Name: ggscrap
+Version: 0.1.3
+Summary: little scrapping tool
+Home-page: https://github.com/piteren/ggscrap.git
+Author: Piotr Niewinski
+Author-email: pioniewinski@gmail.com
+License: MIT
+Requires-Dist: beautifulsoup4
+Requires-Dist: ompr
+Requires-Dist: pypaq
+Requires-Dist: requests
+Requires-Dist: requests-html
+
