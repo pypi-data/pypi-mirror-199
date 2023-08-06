@@ -1,0 +1,61 @@
+[tool.poetry]
+name = "python-mongorm"
+version = "0.1.1"
+description = "MongORM is an ORM (object relational mapping) wrapper using async library motor for MongoDB connection and pydantic for data definition and validation."
+authors = ["Tomas Votava <info@tomasvotava.eu>"]
+license = "MIT"
+readme = "README.md"
+repository = "https://github.com/tomasvotava/mongorm"
+documentation = "https://tomasvotava.github.io/mongorm/"
+keywords = ["mongodb", "mongo", "orm"]
+packages = [{include = "mongorm"}]
+
+[tool.black]
+line-length = 120
+
+[tool.pytest.ini_options]
+testpaths = ["tests/"]
+addopts = "-v --cov=mongorm --cov-report xml:cov.xml"
+
+[tool.pyright]
+ignore = "**/tests/"
+
+[tool.poe.tasks]
+isort = "isort mongorm/"
+isort-check = "isort --check mongorm/"
+black = "black mongorm/"
+black-check = "black --check mongorm/"
+mypy = "mypy --config-file mypy.ini mongorm/"
+pylint = "pylint --disable=fixme mongorm/"
+todos = "pylint --disable=all --enable=fixme mongorm/"
+
+format = ["isort", "black"]
+lint = ["isort-check", "black-check", "pylint", "mypy"]
+test = "pytest"
+coverage = "coverage report"
+tox = "tox"
+docs = "pdoc3 --html --output-dir .public mongorm"
+build = "poetry build"
+
+run = "python -um mongorm.main"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+motor = "^3.1.1"
+pydantic = "^1.10.5"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^23.1.0"
+pylint = "^2.16.4"
+mypy = "^1.0.1"
+pytest = "^7.2.2"
+poethepoet = "^0.18.1"
+isort = "^5.12.0"
+pytest-cov = "^4.0.0"
+tox = "^4.4.6"
+pdoc3 = "^0.10.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

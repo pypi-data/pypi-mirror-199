@@ -1,0 +1,77 @@
+Metadata-Version: 2.1
+Name: python-mongorm
+Version: 0.1.1
+Summary: MongORM is an ORM (object relational mapping) wrapper using async library motor for MongoDB connection and pydantic for data definition and validation.
+Home-page: https://github.com/tomasvotava/mongorm
+License: MIT
+Keywords: mongodb,mongo,orm
+Author: Tomas Votava
+Author-email: info@tomasvotava.eu
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: motor (>=3.1.1,<4.0.0)
+Requires-Dist: pydantic (>=1.10.5,<2.0.0)
+Project-URL: Documentation, https://tomasvotava.github.io/mongorm/
+Project-URL: Repository, https://github.com/tomasvotava/mongorm
+Description-Content-Type: text/markdown
+
+# MongORM
+
+![MongORM](./banner.png)
+
+`MongORM` is an ORM (object relational mapping) wrapper using async library motor for `MongoDB` connection and pydantic for data definition and validation.
+
+**This module is a work in progress and API may change radically.**
+
+`MongORM` uses [`pydantic`](https://docs.pydantic.dev/) for data validation
+and [`motor`](https://www.mongodb.com/docs/drivers/motor/) for async MongoDB connection.
+
+## Installation
+
+Using PIP:
+
+```console
+pip install python-mongorm
+```
+
+Using poetry:
+
+```console
+poetry add python-mongorm
+```
+
+## Usage
+
+### Create client
+
+```python
+from mongorm import MongORM
+
+client = MongORM("mongodb://root:root@localhost:27017/", "database")
+```
+
+### Define model
+
+```python
+from mongorm import BaseModel, MongoIndex, MongoIndexType
+
+class Book(BaseModel):
+    """Define models the way you would define pydantic models"""
+
+    class Meta:
+        """Meta contains the model's configuration and indexes"""
+        client = client  # pass the client to the model's Meta
+        collection = "books"
+        title = MongoIndex("title", MongoIndexType.ASCENDING)
+        author = MongoIndex("author", MongoIndexType.ASCENDING)
+    
+    # id field of type ObjectId is created automatically
+    title: str
+    author: str
+    year_published: int
+
+```
+
