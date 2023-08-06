@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: golem_garden
+Version: 0.4.2
+Summary: Welcome to the Garden - We're so glad you're here <3 
+Keywords: chat
+Author: Jonathan Samir Matthis
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+Classifier: Development Status :: 3 - Alpha
+Requires-Dist: python-dotenv
+Requires-Dist: openai
+Requires-Dist: pymongo
+Requires-Dist: toml
+Requires-Dist: black ; extra == "dev"
+Requires-Dist: bumpver ; extra == "dev"
+Requires-Dist: isort ; extra == "dev"
+Requires-Dist: pip-tools ; extra == "dev"
+Requires-Dist: pytest ; extra == "dev"
+Project-URL: Homepage, https://github.com/freemocap/golem_garden
+Provides-Extra: dev
+
+# Welcome to the Garden 
+
+We're so glad you're here 🌱✨
+
