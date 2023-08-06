@@ -1,0 +1,9 @@
+PrettyTable>=0.7.2
+defusedxml
+six>=1.10.0
+
+[:python_version == "2.7"]
+futures
+
+[tests]
+unittest-xml-reporting
