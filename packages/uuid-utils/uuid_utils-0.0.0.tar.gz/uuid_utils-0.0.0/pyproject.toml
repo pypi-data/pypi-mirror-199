@@ -1,0 +1,26 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "uuid_utils"
+readme = "README.md"
+requires-python = ">=3.7"
+license = "MIT"
+authors = [
+  { name = "Amin Alaee", email = "me@aminalaee.dev" },
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+]
+dependencies = []
+dynamic = ["version"]
+
+[tool.hatch.version]
+path = "uuid_utils/__about__.py"
