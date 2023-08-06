@@ -1,0 +1,4 @@
+[console_scripts]
+django_gen = django_scaffolding_tools.django.cli:main
+django_scaffolding_tools = django_scaffolding_tools.cli:main
+
