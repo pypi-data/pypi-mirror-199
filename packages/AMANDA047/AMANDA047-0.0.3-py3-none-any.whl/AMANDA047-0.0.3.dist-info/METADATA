@@ -1,0 +1,19 @@
+Metadata-Version: 2.1
+Name: AMANDA047
+Version: 0.0.3
+Summary: Packaging rerp_package
+Author-email: Amanda Lin <amanda.lin@gmail.com>
+Project-URL: Homepage, https://github.com/amandalin047/rERP_Module
+Project-URL: Bug Tracker, https://github.com/amandalin047/rERP_Module/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE.txt
+Requires-Dist: mne
+Requires-Dist: pingouin
+Requires-Dist: statsmodels
+Requires-Dist: scipy
+
+Pypi packaging rerp_module
