@@ -1,0 +1,15 @@
+README.md
+pyproject.toml
+setup.cfg
+src/dispenser/__init__.py
+src/dispenser/create.py
+src/dispenser/util.py
+src/dispenser/version_base.py
+src/dispenser.egg-info/PKG-INFO
+src/dispenser.egg-info/SOURCES.txt
+src/dispenser.egg-info/dependency_links.txt
+src/dispenser.egg-info/top_level.txt
+src/dispenser/impl/__init__.py
+src/dispenser/impl/forge.py
+src/dispenser/impl/paper.py
+src/dispenser/impl/vanilla.py
