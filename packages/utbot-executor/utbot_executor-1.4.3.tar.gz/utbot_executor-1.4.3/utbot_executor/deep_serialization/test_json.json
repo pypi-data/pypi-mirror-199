@@ -1,0 +1,453 @@
+{
+ "objects": {
+  "140340324106560": {
+   "strategy": "list",
+   "id": "140340324106560",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": false,
+   "items": [
+    "140340328775920",
+    "140340328775952",
+    "140340324473968",
+    "140340324730480",
+    "140340323271104",
+    "140340335644224",
+    "140340323875760",
+    "140340324173056"
+   ]
+  },
+  "140340328775920": {
+   "strategy": "repr",
+   "id": "140340328775920",
+   "typeinfo": {
+    "kind": "int",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "1"
+  },
+  "140340328775952": {
+   "strategy": "repr",
+   "id": "140340328775952",
+   "typeinfo": {
+    "kind": "int",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "2"
+  },
+  "140340324473968": {
+   "strategy": "repr",
+   "id": "140340324473968",
+   "typeinfo": {
+    "kind": "float",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "float('inf')"
+  },
+  "140340324730480": {
+   "strategy": "repr",
+   "id": "140340324730480",
+   "typeinfo": {
+    "kind": "str",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "'abc'"
+  },
+  "140340323271104": {
+   "strategy": "dict",
+   "id": "140340323271104",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {
+    "140340328775920": "140340328775920"
+   }
+  },
+  "140340335644224": {
+   "strategy": "repr",
+   "id": "140340335644224",
+   "typeinfo": {
+    "kind": "NoneType",
+    "module": "types"
+   },
+   "comparable": true,
+   "value": "None"
+  },
+  "140340323182400": {
+   "strategy": "list",
+   "id": "140340323182400",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": [
+    "94366492289552"
+   ]
+  },
+  "94366492289552": {
+   "strategy": "repr",
+   "id": "94366492289552",
+   "typeinfo": {
+    "kind": "B",
+    "module": "__main__"
+   },
+   "comparable": true,
+   "value": "__main__.B"
+  },
+  "140340323875760": {
+   "strategy": "reduce",
+   "id": "140340323875760",
+   "typeinfo": {
+    "kind": "B",
+    "module": "__main__"
+   },
+   "comparable": false,
+   "constructor": {
+    "kind": "object.__new__",
+    "module": "builtins"
+   },
+   "args": "140340323182400",
+   "state": "140340324738176",
+   "listitems": "140340323305792",
+   "dictitems": "140340323306240"
+  },
+  "140340324738176": {
+   "strategy": "dict",
+   "id": "140340324738176",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {
+    "140340323858480": "140340323222480",
+    "140340323858736": "140340328775952",
+    "140340323857456": "140340328775984",
+    "140340324530864": "140340323875648"
+   }
+  },
+  "140340323858480": {
+   "strategy": "repr",
+   "id": "140340323858480",
+   "typeinfo": {
+    "kind": "str",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "'b1'"
+  },
+  "140340323181888": {
+   "strategy": "list",
+   "id": "140340323181888",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": [
+    "94366492289552"
+   ]
+  },
+  "140340323222480": {
+   "strategy": "reduce",
+   "id": "140340323222480",
+   "typeinfo": {
+    "kind": "B",
+    "module": "__main__"
+   },
+   "comparable": false,
+   "constructor": {
+    "kind": "object.__new__",
+    "module": "builtins"
+   },
+   "args": "140340323181888",
+   "state": "140340323271232",
+   "listitems": "140340323284992",
+   "dictitems": "140340323285440"
+  },
+  "140340323271232": {
+   "strategy": "dict",
+   "id": "140340323271232",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {
+    "140340323858480": "140340328776016",
+    "140340323858736": "140340328776048",
+    "140340323857456": "140340323875760",
+    "140340324530864": "140340323222992"
+   }
+  },
+  "140340328776016": {
+   "strategy": "repr",
+   "id": "140340328776016",
+   "typeinfo": {
+    "kind": "int",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "4"
+  },
+  "140340323858736": {
+   "strategy": "repr",
+   "id": "140340323858736",
+   "typeinfo": {
+    "kind": "str",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "'b2'"
+  },
+  "140340328776048": {
+   "strategy": "repr",
+   "id": "140340328776048",
+   "typeinfo": {
+    "kind": "int",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "5"
+  },
+  "140340323857456": {
+   "strategy": "repr",
+   "id": "140340323857456",
+   "typeinfo": {
+    "kind": "str",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "'b3'"
+  },
+  "140340324530864": {
+   "strategy": "repr",
+   "id": "140340324530864",
+   "typeinfo": {
+    "kind": "str",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "'time'"
+  },
+  "140340323221712": {
+   "strategy": "list",
+   "id": "140340323221712",
+   "typeinfo": {
+    "kind": "tuple",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": [
+    "140340323228608"
+   ]
+  },
+  "140340323228608": {
+   "strategy": "repr",
+   "id": "140340323228608",
+   "typeinfo": {
+    "kind": "bytes",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "b'\\x07\\xe7\\x03\\x1b\\x0e 5\\x03\\x1bi'"
+  },
+  "140340323222992": {
+   "strategy": "reduce",
+   "id": "140340323222992",
+   "typeinfo": {
+    "kind": "datetime",
+    "module": "datetime"
+   },
+   "comparable": true,
+   "constructor": {
+    "kind": "datetime",
+    "module": "datetime"
+   },
+   "args": "140340323221712",
+   "state": "140340323282240",
+   "listitems": "140340323284032",
+   "dictitems": "140340323284480"
+  },
+  "140340323282240": {
+   "strategy": "dict",
+   "id": "140340323282240",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {}
+  },
+  "140340323284032": {
+   "strategy": "list",
+   "id": "140340323284032",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": []
+  },
+  "140340323284480": {
+   "strategy": "dict",
+   "id": "140340323284480",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {}
+  },
+  "140340323284992": {
+   "strategy": "list",
+   "id": "140340323284992",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": []
+  },
+  "140340323285440": {
+   "strategy": "dict",
+   "id": "140340323285440",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {}
+  },
+  "140340328775984": {
+   "strategy": "repr",
+   "id": "140340328775984",
+   "typeinfo": {
+    "kind": "int",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "3"
+  },
+  "140340323223344": {
+   "strategy": "list",
+   "id": "140340323223344",
+   "typeinfo": {
+    "kind": "tuple",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": [
+    "140340323230000"
+   ]
+  },
+  "140340323230000": {
+   "strategy": "repr",
+   "id": "140340323230000",
+   "typeinfo": {
+    "kind": "bytes",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "b'\\x07\\xe7\\x03\\x1b\\x0e 5\\x03\\x1b['"
+  },
+  "140340323875648": {
+   "strategy": "reduce",
+   "id": "140340323875648",
+   "typeinfo": {
+    "kind": "datetime",
+    "module": "datetime"
+   },
+   "comparable": true,
+   "constructor": {
+    "kind": "datetime",
+    "module": "datetime"
+   },
+   "args": "140340323223344",
+   "state": "140340323286720",
+   "listitems": "140340323304832",
+   "dictitems": "140340323305280"
+  },
+  "140340323286720": {
+   "strategy": "dict",
+   "id": "140340323286720",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {}
+  },
+  "140340323304832": {
+   "strategy": "list",
+   "id": "140340323304832",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": []
+  },
+  "140340323305280": {
+   "strategy": "dict",
+   "id": "140340323305280",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {}
+  },
+  "140340323305792": {
+   "strategy": "list",
+   "id": "140340323305792",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": []
+  },
+  "140340323306240": {
+   "strategy": "dict",
+   "id": "140340323306240",
+   "typeinfo": {
+    "kind": "dict",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": {}
+  },
+  "140340324173056": {
+   "strategy": "list",
+   "id": "140340324173056",
+   "typeinfo": {
+    "kind": "list",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "items": [
+    "140340323858672"
+   ]
+  },
+  "140340323858672": {
+   "strategy": "repr",
+   "id": "140340323858672",
+   "typeinfo": {
+    "kind": "str",
+    "module": "builtins"
+   },
+   "comparable": true,
+   "value": "'Alex'"
+  }
+ }
+}
