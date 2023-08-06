@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "casing"
+version = "1.0.12"
+description = "Easy casing nomenclatures management such as camelCase, snake_case and many others!"
+authors = ["vincentBenet <vincent.benet@outlook.fr>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.6"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
