@@ -1,0 +1,25 @@
+influxdb:                        # Paramétrage de l'envoi à influxdb
+  active: true                   # placer à false pour désactiver l'envoi à influxdb
+  server: osug-influxdb.u-ga.fr           # le serveur influxdb
+  port: 8086                     # le port
+  user: telegrafresif                     # utilisateur de la base de donnée
+  password: GU82Pk8gD7zUKtpXuA             # mot de passe de la base de donnée. Surchargeable par la variable d'environnement INFLUXDB_PASSWORD
+  database: telegrafresif                 # le nom de la base de donnée
+  measurement: summer_snapshot   # le nom de la mesure
+  retention_policy: autogen      # la politique de rétention à utiliser
+zabbix:
+  active: true                   # placer à false pour désactiver l'envoi à zabbix
+  server: osug-monitoring.u-ga.fr           # serveur zabbix
+  host: resif-vm39.u-ga.fr                  # nom de l'hote qui envoie la métrique
+  usage_key: summer.snapshot.size  # la clé de l'item telle qu'elle est configurée dans zabbix
+  reserve_usage_key: summer.snapshot.reserve.used # la clé de l'item pour la reserve de snapshot
+  volume_used_key: summer.snapshot.total.used # la clé de l'item pour l'utilisation totale du volume
+
+lifs:                            # liste des LIF SUMMER
+  - name: resif                  # un nom pour cette LIF
+    sshserver:                   # le serveur SSH d'administration
+    login:                       # le login SSH
+    password:                    # devine, surchargeable par la variable d'environnement LIF_RESIF_PASWORD (où RESIF désigne la valeur du paramètre name, en majuscule)
+    volumes:                     # une liste des volumes à monitorer
+      - name:                    # nom du volume dans la LIF
+        mountpoint:              # un nom logique du volume pour le monitoring

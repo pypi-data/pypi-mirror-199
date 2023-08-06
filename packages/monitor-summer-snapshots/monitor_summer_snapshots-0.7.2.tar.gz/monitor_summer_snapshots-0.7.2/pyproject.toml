@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "monitor-summer-snapshots"
+version = "0.7.2"
+description = ""
+authors = ["Jonathan Schaeffer <jonathan.schaeffer@univ-grenoble-alpes.fr>"]
+readme = "README.md"
+packages = [{include = "monitor_summer_snapshots"}]
+homepage = "https://gricad-gitlab.univ-grenoble-alpes.fr/OSUG/RESIF/monitor-summer-snapshots"
+
+[tool.poetry.dependencies]
+python = ">=3.6.0"
+py-zabbix = "*"
+paramiko = "*"
+pyyaml = "*"
+influxdb = "*"
+
+[tool.poetry.scripts]
+mosusnap = "monitor_summer_snapshots.monitor_summer_snapshots:main"
+mosusnap_zbx_lld = "monitor_summer_snapshots.zabbix_discovery:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
