@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "fuzzysyn"
+version = "0.2.0"
+description = ""
+authors = ["Ivan Audouard <i@ivanaudouard.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+rapidfuzz = "^2.13.7"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

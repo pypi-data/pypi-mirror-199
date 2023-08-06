@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: fuzzysyn
+Version: 0.2.0
+Summary: 
+Author: Ivan Audouard
+Author-email: i@ivanaudouard.com
+Requires-Python: >=3.10,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: rapidfuzz (>=2.13.7,<3.0.0)
+Description-Content-Type: text/markdown
+
+# FuzzySyn
+
+A lightweight autocomplete that supports the use of synonyms built on top of [rapidfuzz](https://github.com/maxbachmann/RapidFuzz).
+
