@@ -1,0 +1,194 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'rec2-hr-plan-list' %}">LISTA PLANU</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header mb-1 border-primary">
+                    
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div class="left">
+                            {% if track.is_approve == True and track.is_publish == False %}
+                                
+                                {% if group == "hr" %}
+                                <a class="btn btn-sm btn-primary mb-1" href="{% url 'rec2-hr-plan-pub' track.id %}">Publika <i class="fa fa-star"></i></a>
+                                <a class="btn btn-sm btn-info mb-1" href="{% url 'rec2-c-plan-update' plan.hashed %}">Update <i class="fa fa-pen-to-square"></i></a>
+                                
+
+                                {% else %}
+                                <a class="btn btn-sm btn-primary mb-1 disabled" href="#">Publika <i class="fa fa-star"></i></a>
+                                {% endif %}
+                                {% else %}
+                                {% if track.is_finish == False %}
+                                <a class="btn btn-sm btn-primary mb-1" href="{% url 'rec2-hr-plan-finish' track.id %}">Termina <i class="fa fa-check"></i></a>
+                                {% endif %}
+                                <a class="btn btn-sm btn-info mb-1" href="{% url 'rec2-hr-cand-list' plan.hashed %}">Lista Aplikante <i class="fa fa-list"></i></a>
+                            {% endif %}
+                        </div>
+                        <div class="right">
+                            {% if track.is_approve == True and track.is_publish == False %}
+                                {% if planunit %}
+                                    <a class="btn btn-sm btn-info mb-1 " href="{% url 'rec2-c-plan-unit-update' plan.hashed %}">Update Divizaun <i class="fa fa-pen-to-square"></i></a>
+                                {% else %}
+                                    <a class="btn btn-sm btn-info mb-1 " href="{% url 'rec2-c-plan-unit-add' plan.hashed %}">Aumenta Divizaun <i class="fa fa-plus"></i></a>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <th>Deskrisaun</th><th>Objectivu</th><th>Data</th>
+                                </tr>
+                                <tr>
+                                    <td>{{ plan.description }}</td>
+                                    <td>{{ plan.objective }}</td>
+                                    <td>{{ plan.date|date:"d/F/Y" }}</td>
+                                    <!-- <td class="text-center">
+                                        <a class="btn btn-sm btn-secondary" href="{% url 'rec2-prop-pdf' plan.hashed %}" title="PDF" target="_blank"><i class="fa fa-file-pdf"></i></a>
+                                    </td> -->
+                                </tr>
+                            </table>
+                            <br>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th colspan="4" class="text-center">ANEKSO SIRA
+                                            <i class="fa fa-arrow-right"></i>
+                                            <a href="{% url 'rec2-c-plan-attach-add' plan.hashed %}" class="btn btn-sm btn-success">Aumenta <i class="fa fa-plus"></i></a>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>Nu.</th>
+                                        <th>Deskrisaun</th>
+                                        <th class="text-center">Anekso</th>
+                                        <th class="text-center">#</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                    {% for i in planattach  %}
+                                      
+                                        <tr>
+                                            <td>{{forloop.counter}}</td>
+                                            <td>{{i.name}}</td>
+                                            <td class="text-center">
+                                                {% if i.file %}
+                                                    <a href="{% url 'rec2-c-plan-attach-view' i.hashed %}" target="_blank" class="btn btn-sm btn-info"><i class="fa fa-file-pdf"></i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td class="text-center">
+                                                <a href="{% url 'rec2-c-plan-attach-update' i.hashed %}" class="fa fa-pen-to-square"></a>
+                                                <a href=" {% url 'rec2-c-plan-attach-delete' i.hashed plan.hashed %}" class="fa fa-trash"></a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+
+                        </div>
+                        <div class="col-md-4">
+                           
+                            <table class="table table-sm table-bordered text-center">
+                                <tr>
+                                    <th>Divizaun</th>
+                                </tr>
+                                {% for obj in  planunit %}
+                                  
+                                <tr>
+                                    <td>{{obj.unit|upper}}</td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header border-primary text-center"><h6>LISTA VAGA
+                    {% if track.is_approve == True and track.is_publish == False %}
+                      
+                    <i class="fa fa-arrow-right"></i>
+                    <a class="btn btn-sm btn-info" href="{% url 'rec2-c-planpos-add' plan.hashed %}">Aumenta <i class="fa fa-plus"></i></a>
+                    {% endif %}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th>Nu.</th><th>Pojisaun</th><th class="text-center">Total</th><th class="text-center">ToR</th><th>Resultadu</th>
+                            {% if track.is_approve == True and track.is_publish == False %}
+                                <th class="text-center">#</th>
+                            {% endif %}
+                        </tr>
+                        {% for planpos in planposs %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td><a href="{% url 'rec2-hr-planpos-detail' plan.hashed planpos.id %}" title="Kriteria">{{ planpos.position }}</a></td>
+                            <td align="center">{{ planpos.total }}</td>
+                            <td align="center">
+                                {% if planpos.file %}
+                                    <a class="btn btn-sm btn-secondary" href="{% url 'rec2-tor-pdf' planpos.id %}" target="_blank" title="PDF"><i class="fa fa-file-pdf"></i></a>
+                                  
+                                {% else %}
+                                    <span class="badger bg-danger text-white p-1" style="opacity: 0.8;"> Anekso Laiha <i class="fa fa-warning"></i> </span>
+                                {% endif %}
+                            </td>
+                            <td><a class="btn btn-sm btn-info" href="{% url 'rec2-hr-cand-result-list' plan.hashed planpos.id %}" title="Result">Result <i class="fa fa-list"></i></a></td>
+                            {% if track.is_approve == True and track.is_publish == False %}
+                              
+                            <td align="center">
+                                <a href="{% url 'rec2-c-planpos-update' plan.hashed planpos.id %}" class="btn btn-sm btn-info"> <i class="fa fa-pen-to-square"></i></a>
+                            </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-header border-primary text-center"><h6>EKIPA KOMISAUN</h6></div>
+                <div class="card-body">
+
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th>Nu.</th><th>Naran</th><th>Pojisaun</th><th>Vaga</th>
+                        </tr>
+                        {% for team in teams %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ team.employee }}</td>
+                            <td>{{ team.position }}</td>
+                            <td>{{ team.plan_pos }}</td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div>                        
+            </div><!--end card-->
+        </div>
+    </div><!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

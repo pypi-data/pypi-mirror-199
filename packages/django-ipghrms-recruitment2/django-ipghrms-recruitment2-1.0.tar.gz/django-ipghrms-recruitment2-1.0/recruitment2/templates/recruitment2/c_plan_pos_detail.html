@@ -1,0 +1,71 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-c-plan-list' %}">LISTA PLANU</a></li>
+			<li class="breadcrumb-item"><a href="{% url 'rec2-c-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary">
+
+                    <center>
+                        <h3>{{ legend|upper }}</h3>
+                    </center>
+                </div>
+				<div class="card-body">
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Unidade</th>
+                            <th>Objectivu</th>
+                            <th>Data</th>
+                            <th style="background-color:aqua;">KATEGORIA</th>
+                            <th style="background-color:aqua;">TOTAL</th>
+                        </tr>
+                        <tr>
+                            <td>{{ plan.unit }}</td>
+                            <td>{{ plan.objective }}</td>
+                            <td>{{ recplan.date|date:"d/m/Y" }}</td>
+                            <td style="background-color:antiquewhite;">{{ planpos.position|upper }}</td>
+                            <td style="background-color:antiquewhite;">{{ planpos.total }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Nu.</th><th>Aspetu</th><th>Kriteria</th>
+                        </tr>
+                        {% for obj in objects %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>
+                                {{ obj.0.name }}
+                                {% if track.is_lock == False %}
+                                <a href="{% url 'rec2-c-planposasp-add' plan.hashed planpos.id obj.0.id %}"><i class="fa fa-plus"></i></a>
+                                {% endif %}
+                            </td>
+                            <td>
+                            {% for obj1 in obj.1 %}
+                                {{ obj1.aspectops.name }}
+                                {% if track.is_lock == False %}
+                                <a href="{% url 'rec2-c-planposasp-delete'  plan.hashed planpos.id obj1.id %}"><i class="fa fa-trash"></i></a>
+                                {% endif %}-
+                            {% endfor %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

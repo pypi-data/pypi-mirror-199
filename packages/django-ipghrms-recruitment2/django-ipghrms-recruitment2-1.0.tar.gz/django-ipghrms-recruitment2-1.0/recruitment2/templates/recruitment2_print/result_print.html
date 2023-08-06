@@ -1,0 +1,85 @@
+{% extends "recruitment2_print/layout.html" %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+<table style="margin: 0 auto;">
+    <tr align="center">
+        <td>
+            <img src="{% static 'main/images/ipg.png' %}" style="height: 150px;  "  />
+        </td>
+        <td align="left">
+            <h4 style="text-align: center;">INSTITUTO DO PETRÓLEO E GEOLOGIA, TIMOR LESTES - (IPG)</h4>
+        </td>
+    </tr>
+    <tr align="center">
+    </tr>
+</table>
+<hr style="height:5px;border-width:0;color:gray;background-color:rgb(49, 4, 4);box-shadow: 2px 2px #888888;">
+<center>
+    <div class="box4"><h4>Valor Final Rekrutamentu ba Pojisaun {{ planpos }}</h4></div>
+    <hr/>
+    <div class="box3">
+        <table border="1">
+            <tr>
+                <th rowspan="2">Nu.</th>
+                <th rowspan="2">Naran Kandidatu</th>
+                <th rowspan="2">Gender</th>
+                <th colspan="4"><center>SCORES</center></th>
+                <th rowspan="2">Remarks</th>
+            </tr>
+            <tr>
+                <th>Academic Evaluation<br/> (10%)</th>
+                <th>Written Test Evaluation<br/> (40%)</th>
+                <th>Interview Evalutaion<br/> (50%)</th>
+                <th>Final Score<br/>CF=(AC*0.10)+(PE*0.40)+(EA*0.50)</th>
+            </tr>
+            {% for obj in objects %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ obj.name }}</td>
+                <td>{{ obj.sex }}</td>
+                <td align="center">{{ obj.candscore.all.0.score_a }}</td>
+                <td align="center">{{ obj.candscore.all.0.score_b }}</td>
+                <td align="center">{{ obj.candscore.all.0.score_c }}</td>
+                {% if obj.candscore.all.0.obs == "Passa" %}
+                <td align="center" style="background-color:cyan ;">{{ obj.candscore.all.0.final_score }}</td>
+                <td style="background-color:cyan ;">{{ obj.candscore.all.0.sort|ordinal }}</td>
+                {% else %}
+                <td align="center">{{ obj.candscore.all.0.final_score }}</td>
+                <td>{{ obj.candscore.all.0.sort|ordinal }}</td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </table>
+    </div><!--end box2-->
+    <table border="0">
+        <tr>
+            <td width="70%">
+                <div class="box2">
+                    <h5 align="left">Panels by:</h5>
+                    <table border="0">
+                        {% for team in teams %}
+                        <tr>
+                            <td width="5%">{{ forloop.counter }}</td>
+                            <td width="30%">{{ team.employee }}</td>
+                            <td width="10%">Signature:</td>
+                            <td width="10%"></td>
+                            <td width="10%">Date:</td>
+                            <td width="10%"></td>
+                        </tr>
+                        {% endfor %}
+                    </table>
+                </div><!--end box2-->
+            </td><!--end td-->
+            <td width="5%"></td>
+            <td width="25%">
+                    <u>Final Classification:</u><br/><br/>
+                    <strong>CF = (ACx0.10)+(PEx0.40)+(EAx0.50)</strong>
+            </td><!--end td-->
+        </tr>
+    </table>
+    
+</center>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

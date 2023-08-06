@@ -1,0 +1,149 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'rec2-hr-cand-list' plan.hashed %}">LISTA KANDIDATU</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}</h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th rowspan="2">Naran</th><th rowspan="2">Sexu</th><th rowspan="2">Nu. Telf</th><th rowspan="2">Email</th>
+                            <th rowspan="2">Universidade</th><th rowspan="2">Diploma</th>
+                            <th rowspan="2">Data Aplika</th><th colspan="4"><center>Valor</center></th>
+                            <th rowspan="2"><center>Decijaun<br/>Final</center></th>
+                        </tr>
+                        <tr align="center"><th>Doc</th><th>Eskita</th><th>Oral</th><th>Final</th></tr>
+                        <tr>
+                            <td>{{ cand.name }}</td><td>{{ cand.sex }}</td><td>{{ cand.phone }}</td><td>{{ cand.email }}</td>
+                            <td>{{ cand.university }}</td><td>{{ cand.diploma }}</td>
+                            <td>{{ cand.date|date:"d/m/Y" }}</td>
+                            <td align="center">{{ candscore.score_a }}</td>
+                            <td align="center">{{ candscore.score_b }}</td>
+                            <td align="center">{{ candscore.score_c }}</td>
+                            <td align="center">{{ candscore.final_score }}</td>
+                            <td align="center">{{ candscore.obs|upper }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    {% if cand.is_lock == False %}
+                    <a class="btn btn-sm btn-primary mb-1" href="{% url 'rec2-hr-cand-score-ref' cand.hashed %}">Refresh <i class="fa fa-refresh"></i></a>
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'rec2-hr-cand-final-desc' cand.hashed %}">Decijaun Final <i class="fa fa-check"></i></a>
+                    <a class="btn btn-sm btn-warning mb-1" href="{% url 'rec2-hr-cand-lock' cand.id %}">Termina <i class="fa fa-lock"></i></a>
+                    {% else %}
+                    <a class="btn btn-sm btn-secondary mb-1 disabled" href="#">Refresh <i class="fa fa-refresh"></i></a>
+                    <a class="btn btn-sm btn-secondary mb-1 disabled" href="#">Decijaun Final <i class="fa fa-check"></i></a>
+                    <a class="btn btn-sm btn-secondary mb-1 disabled" href="#">Termina Ona <i class="fa fa-lock"></i></a>
+                    {% endif %}
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">Verifika Documentos</div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered table-striped">
+                        <tr>
+                            <th>Painel</th><th>Academic Qualification</th><th>Profesisonal Training</th>
+                            <th>Professional Experience</th><th>Organizational Experience</th><th>Total</th>
+                        </tr>
+                        {% for shortlist in shortlists %}
+                        <tr>
+                            <td rowspan="2"><strong>{{ shortlist.painel.employee }}</strong><br/>{{ shortlist.painel.position }}</td>
+                            <td>{{ shortlist.score_a }}</td>
+                            <td>{{ shortlist.score_b }}</td>
+                            <td>{{ shortlist.score_c }}</td>
+                            <td>{{ shortlist.score_d }}</td>
+                            <td rowspan="2">{{ shortlist.total }}</td>
+
+                        </tr>
+                        <tr>
+                            <td><small>{{ shortlist.comment_a|safe }}</small></td>
+                            <td><small>{{ shortlist.comment_b|safe }}</small></td>
+                            <td><small>{{ shortlist.comment_c|safe }}</small></td>
+                            <td><small>{{ shortlist.comment_d|safe }}</small></td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="5">VALOR TOTAL</th><th>{{ tot_a }}</th>
+                        </tr>
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">Valor Eskrita</div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered table-striped">
+                        <tr>
+                            <th>Painel</th><th>General Questions</th><th>Specific Questions</th>
+                            <th>Language Ability Question</th><th>Total</th>
+                        </tr>
+                        {% for written in writtens %}
+                        <tr>
+                            <td><strong>{{ written.painel.employee }}</strong><br/>{{ written.painel.position }}</td>
+                            <td>{{ written.score_a }}</td>
+                            <td>{{ written.score_b }}</td>
+                            <td>{{ written.score_c }}</td>
+                            <td>{{ written.total }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="4">VALOR TOTAL</th><th>{{ tot_b }}</th>
+                        </tr>
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header">Valor Intervista</div>
+                <div class="card-body">
+                    <table class="table table-sm table-bordered table-striped">
+                        <tr>
+                            <th>Painel</th><th>General Questions</th><th>Academic Experience</th>
+                            <th>Professional Experience</th><th>Language Proficiency</th>
+                            <th>Motivation of Application</th><th>Total</th>
+                        </tr>
+                        {% for oral in orals %}
+                        <tr>
+                            <td><strong>{{ oral.painel.employee }}</strong><br/>{{ oral.painel.position }}</td>
+                            <td>{{ oral.score_a }}</td>
+                            <td>{{ oral.score_b }}</td>
+                            <td>{{ oral.score_c }}</td>
+                            <td>{{ oral.score_d }}</td>
+                            <td>{{ oral.score_e }}</td>
+                            <td>{{ oral.total }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <th colspan="6">VALOR TOTAL</th><th>{{ tot_c }}</th>
+                        </tr>
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

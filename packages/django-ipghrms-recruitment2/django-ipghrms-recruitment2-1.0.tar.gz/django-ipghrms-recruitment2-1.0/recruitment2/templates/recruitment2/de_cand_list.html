@@ -1,0 +1,85 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'rec2-de-plan-detail' plan.hashed %}">DETALHA PLANU</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>INFORMASAUN PLANO REKRUTAMENTO</h2>
+                    </center>
+                </div>
+                <div class="card-body">                    
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th>Deskrisaun</th><th>Objectivu</th><th>Data</th>
+                        </tr>
+                        <tr>
+                            <td>{{ plan.description }}</td>
+                            <td>{{ plan.objective }}</td>
+                            <td>{{ plan.date|date:"d/m/Y" }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div><!--end card-->
+        </div><!--end col-->
+    </div><!--end row-->
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <h6>{{ legend|upper }}</h6>
+                </div>
+                <div class="card-body">
+                    
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Naran</th>
+                                <th>Kategoria</th>
+                                <th>Sexu</th>
+                                <th>No. Telf.</th>
+                                <th>Email</th>
+                                <th>Diploma</th>
+                                <th>Universidade</th>
+                                <th>Data Aplika</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'rec2-de-cand-detail' plan.hashed obj.hashed %}">{{ obj.name }}</a></td>
+                                <td>{{ obj.plan_pos }}</td>
+                                <td>{{ obj.sex }}</td>
+                                <td>{{ obj.phone }}</td>
+                                <td>{{ obj.email }}</td>
+                                <td>{{ obj.diploma }}</td>
+                                <td>{{ obj.university }}</td>
+                                <td>{{ obj.date|date:"d/m/Y" }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
