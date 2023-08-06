@@ -1,0 +1,63 @@
+Metadata-Version: 2.1
+Name: parselib
+Version: 0.0.3
+Summary: HTML parser for web scraping
+Project-URL: Homepage, https://github.com/chemtrails/parselib
+Author: Rafał Prażmo
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/x-rst
+
+========================================
+parselib - HTML parser for web scraping
+========================================
+
+.. code-block:: python
+
+    from parselib import Parser
+
+    html = """
+        <div class="one two">
+            some text
+            <div>
+                more text
+            </div>
+        </div>
+    """
+    parser = Parser(html)
+    div = parser.find("*", {"class": "two"})
+    div.text     # some text
+    div.all_text # some text more text
+
+----
+
+find(tag, attrs={}, exclude_attrs={})
+    return first matching element
+
+find_all(tag, attrs={}, exclude_attrs={})
+    return all matching elements
+
+element.text
+    text of the element
+
+element.all_text
+    text of the element and its descendants
+
+element.children
+    list of direct descendants
+
+element.descendants
+    list of all descendants
+
+element.next_sibling
+
+element.previous_sibling
+
+element.parent
+
+element.tagname
+
+element.attrs
