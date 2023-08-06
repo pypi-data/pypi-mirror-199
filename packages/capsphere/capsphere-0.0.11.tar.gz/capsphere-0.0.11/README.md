@@ -1,0 +1,24 @@
+# Capsphere
+
+The `capsphere` package holds modules which help in the process of credit scoring for customers and institutions in Malaysia.
+
+There are three packages in this project:
+
+### common 
+
+This module holds utility functions that aid the extraction of data from Malaysian bank statements, which might be in pdf or image format.
+
+### domain
+
+The data abstractions and classes related to a customer's transactions are contained in this module.
+
+### recognition
+
+For the moment, this is where all the logic for extracting pdf or image statements will be housed. We are exploring three separate methods:
+
+- Amazon Textract
+- OCR using `pytesseract`
+- Pdf libraries such as `pdfplumber`
+
+
+There are some config and test resource files in this project as well. They can usually be found in `config` or `resources` folders, usually within the `test` modules. 
