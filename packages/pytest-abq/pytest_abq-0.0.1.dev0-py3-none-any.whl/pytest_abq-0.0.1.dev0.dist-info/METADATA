@@ -1,0 +1,58 @@
+Metadata-Version: 2.1
+Name: pytest-abq
+Version: 0.0.1.dev0
+Summary: Pytest integration for the ABQ universal test runner.
+License: MIT
+Project-URL: Homepage, https://github.com/rwx-research/pytest-abq
+Project-URL: Bug Tracker, https://github.com/rwx-research/pytest-abq/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: typing-extensions
+
+# pytest-abq
+
+An [ABQ](rwx.com/abq) integration for [pytest](https://docs.pytest.org/en/7.2.x/).
+
+To install:
+
+```
+pip install pytest-abq
+```
+
+That's it! Then, run your test suite with ABQ:
+
+```
+abq test -- pytest
+```
+
+## Development
+
+First, install the development dependencies.
+
+```
+pip install -r requirements.txt
+```
+
+To run unit tests, install the pytest plugin and then run `pytest`:
+
+```
+pip install -e .
+pytest tests
+```
+
+To run the integration tests with ABQ, you'll need to first have
+`abq_tester_harness` available in your path. Then, run `tox`:
+
+```
+tox
+```
+
+If you need to update the goldens, pass `-- update`:
+
+```
+tox -- update
+```
