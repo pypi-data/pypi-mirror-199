@@ -1,0 +1,54 @@
+[build-system]
+requires = ["poetry-core>=1.2.0b2"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "graph_attention_student"
+version = "0.7.0"
+description = "MEGAN: Multi Explanation Graph Attention Network"
+license = "MIT"
+authors = ["xxx <jonseb1998@gmail.com>"]
+maintainers = ["xxx <jonseb1998@gmail.com>"]
+readme = "README.rst"
+keywords = ["graph neural network", "attention", "kgcnn"]
+packages = [
+    { include = "graph_attention_student" }
+]
+include = [
+    "README.rst",
+    "CHANGLELOG.rst",
+    "graph_attention_student/VERSION",
+]
+exclude = [
+    "graph_attention_student/experiments/results",
+    "graph_attention_student/examples/results",
+    "venv"
+]
+
+[tool.poetry.scripts]
+graph_attention_student = 'graph_attention_student.cli:cli'
+
+[tool.poetry.dependencies]
+python = ">=3.8.0,<3.11"
+pycomex = ">=0.8.4"
+click = ">=7.1.2"
+jinja2 = ">=3.0.3"
+matplotlib = ">=3.5.3"
+imageio = ">=2.19.0"
+cairosvg = ">=2.5.2"
+numpy = ">=1.22.0"
+tensorflow = ">=2.8.0"
+kgcnn = ">=2.2.1"
+nltk = ">=3.7"
+rdkit = ">=2022.9.1"
+orjson = ">=3.8.0"
+poetry-bumpversion = ">=0.3.0"
+visual_graph_datasets = ">=0.7.2"
+
+[tool.poetry_bumpversion.file."graph_attention_student/__init__.py"]
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+
+[tool.poetry_bumpversion.file."graph_attention_student/VERSION"]
+search = "{current_version}"
+replace = "{new_version}"
