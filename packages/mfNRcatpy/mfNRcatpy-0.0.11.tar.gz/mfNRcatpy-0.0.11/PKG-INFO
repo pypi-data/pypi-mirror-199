@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: mfNRcatpy
+Version: 0.0.11
+Home-page: https://github.com/sebastiangomezlopez/mfNRcatpy
+Author: Sebastian Gomez Lopez
+Author-email: segomezlo@unal.edu.co
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# mfNRcatpy
+
+mfNRcatpy is a Python package for Gravitational-wave data analysis,
+created and mantained by Sebastian Gomez Lopez.
+
+This package contains several tolls that allow working with 
+binary neutron star numerical relativity waveform catalogs 
+and the matched filtering algorithm.
