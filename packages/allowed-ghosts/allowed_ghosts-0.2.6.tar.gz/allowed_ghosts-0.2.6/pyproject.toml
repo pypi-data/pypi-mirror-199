@@ -1,0 +1,79 @@
+[tool.poetry]
+name = "allowed-ghosts"
+version = "0.2.6"
+description = "Daily inspiration for `ALLOWED_HOSTS` values."
+authors = ["JV conseil <contact@jv-conseil.net>"]
+license = "EUPL-1.2"
+readme = "README.md"
+homepage = "https://github.com/JV-conseil/allowed-ghosts"
+repository = "https://github.com/JV-conseil/allowed-ghosts"
+documentation = "https://jv-conseil.github.io/allowed-ghosts/"
+keywords = [
+    "django",
+]
+classifiers = [
+    "Framework :: Django",
+    "Development Status :: 5 - Production/Stable",
+    "Intended Audience :: Information Technology",
+]
+packages = [
+    {include = "allowed_ghosts"},
+]
+
+[tool.poetry.dependencies]
+django = ">=4.*,<5.0"
+joblib = ">=1.2.0"
+python = ">=3.9.16"
+unidecode = ">=1.3.6"
+
+[tool.poetry.dev-dependencies]
+black = ">=22.12.0"
+django-sslserver = ">=0.22"
+flake8 = ">=6.0.0"
+flake8-isort = ">=6.0.0"
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/JV-conseil/allowed-ghosts/issues"
+"Twitter" = "https://twitter.com/JVconseil"
+"Stack Overflow" = "https://stackoverflow.com/users/2477854/jv-conseil"
+"Donate" = "https://www.paypal.com/donate/?hosted_button_id=P3DGL6EANDY96"
+"Sponsor" = "https://github.com/sponsors/JV-conseil"
+
+[tool.black]
+line-length = 88
+
+[tool.isort]
+profile = "black"
+default_section = "THIRDPARTY"
+known_first_party = ["django"]
+
+[tool.pytest.ini_options]
+addopts = "--cov . -v --cov-report=html"
+DJANGO_SETTINGS_MODULE = "tests.settings"
+python_files = ["tests.py", "test_*.py",  "*_tests.py"]
+
+[tool.coverage.run]
+include = ["azure_signin/*"]
+omit = [
+    "*/tests/*",
+    "*/tests*",
+    "*/migrations/*",
+    "*__init__*",
+    ]
+branch = true
+disable_warnings = ["include-ignored"]
+
+[tool.coverage.report]
+exclude_lines = ["pragma: no cover"]
+show_missing = true
+include = ["azure_signin/*"]
+omit = [
+    "*/tests/*",
+    "*/tests*",
+    "*/migrations/*",
+    "*__init__*",
+    ]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
