@@ -1,0 +1,95 @@
+Metadata-Version: 2.1
+Name: sa-csgo
+Version: 1.0.1
+Summary: A python application for ubuntu server that provides faster and user-friendly operations for cs:go server administrators via CLI or GUI.
+License: MIT
+Author: Francesco D'anetra
+Author-email: devdanetra@outlook.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: autopep8 (==2.0.2)
+Requires-Dist: cachetools (==5.3.0)
+Requires-Dist: certifi (==2022.12.7)
+Requires-Dist: cffi (==1.15.1)
+Requires-Dist: charset-normalizer (==3.1.0)
+Requires-Dist: click (==8.1.3)
+Requires-Dist: colorama (==0.4.6)
+Requires-Dist: commonmark (==0.9.1)
+Requires-Dist: gevent (==22.10.2)
+Requires-Dist: gevent-eventemitter (==2.1)
+Requires-Dist: greenlet (==2.0.2)
+Requires-Dist: idna (==3.4)
+Requires-Dist: protobuf (==3.20.3)
+Requires-Dist: pycodestyle (==2.10.0)
+Requires-Dist: pycparser (==2.21)
+Requires-Dist: pycryptodomex (==3.17)
+Requires-Dist: pygments (==2.14.0)
+Requires-Dist: requests (==2.28.2)
+Requires-Dist: rich (==12.6.0)
+Requires-Dist: shellingham (==1.5.0.post1)
+Requires-Dist: six (==1.16.0)
+Requires-Dist: steam (==1.4.4)
+Requires-Dist: typer (==0.7.0)
+Requires-Dist: urllib3 (==1.26.15)
+Requires-Dist: vdf (==3.4)
+Requires-Dist: zope-event (==4.6)
+Requires-Dist: zope-interface (==5.5.2)
+Description-Content-Type: text/markdown
+
+
+# STORM Agent - CS:GO
+
+A python application that provides faster and user-friendly operations for cs:go server administrators via CLI or GUI.
+
+Mainly meant to be used together with STORM Server and/or STORMsys appliances.
+Supports Ubuntu 18.04+.
+
+## Authors
+
+- [@devdanetra](https://www.github.com/devdanetra)
+
+## Features
+
+- Easy to use **GUI**
+- Install/Upgrade **SteamCMD**
+- Install/Upgrade **CS:GO Dedicated Server**
+- **Versions selector**
+- Start server & easily access console
+- **Auto update** **(Coming Soon)**
+- Updates you via email or telegram if a new patch is available. **(Coming Soon)**
+
+## Requirements
+
+- Python 3.10
+## Installation
+
+To install **SA-CS:GO** you can use pip:
+```bash
+  pip install sa-csgo
+```
+
+## Documentation
+
+opens gui
+```bash
+  sa-csgo gui
+```
+
+show available commands and options
+```bash
+  sa-csgo --help
+```
+
+Installs latest SteamCMD version
+```bash
+  sa-csgo install csgoserver
+```
+
+Installs Counter Strike server, multiple versions are available
+```bash
+  sa-csgo install csgoserver
+```
+
