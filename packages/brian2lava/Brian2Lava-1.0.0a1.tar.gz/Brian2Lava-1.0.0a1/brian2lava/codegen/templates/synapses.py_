@@ -1,0 +1,41 @@
+{# USES_VARIABLES {} #}
+{% extends 'common_group.py_' %}
+
+{% block maincode %}
+    {% set prepost = pathway.prepost%}
+    _spiking_indices = self.s_in_{{prepost}}.recv()
+
+    # Only look at the spiking neurons (assuming one-dimensional array shape)
+    _spiking_neurons = _numpy.nonzero(_spiking_indices)[0]
+    
+    {% set _synaptic_pre = get_array_name(pathway.synapse_sources) %}
+    _spiking_synapses = _numpy.array([x in _spiking_neurons for x in {{_synaptic_pre}}])
+    # In case no synapse-related neuron is spiking we'll get an array of 'False'
+    
+
+    # scalar code
+    {# Note that we don't write to scalar variables conditionally. The scalar code
+    should therefore only include the calculation of scalar expressions
+    that are used below for writing to a vector variable #}
+    {{scalar_code|autoindent}}
+
+    # vector code
+    _idx = _spiking_synapses
+    _vectorisation_idx = _idx
+    {{vector_code|autoindent}}
+    
+    {% for read_var in read_syn_vars%}
+    {{read_var}}
+    {% endfor %}
+
+    # Send out the needed variables, non-stimulated synapses will be encoded by _numpy.nan.
+    {% for a_out,port in zip(syn_output_vars,syn_output_ports) %}
+    {{a_out}}_array = _numpy.repeat(_numpy.nan,{{_synaptic_pre}}.shape)
+    {{a_out}}_array[_idx] = {{a_out}}
+    self.{{port}}_out.send({{a_out}}_array)
+    {% endfor %}
+
+
+    # Advance the spike queue # Currently we don't support a spike queue
+    #_queue.advance()
+{% endblock %}

@@ -1,0 +1,55 @@
+import numpy as np
+import typing as ty
+{% for imp in required_imports %}
+{{ imp }}
+{% endfor %}
+
+from lava.magma.core.sync.protocols.loihi_protocol import LoihiProtocol
+from lava.magma.core.model.py.ports import PyInPort, PyOutPort
+from lava.magma.core.model.py.type import LavaPyType
+from lava.magma.core.resources import CPU
+from lava.magma.core.decorator import implements, requires, tag
+from lava.magma.core.model.py.model import PyLoihiProcessModel
+
+from lava_workspace.{{name}}_process import {{name}}_P
+
+@implements(proc={{name}}_P, protocol=LoihiProtocol)
+@requires(CPU)
+@tag('floating_pt')
+class {{name}}_PM(PyLoihiProcessModel):
+
+    {% for va in variables %}
+    {{ va }}
+    {% endfor %}
+
+    def __init__(self, proc_params: ty.Optional["ProcessParameters"] = None):
+        super().__init__(proc_params=proc_params)
+
+        self.has_init_run = False
+
+    #def run_init(self):
+    #    # Calling required init functions
+    #    {% for fc in init_functions %}
+    #    {{ fc }}
+    #    {% endfor %}
+    #    self.has_init_run = True
+
+    def run_spk(self):
+
+        # Run init method before the first step is executed
+        #if not self.has_init_run:
+        #    self.run_init()
+
+        # Calling the methods that are executed in every time step
+        {% for rf in run_functions %}
+        {{ rf }}
+        {% endfor %}
+
+
+    
+    {% for m in methods %}
+    {{ m }}
+    {% endfor%}
+
+
+
