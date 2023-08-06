@@ -1,0 +1,85 @@
+[tool.poetry]
+name = "sqla2uml"
+version = "0.1.4"
+homepage = "https://github.com/abilian/sqla2uml"
+description = "Convert your SQLAlchemy models to UML diagrams (via PlantUML)"
+authors = ["Abilian SAS <sf@abilian.com>"]
+readme = "README.rst"
+classifiers = [
+    'Development Status :: 3 - Alpha',
+    'Intended Audience :: Developers',
+    'Natural Language :: English',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.8',
+    'Programming Language :: Python :: 3.9',
+    'Programming Language :: Python :: 3.10',
+    'Programming Language :: Python :: 3.11',
+]
+packages = [
+    { include = "sqla2uml", from = "src" },
+    { include = "tests", format = "sdist" },
+]
+
+
+[tool.poetry.scripts]
+sqla2uml = 'sqla2uml.main:main'
+
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+SQLAlchemy = ">=2.0.7"
+click = "*"
+devtools = "*"
+
+
+[tool.poetry.group.dev.dependencies]
+abilian-devtools = "*"
+
+# Cruft (project templates management)
+cruft = "*"
+toml = "*"
+
+# Testing
+pytest = "*"
+pytest-cov = "*"
+coveralls = "*"
+
+# Linting
+flake8-bugbear = "*"
+flake8-comprehensions = "*"
+
+# Needed for some reason
+pyyaml = "*"
+
+# Doc
+restructuredtext_lint = "*"
+
+deptry = "^0.6.6"
+docformatter = "^1.5.1"
+
+
+[tool.isort]
+profile = "black"
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+
+#[sqla2uml]
+#scan = demo
+
+
+[tool.deptry]
+ignore_obsolete = [
+]
+ignore_missing = [
+]
+ignore_transitive = [
+  "sqla2uml",
+]
+exclude = [
+    '.tox', 'tests', 'sandbox', 'doc', 'scripts'
+]
