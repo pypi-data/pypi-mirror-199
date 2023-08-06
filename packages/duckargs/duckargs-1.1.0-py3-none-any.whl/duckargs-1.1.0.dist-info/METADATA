@@ -1,0 +1,141 @@
+Metadata-Version: 2.1
+Name: duckargs
+Version: 1.1.0
+Summary: Productivity tool for quickly creating python programs that parse command-line arguments. Stop writing argparse boilerplate code!
+Home-page: http://github.com/eriknyquist/duckargs
+Author: Erik Nyquist
+Author-email: eknyquist@gmail.com
+License: Apache 2.0
+Project-URL: Documentation, https://github.com/eriknyquist/duckargs
+Project-URL: Issues, https://github.com/eriknyquist/duckargs/issues
+Project-URL: Contributions, https://github.com/eriknyquist/duckargs/pulls
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Science/Research
+Classifier: Intended Audience :: Education
+Classifier: Intended Audience :: Information Technology
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Requires-Python: >=3.7
+License-File: LICENSE
+
+duckargs
+========
+
+.. |tests_badge| image:: https://github.com/eriknyquist/duckargs/actions/workflows/tests.yml/badge.svg
+.. |cov_badge| image:: https://github.com/eriknyquist/duckargs/actions/workflows/coverage.yml/badge.svg
+.. |version_badge| image:: https://badgen.net/pypi/v/duckargs
+.. |license_badge| image:: https://badgen.net/pypi/license/duckargs
+
+|tests_badge| |cov_badge| |version_badge| |license_badge|
+
+The purpose of this package is to save some typing whenever you want to quickly
+create a python program that accepts command line arguments. Just run ``duckargs``
+with the arguments that you want your program to accept, with example values for
+options, and ``duckargs`` will generate the python code for a program that uses
+``argparse`` to handle those arguments.
+
+Install
+=======
+
+Install with pip (python 3x required):
+
+::
+
+    pip install duckargs
+
+Example
+=======
+
+Run duckargs from the command line via ``python -m duckargs``, followed by whatever arguments/options/flags
+you want your program to accept, and ``duckargs`` will print the corresponding python code.
+
+::
+
+    $ python -m duckargs positional_arg1 positional_arg2 -i --int-val 4 -f 3.3 -F --file file_that_exists -a -b -c > program.py
+
+
+After running the above command, the file ``program.py`` will contain the following code:
+
+
+.. code:: python
+
+    # positional_arg1 positional_arg2 -i --int-val 4 -f 3.3 -F --file file_that_exists -a -b -c
+
+    import argparse
+
+    def main():
+        parser = argparse.ArgumentParser(description='',
+                                         formatter_class=argparse.ArgumentDefaultsHelpFormatter)
+
+        parser.add_argument('positional_arg1', help='a string')
+        parser.add_argument('positional_arg2', help='a string')
+        parser.add_argument('-i', '--int-val', default=4, type=int, help='an int value')
+        parser.add_argument('-f', default=3.3, type=float, help='a float value')
+        parser.add_argument('-F', '--file', default='file_that_exists', type=argparse.FileType(), help='a filename')
+        parser.add_argument('-a', action='store_true', help='a flag')
+        parser.add_argument('-b', action='store_true', help='b flag')
+        parser.add_argument('-c', action='store_true', help='c flag')
+        args = parser.parse_args()
+
+        print(args.positional_arg1)
+        print(args.positional_arg2)
+        print(args.int_val)
+        print(args.f)
+        print(args.file)
+        print(args.a)
+        print(args.b)
+        print(args.c)
+
+    if __name__ == "__main__":
+        main()
+
+Comma-separated choices for option argument
+===========================================
+
+If you have an option which accepts an argument, and you write an argument string with
+multiple values separated by commas (e.g. ``-m --mode active,idle,sim``), then ``duckargs``
+will use the comma-separated values as a ``choices`` list for argparse, e.g.:
+
+::
+
+    parser.add_argument('-m', '--mode', choices=['active', 'idle', 'stim'], default='active', help='a string')
+
+Real filename for option argument
+=================================
+
+If you have an option which accepts an argument, and the argument string that you write
+happens to be the path to a file that actually exists (e.g. ``-f --filename real_file.txt``),
+then ``duckargs`` will tell argparse that this argument is a file, e.g.:
+
+::
+
+    parser.add_argument('-f', '--filename', default='real_file.txt', type=argparse.FileType(), help='a filename')
+
+
+Use duckargs in python code
+===========================
+
+If you want to use duckargs in your own script, you can use the ``duckargs.generate_python_code`` function,
+which accepts a list of command line arguments:
+
+.. code:: python
+
+    import sys
+    from duckargs import generate_python_code
+
+    python_code = generate_python_code(sys.argv)
+
+Pitfalls
+========
+
+If you have a combination of flags and positional arguments, and you happen to have a flag
+followed by a positional argument (as in: ``python -m duckargs -q --quiet positional_arg``),
+``duckargs`` has no way to tell that you wanted a positional arg, so it will assume you want
+an option ``-q --quiet`` with a required argument.
+
+To avoid this, it is recommended to declare your positional arguments first (as in: ``python -m duckargs positional_arg -q --quiet``)
