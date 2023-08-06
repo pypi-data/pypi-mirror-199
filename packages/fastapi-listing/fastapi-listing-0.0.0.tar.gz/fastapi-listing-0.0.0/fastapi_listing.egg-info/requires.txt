@@ -1,0 +1,11 @@
+
+[test]
+requests
+mypy>=0.971
+flake8>=3.9.2
+isort>=5.10.1
+pydantic>=1.5.0
+starlette>=0.21.0
+sqlalchemy>=2.0.7
+starlite>=1.38.0
+httpx>=0.23.0
