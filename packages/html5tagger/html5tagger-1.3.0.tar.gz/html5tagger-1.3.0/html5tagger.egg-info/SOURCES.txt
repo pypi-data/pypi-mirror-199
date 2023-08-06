@@ -1,0 +1,15 @@
+.gitignore
+LICENSE
+README.md
+setup.py
+.github/workflows/python-publish.yml
+html5tagger/__init__.py
+html5tagger/builder.py
+html5tagger/document.py
+html5tagger/html5.py
+html5tagger/makebuilder.py
+html5tagger/util.py
+html5tagger.egg-info/PKG-INFO
+html5tagger.egg-info/SOURCES.txt
+html5tagger.egg-info/dependency_links.txt
+html5tagger.egg-info/top_level.txt
