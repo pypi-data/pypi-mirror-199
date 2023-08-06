@@ -1,0 +1,18 @@
+Metadata-Version: 2.1
+Name: adam-lr-decay
+Version: 0.0.1
+Summary: Adam Layer-wise LR Decay
+Home-page: https://github.com/OrigamiDream/adam-lr-decay
+Author: OrigamiDream
+Author-email: hello@origamidream.me
+License: MIT
+Keywords: machine learning,deep learning,tensorflow,optimizers
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: tensorflow (>=2.11)
+
