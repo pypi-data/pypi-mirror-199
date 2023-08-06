@@ -1,0 +1,47 @@
+Metadata-Version: 2.1
+Name: iisi-python
+Version: 0.0.1
+Project-URL: Documentation, https://github.com/Iimiva/iisi#readme
+Project-URL: Issues, https://github.com/Iimiva/iisi/issues
+Project-URL: Source, https://github.com/Iimiva/iisi
+Author-email: Iimiva <iiro.sinisalo@isinisalo.com>
+License-Expression: MIT
+License-File: LICENSE
+Classifier: Development Status :: 4 - Beta
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Classifier: Programming Language :: Python :: Implementation :: PyPy
+Requires-Python: >=3.9
+Requires-Dist: authoritah
+Requires-Dist: punq
+Description-Content-Type: text/markdown
+
+# iisi.app
+
+pipenv install -d
+# pipenv requirements > .requirements.txt
+
+pipenv shell
+
+[![PyPI - Version](https://img.shields.io/pypi/v/iisi.svg)](https://pypi.org/project/iisi)
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/iisi.svg)](https://pypi.org/project/iisi)
+
+-----
+
+**Table of Contents**
+
+- [Installation](#installation)
+- [License](#license)
+
+## Installation
+
+```console
+pip install iisi
+```
+
+## License
+
+`iisi` is distributed under the terms of the [MIT](https://spdx.org/licenses/MIT.html) license.
