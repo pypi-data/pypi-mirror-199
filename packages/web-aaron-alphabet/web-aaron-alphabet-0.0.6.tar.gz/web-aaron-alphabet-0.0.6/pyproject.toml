@@ -1,0 +1,28 @@
+[build-system]
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+
+[project]
+name = "web-aaron-alphabet"
+version = "0.0.6"
+description = "Websites to PDFs. "
+license = { file = "LICENSE" }
+authors = [{ name = "Aaron Alphabet", email = "aaron.alphabet@gmx.ch" }]
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python",
+    "Programming Language :: Python :: 3",
+]
+keywords = []
+dependencies = [
+    "PyPDF2",
+    "pdfkit",
+    "pypdf",
+    "wkhtmltopdf",
+    "docx2pdf",
+    "htmldocx",
+    "weasyprint",
+]
+requires-python = ">=3.11"
+
