@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: make-better
+Version: 0.4.0
+Summary: Easy lint and format you code
+Home-page: https://github.com/Roktober/make_better
+License: MIT
+Keywords: autoformat,flake8,lint
+Author: roktober
+Requires-Python: >=3.8.1,<4.0.0
+Classifier: Development Status :: 4 - Beta
+Classifier: Environment :: Console
+Classifier: Framework :: Flake8
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Software Development :: Quality Assurance
+Classifier: Typing :: Typed
+Requires-Dist: bandit[toml] (>=1.7.5,<2.0.0)
+Requires-Dist: black (>=23.1.0,<24.0.0)
+Requires-Dist: flake8 (>=6.0.0,<7.0.0)
+Requires-Dist: flake8-async (>=22.11.14,<23.0.0)
+Requires-Dist: flake8-bugbear (>=23.2.13,<24.0.0)
+Requires-Dist: flake8-comprehensions (>=3.10.1,<4.0.0)
+Requires-Dist: flake8-datetimez (>=20.10.0,<21.0.0)
+Requires-Dist: flake8-encodings (>=0.5.0.post1,<0.6.0)
+Requires-Dist: flake8-import-conventions (>=0.1.0,<0.2.0)
+Requires-Dist: flake8-print (>=5.0.0,<6.0.0)
+Requires-Dist: flake8-return (>=1.2.0,<2.0.0)
+Requires-Dist: flake8-use-pathlib (>=0.3.0,<0.4.0)
+Requires-Dist: isort (>=5.12.0,<6.0.0)
+Requires-Dist: tryceratops (>=1.1.0,<2.0.0)
+Project-URL: Repository, https://github.com/Roktober/make_better
+Description-Content-Type: text/markdown
+
+# make_better
+
+make_better is a Python package designed to improve the quality of your code by providing preconfigured linters and a
+code formatter. The package is built to make it easy for Python developers to maintain high standards in their code by
+running a single command.
+
+## Features
+
+- Preconfigured linters to check your code for potential issues without being too annoying.
+- A preconfigured code formatter to ensure your code is formatted according to best practices.
+- Easy to use: simply run a single command to check and format your code.
+- Saves time by removing the routine of having to check and format code manually.
+
+## Installation
+
+You can install make_better via pip:
+
+```bash
+pip install make_better
+```
+
+## Usage
+
+To check and format your code, simply navigate to the directory containing your Python files and run the following
+command:
+
+```bash
+make_better --autoformat
+```
+
+This will run the preconfigured linters and code formatter on your code. Any potential issues will be flagged, and your
+code will be formatted according to best practices.
+
+## Why line-length 90
+
+We use a line length of 90, so that people on laptops with a diagonal of 16 do not have problems during the review
+
