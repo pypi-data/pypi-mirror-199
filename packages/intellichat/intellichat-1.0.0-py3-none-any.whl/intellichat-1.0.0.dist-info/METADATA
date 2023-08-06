@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: intellichat
+Version: 1.0.0
+Summary: A convenient wrapper for OpenAI's Chat Completion API.
+Home-page: https://github.com/CodeWithSwastik/intellichat
+Author: Swas.py
+Author-email: cwswas.py@gmail.com
+Project-URL: Issue tracker, https://github.com/CodeWithSwastik/intellichat/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Internet
+Classifier: Topic :: Software Development :: Libraries
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: openai
+
+# IntelliChat
+
+A convenient wrapper for OpenAI's Chat Completion API.
