@@ -1,0 +1,18 @@
+{
+  "type" : "object",
+  "required": [ "build_ignore", "base_branch" ],
+  "additionalProperties" : false,
+  "properties" : {
+    "build_ignore": {
+      "type" : "object",
+      "additionalProperties" : false,
+      "required": [ "ignored_paths" ],
+      "properties" : {
+        "ignored_paths" : { "type" : "array"}
+      }
+    },
+    "base_branch": {
+      "type" : "string"
+    }
+  }
+}
