@@ -1,0 +1,93 @@
+{
+  "src/lib/components/EALayout.react.js": {
+    "description": "Layout used by Energy Aspects apps",
+    "displayName": "EALayout",
+    "methods": [],
+    "props": {
+      "id": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Layout wrapper Id"
+      },
+      "className": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "Layout wrapper className"
+      },
+      "sidebarContent": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Contents of sidebar"
+      },
+      "drawerContent": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Contents of drawer"
+      },
+      "headerContent": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Contents of header"
+      },
+      "secondaryHeaderContent": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Contents of secondary header. Won't be present if not specified"
+      },
+      "fixedSecondaryHeader": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": ""
+      },
+      "logoUrl": {
+        "type": {
+          "name": "string"
+        },
+        "required": false,
+        "description": "`href` passed to on logo click"
+      },
+      "open": {
+        "type": {
+          "name": "bool"
+        },
+        "required": true,
+        "description": "Signifies if drawer of Layout is open"
+      },
+      "children": {
+        "type": {
+          "name": "node"
+        },
+        "required": false,
+        "description": "Main content"
+      },
+      "showLeftHandNav": {
+        "type": {
+          "name": "bool"
+        },
+        "required": false,
+        "description": "Toggle off and on the drawer and sidebar"
+      },
+      "setProps": {
+        "type": {
+          "name": "func"
+        },
+        "required": false,
+        "description": "Dash-assigned callback that should be called to report property changes\nto Dash, to make them available for callbacks."
+      }
+    }
+  }
+}
