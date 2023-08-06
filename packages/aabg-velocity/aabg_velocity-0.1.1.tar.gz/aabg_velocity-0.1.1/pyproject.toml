@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "aabg-velocity"
+version = "0.1.1"
+description = ""
+authors = ["Abdullah Sahin <abdullah.sahin@accenture.com>"]
+readme = "README.md"
+packages = [{include = "aabg-velocity"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
