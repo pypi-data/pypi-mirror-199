@@ -1,0 +1,66 @@
+# pyChaChaDummyProject (c) by chacha
+#
+# pyChaChaDummyProject is licensed under a
+# Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International Unported License.
+#
+# You should have received a copy of the license along with this
+# work.  If not, see <https://creativecommons.org/licenses/by-nc-sa/4.0/>.
+
+[build-system]
+requires = ["setuptools>=63", "wheel", "setuptools_scm"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools_scm]
+version_scheme= "post-release"
+
+[project]
+name = "pychangelogfactory"
+description = "A simple changelog builder that you can feed with your repository change history."
+readme = "README.md"
+requires-python = ">=3.9"
+keywords = ["chacha","chacha","template","pychangelogfactory"]
+license = { file = "LICENSE.md" }
+
+authors = [
+    {name="chacha",email="1000CHACHA0001@gmail.com"},
+]
+maintainers = [
+    {name="chacha",email="1000CHACHA0001@gmail.com"},
+]
+classifiers = [
+  "Development Status :: 4 - Beta",
+  "Programming Language :: Python :: 3 :: Only",
+  "Programming Language :: Python :: 3.9",
+]
+dependencies = [
+    'importlib-metadata; python_version<"3.9"',
+    'packaging'
+]
+dynamic = ["version"]
+
+[tool.setuptools]
+platforms = ["any"]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"pychangelogfactory.data" = ["*.*"]
+
+[project.urls]
+Homepage        = "https://chacha.ddns.net/gitea/chacha/pychangelogfactory"
+Documentation   = "https://chacha.ddns.net/mkdocs-web/chacha/pychangelogfactory/master/latest/"
+Tracker         = "https://chacha.ddns.net/gitea/chacha/pychangelogfactory/issues"
+
+[project.optional-dependencies]
+test              = ["junitparser>=2.8","junit2html>=30.1","xmlrunner>=1.7","mypy>=0.99" ]
+coverage-check    = ["coverage>=7.0"]
+complexity-check  = ["radon>=5.1"]
+quality-check     = ["pylint>=2.15","pylint-json2html>=0.4","pandas>=1.5"]
+type-check        = ["mypy[reports]>=0.99" ]
+doc-gen           = ["mkdocs>=1.4.0", "mkdocs-material>=8.5","mkdocs-pymdownx-material-extras", "mkdocs-localsearch>=0.9.0", "mkdocstrings[python]>=0.19", "mkdocs-with-pdf>=0.9.3","pyyaml>=6.0","pymdown-extensions>=9","mkdocs-markdownextradata-plugin","mkdocs-mermaid2-plugin"]
+
+#[project.scripts]
+#my-script = "my_package.module:function"
+
