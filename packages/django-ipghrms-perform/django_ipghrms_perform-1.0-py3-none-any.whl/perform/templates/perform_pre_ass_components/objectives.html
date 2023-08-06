@@ -1,0 +1,34 @@
+<table class="table table-sm">
+    <tr>
+        <th colspan="2" class="pb-0" style="border-top: 0;">1. OBJECTIVE OF THE ORGANIZATIONAL DIVIZION</th>
+    </tr>
+    <tr >
+        <td colspan="2" class="pt-0" style="border-top: 0;"><small>(Description of the objectives of the organizational unit as approved by the Board of Directors)</small></td>
+    </tr>
+    <tr style=" border: 1px solid black;">
+        <td style="border-top: 0;">
+            {% if objects.objective %}
+              
+            {{objects.objective|safe}}
+            {% else %}
+            <div class="text-center">
+                <i class="text-danger text-center">Objectives Seidauk Kria!</i></i>
+            </div>
+            {% endif %}
+        </td>
+        <td style="border-top: 0;" width="5%">
+            {% if check_emp %}
+                {% if objects.is_lock == False %}
+                  
+                    {% if objects.objective == '' or objects.objective == None %}
+                        <a href="{% url 'eval-conf-plan-add-objectives' objects.hashed %}" class="btn btn-sm btn-success
+                        "><i class="fa fa-plus"></i></a>
+                    {% else %}
+                        <a href="{% url 'eval-conf-plan-add-objectives' objects.hashed %}" class="btn btn-sm btn-success
+                        "><i class="fa fa-pen-to-square"></i></a>
+                    {% endif %}
+                {% endif %}
+            {% endif %}
+        </td>
+    </tr>
+</table>

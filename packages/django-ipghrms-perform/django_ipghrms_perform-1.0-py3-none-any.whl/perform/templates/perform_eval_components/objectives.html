@@ -1,0 +1,17 @@
+<table class="table table-sm">
+    <tr>
+        <th class="pb-0" style="border-top: 0;">1. OBJECTIVE OF THE ORGANIZATIONAL DIVIZION</th>
+    </tr>
+    <tr style=" border: 1px solid black;">
+        <td style="border-top: 0;">
+            {% if plan.objective %}
+              
+            {{plan.objective|safe}}
+            {% else %}
+            <div class="text-center">
+                <i class="text-danger text-center">Objectives Seidauk Kria!</i></i>
+            </div>
+            {% endif %}
+        </td>
+    </tr>
+</table>

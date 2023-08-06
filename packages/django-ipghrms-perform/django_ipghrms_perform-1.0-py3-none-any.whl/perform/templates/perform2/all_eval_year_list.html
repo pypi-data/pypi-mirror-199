@@ -1,0 +1,65 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'all-eval-dash' %}">PAINEL AVALIASAUN</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header">{{ legend|upper }}</div>
+                <div class="card-body">
+                    <table class="table table-sm table-striped" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Naran</th>
+                                <th>Kategoria</th>
+                                <th>Data</th>
+                                <th>Tinan</th>
+                                <th>Score A</th>
+                                <th>Score B</th>
+                                <th>Valor Final</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ obj.employee }}</td>
+                                <td>{{ obj.category }}</td>
+                                <td>{{ obj.date|date:"d/m/Y" }}</td>
+                                <td>{{ obj.year.year }}</td>
+                                <td>{{ obj.score_a }}</td>
+                                <td>{{ obj.score_b }}</td>
+                                <td>{{ obj.total }}</td>
+                                <td><a class="btn btn-sm btn-info" href="{% url 'all-eval-detail' obj.hashed %}" title="Detalha"><i class="fa fa-eye"></i></a></td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <hr/>
+                    <ul class="breadcrumb">
+                    {% for year in years %}
+                        <li class="breadcrumb-item"><a href="{% url 'all-eval-year-list' year.year__year %}">{{ year.year__year }}</a></li>
+                    {% endfor %}
+                    </ul>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

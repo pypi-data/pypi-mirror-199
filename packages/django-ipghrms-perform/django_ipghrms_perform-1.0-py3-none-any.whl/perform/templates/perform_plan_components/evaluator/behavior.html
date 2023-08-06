@@ -1,0 +1,108 @@
+<div class="row">
+    <div class="col-md-12">
+        <table class="table table-sm mb-0">
+            <tr >
+                <td colspan="2" class="pt-0" style="border-top: 0;"><strong style="font-size: 12px;">2.2 PROFESSIONAL BEHAVIOR</strong></td>
+            </tr>
+            <tr >
+                <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed at the begining of the evaluation period - Initial Guidance Interview - January 08 to 15)</small></td>
+                <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed within the follow-up period)</small></td>
+
+            </tr>
+        </table>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <table id="table1" class="table table-sm mb-0">
+            <tr align="center" style=" border: 1px solid black;">
+                <td colspan="2" style="border-top: 0;">Professional behaviors chosen (Provided as attached)</td>
+            </tr>
+            <tr align="center" style=" border: 1px solid black;">
+                <td width="50%" style=" border: 1px solid black;"><strong>Areas</strong> </td>
+                <td width="50%" style=" border: 1px solid black;"><strong>Indicators</strong> </td>
+            </tr>
+        </table>
+        
+    </div>
+    <div class="col-md-6">
+        <table id="table2" class="table table-sm mb-0">
+            <tr align="center" style=" border: 1px solid black;">
+                <td colspan="3" style="border-top: 0;">Monitoring </td>
+            </tr>
+            <tr align="center" style=" border: 1px solid black;">
+                <td width="30%" style=" border: 1px solid black;"><strong>Progress</strong> 
+                    
+                </td>
+                <td width="30%" style=" border: 1px solid black;"><strong>Dificulties</strong> </td>
+                <td width="40%" style=" border: 1px solid black;"><strong>Need Improvement</strong> </td>
+            </tr>
+        </table>
+        
+    </div>
+</div>
+{% for beh in behavior  %}
+<div class="row">
+    <div class="col-md-6 d-flex flex-column">
+        <table class="table table-sm flex-fill mb-0">
+            <tr align="center"  heigth="100%">
+                <td width="50%" style="vertical-align: middle; border: 0.5px solid black;"><strong>{{beh.parameter.area}} </strong>
+                    {% if objects.is_lock and objects.is_finish == False %}  
+                        <a href="{% url 'eval-conf-plan-evaluator-beh-add' beh.hashed %}"><i class="fa fa-pencil" title="Update"></i></a>
+                    {% endif %} 
+                    </td>
+                <td width="50%" style=" border: 0.5px solid black; "><i>{{beh.parameter.indicator|safe}}</i> </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-md-6 d-flex flex-column">
+        <table class="table table-sm flex-fill mb-0">
+            <tr align="center" >
+                <td width="30%" style=" vertical-align: middle; border: 0.5px solid black;">
+                    {% if beh.progress %}
+                        
+                        {{beh.progress|safe}}
+                        
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td width="30%" style="  vertical-align: middle; border: 0.5px solid black;">
+                    {% if beh.dificulties %}
+                        
+                        {{beh.dificulties|safe}}
+                    {% else %}
+                        -
+                    {% endif %}
+                </td>
+                <td width="40%" style=" vertical-align: middle;  border: 0.5px solid black;">
+                    {% if beh.need_improv %}
+                        
+                        {{beh.need_improv|safe}}
+                    {% else %}
+                        -
+                    {% endif %}
+                    </td>
+                </tr>
+        </table>
+    </div>
+</div>
+{% endfor %}
+<div class="col-md-12 mt-2">
+    <table class="table table-sm table-bordered">
+        <tr>
+            <td width="20%">Evaluated</td><td>{% if objects.employeeeval %}{{objects.employeeeval}}{% else %}-{% endif %}</td>
+        </tr>
+        <tr>
+            <td width="20%">Professional Behavior Date</td><td>{% if objects.eval_date_ind %}{{objects.eval_date_ind|date:"d F Y"}} 
+                {% if objects.is_finish == False %}
+                  
+                    <a href="{% url 'eval-conf-plan-eval-add-beh-date' objects.hashed %}" class="btn btn-sm btn-info"><i class="fa fa-pen-to-square"></i> </a> 
+                {% endif %}
+                {% else %}
+                <a href="{% url 'eval-conf-plan-eval-add-beh-date' objects.hashed %}" class="btn btn-sm btn-info">Aumenta Data <i class="fa fa-plus"></i></a>
+                {% endif %}</td>
+        </tr>
+    </table>
+</div>

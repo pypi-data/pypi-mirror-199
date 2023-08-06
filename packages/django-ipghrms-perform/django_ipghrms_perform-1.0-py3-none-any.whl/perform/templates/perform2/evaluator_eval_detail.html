@@ -1,0 +1,417 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'all-eval-dash' %}">PAINEL AVALIASAUN</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary text-center">
+                    <h2>PERFORMANCE EVALUATION</h2>
+                    <h6>{{ legend|upper }}
+                        {% if objects.is_lock and objects.is_finish == False %}
+
+                        <i class="fa fa-arrow-right"></i> <a href="{% url 'c-eval-lock' objects.hashed plan.hashed %}" class="btn btn-danger btn-sm">Chave <i class="fa fa-lock"></i></a>
+                        <a href="{% url 'c-eval-refresh' objects.hashed plan.hashed %}" class="btn btn-warning btn-sm">Refresh <i class="fa fa-refresh"></i></a>
+                        {% endif %}
+
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm "  border="0">
+                                <tr >
+                                    <td style="border-top: 0;" width="9%">Division</td> <td style="border-top: 0;">: {{objects.unit}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top: 0;">Unit</td> <td style="border-top: 0;">:  {% if objects.department %}   {{objects.department}} {% else %} -  {% endif %}</td>
+                                </tr>
+                            </table>
+                        </div>
+                       {% include "perform_eval_components/evaluator/header.html" %}
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            
+                            {% include "perform_eval_components/evaluator/objectives.html" %}
+                            <table class="table table-sm mb-0">
+                                <tr>
+                                    <th colspan="2" class="pb-0" style="border-top: 0;">2. PARAMETERS OF THE EVALUATIONS</th>
+                                </tr>
+                                <tr >
+                                    <td colspan="2" class="pt-0" style="border-top: 0;"><strong style="font-size: 12px;">2.1 INDIVIDUAL OBJECTIVES</strong></td>
+                                </tr>
+                                <tr >
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed at the begining of the evaluation period - Initial Guidance Interview - January 08 to 15)</small></td>
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed within the follow-up period - June 20 to July 15)</small></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    {% include "perform_eval_components/evaluator/individual.html" %}
+
+
+
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm mb-0">
+                                <tr >
+                                    <td colspan="2" class="pt-0" style="border-top: 0;"><strong style="font-size: 12px;">2.2 PROFESSIONAL BEHAVIOR</strong></td>
+                                </tr>
+                                <tr >
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed at the begining of the evaluation period - Initial Guidance Interview - January 08 to 15)</small></td>
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed within the follow-up period)</small></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <table id="table1" class="table table-sm mb-0">
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td colspan="2" style="border-top: 0;">Professional behaviors chosen (Provided as attached)</td>
+                                </tr>
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td width="50%" style=" border: 1px solid black;"><strong>Areas</strong> </td>
+                                    <td width="50%" style=" border: 1px solid black;"><strong>Indicators</strong> </td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                        <div class="col-md-6">
+                            <table id="table2" class="table table-sm mb-0">
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td colspan="5" style="border-top: 0;">Avalicao </td>
+                                </tr>
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td width="20%" style=" border: 1px solid black;"><strong>1</strong> </td>
+                                    <td width="20%" style=" border: 1px solid black;"><strong>2</strong> </td>
+                                    <td width="20%" style=" border: 1px solid black;"><strong>3</strong> </td>
+                                    <td width="20%" style=" border: 1px solid black;"><strong>4</strong> </td>
+                                    <td width="20%" style=" border: 1px solid black;"><strong>5</strong> </td>
+                                </tr>
+                            </table>
+                            
+                        </div>
+                    </div>
+                    {% for beh in behavior  %}
+                        <div class="row">
+                            <div class="col-md-6 d-flex flex-column">
+                                <table class="table table-sm flex-fill mb-0">
+                                    <tr align="center"  heigth="100%">
+                                        <td width="50%" style="vertical-align: middle; border: 0.5px solid black;"><strong>{{beh.parameter.parameter.area}} </strong>
+                                        {% if objects.is_finish == False %}
+                                        <a href="{% url 'c-eval-update_b' objects.pk beh.hashed  %}"><i class="fa fa-pencil"></i> </a>
+                                        {% endif %}
+                                        </td>
+                                        <td width="50%" style=" border: 0.5px solid black; "><i>{{beh.parameter.parameter.indicator|safe}}</i> </td>
+                                    </tr>
+
+                                </table>
+                            </div>
+                            <div class="col-md-6 d-flex flex-column">
+                                <table class="table table-sm flex-fill mb-0">
+                                    <tr align="center" >
+                                        <td width="20%" style="vertical-align: middle; border: 1px solid black;">
+                                            {% if beh.choice.score == 1 %}
+                                            <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                                            
+                                            {% endif %}
+                                            {% if beh.comments and beh.choice.score == 1 %}{{ beh.comments|safe }}{% endif %}
+                                        </td>
+                                        <td width="20%" style="vertical-align: middle; border: 1px solid black;">
+                                            {% if beh.choice.score == 2 %}
+                                            <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                                            {% endif %}
+                                            {% if beh.comments and beh.choice.score == 2 %}{{ beh.comments|safe }}{% endif %}
+                                        </td>
+                                        <td width="20%" style="vertical-align: middle; border: 1px solid black;">
+                                            {% if beh.choice.score == 3 %}
+                                            <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                                            {% endif %}
+                                            {% if beh.comments and beh.choice.score == 3 %}{{ beh.comments|safe }}{% endif %}
+                                        
+                                        </td>
+                                        <td width="20%" style="vertical-align: middle; border: 1px solid black;">
+                                            {% if beh.choice.score == 4 %}
+                                            <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                                            {% endif %}
+                                            {% if beh.comments and beh.choice.score == 4 %}{{ beh.comments|safe }}
+                                            {% endif %}
+                                        </td>
+                                        <td width="20%" style="vertical-align: middle; border: 1px solid black;">
+                                            {% if beh.choice.score == 5 %}
+                                            <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                                            {% endif %}
+                                            {% if beh.comments and beh.choice.score == 5 %}{{ beh.comments|safe }}{% endif %}
+                                        
+                                        </td>
+                                      </tr>
+                                </table>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    <br>
+                    <div class="row">
+                        <div class="col-md-6 d-flex flex-column">
+                        </div>
+                        <div class="col-md-6 d-flex flex-column">
+                            <table class="table table-sm flex-fill">
+                                <tr align="center" style=" border: 1px solid black;">
+                                    <td style="vertical-align: middle; border: 1px solid black;" colspan="3">
+                                        <strong>Score of parameter</strong>
+                                    </td>
+                                    <td width="20%" style="vertical-align: middle; border: 1px solid black;">
+                                        {% if objects.score_b %}
+                                          {{objects.score_b}}
+                                        {% else %}
+                                            0
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <!-- GLOBAL AND FINAL SCORE -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            
+                            <table class="table table-sm mb-0">
+                                <tr >
+                                    <th class="pb-0" style="border-top: 0;">3. GLOBAL PERFORMANCE ASSESSMENT</th>
+                                </tr>
+                            </table>
+                            <table class="table table-sm flex-fill w-50">
+                                <thead>
+                                    <tr align="center" style=" border: 1px solid black;" heigth="100%">
+                                        
+                                        <th style="vertical-align: middle; border: 1px solid black;"><strong>EVALUATION PARAMETERS</strong> </th>
+                                        <td style=" border: 1px solid black; "><strong>Score</strong> </td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Individual Goals</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;">{{objects.score_a}} </td>
+                                    </tr>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Professional Behaviors</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;"> {{objects.score_b}} </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    
+                                    <tr align="center" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black; text-align: right;"><strong>TOTAL</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;"> {{objects.total}} </td>
+                                    </tr>
+                                </tfoot>
+                    
+                            </table>
+
+
+                            <table class="table table-sm flex-fill">
+                                <tbody>
+                                    <tr align="center" style=" border: 1px solid black;">
+                                        <th width="50%" rowspan="6" style="vertical-align: middle; border: 1px solid black;"><strong>FINAL EVALUATION - QUALITATIVE <br> MENTION</strong> </th>
+                                    </tr>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Outstanding</strong> </td>
+                                        <td class="text-center" width="10%" style=" border: 1px solid black; color: black;"> {% if finalscore.a %}{{ finalscore.a }}{% endif %}</td>
+                                    </tr>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Exceeds job requirement</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;"> {% if finalscore.b %}{{ finalscore.b }}{% endif %}</td>
+                                    </tr>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Meets job requirement</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;"> {% if finalscore.c %}{{ finalscore.c }}{% endif %} </td>
+                                    </tr>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Needs improvements</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;">{% if finalscore.d %}{{ finalscore.d }}{% endif %} </td>
+                                    </tr>
+                                    <tr align="left" style=" border: 1px solid black;">
+                                        <td style="vertical-align: middle; border: 1px solid black;"><strong>Unsatisfactory</strong> </td>
+                                        <td class="text-center" style=" border: 1px solid black; color: black;"> {% if finalscore.e %}{{ finalscore.e }}{% endif %}</td>
+                                    </tr>
+                                </tbody>
+                    
+                            </table>
+                        </div>
+                    </div>
+
+
+
+                    <!-- JUSTIFICATION OF OUTSTANDING PERFORMANCE -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="pb-0" style="border-top: 0;">4. JUSTIFICATION OF OUTSTANDING PERFORMANCE 
+                                        {% if objects.is_finish == False %}
+                                          <a href="{% url 'c-eval-update-outstanding' objects.hashed plan.pk %}" class="fa fa-pencil"></a>
+                                        {% endif %}
+                                    </th>
+                                </tr>
+                                <tr style=" border: 1px solid black;">
+                                    <td style="border-top: 0;">
+                                        <div class="text-left">
+                                            {% if objects.outstanding_perf %}
+                                              {{objects.outstanding_perf|safe}}
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <!-- JUSTIFICATION OF UNSATISFACTORY PERFORMANCE -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="pb-0" style="border-top: 0;">5. JUSTIFICATION OF UNSATISFACTORY PERFORMANCE</th>
+                                </tr>
+                                <tr style=" border: 1px solid black;">
+                                    <td style="border-top: 0;">
+                                        <div class="text-left">
+                                            <small>Paramenter of individual objectives: 
+                                            </small>
+                                            {% if objects.is_finish == False %}
+                                                <a href="{% url 'c-eval-update-uns-A' objects.hashed plan.pk %}" class="fa fa-pencil"></a>
+                                            {% endif %}
+
+                                            {% if objects.unsatisfactory_perf_obj %}
+                                              {{objects.unsatisfactory_perf_obj|safe}}
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                        </div>
+                                        <br>
+                                        <div class="text-left">
+                                            <small>Paramenter professional behaviors: </small>
+                                            {% if objects.is_finish == False %}
+                                                <a href="{% url 'c-eval-update-uns-B' objects.hashed plan.pk %}" class="fa fa-pencil"></a>
+                                            {% endif %}
+
+                                            {% if objects.unsatisfactory_perf_beh %}
+                                              {{objects.unsatisfactory_perf_beh|safe}}
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- RECOGNITION OF MERIT (OUTSTANDING PERFORMANCE) -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="pb-0" style="border-top: 0;">6. RECOGNITION OF MERIT (OUTSTANDING PERFORMANCE) 
+                                    {% if objects.is_finish == False %}
+                                        <a href="{% url 'c-eval-update-merit' objects.hashed plan.pk %}" class="fa fa-pencil"></a>
+                                    {% endif %}
+                                    </th>
+                                </tr>
+                                <tr style=" border: 1px solid black;">
+                                    <td style="border-top: 0;">
+                                        <div class="text-left">
+                                            {% if objects.recognition_merit %}
+                                              {{objects.recognition_merit|safe}}
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- JUSTIFICATION OF NON-EVALUATION -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="pb-0" style="border-top: 0;">7. JUSTIFICATION OF NON-EVALUATION 
+                                    {% if objects.is_finish == False %}
+                                        <a href="{% url 'c-eval-update-jus-non-eval' objects.hashed plan.pk %}" class="fa fa-pencil"></a>
+                                    {% endif %}
+                                    </th>
+                                </tr>
+                                <tr style=" border: 1px solid black;">
+                                    <td style="border-top: 0;">
+                                        <div class="text-left">
+                                            {% if objects.just_non_evaluation %}
+                                              {{objects.just_non_evaluation|safe}}
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- EXPECTATIONS, CONDITIONS AND / OR REQUIREMENTS FOR PERSONAL AND PROFESSIONAL DEVELOPMENT (for the next evaluation period) -->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <tr>
+                                    <th class="pb-0" style="border-top: 0;">8. EXPECTATIONS, CONDITIONS AND / OR REQUIREMENTS FOR PERSONAL AND PROFESSIONAL DEVELOPMENT (for the next evaluation period) 
+                                    {% if objects.is_finish == False %}
+                                        <a href="{% url 'c-eval-update-exp' objects.hashed plan.pk %}" class="fa fa-pencil"></a>
+                                    {% endif %}
+                                    </th>
+                                </tr>
+                                <tr style=" border: 1px solid black;">
+                                    <td style="border-top: 0;">
+                                        <div class="text-center">
+                                            {% if objects.just_non_evaluation %}
+                                              {{objects.just_non_evaluation|safe}}
+                                            {% else %}
+                                            -
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                    
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>   
+{% endblock %}

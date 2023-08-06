@@ -1,0 +1,54 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'eval-conf-dash' %}">KONFIGURASAUN PAINEL</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h4>{{ legend|upper }}</h4>
+                    </center>
+                </div>
+                <div class="card-body">
+                    <center>
+                        <table class="table table-sm table-striped table-bordered w-50">
+                            <thead>
+                                <tr align="center">
+                                    <th>Nu.</th> <th class="text-left">Area</th><th>Indicator</th><th>#</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for paramb in objects %}
+                                <tr align="center">
+                                    <td>{{forloop.counter}}</td>
+                                    <td class="text-left">{{ paramb.area }}</td>
+                                    <td>{{ paramb.indicator|safe }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-info" href="{% url 'eval-paramb-update' paramb.id %}"><i class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </center>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

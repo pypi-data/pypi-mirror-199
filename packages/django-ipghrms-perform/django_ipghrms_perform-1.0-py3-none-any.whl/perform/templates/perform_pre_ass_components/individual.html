@@ -1,0 +1,74 @@
+<div class="row">
+    <div class="col-md-6">
+        <table class="table table-sm">
+            <tr align="center" style=" border: 1px solid black;">
+                <td style="border-top: 0;">Goal description <br>
+                    Detemination of the measurement Indicator (s) and <br>
+                    Overcoming Criteria</td>
+            </tr>
+        </table>
+    </div>
+    <div class="col-md-6">
+        <table class="table table-sm">
+            <tr align="center" style=" border: 1px solid black;">
+                <td colspan="3" style="border-top: 0;">Pre-assessment </td>
+            </tr>
+            <tr align="center" style=" border: 1px solid black;">
+                <td width="30%" style=" border: 1px solid black;">Goal exceeded <br> (explain) </td>
+                <td width="30%" style=" border: 1px solid black;">Goal achived <br> (explain) </td>
+                <td width="40%" style=" border: 1px solid black;">Goal not reached <br> (explain) </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+{% for ind in individual  %}
+<div class="row">
+    <div class="col-md-6 d-flex flex-column">
+        <table class="table table-sm flex-fill">
+            <tr align="center" style=" border: 1px solid black;" heigth="100%">
+                <td rowspan="3" width="5%"  style=" vertical-align: middle; border: 1px solid black;">{{forloop.counter}} </td>
+                <td style="vertical-align: middle; border: 1px solid black;"><strong>Goals / Activities</strong> </td>
+                <td style=" border: 1px solid black; "><i>{{ind.plan_objective.goals|safe}}</i> </td>
+            </tr>
+            <tr align="center" style=" border: 1px solid black;">
+                <td style="vertical-align: middle; border: 1px solid black;"><strong>Measuring Indicator (s)</strong> </td>
+                <td style=" border: 1px solid black; color: black;"><i>{{ind.plan_objective.measuring|safe}}</i> </td>
+            </tr>
+            <tr align="center" style=" border: 1px solid black;">
+                <td style="vertical-align: middle; border: 1px solid black;"><strong>Criteria for overcoming</strong> </td>
+                <td style=" border: 1px solid black; color: black;"><i>{{ind.plan_objective.criteria|safe}}</i> </td>
+            </tr>
+
+        </table>
+    </div>
+    <div class="col-md-6 d-flex flex-column">
+        <table class="table table-sm flex-fill">
+            <tr align="center" style=" border: 1px solid black;">
+                <td width="30%" style="vertical-align: middle; border: 1px solid black;">
+                    {% if ind.scored == 'one' %}
+                    <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                    {% else %}
+                    - 
+                    {% endif %}
+                </td>
+                <td width="30%" style="vertical-align: middle; border: 1px solid black;">
+                    {% if ind.scored == 'two' %}
+                    <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                    {% else %}
+                    - 
+                    {% endif %}
+                </td>
+                <td width="40%" style="vertical-align: middle; border: 1px solid black;">
+                    {% if ind.scored == 'three' %}
+                    <p style="font-size: 29px;"> <i class="fa fa-check text-success" ></i> </p>
+                    {% else %}
+                    - 
+                    {% endif %}
+                
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% endfor %}

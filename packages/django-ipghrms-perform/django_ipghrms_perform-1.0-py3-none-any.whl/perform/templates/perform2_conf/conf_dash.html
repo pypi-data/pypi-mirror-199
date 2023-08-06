@@ -1,0 +1,156 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'all-eval-dash' %}">PAINEL AVALIASAUN</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary text-center">
+                    <h2>{{ legend|upper }}</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <table class="table table-sm table-striped table-bordered">
+                                <thead>
+                                    <tr align="center">
+                                        <th colspan="3">TINAN</th>
+                                    </tr>
+                                </thead>
+                                <tr align="center">
+                                    <th>Tinan</th><th>Status</th><th>#</th>
+                                </tr>
+                                {% for year in years %}
+                                <tr align="center">
+                                    <td>{{ year.year }}</td>
+                                    <td>{% if year.is_active == True %}<i class="fa fa-star text-success"></i>{% endif %}</td>
+                                    <td>
+                                        {% if year.is_active == True %}
+                                        <a class="btn btn-sm btn-info disabled" href="" ><i class="fa fa-ban"></i></a>
+                                        {% else %}
+                                        <a class="btn btn-sm btn-info" href="{% url 'eval-conf-year-active' year.id %}" title="Ativa"><i class="fa fa-check"></i></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                <tfoot>
+                                    <tr align="center">
+                                        <th colspan="3"> <a href="{% url 'eval-conf-behavior-list' %}" class="btn btn-sm btn-danger">All Behaviors <i class="fa fa-list"></i></a>  </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div class="col-sm-10">
+                            <!-- <a class="btn btn-sm btn-info mb-1" href="{% url 'eval-parama-add' %}">Aumenta <i class="fa fa-plus"></i></a> -->
+                            <table class="table table-sm table-striped table-bordered">
+                                <thead>
+                                    <tr align="center">
+                                        <th colspan="7">LISTA FUNSIONARIO & AVALIASAUN</th>
+                                    </tr>
+                                    <tr align="center">
+                                        <th>Nu.</th><th class="text-left">Staff</th>
+                                        <th>Planning & Monitoring
+                                            <i class="fa fa-arrow-right"></i> <a href="{% url 'eval-conf-add-plan-all' ayear %}" class="btn btn-sm btn-success">Add All <i class="fa fa-plus"></i></a>
+                                        </th>
+                                        <th>Pre-Assessment</th><th>Self-Evaluation</th><th>Evaluation</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for obj in  objects %}
+                                        <tr align="center">
+                                            <td>{{forloop.counter}}</td>
+                                            <td class="text-left">{{obj.0}}</td>
+                                            <td>
+                                                {% if obj.1 %}
+                                                  <a href="{% url 'eval-conf-plan-detail' obj.1.hashed %}" class="btn btn-sm btn-info">Hare <i class="fa fa-eye"></i></a>
+                                                  {% if obj.1.is_lock == False %}                                                
+                                                      <a href="{% url 'eval-conf-plan-detail' obj.1.hashed %}" class="btn btn-sm btn-warning">Delete <i class="fa fa-trash"></i></a>
+                                                  {% endif %}
+                                                {% else %}
+                                                  <a href="{% url 'eval-conf-add-plan' obj.0.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if obj.3 and not obj.2 %}
+                                                    <a href="{% url 'eval-conf-add-pre-ass' obj.0.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                                {% elif obj.3 and obj.2 %}
+                                                    <a href="{% url 'eval-conf-pre-ass-detail' obj.2.hashed %}" class="btn btn-sm btn-info">Hare <i class="fa fa-eye"></i></a>
+                                                    {% if obj.2.is_lock == False %}
+                                                        <!-- <a href="#" class="btn btn-sm btn-danger">Delete <i class="fa fa-trash"></i></a> -->
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span class="badge bg-warning">Plano Seidauk kria <i class="fa fa-warning"></i></span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                
+                                                {% if obj.3 and not obj.4 %}
+                                                    <a href="{% url 'hr-eval-self-add' obj.0.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                                {% elif obj.3 and obj.4 %}
+                                                    <a href="{% url 'hr-eval-self-detail' obj.4.hashed %}" class="btn btn-sm btn-info">Hare <i class="fa fa-eye"></i></a>
+                                                    {% if obj.4.is_lock == False %}
+                                                        <!-- <a href="#" class="btn btn-sm btn-danger">Delete <i class="fa fa-trash"></i></a> -->
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span class="badge bg-warning">Plano Seidauk kria <i class="fa fa-warning"></i></span>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                {% if obj.3 and not obj.5 %}
+                                                    <a href="{% url 'eval-add-eval' obj.0.hashed ayear %}" class="btn btn-sm btn-danger">Kria <i class="fa fa-plus"></i></a>
+                                                {% elif obj.3 and obj.5 %}
+                                                    <a href="{% url 'eval-detail-eval' obj.5.hashed obj.1.hashed %}" class="btn btn-sm btn-info">Hare <i class="fa fa-eye"></i></a>
+                                                    {% if obj.5.is_lock == False %}
+                                                        <!-- <a href="#" class="btn btn-sm btn-danger">Delete <i class="fa fa-trash"></i></a> -->
+                                                    {% endif %}
+                                                {% else %}
+                                                    <span class="badge bg-warning">Plano Seidauk kria <i class="fa fa-warning"></i></span>
+                                                {% endif %}
+                                            </td>
+
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- 
+                        <div class="col-sm-5">
+                            <h5>Paramenter Individual Overcoming</h5>
+                            <hr/>
+                            <a class="btn btn-sm btn-info mb-1" href="{% url 'eval-paramb-add' %}">Aumenta <i class="fa fa-plus"></i></a>
+                            <table class="table table-sm table-striped">
+                                <tr>
+                                    <th>Area</th><th>Indicator</th><th>#</th>
+                                </tr>
+                                {% for paramb in parambs %}
+                                <tr>
+                                    <td>{{ paramb.area }}</td>
+                                    <td>{{ paramb.indicator|safe }}</td>
+                                    <td>
+                                        <a class="btn btn-sm btn-info" href="{% url 'eval-paramb-update' paramb.id %}"><i class="fa fa-edit"></i></a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div> -->
+                    </div><!--end row-->
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

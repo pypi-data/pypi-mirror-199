@@ -1,0 +1,172 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'eval-self-list' %}">LISTA AVALIASAUN PESSOAL</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header">{{ legend|upper }}</div>
+                <div class="card-body">
+                    {% if eval.is_finish == False %}
+                    {% if eval.is_lock == False %}
+                    <a class="btn btn-sm btn-info" href="{% url 'eval-self-update' eval.hashed %}">Hadia <i class="fa fa-edit"></i></a>
+                    <a class="btn btn-sm btn-danger" href="{% url 'eval-self-remove' eval.hashed %}">Hapaga <i class="fa fa-trash"></i></a>
+                    <a class="btn btn-sm btn-warning" href="{% url 'eval-self-lock' eval.hashed %}">Xavi <i class="fa fa-lock"></i></a>
+                    {% else %}
+                    <a class="btn btn-sm btn-warning" href="{% url 'eval-self-unlock' eval.hashed %}">Loke <i class="fa fa-unlock"></i></a>
+                    <a class="btn btn-sm btn-primary" href="{% url 'eval-self-finish' eval.hashed %}">Termina <i class="fa fa-check"></i></a>
+                    {% endif %}
+                    {% endif %}
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-sm table-bordered table-striped">
+                                <tr>
+                                    <th width="30%">Evaluated</th><td>{{ eval.employee }}</td>
+                                </tr>
+                                <tr>
+                                    <th width="30%">Position</th><td>{{ eval.position }}</td>
+                                </tr>
+                                <tr>
+                                    <th width="30%">Period under evaluation</th>
+                                    <td>{{ eval.start_date|date:"M Y" }} to {{ eval.end_date|date:"M Y" }}</td>
+                                </tr>
+                            </table>
+                        </div><!--end col-->
+                    </div><!--end row-->                 
+                                        
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h2 align="center">PARAMETERS OF THE EVALUATION</h2>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-12">                            
+                            <div class="card shadow-lg border-info rounded">
+                                <div class="card-header bg-steel"><h4>A. INDIVIDUAL OBJECTIVES</h4></div>
+                                <div class="card-body">
+                                    {% if eval.is_lock == False %}
+                                    <a class="btn btn-sm btn-info mb-1" href="{% url 'eval-self-import_a' eval.hashed %}">Import <i class="fa fa-download"></i></a>
+                                    {% endif %}
+                                    <table class="table table-sm table-bordered">
+                                        <tr>
+                                            <td colspan="3">Gaoal description<br/>Determination of the Measurement Indicator (s) and Overcoming Crieteria</td>
+                                            <td width="20%">Goal Exceeded</td><td width="20%">Goal Achieved</td><td width="20%">Goal Not Reached</td>
+                                            {% if eval.is_lock == False %}<th width="5%">#</th>{% endif %}
+                                        </tr>
+                                        {% for obj_a in obj_as %}
+                                        <tr>
+                                            <th rowspan="3" width="5%">{{ forloop.counter }}</th>
+                                            <th width="10%">Goals/Activities</th>
+                                            <td width="22%">{{ obj_a.parameter.name }}</td>
+                                            <td rowspan="3">
+                                                {% if obj_a.comments_a %}{{ obj_a.comments_a|safe }}{% endif %}
+                                            </td>
+                                            <td rowspan="3">
+                                                {% if obj_a.comments_b %}{{ obj_a.comments_b|safe }}{% endif %}
+                                            </td>
+                                            <td rowspan="3">
+                                                {% if obj_a.comments_c %}{{ obj_a.comments_c|safe }}{% endif %}
+                                            </td>
+                                            {% if eval.is_lock == False %}
+                                            <td rowspan="3">
+                                                <a class="btn btn-sm btn-info" href="{% url 'eval-self-update_a' eval.id obj_a.hashed %}"><i class="fa fa-edit"></i></a>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        <tr>
+                                            <th>Measuring Indicator (s)</th>
+                                            <td>{{ obj_a.parameter.measure }}</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Criteria for Overcoming Indicator (s)</th>
+                                            <td>{{ obj_a.parameter.criteria }}</td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    
+                    <div class="row">
+                        <div class="col-sm-12">                            
+                            <div class="card shadow-lg border-info rounded">
+                                <div class="card-header bg-steel"><h4>B. PROFESSIONAL BEHAVIOR</h4></div>
+                                <div class="card-body">
+                                    {% if eval.is_lock == False %}
+                                    <a class="btn btn-sm btn-info mb-1" href="{% url 'eval-self-import_b' eval.hashed %}">Import <i class="fa fa-download"></i></a>
+                                    {% endif %}
+                                    <table class="table table-sm table-bordered">
+                                        <tr>
+                                            <td>Nu.</td>
+                                            <td>Area</td>
+                                            <td>Indicators</td>
+                                            <td>Demonstrated Competence at a High Level</td>
+                                            <td>Demonstrated Competence</td>
+                                            <td>Competence mp Demonstrated</td>
+                                            {% if eval.is_lock == False %}<th>#</th>{% endif %}
+                                        </tr>
+                                        {% for obj_b in obj_bs %}
+                                        <tr>
+                                            <th>{{ forloop.counter }}</th>
+                                            <td>{{ obj_b.parameter.area }}</td>
+                                            <td>{{ obj_b.parameter.indicator|safe }}</td>
+                                            <td>
+                                                {% if obj_b.comments_a %}{{ obj_b.comments_a|safe }}{% endif %}
+                                            </td>
+                                            <td>
+                                                {% if obj_b.comments_b %}{{ obj_b.comments_b|safe }}{% endif %}
+                                            </td>
+                                            <td>
+                                                {% if obj_b.comments_c %}{{ obj_b.comments_c|safe }}{% endif %}
+                                            </td>
+                                            {% if eval.is_lock == False %}
+                                            <td>
+                                                <a class="btn btn-sm btn-info" href="{% url 'eval-self-update_b' eval.id obj_b.hashed %}"><i class="fa fa-edit"></i></a>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </div>
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="card">
+                                <div class="card-header">Komentariu
+                                {% if eval.is_lock == False %}
+                                    <i class="fa fa-long-arrow-right"></i>
+                                    <a class="btn btn-sm btn-info" href="{% url 'eval-self-com-update' eval.hashed %}" title="Altera"><i class="fa fa-edit"></i></a>
+                                {% endif %}    
+                                </div>
+                                <div class="card-body">
+                                    {{ eval.comments|safe }}
+                                </div>
+                            </div><!--end card-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('#example').DataTable();
+    } );
+</script>
+{% endblock %}

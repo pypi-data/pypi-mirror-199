@@ -1,0 +1,79 @@
+{% extends "main/layout.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			{% if page == 'self-a' %}
+					{% if group == 'hr' %}
+					
+					<li class="breadcrumb-item"><a href="{% url 'hr-eval-self-detail' objects.eval.hashed %}" class="mr-2">DETALHA SELF EVALUATION</a></li>
+					{% else %}
+					<li class="breadcrumb-item"><a href="{% url 'staff-perform-self-detail' objects.eval.hashed %}" class="mr-2">DETALHA SELF EVALUATION</a></li>
+					{% endif %}
+			{% elif page == 'self-b' %}
+					{% if group == 'hr' %}
+					
+						<li class="breadcrumb-item"><a href="{% url 'hr-eval-self-detail' objects.eval.hashed %}" class="mr-2">DETALHA SELF EVALUATION</a></li>
+					{% else %}
+						<li class="breadcrumb-item"><a href="{% url 'staff-perform-self-detail' objects.eval.hashed %}" class="mr-2">DETALHA SELF EVALUATION</a></li>
+					{% endif %}
+			{% elif page == 'eval-a' %}
+			<li class="breadcrumb-item"><a href="{% url 'eval-evaluator-detail' objects.hashed plan.hashed %}" class="mr-2">DETALHA AVALIASAUN</a></li>
+			{% elif page == 'form-4' %}
+			<li class="breadcrumb-item"><a href="{% url 'eval-evaluator-detail' objects.hashed plan.hashed %}" class="mr-2">DETALHA AVALIASAUN</a></li>
+			{% endif %}
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header border-primary text-center">
+					<h2>FORMULARIO {{ legend|upper }}</h2>
+				</div>
+				<div class="card-body">
+					{% if page == 'self-a' or page == 'eval-a' %}
+					  <table class="table table-sm table-bordered">
+						<thead>
+							<tr align="center">
+								<th>Goals/Activities</th>
+								<th>Measuring Indicator (s)</th>
+								<th>Criteria for overcoming</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{objects.parameter.goals|safe}}</td>
+								<td>{{objects.parameter.measuring|safe}}</td>
+								<td>{{objects.parameter.criteria|safe}}</td>
+							</tr>
+						</tbody>
+					  </table>
+					{% elif page == 'self-b' or page == 'eval-b' %}
+					  <table class="table table-sm table-bordered">
+						<thead>
+							<tr>
+								<th>Area</th>
+								<th>Indicators</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{objects.parameter.parameter.area|safe}}</td>
+								<td>{{objects.parameter.parameter.indicator|safe}}</td>
+							</tr>
+						</tbody>
+					  </table>
+					{% endif %}
+					{% crispy form %}
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

@@ -1,0 +1,60 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'perform-conf-dash' %}">PAINEL KONFIGURASAUN</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel"></div>
+                <div class="card-body">
+                    <center>
+                        <h3>{{ legend|upper }}</h3>
+                    </center>
+                    <hr/>
+                    <a class="btn btn-sm btn-info mb-1" href="{% url 'perform-conf-score-add' cat.pk %}">Aumenta <i class="fa fa-plus"></i></a>
+                    <table class="table table-sm table-striped" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>Nu.</th>
+                                <th>Kategoria</th>
+                                <th>Work Quality</th>
+                                <th>Job Desc</th>
+                                <th>Weigth</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ obj.category }}</td>
+                                <td>{% if obj.workquality %}{{ obj.workquality }}{% else %}<i class="fa fa-close"></i>{% endif %}</td>
+                                <td>{% if obj.jobdesc %}{{ obj.jobdesc }}{% else %}<i class="fa fa-close"></i>{% endif %}</td>
+                                <td>{{ obj.weight }}</td>
+                                <td>
+                                    <a class="btn btn-sm btn-info" href="{% url 'perform-conf-score-update' cat.id obj.id %}" title="Altera"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

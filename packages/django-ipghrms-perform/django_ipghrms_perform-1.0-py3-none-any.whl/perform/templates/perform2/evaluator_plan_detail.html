@@ -1,0 +1,89 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'all-eval-dash' %}">PAINEL AVALIASAUN</a></li>
+            {% if page == 'pr-detail' %}
+              
+            {% else %}
+    			<li class="breadcrumb-item"><a href="{% url 'eval-conf-dash' %}">KONFIGURASAUN AVALIASAUN</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary text-center">
+                    <h2>PERFORMANCE EVALUATION</h2>
+                    <h6>{{ legend|upper }}
+                        {% if check_ind and check_ind and objects.is_finish == False and objects.is_lock %}
+                          <i class="fa fa-arrow-right"></i> <a href="{% url 'eval-conf-plan-evaluator-lock' objects.hashed %}" class="btn btn-danger btn-sm">Chave <i class="fa fa-lock"></i></a>
+                        {% elif objects.is_lock == False %}
+                            <i class="fa fa-arrow-right"></i>
+                            <span class="badge bg-danger text-white rounded">Staff Seidauk Chave <i class="fa fa-warning"></i></span>
+                        {% endif %}
+                        {% if objects.is_finish %}
+                          <i class="fa fa-arrow-right"></i> <a href="#" class="btn btn-danger btn-sm disabled">Chave Ona <i class="fa fa-check"></i></a>
+                        {% endif %}
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-sm "  border="0">
+                                <tr >
+                                    <td style="border-top: 0;" width="9%">Division</td> <td style="border-top: 0;">: {{objects.unit}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-top: 0;">Unit</td> <td style="border-top: 0;">:  {% if objects.department %}   {{objects.department}} {% else %} -  {% endif %}</td>
+                                </tr>
+                            </table>
+                        </div>
+                       {% include "perform_plan_components/evaluator/header.html" %}
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            
+                            
+                            {% include "perform_plan_components/evaluator/objectives.html" %}
+                            <table class="table table-sm mb-0">
+                                <tr>
+                                    <th colspan="2" class="pb-0" style="border-top: 0;">2. PARAMETERS OF THE EVALUATIONS</th>
+                                </tr>
+                                <tr >
+                                    <td colspan="2" class="pt-0" style="border-top: 0;"><strong style="font-size: 12px;">2.1 INDIVIDUAL OBJECTIVES</strong></td>
+                                </tr>
+                                <tr >
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed at the begining of the evaluation period - Initial Guidance Interview - January 08 to 15)</small></td>
+                                    <td width="50%" style="border-top: 0;" class="text-center"><small>(To be completed within the follow-up period - June 20 to July 15)</small></td>
+
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    {% include "perform_plan_components/evaluator/individual.html" %}
+                    {% include "perform_plan_components/evaluator/behavior.html" %}
+
+
+
+
+                    
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>   
+{% endblock %}
