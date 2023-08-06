@@ -1,0 +1,25 @@
+[general]
+environment = "development"
+documents_per_page = 20
+
+[oauth]
+id = "HYZdUCNQ4nOhSBf3e4GRSgMX835dnUhaoz91"
+secret = "B68tLam6l6Xfjsd7fqBGDc6ubd1J6C8kmaVdSG0G5"
+authorize_url = "https://my.oauth.provider.net/oauth2/authorize/"
+
+[log]
+file = "inv.log"
+level = "debug"
+
+[session]
+ttl = "90 00:00:00" # 90 days
+cookie = "_isession_id"
+
+[database]
+host = "localhost"
+port = 27017
+dbname = "inv8-dev"
+timeout = 1.1 # 1.1 seconds
+
+[web]
+bind = "127.0.0.1:3000"
