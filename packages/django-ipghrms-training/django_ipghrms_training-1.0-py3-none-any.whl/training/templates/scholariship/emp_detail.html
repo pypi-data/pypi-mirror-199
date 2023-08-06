@@ -1,0 +1,124 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'hr-scho-list' %}">LISTA PLANU BOLSO ESTUDO</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+				<div class="card-header bg-steel"></div>
+				<div class="card-body">
+					<center>
+                        <h3>{{ legend|upper }}</h3>
+                    </center>
+                    <hr/>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Plano</th> <th>Tipu</th><th>Fatin</th><th>Universidade</th><th>Nasaun</th>
+                        </tr>
+                        <tr>
+                            <td>{{ schol.subject }}</td>
+                            <td>{{ schol.type }}</td>
+                            <td>{{ schol.place }}</td>
+                            <td>{{ schol.university.name }}</td>
+                            <td>{{ schol.country.name }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Tinan</th>
+                            <th>Data Hahu</th>
+                            <th>Data Remata</th>
+                            <th>Anekso Pareser</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{schol.year}}</td>
+                            <td>{{schol.start_date}}</td>
+                            <td>{{schol.end_date}}</td>
+                            <td>
+                                {% if schol.file %}
+                                  <a href="{{schol.file.url}}" class="btn btn-sm btn-info" target="_blank"><i class="fa fa-file-pdf"></i></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+                                <th>Staff</th><th>Unidade/Ekipa</th><th>Pozisaun</th><th>Periodu Servisu</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{emp.emp}}</td>
+                                <td>{% if emp.emp.curempdivision.unit %}{{ emp.emp.curempdivision.unit.name }}{% else %}{{ emp.emp.curempdivision.department.name }}{% endif %}</td>
+                                <td>{{ emp.emp.curempposition.position.name }}</td>
+                                <td>
+                                    {% if emp.emp.contract.all.0.end_date %}
+                                        {{ emp.emp.contract.all.0.start_date|date:"d/m/Y" }} -
+                                        {{ emp.emp.contract.all.0.end_date|date:"d/m/Y" }}
+                                      
+                                    {% else %}
+                                        Indeterminable
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr align="center">
+                                <th colspan="4" >TITULO MONOGRAFIA</th>
+                            </tr>
+                            <tr align="center">
+                                {% if emp.thesis %}
+                                  
+                                    <td colspan="4">{{emp.thesis|safe}}</td>
+                                {% else %}
+                                    <td colspan="4"><i>Seidauk Iha...</i></td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                    <hr>
+                    <center>
+                        <h4>PROGRESU ESTUDO</h4>
+                    </center>
+                    {% if emp.is_update %}
+                        <a class="btn btn-sm btn-info mb-1" href="{% url 'hr-scho-emp-progress-add' schol.hashed emp.hashed %}">Aumenta Progresu <i class="fa fa-plus"></i></a>
+                        <!-- <a class="btn btn-sm btn-danger mb-1" href="#">Chave <i class="fa fa-lock"></i></a> -->
+                        {% if emp.thesis == None %}                      
+                            <a class="btn btn-sm btn-success mb-1" href="{% url 'hr-scho-emp-add-thesis' schol.hashed emp.hashed %}">Aumenta Titulu Monografia <i class="fa fa-plus"></i></a>
+                        {% endif %}
+                    {% endif %}
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Nu.</th>
+                            <th>Data</th>
+                            <th>Progresu</th>
+                            <th>Komentario</th>
+                            <th>#</th>
+                        </tr>
+                        {% for obj in objects %}
+                            <tr>
+                                <td>{{forloop.counter}}</td>
+                                <td>{{obj.date}}</td>
+                                <td>{{obj.progress}}</td>
+                                <td>{{obj.comment|safe}}</td>
+                                <td>
+                                    <a href="{% url 'hr-scho-emp-progress-update' schol.hashed emp.hashed obj.pk %}" class="btn btn-sm btn-info"> <i class="fa fa-pen-to-square"></i> </a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        
+                    </table>
+                    
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+{% endblock %}

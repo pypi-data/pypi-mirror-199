@@ -1,0 +1,77 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'train-c-dash' %}">PAINEL TREINAMENTO</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+
+                    <center>
+                        <h4>{{ legend|upper }}</h4>
+                        <h1>{{ unit|upper }}
+                            <i class="fa fa-arrow-right"></i>
+                            <a class="btn btn-sm btn-info mb-1" href="{% url 'train-c-plan-add' %}">Aumenta <i class="fa fa-plus"></i></a>
+                        </h1>
+                    </center>
+                </div>
+                <div class="card-body ">
+                    <div class="alert alert-info">
+						<i class="fa fa-circle-info"> </i> <small> </i> <i>Atu asesu detalha plano treinamento, klik iha <strong>Naran Materia</strong></i> </small>
+					</div>
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr align="center">
+                                <th>Nu.</th>
+                                <th class="text-left">Materia</th>
+                                <th>Fatin Treinamento</th>
+                                <th>Tipu Treinamento</th>
+                                <th>Tinan</th>
+                                <th>#</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr align="center">
+                                <td>{{ forloop.counter }}</td>
+                                <td class="text-left"><a href="{% url 'train-c-plan-detail' obj.hashed %}">{{ obj.subject }}</a></td>
+                                <td>{{ obj.place }}</td>
+                                <td>{{ obj.type }}</td>
+                                <td>{{ obj.year }}</td>
+                                <td>
+                                {% if obj.is_lock == False %}
+                                    <a class="btn btn-sm btn-info" href="{% url 'train-c-plan-update' obj.hashed %}" title="Altera"><i class="fa fa-edit"></i></a>
+                                {% else %}
+                                    <a class="disabled" href="#"><i class="fa fa-edit"></i></a>
+                                {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <!-- <hr/> -->
+                    <!-- <ul class="breadcrumb">
+                    {% for year in years %}
+                        <li class="breadcrumb-item"><a href="{% url 'c-eval-year-list' year.year__year %}">{{ year.year__year }}</a></li>
+                    {% endfor %}
+                    </ul> -->
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

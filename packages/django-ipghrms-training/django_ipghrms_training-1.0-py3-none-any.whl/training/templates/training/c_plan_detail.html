@@ -1,0 +1,181 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+	<div class="container-fluid">
+		<ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'train-c-plan-list' %}">LISTA PLANU TREINAMENTO</a></li>
+			<li class="breadcrumb-item active">{{ legend|upper }}</li>
+		</ul>
+	</div>
+</div>
+<div class="container-fluid"><br/>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}
+                            {% if tplan.is_lock == False %}
+                                <i class="fa fa-arrow-right"></i>
+                                <a class="btn btn-sm btn-info mb-1" href="{% url 'train-c-plan-lock' tplan.id %}">Taka <i class="fa fa-lock"></i></a>
+                            {% else %}
+                                {% if tplan.is_send == False %}
+                                    <i class="fa fa-arrow-right"></i>
+                                    <a class="btn btn-sm btn-warning mb-1" href="{% url 'train-c-plan-unlock' tplan.id %}">Loke <i class="fa fa-unlock"></i></a>
+                                    <a class="btn btn-sm btn-primary mb-1" href="{% url 'train-c-plan-send' tplan.id %}">Manda ba RH <i class="fa fa-send"></i></a>
+                                {% else %}
+                                    <div class="alert alert-info"> <i class="fa-solid fa-circle-info"></i> Status:  Manda ona</div>
+                                {% endif %}
+                            {% endif %}
+                        </h2>
+                    </center>
+                </div>
+				<div class="card-body">
+					
+                    <table class="table table-sm table-bordered">
+                        <tr>
+                            <th colspan="3">Divizaun</th> <th>Tinan</th><th>Anekso Pareser</th>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{ tplan.unit }}</td>
+                            <td>{{ tplan.year }}</td>
+                            <td>
+                                {% if tplan.file %}
+                                  <a href="{{tplan.file.url}}" target="_blank" class="btn btn-sm btn-primary"> <i class="fa fa-file-pdf"></i> </a>
+                                {% else %}
+                                -
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Materia Treinamento</th>  <th>Place</th><th colspan="2">Duration</th>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{ tplan.subject }}</td>
+                            <td>{{ tplan.place }}</td>
+                            <td colspan="2">{{ tplan.start_date }} - {{tplan.end_date}}</td>
+                        </tr>
+                    </table>
+                    <hr class="border-primary" />
+                    
+                    <div class="row">
+                        <div class="col-md-7">
+                            <center>
+                                <h4>FUNSIONARIU SIRA NEBE TUIR TREINAMENTO
+                                </h4>
+                                    
+                                </center>
+                            <table class="table table-sm table-bordered">
+                                <tr>
+                                    <th>Nu.</th>
+                                    <th>Naran</th>
+                                    <th>GAP Analysis</th>
+                                    <th class="text-center">#</th>
+                                </tr>
+                                    <tr>
+                                        <td align="center" colspan="6">
+                                            <strong>LISTA FUNSIONARIO GERAL</strong>
+                                            {% if tplan.is_lock == False %}
+                                                <a class="btn btn-sm btn-info mb-1" href="{% url 'train-c-temp-add' tplan.hashed %}">Aumenta Funsionario <i class="fa fa-plus"></i></a>
+                                            {% else %}
+                                                <a class="btn btn-sm btn-info mb-1 disabled" href="#">Chave Ona <i class="fa fa-check"></i></a>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% for temp in temps %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><a href="{% url 'train-c-crit-list' tplan.hashed temp.id %}"></a>{{ temp.employee }}</td>
+                                        <td>
+                                            -
+                                        </td>
+                                        <td align="center">
+                                        {% if tplan.is_lock == False %}
+                                            <a class="btn btn-sm btn-danger" href="{% url 'train-c-temp-delete' tplan.hashed temp.id %}"><i class="fa fa-trash"></i></a>
+                                        {% else %}
+                                            <a class="btn btn-sm btn-secondary disabled" href="#"><i class="fa fa-trash"></i></a>
+                                        {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                <tr>
+                                    <td colspan="4" align="center">
+                                        <strong>LISTA FUNSIONARIO BASEIA BA TRANNING GAP ANALYSIS</strong>
+                                        {% if tplan.is_lock == False %}
+                                            <a class="btn btn-sm btn-success mb-1" href="{% url 'train-gap-add' tplan.hashed %}">Aumenta Funsionario Tuir GAP Analysis <i class="fa fa-plus"></i></a>
+                                        {% else %}
+                                            <a class="btn btn-sm btn-info mb-1 disabled" href="#">Chave Ona <i class="fa fa-check"></i></a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+
+
+                                {% for emp, gap_items in tgap_list %}
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td><a href="#"></a>{{ emp }} </td>
+                                        <td>
+                                            <ul>
+                                            {% for gap, comments in gap_items %}
+                                                <li>{{ gap.comment }} 
+                                                    {% if tplan.is_lock == False %}
+                                                        <a href="{% url 'train-gap-update' tplan.hashed gap.traininggap.all.0.pk %}" class="fa fa-pen-to-square"></a>
+                                                        <a href="{% url 'train-gap-delete' tplan.hashed gap.traininggap.all.0.pk %}" class="fa fa-trash text-danger"></a>
+                                                    {% endif %}
+                                                </li>
+                                            {% endfor %}
+                                            </ul>
+                                        </td>
+                                        <td align="center">-</td>
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                        <div class="col-md-5">
+                            <center>
+                                <h4>EKIPA SIRA NEBE TUIR TREINAMENTO 
+                                    <i class="fa fa-arrow-right"></i>
+                                    {% if tplan.is_lock == False %}
+                                        <a class="btn btn-sm btn-info mb-1" href="{% url 'train-team-add' tplan.hashed %}">Aumenta <i class="fa fa-plus"></i></a>
+                                    {% else %}
+                                        <a class="btn btn-sm btn-info mb-1 disabled" href="#">Chave Ona <i class="fa fa-check"></i></a>
+                                    {% endif %}
+                                </h4>
+                            </center>
+                            <table class="table table-sm table-bordered">
+                                <thead>
+
+                                    <tr>
+                                        <th width="10%">Nu.</th>
+                                        <th>Naran Ekipa</th>
+                                        <th class="text-center">#</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for obj in  tdep %}
+                                      <tr>
+                                        <td width="10%">{{forloop.counter}}</td>
+                                        <td>{{obj.department}}</td>
+                                        <td align="center">
+                                            {% if tplan.is_lock == False %}
+                                                <a href="{% url 'train-team-update' tplan.hashed obj.pk %}" class="btn btn-sm btn-info"><i class="fa fa-pen-to-square"></i></a>
+                                                <a href="{% url 'train-team-delete' tplan.hashed obj.pk %}" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i></a>
+                                            {% endif %}
+                                        </td>
+                                      </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    
+				</div> <!--end card-body-->
+			</div> <!--end card-->
+		</div> <!--end col-->
+	</div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+
+{% endblock %}

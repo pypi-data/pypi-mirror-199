@@ -1,0 +1,147 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'train-hr-plan-detail' tplan.hashed %}">DETALHA PLANU</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel"></div>
+                <div class="card-body">
+                    <h5>Informasaun Planu Formasaun</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Unidade</th><th>Seksaun</th><th>Tinan</th><th>Target</th>
+                        </tr>
+                        <tr>
+                            <td>{{ tplan.unit }}</td>
+                            <td>{{ tplan.dep }}</td>
+                            <td>{{ tplan.year }}</td>
+                            <td>{{ tplan.target }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="2">Subject</th><th>Place</th><th>Duration</th>
+                        </tr>
+                        <tr>
+                            <td colspan="2">{{ tplan.subject }}</td>
+                            <td>{{ tplan.place }}</td>
+                            <td>{{ tplan.duration }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <h5>Informasaun Funsionariu</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Naran</th>
+                            <th>Unidade/Department</th>
+                            <th>Pojisaun</th>
+                            <th>Periodu Servisu</th>
+                            <th>Especialidade</th>
+                            <th>Diploma</th>
+                        </tr>
+                        <tr>
+                            <td>{{ temp.employee }}</td>
+                            <td>{% if temp.unit %}{{ temp.unit.code }}{% else %}{{ temp.department.code }}{% endif %}</td>
+                            <td>{{ temp.position }}</td>
+                            <td>{{ temp.employee.contract.all.0.start_date|date:"d/m/Y" }} - 
+                                {% if temp.employee.contract.all.0.end_date %}{{ temp.employee.contract.all.0.end_date|date:"d/m/Y" }}
+                                {% else %}{{ today|date:"d/m/Y" }}{% endif %}
+                            </td>
+                            <td>{{ temp.employee.empspecialize.all.0.name }}</td>
+                            <td>{{ temp.diploma }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <hr/>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>KRITERIA HUSI UNIDADE</h4>
+                                </div>
+                                <div class="card-body">
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nu.</th>
+                                                <th>Kriteria</th>
+                                                <th>Observasaun</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for ucrit in ucrits %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ ucrit.criteria.subject }}</td>
+                                                <td align="center">{{ ucrit.obs }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                            
+                        </div><!--end col-->
+                        <div class="col-sm-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4>{{ legend|upper }} <i class="fa fa-long-arrow-right"></i>
+                                    {% if tplan.is_send == True and tplan.is_certify == False %}
+                                        <a href="{% url 'train-hr-crit-add' tplan.hashed temp.id %}" title="Aumenta"><i class="fa fa-plus"></i></a>
+                                    {% else %}
+                                        <a class="disabled" href="#" title="Aumenta"><i class="fa fa-plus"></i></a>
+                                    {% endif %}
+                                    </h4>
+                                </div>
+                                <div class="card-body">                                    
+                                    <table class="table table-sm table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Nu.</th>
+                                                <th>Kriteria</th>
+                                                <th>Observasaun</th>
+                                                <th>#</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% for hrcrit in hrcrits %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ hrcrit.criteria.subject }}</td>
+                                                <td align="center">{{ hrcrit.obs }}</td>
+                                                <td>
+                                                {% if tplan.is_send == True and tplan.is_certify == False %}
+                                                    <a href="{% url 'train-hr-crit-update' tplan.hashed temp.id hrcrit.id %}"><i class="fa fa-edit"></i></a>
+                                                    <a href="{% url 'train-hr-crit-delete' tplan.hashed temp.id hrcrit.id %}"><i class="fa fa-trash"></i></a>
+                                                {% else %}
+                                                    <a class="disabled" href="#"><i class="fa fa-edit"></i></a>
+                                                    <a class="disabled" href="#"><i class="fa fa-trash"></i></a>
+                                                {% endif %}
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>                            
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

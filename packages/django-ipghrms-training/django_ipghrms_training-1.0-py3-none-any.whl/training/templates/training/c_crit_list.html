@@ -1,0 +1,72 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+			<li class="breadcrumb-item"><a href="{% url 'train-c-plan-detail' tplan.hashed %}">DETALHA PLANU</a></li>
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header bg-steel"></div>
+                <div class="card-body">
+                    <h5>Informasaun Planu Formasaun</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Divizaun</th><th>Ekipa</th><th>Tinan</th><th>Target</th>
+                        </tr>
+                        <tr>
+                            <td>{{ tplan.unit }}</td>
+                            <td>{{ tplan.dep }}</td>
+                            <td>{{ tplan.year }}</td>
+                            <td>{{ tplan.target }}</td>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Subject</th><th>Place</th>
+                        </tr>
+                        <tr>
+                            <td colspan="3">{{ tplan.subject }}</td>
+                            <td>{{ tplan.place }}</td>
+                        </tr>
+                    </table>
+                    <hr/>
+                    <h5>Informasaun Funsionariu</h5>
+                    <table class="table table-sm">
+                        <tr>
+                            <th>Naran</th>
+                            <th>Unidade/Department</th>
+                            <th>Pojisaun</th>
+                            <th>Periodu Servisu</th>
+                            <th>Especialidade</th>
+                            <th>Diploma</th>
+                        </tr>
+                        <tr>
+                            <td>{{ temp.employee }}</td>
+                            <td>{% if temp.unit %}{{ temp.unit.code }}{% else %}{{ temp.department.code }}{% endif %}</td>
+                            <td>{{ temp.position }}</td>
+                            <td>{{ temp.employee.contract.all.0.start_date|date:"d/m/Y" }} - 
+                                {% if temp.employee.contract.all.0.end_date %}{{ temp.employee.contract.all.0.end_date|date:"d/m/Y" }}
+                                {% else %}{{ today|date:"d/m/Y" }}{% endif %}
+                            </td>
+                            <td>{{ temp.employee.empspecialize.all.0.name }}</td>
+                            <td>{{ temp.diploma }}</td>
+                        </tr>
+                    </table>
+                    
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}

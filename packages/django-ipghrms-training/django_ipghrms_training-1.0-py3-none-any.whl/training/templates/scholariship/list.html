@@ -1,0 +1,81 @@
+{% extends "main/layout.html" %}
+{% block content %}
+<div class="breadcrumb-holder">
+    <div class="container-fluid">
+        <ul class="breadcrumb">
+            {% if group == 'hr' %}          
+    			<li class="breadcrumb-item"><a href="{% url 'train-hr-dash' %}">PAINEL FORMASAUN</a></li>
+            {% elif group == 'de' or group == 'deputy' %}
+                <li class="breadcrumb-item"><a href="{% url 'train-de-dash' %}">PAINEL FORMASAUN</a></li>
+            {% endif %}
+            <li class="breadcrumb-item active">{{ legend|upper }}</li>
+        </ul>
+    </div>
+</div>
+<div class="container-fluid"><br/>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="card shadow-lg border-info rounded">
+                <div class="card-header border-primary">
+                    <center>
+                        <h2>{{ legend|upper }}
+                            {% if group == 'de' or group == 'deputy' %}
+                            <i class="fa fa-arrow-right"></i>
+                            <a href="{% url 'hr-raw-data' %}" class="btn btn-sm btn-warning mb-2"> Raw Data <i class="fa fa-list-ol"></i> </a>
+                            {% endif %}
+                        </h2>
+                    </center>
+                </div>
+                <div class="card-body">
+                    {% if group == 'hr' %}
+                        <a href="{% url 'hr-scho-add' %}" class="btn btn-sm btn-success mb-2"> Aumenta <i class="fa fa-plus"></i> </a>
+                        <a href="{% url 'hr-raw-data' %}" class="btn btn-sm btn-warning mb-2"> Raw Data <i class="fa fa-list-ol"></i> </a>
+                    {% endif %}
+                    <table class="table table-sm table-striped table-bordered" id="example" width="100%" cellspacing="0">
+                        <thead>
+                            <tr align="center">
+                                <th>Nu.</th>
+                                <th class="text-left">Plano</th>
+                                <th>Tipu</th>
+                                <th>Universidade</th>
+                                <th>Nasaun</th>
+                                <th>Tinan</th>
+                                {% if group == 'hr' %}                              
+                                    <th>#</th>
+                                {% endif %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for obj in objects %}
+                            <tr align="center">
+                                <td>{{ forloop.counter }}</td>
+                                <td class="text-left"><a href="{% url 'hr-scho-detail' obj.hashed %}">{{ obj.subject }}</a></td>
+                                <td>{{ obj.type }}</td>
+                                <td>{{ obj.university.name }}</td>
+                                <td>{{ obj.country.name }}</td>
+                                <td>{{obj.year}}</td>
+
+                                {% if group == 'hr' %}
+                                    <td>
+                                        {% if obj.is_lock == False %}
+                                        <a href="{% url 'hr-scho-update' obj.hashed %}" class="btn btn-sm btn-info" title="Update"><i class="fa fa-pen-to-square"></i></a>
+                                        {% endif %}
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div> <!--end card-body-->
+            </div> <!--end card-->
+        </div> <!--end col-->
+    </div> <!--end row-->
+</div>
+{% endblock %}
+{% block scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$('#example').DataTable();
+		} );
+	</script>
+{% endblock %}
