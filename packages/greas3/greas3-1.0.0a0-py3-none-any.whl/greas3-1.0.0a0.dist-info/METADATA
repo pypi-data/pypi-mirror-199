@@ -1,0 +1,24 @@
+Metadata-Version: 2.1
+Name: greas3
+Version: 1.0.0a0
+Summary: Synchronises S3 buckets with local directories
+Home-page: https://github.com/cariad/greas3
+Author: Cariad Eccleston
+Author-email: cariad@cariad.earth
+License: MIT
+Classifier: Development Status :: 3 - Alpha
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Natural Language :: English
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Typing :: Typed
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# greas3
+
+Synchronises S3 buckets with local directories like a greased thing.
