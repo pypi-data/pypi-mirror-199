@@ -1,0 +1,45 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "office-word"
+authors = [{ name = "thep0y", email = "thepoy@163.com" }]
+description = "Create and update Microsoft Word .docx files."
+readme = "README.rst"
+requires-python = ">=3.6"
+license = { file = "LICENSE" }
+classifiers = ["Programming Language :: Python :: 3"]
+keywords = ["docx", "office", "openxml", "word"]
+dependencies = ["lxml>=4.9.2"]
+dynamic = ["version"]
+
+[project.urls]
+homepage = "https://github.com/thep0y/python-docx"
+repository = "https://github.com/thep0y/python-docx"
+
+[project.optional-dependencies]
+
+[tool.setuptools]
+packages = ["docx"]
+
+[tool.setuptools.package-data]
+docx = [
+    "py.typed",
+    "api.pyi",
+    "document.pyi",
+    "templates/*.xml",
+    "templates/*.docx",
+]
+
+[tool.setuptools_scm]
+write_to = "docx/version.py"
+
+[tool.black]
+line-length = 88
+target-version = ['py36', 'py37', 'py38', 'py39', 'py310', 'py311']
+include = '\.pyi?$'
+
+[tool.pyright]
+pythonVersion = '3.11'
+venv = 'dev'

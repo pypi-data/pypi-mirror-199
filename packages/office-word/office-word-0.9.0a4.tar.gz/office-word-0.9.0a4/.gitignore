@@ -1,0 +1,10 @@
+.coverage
+/dist/
+/docs/.build/
+/*.egg-info
+*.pyc
+.pytest_cache/
+_scratch/
+Session.vim
+/.tox/
+docx/version.py
