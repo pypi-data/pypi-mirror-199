@@ -1,0 +1,112 @@
+Metadata-Version: 2.1
+Name: ap-topical
+Version: 0.3.0
+Summary: A simple, lightweight event pipeline in Python.
+Home-page: https://github.com/annapoulakos/ap-topical
+Author: Anna Poulakos
+Author-email: anna.poulakos@gmail.com
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.9
+Description-Content-Type: text/markdown
+
+# Topical
+
+A simple, lightweight event pipeline in Python.
+
+## Installation
+
+```bash
+pip install ap-topical
+```
+
+## Usage
+
+```python
+import logging, asyncio
+import ap.topical
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+@ap.topical.event('start')
+async def start_handler(payload):
+    """Do stuff here"""
+
+    await ap.topical.publish('end', payload)
+
+
+@ap.topical.event('start')
+async def start_auditor(payload):
+    logger.info('auditing start event')
+
+@ap.topical.event('end')
+async def end_handler(payload):
+    """Do stuff here"""
+
+
+async main():
+    await ap.topical.publish('start', {})
+
+if __name__ == '__main__':
+    asyncio.run(main())
+
+```
+
+## Events
+
+Events are strings (or other hashable objects) that are published via `ap.topical.publish()`. These are used as both a topic and a specific event.
+
+## Subscribing Callbacks to Events
+
+You can subscribe a callback to a given event using `ap.topical.subscribe` as in the following example:
+
+```python
+async def my_event_handler(payload):
+    ...
+
+ap.topical.subscribe('my-event', my_event_handler)
+```
+
+Additionally, you can use the handy `@ap.topical.event()` decorator to do this for you automatically:
+```python
+@ap.topical.event('my-event')
+async def my_event_handler(payload):
+    ...
+```
+
+## Publishing Events
+
+Events can be published by providing an event and a payload to pass between event handlers.
+
+```python
+await ap.topical.publish('my-event', {})
+```
+
+## Multiple Handlers
+
+A given event can have any number of handlers (limited by available compute resources). These will all trigger asynchronously.
+
+```python
+@ap.topical.event('start')
+async def start_handler(payload):
+    ...
+
+@ap.topical.event('start')
+async def start_auditor(payload):
+    ...
+
+await ap.topical.publish('start', {})
+```
+
+This allows you to create robust graphs of event handlers.
+
+
+## Future Plans
+
+* add unsubscribe functionality
+* add wildcard event support
+* add default event payload support
+* add payload validation via msgspec
