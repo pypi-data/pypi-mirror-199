@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "pip-lab"
+version = "0.1.1"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+packages = [{include = "hw"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+
+[tool.poetry.group.dev.dependencies]
+commitizen = "^2.42.1"
+
+[tool.poetry.scripts]
+hw = "hw.main:main"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
