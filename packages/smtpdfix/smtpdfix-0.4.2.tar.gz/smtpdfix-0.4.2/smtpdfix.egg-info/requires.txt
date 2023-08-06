@@ -1,0 +1,20 @@
+aiosmtpd
+pytest
+python-dotenv
+
+[:platform_python_implementation != "PyPy"]
+cryptography
+
+[:platform_python_implementation == "PyPy"]
+cryptography<40.0.0,>=39.0.1
+
+[dev]
+flake8
+isort
+pytest-asyncio
+pytest-cov
+pytest-timeout
+tox
+
+[typing]
+mypy
