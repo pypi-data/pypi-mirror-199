@@ -1,0 +1,12 @@
+Metadata-Version: 2.1
+Name: GSFtime
+Version: 0.1
+Summary: Get Seconds From Time
+Home-page: https://github.com/Anready/
+Author: Anready
+Author-email: anready939@gmailu.com
+License: MIT
+Platform: UNKNOWN
+
+ print(getSeconds(12, 0))
+
