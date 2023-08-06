@@ -1,0 +1,53 @@
+Metadata-Version: 2.1
+Name: aomaker
+Version: 2.1.0
+Summary: An api testing framework
+Home-page: https://github.com/ae86sen/aomaker
+Author: ancientone
+Author-email: listeningsss@163.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: Jinja2
+Requires-Dist: jsonpath
+Requires-Dist: loguru
+Requires-Dist: PyMySQL
+Requires-Dist: pytest
+Requires-Dist: PyYAML
+Requires-Dist: requests
+Requires-Dist: allure-pytest (==2.8.24)
+Requires-Dist: pydantic
+Requires-Dist: mitmproxy
+Requires-Dist: colorlog
+Requires-Dist: jsonschema
+Requires-Dist: genson
+Requires-Dist: click (==8.1.3)
+Requires-Dist: emoji (==2.2.0)
+Requires-Dist: click-help-colors (==0.9.1)
+
+# AOMaker
+
+*AOMaker* means "api object maker",yes,It can help you play your API like building blocks !
+
+## Design Philosophy
+
+- Based on the design idea of api object
+- Anything is modularized and abstracted
+- Return to the coding,balance generality and flexibility
+
+## Key Features
+
+- integrate *requests,pytest,allure*
+- layered structure:base api--api definition--api object--case--testcase--testdata
+- Import custom fixture automatically
+- generate api object automatically by *swagger*
+- generate testcase automatically by *api object*
+- Switch test environment with one click
+- CLI command supported
+
+
+
