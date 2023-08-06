@@ -1,0 +1,34 @@
+Metadata-Version: 2.1
+Name: TriplePair
+Version: 1
+Summary: This package contains implementation of the programming library TriplePair.
+Home-page: https://github.com/GlobalCreativeApkDev/INDONESIAN_PROGRAMMERS/tree/main/TriplePair
+Author: GlobalCreativeApkDev
+Author-email: globalcreativeapkdev2022@gmail.com
+License: MIT
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# TriplePair
+
+**TriplePair** is a Python data type which represents a tuple of three values.
+
+## How to Use?
+
+**b = TriplePair(4, 5, 6)**
+
+The code above initialises TriplePair object 'b' with left value of 4, middle value of 5, and right value of 6.
+
+**a = TriplePair(1, 2, 3)**
+**b = TriplePair(4, 5, 6)**
+**c = a.sum(b)  # TriplePair(7, 8, 9)**
+
+The code above gets the sum of the corresponding elements of the TriplePair objects 'a' and 'b'.
+
+**a = TriplePair(1, 2, 3)**
+**b = TriplePair(4, 5, 6)**
+**c = a.zip(b)  # TriplePair((1, 4), (2, 5), (3, 6))**
+
+The code above zips both TriplePair objects 'a' and 'b'.
