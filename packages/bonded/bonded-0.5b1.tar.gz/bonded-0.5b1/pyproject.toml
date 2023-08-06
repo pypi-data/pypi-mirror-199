@@ -1,0 +1,40 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "bonded"
+version = "0.5b1"
+readme = "README.md"
+license = {file = "LICENSE"}
+authors = [{name = "Jeremiah Paige", email = "ucodery@gmail.com"}]
+classifiers = ["License :: OSI Approved :: MIT License"]
+keywords = ["linter", "imports", "project", "metadata"]
+dynamic = ["description"]
+
+dependencies = [
+    "importlib-metadata>=4.7,!=6.1",
+    "packaging",
+    "rich",
+    "tomli",
+]
+
+[project.scripts]
+bonded = "bonded.__main__:main"
+
+[project.urls]
+Home = "https://github.com/ucodery/bonded"
+
+[project.optional-dependencies]
+dev = ["flit", "tox"]
+test = ["pytest >=2.7.3"]
+lint = ["blue", "pyproject-flake8", "usort"]
+
+[tool.bonded]
+exclude = [".*/", "__pycache__/"]
+
+[tool.blue]
+line-length = 100
+
+[tool.flake8]
+max-line-length = 100
