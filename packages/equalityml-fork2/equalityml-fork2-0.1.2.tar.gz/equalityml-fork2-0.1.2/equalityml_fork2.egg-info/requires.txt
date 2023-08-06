@@ -1,0 +1,14 @@
+BlackBoxAuditing
+aif360-fork2>=0.5.0
+dalex>=1.5.0
+fairlearn>=0.7.0
+pandas>=1.2.5
+numpy>=1.20.3
+scikit-learn>=0.22.1
+
+[doc]
+sphinx
+
+[tests]
+pytest>=3.5.0
+pytest-cov>=2.8.1

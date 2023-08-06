@@ -1,0 +1,25 @@
+Metadata-Version: 2.1
+Name: equalityml-fork2
+Version: 0.1.2
+Summary: Algorithms for evaluating fairness metrics and mitigating unfairness in supervised machine learning
+Home-page: https://equalityai.com
+Author: Ben Brintz, Mark Zhang, James Ng, Janice Davis, Jared Hansen, Ji won Chang, João Granja, Rizwan Muhammad
+Author-email: support@equalityai.com
+Project-URL: Website, https://equalityai.com
+Project-URL: Manifesto, https://equalityai.com/community/#manifesto
+Project-URL: GitHub, https://github.com/EqualityAI/EqualityML
+Project-URL: Slack, https://equalityai.slack.com/ssb/redirect#/shared-invite/email
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Provides-Extra: tests
+Provides-Extra: doc
+License-File: LICENSE
+
+
+This is a temporary fork for personal use. It will be deleted in a while
