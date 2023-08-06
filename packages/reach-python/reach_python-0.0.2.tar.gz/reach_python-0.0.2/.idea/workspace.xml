@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5dea9313-4c2d-48b2-a034-0fde532bd408" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/publish.sh" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pyproject.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reach_python/consumer/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/reach_python/consumer/queue_async_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../api/app/core/queue/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../api/app/core/queue/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../api/app/core/queue/creator.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../api/app/core/queue/creator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../api/app/core/queue/factory.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../api/app/core/queue/factory.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../api/app/core/queue/queue_async_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../api/app/core/queue/queue_async_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../api/app/core/queue/queue_sync_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../api/app/core/queue/queue_sync_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../api/app/routes/endpoints/message.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../api/app/routes/endpoints/message.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../consumer/app/core/queue/queue_async_client.py" beforeDir="false" afterPath="$PROJECT_DIR$/../../consumer/app/core/queue/queue_async_client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/reach_python/client.py" beforeDir="false" afterPath="$PROJECT_DIR$/reach_python/client.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/../test/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../test/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../test/requirements.txt" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2NbhgnKxDHVz7pMm796QnsQRjoU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "last_opened_file_path": "/Users/ngyanthony/reach/reach-python/src/reach_python/consumer",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/reach_python/consumer" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5dea9313-4c2d-48b2-a034-0fde532bd408" name="Changes" comment="" />
+      <created>1679938802877</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1679938802877</updated>
+      <workItem from="1679938804816" duration="2912000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
