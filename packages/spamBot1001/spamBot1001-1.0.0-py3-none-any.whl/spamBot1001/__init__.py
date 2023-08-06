@@ -1,0 +1,1 @@
+from spamBot1001.spamCode import spamBot
