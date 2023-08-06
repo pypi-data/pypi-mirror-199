@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "sqlite-dataset"
+version = "0.2.0"
+description = "Use SQLite database to store datasets."
+authors = ["Jinshuai Ma <mayazureee@gmail.com>"]
+readme = "README.md"
+packages = [{include = "sqlite_dataset"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+sqlalchemy = "^2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
