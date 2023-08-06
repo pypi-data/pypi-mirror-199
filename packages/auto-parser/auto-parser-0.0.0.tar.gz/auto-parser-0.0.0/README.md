@@ -1,0 +1,356 @@
+下の方に日本語の説明があります
+
+
+# Automaton-based Parsing [auto_parser]
+
+This document describes a code for parsing and accepting a simple programming language using pushdown automaton transition rules. The transition rules are specified in `test_rules`.
+
+## The parse function
+The parse function takes a string, analyzes it, and performs parsing. It takes the following arguments:
+
+target_str: The string to be analyzed
+rules: A list of transition rules
+init_state: The initial state
+init_stack: The initial stack
+
+The function performs parsing so that the stack has one element in the final state of the analysis and returns the result.
+
+## Specifying transition rules
+Transition rules are specified in `test_rules` in YAML format. Each transition rule is an object with the following elements:
+
+"cond": If the current state meets this condition, this transition rule is applied.
+"pop_n": The number of elements to pop from the stack.
+"push_0": Specifies the value to push onto the stack.
+"post_state": An object specifying the state after the transition.
+
+【Example 1】
+The following example shows one transition rule in `test_rules`:
+
+```yaml
+[
+  {
+    "cond": {
+      "@head": [" ", "\n", "\t", ","],
+      "state": "in_symbol"
+    },
+    "pop_n": 0,
+    "post_state": {
+      "state": "outer"
+    }
+  },
+  ...
+]
+```
+
+This transition rule is applied when the current `@head` is a whitespace character and the current state is `in_symbol`. This rule does not pop any elements from the stack and changes the state to `outer` after the transition.
+
+【Example 2】
+The following transition rule is an example of a rule for processing the beginning of a symbol during parsing:
+
+```yaml
+[
+  {
+    "cond": {
+      "state": "outer"
+    },
+    "pop_n": 2,
+    "push_0": ["@+", "@p1", ["@p0"]],
+    "push_1": ["symbol", "@head"],
+    "post_state": {
+      "state": "in_symbol"
+    }
+  },
+  ...
+]
+```
+
+This rule is applied when the current state is outer.
+
+Stack operations:
+
+- First, pop two elements from the stack.
+- The popped elements can be referenced with @p0 and @p1.
+- Then, push two elements.
+	- push_0: Create a new list by combining the popped elements. Combine @p1 followed by @p0.
+	- push_1: Create a list ["symbol", "@head"] and use the current @head as-is.
+
+Post-transition state:
+After applying this transition rule, the state changes to in_symbol, indicating that the symbol is being analyzed.
+
+## How to use
+
+You can use this code to parse the target string by following these steps:
+
+- Specify the target string to be analyzed as target_str.
+- Specify the list of transition rules as rules.
+- Specify the initial state as init_state.
+- Specify the initial stack as init_stack.
+- Execute the parse function and obtain the parsing result.
+
+Here is an example of usage:
+
+```python
+res = parse(
+    target_str = fies["test_input.txt"],    # The target string to be analyzed
+    rules = fies["test_rules.yml"],    # The list of transition rules
+	init_state = {"state": "args_start"}, # The initial state
+	init_stack = [["lines"]], # The initial stack
+)   
+```
+In the above code, `fies["test_input.txt"]` is specified as the target string to be analyzed, and `fies["test_rules.yml"]` is specified as the list of transition rules. The initial state is `args_start`, and the initial stack is `[["lines"]]`. When you execute the `parse` function, you obtain the parsing result.
+
+## Precautions
+This code expects that the final state of the stack will have one element when parsing is performed correctly. If this expectation is not met, an exception will be raised.
+
+Also, if no suitable transition rules are found during the parsing process, an error will occur. To resolve this issue, review the transition rules or change the target string to be analyzed.
+
+## Summary
+In this document, we explained the code for parsing and accepting a simple programming language and how to specify transition rules. We also explained how to use the `parse` function and the precautions to be aware of. It is expected that this code can be used to handle various programming languages and simple tools that require parsing.
+
+## Supplement: Examples of Transition Rules for Simple Programming Languages
+Examples of concrete transition rules are given in Japanese at the end of the document in the section `## 補足: 簡単なプログラミング言語の遷移規則の例`.
+
+
+# オートマトンによる構文解析 [auto_parser]
+
+このドキュメントでは、簡単なプログラミング言語を受理してパース（構文解析）するコードについて説明します。このコードは、プッシュダウンオートマトンの遷移規則を使用しています。遷移規則は、test_rulesに指定されています。
+
+## parse関数
+parse関数は、文字列を解析し、構文解析を行います。以下の引数を受け取ります。
+
+target_str: 解析対象の文字列
+rules: 遷移規則一覧
+init_state: 初期state
+init_stack: 初期stack
+
+この関数は、解析の最終状態でstackが1つの要素を持つように構文解析を行い、その結果を返します。
+
+## 遷移規則の指定方法
+遷移規則は、 `test_rules` にYAML形式で指定します。各遷移規則は、以下の要素を持つオブジェクトです。
+
+"cond": 現在のstateがこの条件を満たす場合、この遷移規則が適用されます。
+"pop_n": stackからpopする要素の数です。
+"push_0": stackにpushする値を指定します。
+"post_state": 遷移後のstateを指定するオブジェクトです。
+
+【例1】
+次の例は、 `test_rules` 内の1つの遷移規則を示しています。
+
+```yaml
+[
+  {
+    "cond": {
+      "@head": [" ", "\n", "\t", ","],
+      "state": "in_symbol"
+    },
+    "pop_n": 0,
+    "post_state": {
+      "state": "outer"
+    }
+  },
+  ...
+]
+```
+
+この遷移規則は、現在の `@head` が空白文字であり、現在のstateが `in_symbol` の場合に適用されます。この遷移規則は、stackから要素をpopせず、遷移後のstateを `outer` に変更します。
+
+【例2】
+以下の遷移規則は、解析中にシンボルの冒頭を処理するルールの例です。
+```yaml
+[
+  {
+    "cond": {
+      "state": "outer"
+    },
+    "pop_n": 2,
+    "push_0": ["@+", "@p1", ["@p0"]],
+    "push_1": ["symbol", "@head"],
+    "post_state": {
+      "state": "in_symbol"
+    }
+  },
+  ...
+]
+```
+
+この遷移規則は、現在のstateがouterの場合に適用されます。
+
+stack操作
+- まず、stackから2つの要素をpopします。
+- popした要素は、@p0と@p1で参照できます。
+- 次に、2つの要素をpushします。
+	- push_0: popした要素を結合して新たなリストを作成します。@p1に続いて@p0を結合します。
+	- push_1: ["symbol", "@head"]というリストを作成し、現在の@headをそのまま使用します。
+
+遷移後のstate
+この遷移規則が適用された後、stateはin_symbolに変更されます。これは、シンボルの解析中であることを示しています。
+
+## 使用方法
+以下の手順で、このコードを使用して解析対象の文字列を構文解析できます。
+
+- 解析対象の文字列をtarget_strとして指定します。
+- 遷移規則一覧をrulesとして指定します。
+- 初期stateをinit_stateとして指定します。
+- 初期stackをinit_stackとして指定します。
+- parse関数を実行し、構文解析結果を取得します。
+
+以下は、使用例です。
+
+```python
+res = parse(
+    target_str = fies["test_input.txt"],    # 解析対象の文字列
+    rules = fies["test_rules.yml"],    # 遷移規則一覧
+	init_state = {"state": "args_start"}, # 初期state
+	init_stack = [["lines"]], # 初期stack
+)   
+```
+
+上記のコードでは、`fies["test_input.txt"]`を解析対象の文字列として指定し、`fies["test_rules.yml"]`を遷移規則一覧として指定しています。初期stateは`args_start`であり、初期stackは`[["lines"]]`です。`parse`関数を実行すると、構文解析結果が得られます。
+
+## 注意事項
+
+このコードは、構文解析が正しく行われた場合にstackの最終状態が1つの要素を持つことを期待しています。この期待に反する場合、例外が発生します。
+
+また、構文解析の過程で適合する遷移規則が見つからない場合、エラーが発生します。この問題を解決するには、遷移規則を見直すか、解析対象の文字列を変更してください。
+
+## まとめ
+
+このドキュメントでは、簡単なプログラミング言語を受理してパース（構文解析）するコードと、遷移規則の指定方法について説明しました。また、`parse` 関数の使い方と注意事項についても説明しました。このコードを使用して、構文解析が必要なさまざまなプログラミング言語・簡易ツールに対応できることが期待されます。
+
+
+## 補足: 簡単なプログラミング言語の遷移規則の例
+入力:
+```c
+hoge()
+fuga(
+	a,
+	b,
+	c,
+)
+func(a b c)
+```
+
+呼び出し方:
+```python
+import auto_parser
+
+# 構文解析 [auto_parser]
+res = auto_parser.parse(
+	target_str = "解析対象文字列",	# 解析対象の文字列
+	rules = "下記に示した遷移規則",	# 遷移規則一覧
+	init_state = {"state": "args_start"},	# 初期state
+	init_stack = [["lines"]],	# 初期stack
+)
+```
+
+出力:
+```python
+[
+  "lines",
+  ["call", ["symbol", "h", "o", "g", "e"]],
+  [
+    "call",
+    ["symbol", "f", "u", "g", "a"],
+    ["symbol", "a"],
+    ["symbol", "b"],
+    ["symbol", "c"]
+  ],
+  [
+    "call",
+    ["symbol", "f", "u", "n", "c"],
+    ["symbol", "a"],
+    ["symbol", "b"],
+    ["symbol", "c"]
+  ]
+]
+```
+
+遷移規則:
+```yaml
+[
+  # symbol後の空白文字
+  {
+    "cond": {
+      "@head": [" ", "\n", "\t", ","],
+      "state": "in_symbol"
+    },
+    "pop_n": 0,
+    "post_state": {
+      "state": "outer"
+    }
+  },
+  # 空白文字
+  {
+    "cond": {
+      "@head": [" ", "\n", "\t", ","]
+    },
+    "pop_n": 0,
+    "post_state": {}
+  },
+  # 関数のカッコ開き
+  {
+    "cond": {
+      "@head": "("
+    },
+    "pop_n": 1,
+    "push_0": ["call", "@p0"],
+    "post_state": {
+      "state": "args_start"
+    }
+  },
+  # argなし関数のカッコ閉じ
+  {
+    "cond": {
+      "@head": [")", "@end"],
+      "state": "args_start"
+    },
+    "pop_n": 0,
+    "post_state": {
+      "state": "outer"
+    }
+  },
+  # 関数のカッコ閉じ
+  {
+    "cond": {
+      "@head": [")", "@end"]
+    },
+    "pop_n": 2,
+    "push_0": ["@+", "@p1", ["@p0"]],
+    "post_state": {
+      "state": "outer"
+    }
+  },
+  # 第0argのsymbol冒頭
+  {
+    "cond": {
+      "state": "args_start"
+    },
+    "pop_n": 0,
+    "push_0": ["symbol", "@head"],
+    "post_state": {
+      "state": "in_symbol"
+    }
+  },
+  # symbol冒頭
+  {
+    "cond": {
+      "state": "outer"
+    },
+    "pop_n": 2,
+    "push_0": ["@+", "@p1", ["@p0"]],
+    "push_1": ["symbol", "@head"],
+    "post_state": {
+      "state": "in_symbol"
+    }
+  },
+  # symbol内
+  {
+    "cond": {
+      "state": "in_symbol"
+    },
+    "pop_n": 1,
+    "push_0": ["@+", "@p0", ["@head"]],
+    "post_state": {}
+  },
+]
+```
