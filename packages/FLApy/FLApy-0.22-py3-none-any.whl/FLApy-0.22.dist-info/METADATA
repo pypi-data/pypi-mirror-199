@@ -1,0 +1,139 @@
+Metadata-Version: 2.1
+Name: FLApy
+Version: 0.22
+Summary: Forest Light availability heterogeneity Analysis in Python
+Home-page: https://github.com/niB-gnaW/FLApy
+Author: Bin Wang
+Author-email: wb931022@hotmail.com
+License: UNKNOWN
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3.7
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+Requires-Dist: numpy
+Requires-Dist: scipy
+Requires-Dist: matplotlib
+Requires-Dist: open3d
+Requires-Dist: pyvista
+Requires-Dist: PVGeo
+Requires-Dist: laspy (==1.7.0)
+Requires-Dist: pandas
+Requires-Dist: tqdm
+Requires-Dist: p-tqdm
+Requires-Dist: miniball
+Requires-Dist: rasterio (==1.2.6)
+
+![](https://github.com/niB-gnaW/FLApy/blob/master/Pics/logo.png)
+# FLApy 
+
+
+## General description
+Forest Light Analysis python package (FLApy) is a python package for assessing
+light availability（LA） condition at any observers within forest using Airborne Laser
+Scanning data and analysis the change or heterogeneity of LA over spatial scale.
+
+
+## Version
+`0.1`
+
+## Demo Material
+UAV-based LiDAR data was obtained in Ailao Mountain sampling quadrate, Yunnan Province, China
+
+# Getting started
+## Installation
+
+```
+pip install FLApy      # Install the package
+```
+
+## Usage
+All scripts can be run on Jupyter Notebook. A simple workflow is as follows:
+
+![](https://github.com/niB-gnaW/FLApy/blob/master/Pics/FLApy_workflow.png)
+
+A simple example can be found in the [Simple guidance](https://github.com/niB-gnaW/FLApy/blob/master/examples/A_simple_guidance.ipynb).
+
+### Read data
+```
+import FLApy as fp
+
+site = fp.DataManagement.StudyFieldLattice()
+site.read_LasData('/your/path/to/point.las')    # Read point cloud data
+site.read_RasterData('/your/path/to/dsm.tif', 'DSM')
+site.read_RasterData('/your/path/to/dem.tif', 'DEM')
+site.read_RasterData('/your/path/to/dtm.tif', 'DTM')
+```
+
+### generate A Study-Field Lattice (SFL)
+```
+site.gen_SFL([705501.9,705551.9,2715164.9,2715214.9], resolution=2)
+```
+
+### Compute the Light Availability (LA) at voxels
+```
+siteLA = fp.LAcalculator.LAcalculator(site)
+siteLA.computeBatch(multiPro=True)
+```
+
+### 3D Light Availability Heterogeneity (LAH) analysis
+```
+siteLAH = fp.LAHanalysis.LAH_calculator(siteLA, 'SVF_flat')
+summary_result = siteLAH.computeLAH()
+summary_result
+```
+
+### Output
+All support for calculation 3DLAH indicator system.
+
+|             Indicators              |   Scale    | Abbreviation |
+|:-----------------------------------:|:----------:|:------------:|
+|               Average               |   Voxel    |   AVE_Vox    |
+|         Standard_deviation          |   Voxel    |   STD_Vox    |
+|      Coefficient_of_variation       |   Voxel    |    CV_Vox    |
+|                Range                |   Voxel    |   RAN_Vox    |
+|       Spatial_autocorrelation       |   Voxel    |   SAC_Vox    |
+|              Diversity              |   Voxel    |   DIV_Vox    |
+|          Gini_coefficient           |   Voxel    |   GINI_Vox   |
+|       Light_attenuation_rate        |  Vertical  |   LAR_Ver    |
+|     Height_of_inflection_point      |  Vertical  |   HIP_Ver    |
+| Relative_height_of_inflection_point |  Vertical  |   HIPr_Ver   |
+|          Convex_hull_area           |  Vertical  |   ACH_Ver    |
+|               Average               | Horizontal |   AVE_Hor    |
+|         Standard_deviation          | Horizontal |   STD_Hor    |
+|      Coefficient_of_variation       | Horizontal |    CV_Hor    |
+|                Range                | Horizontal |   RAN_Hor    |
+|       Spatial_autocorrelation       | Horizontal |   SAC_Hor    |
+|              Diversity              | Horizontal |   DIV_Hor    |
+|          Gini_coefficient           | Horizontal |   GINI_Hor   |
+|             Hot_volume              | 3D_Cluster |   HVOL_3D    |
+|             Cold_volume             | 3D_Cluster |   CVOL_3D    |
+|         Relative_hot_volume         | 3D_Cluster |   HVOLr_3D   |
+|        Relative_cold_volume         | 3D_Cluster |   CVOLr_3D   |
+|     Volume_ratio_of_hot_to_cold     | 3D_Cluster |   VRH2C_3D   |
+|         Largest_hot_volume          | 3D_Cluster |    LHV_3D    |
+|         Largest_cold_volume         | 3D_Cluster |    LCV_3D    |
+|            Hot_abundance            | 3D_Cluster |    HAB_3D    |
+|           Cold_abundance            | 3D_Cluster |    CAB_3D    |
+|         Hot_volume_average          | 3D_Cluster |    HVA_3D    |
+|         Cold_volume_average         | 3D_Cluster |    CVA_3D    |
+|            Hot_cohesion             | 3D_Cluster |    HCO_3D    |
+|            Cold_cohesion            | 3D_Cluster |    CCO_3D    |
+|          Hot_shape_factor           | 3D_Cluster |    HSF_3D    |
+|          Cold_shape_factor          | 3D_Cluster |    CSF_3D    |
+|           Hot_shape_index           | 3D_Cluster |    HSI_3D    |
+|          Cold_shape_index           | 3D_Cluster |    CSI_3D    |
+
+
+# Notation
+
+
+# Authors
+Bin Wang, Cameron Proctor, Zhenghua Sun, Luxiang Lin, Zhiming Zhang
+
+Author mail: wb931022@hotmail.com
+
+# Citation
+
+
