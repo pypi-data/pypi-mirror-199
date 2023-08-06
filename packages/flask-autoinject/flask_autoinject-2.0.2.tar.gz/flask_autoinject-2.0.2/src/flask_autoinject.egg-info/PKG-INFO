@@ -1,0 +1,41 @@
+Metadata-Version: 2.1
+Name: flask-autoinject
+Version: 2.0.2
+Summary: Flask support for dependency injection with autoinject
+Home-page: https://github.com/turnbullerin/flask_autoinject
+Author: Erin Turnbull
+Author-email: erin.a.turnbull@gmail.com
+Project-URL: Bug Tracker, https://github.com/turnbullerin/flask_autoinject/issues
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+# Flask AutoInject
+
+Flask integration to provide separate contexts 
+for each request regardless of the underlying 
+WSGI handler.
+
+As of version 1.1.0, you MUST use the `init_app()` function
+to properly use `autoinject` with Flask contexts. Previously,
+the informant was registered automatically. Calling `init_app()` 
+now (as of 2.0.0) uses the new contextvars integration in `autoinject`
+by wrapping the call to wsgi_app() in an `autoinject.with_contextvars()`
+decorator. This ensures that injected functions are cleaned up when the call
+to wsgi_app() ends and prevents any ordering problems in terms of the 
+teardown functions.
+
+Note that this module does not provide management of autoinjected variables
+outside of the context of a call to wsgi_app() (essentially from app config push to 
+teardown). Any other management you will need to provide yourself.
+
+```python
+import flask
+import flask_autoinject
+
+app = flask.Flask(__name__)
+flask_autoinject.init_app(app)
+```
