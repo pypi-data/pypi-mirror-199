@@ -1,0 +1,2347 @@
+.markdown-body blockquote p{display:block}.markdown-body pre{margin-bottom:16px !important;margin:8px 0}.markdown-body img{max-width:100%}.md-cell{background:transparent !important}.code-cell{margin:0 !important;background:transparent !important;flex-grow:1}.code-cell .nteract-outputs{padding:0}.code-cell .markdown-body>*:last-child{margin-bottom:8px !important}.code-cell table.dataframe{border:none;border-collapse:collapse;border-spacing:0;color:#000;font-size:12px;table-layout:fixed;width:100%}.code-cell table.dataframe thead{border-bottom:1px solid #000;vertical-align:bottom}.code-cell table.dataframe tr,.code-cell table.dataframe th,.code-cell table.dataframe td{text-align:right;vertical-align:middle;padding:.5em .5em;line-height:normal;white-space:normal;max-width:none;border:none}.code-cell table.dataframe th{font-weight:bold}.code-cell table.dataframe tbody tr:nth-child(odd){background:#f5f5f5}.code-cell table.dataframe tbody tr:hover{background:rgba(66,165,245,.2)}.code-cell table.dataframe *+table{margin-top:1em}.jupyter-widget .loading{margin:auto;padding:16px;text-align:center;color:rgba(0,0,0,.54)}.jupyter-widget .loading p{font-size:.85rem}.jupyter-widget .widget-play .jupyter-button{min-height:28px}.jupyter-widget .jupyter-widgets.leaflet-widgets{height:100% !important}.jupyter-widget .widget-vbox{height:100%}.jupyter-widget .widget-readout{box-shadow:none}.jupyter-widget .q-grid-container .filter-icon{margin-top:7px}.layout-fill .vega-embed{width:96%;height:95%;min-width:96% !important;min-height:95% !important}.layout-fill .vega-embed.has-actions{width:calc(100% - 38px);padding-right:0}.layout-fill .vega-embed.has-actions summary{margin-right:-38px}.layout-fill .jp-RenderedImage img{width:100%;height:100%}.layout-fill .jp-RenderedSVG img{width:100%;height:100%}.layout-fill .js-plotly-plot{width:100% !important;height:100% !important}.layout-fill .js-plotly-plot .svg-container{width:100% !important;height:100% !important;max-height:100% !important}.layout-fill .js-plotly-plot .main-svg{width:100% !important;height:100% !important}.layout-fill .bk-root{width:100% !important;height:100% !important}.layout-fill .bqplot{height:100% !important;width:99% !important}#vg-tooltip-element{z-index:9999}.loading-notebook{display:flex;flex-direction:row;width:100%;height:100%;margin:0;padding:0}.loading-notebook .text-center{width:100%;max-width:720px;padding:15px;margin:auto;text-align:center}.loading-notebook .text-center p{margin:1rem 0}.voila-wrapper{max-width:900px;margin:50px auto}.voila-wrapper .text-center{text-align:center}.voila-wrapper .filetree{background:#fff;border-radius:.25rem;padding:20px 40px 40px}.voila-wrapper .filetree h6{color:#000;margin-bottom:1rem;text-transform:uppercase;letter-spacing:.02em;font-size:.9rem;margin-top:0}.voila-wrapper .filetree .list-group{display:flex;flex-direction:column;border:1px solid #eef2f7;border-radius:.25rem}.voila-wrapper .filetree .list-group .list-group-item{border:none;border-bottom:1px solid #eef2f7;width:100%;color:#495057;text-align:inherit;text-decoration:none;line-height:0;padding:12px 15px}.voila-wrapper .filetree .list-group .list-group-item:hover{text-decoration:none;background-color:#f8f9fa}.voila-wrapper .filetree .list-group .list-group-item:last-child{border-bottom:none}.voila-wrapper .filetree .list-group i.material-icons{font-size:18px;vertical-align:middle;margin-right:10px;margin-bottom:2px}.voila-wrapper .filetree ul.voila-notebooks{margin:10px 0;padding:0;color:#333;list-style:none}.voila-wrapper .filetree ul.voila-notebooks li{padding:7px 15px;border-bottom:1px solid #eef2f7}.voila-wrapper .filetree ul.voila-notebooks li:last-child{border-bottom:none}.materialize-red{background-color:#e51c23 !important}.materialize-red-text{color:#e51c23 !important}.materialize-red.lighten-5{background-color:#fdeaeb !important}.materialize-red-text.text-lighten-5{color:#fdeaeb !important}.materialize-red.lighten-4{background-color:#f8c1c3 !important}.materialize-red-text.text-lighten-4{color:#f8c1c3 !important}.materialize-red.lighten-3{background-color:#f3989b !important}.materialize-red-text.text-lighten-3{color:#f3989b !important}.materialize-red.lighten-2{background-color:#ee6e73 !important}.materialize-red-text.text-lighten-2{color:#ee6e73 !important}.materialize-red.lighten-1{background-color:#ea454b !important}.materialize-red-text.text-lighten-1{color:#ea454b !important}.materialize-red.darken-1{background-color:#d0181e !important}.materialize-red-text.text-darken-1{color:#d0181e !important}.materialize-red.darken-2{background-color:#b9151b !important}.materialize-red-text.text-darken-2{color:#b9151b !important}.materialize-red.darken-3{background-color:#a21318 !important}.materialize-red-text.text-darken-3{color:#a21318 !important}.materialize-red.darken-4{background-color:#8b1014 !important}.materialize-red-text.text-darken-4{color:#8b1014 !important}.red{background-color:#f44336 !important}.red-text{color:#f44336 !important}.red.lighten-5{background-color:#ffebee !important}.red-text.text-lighten-5{color:#ffebee !important}.red.lighten-4{background-color:#ffcdd2 !important}.red-text.text-lighten-4{color:#ffcdd2 !important}.red.lighten-3{background-color:#ef9a9a !important}.red-text.text-lighten-3{color:#ef9a9a !important}.red.lighten-2{background-color:#e57373 !important}.red-text.text-lighten-2{color:#e57373 !important}.red.lighten-1{background-color:#ef5350 !important}.red-text.text-lighten-1{color:#ef5350 !important}.red.darken-1{background-color:#e53935 !important}.red-text.text-darken-1{color:#e53935 !important}.red.darken-2{background-color:#d32f2f !important}.red-text.text-darken-2{color:#d32f2f !important}.red.darken-3{background-color:#c62828 !important}.red-text.text-darken-3{color:#c62828 !important}.red.darken-4{background-color:#b71c1c !important}.red-text.text-darken-4{color:#b71c1c !important}.red.accent-1{background-color:#ff8a80 !important}.red-text.text-accent-1{color:#ff8a80 !important}.red.accent-2{background-color:#ff5252 !important}.red-text.text-accent-2{color:#ff5252 !important}.red.accent-3{background-color:#ff1744 !important}.red-text.text-accent-3{color:#ff1744 !important}.red.accent-4{background-color:#d50000 !important}.red-text.text-accent-4{color:#d50000 !important}.pink{background-color:#e91e63 !important}.pink-text{color:#e91e63 !important}.pink.lighten-5{background-color:#fce4ec !important}.pink-text.text-lighten-5{color:#fce4ec !important}.pink.lighten-4{background-color:#f8bbd0 !important}.pink-text.text-lighten-4{color:#f8bbd0 !important}.pink.lighten-3{background-color:#f48fb1 !important}.pink-text.text-lighten-3{color:#f48fb1 !important}.pink.lighten-2{background-color:#f06292 !important}.pink-text.text-lighten-2{color:#f06292 !important}.pink.lighten-1{background-color:#ec407a !important}.pink-text.text-lighten-1{color:#ec407a !important}.pink.darken-1{background-color:#d81b60 !important}.pink-text.text-darken-1{color:#d81b60 !important}.pink.darken-2{background-color:#c2185b !important}.pink-text.text-darken-2{color:#c2185b !important}.pink.darken-3{background-color:#ad1457 !important}.pink-text.text-darken-3{color:#ad1457 !important}.pink.darken-4{background-color:#880e4f !important}.pink-text.text-darken-4{color:#880e4f !important}.pink.accent-1{background-color:#ff80ab !important}.pink-text.text-accent-1{color:#ff80ab !important}.pink.accent-2{background-color:#ff4081 !important}.pink-text.text-accent-2{color:#ff4081 !important}.pink.accent-3{background-color:#f50057 !important}.pink-text.text-accent-3{color:#f50057 !important}.pink.accent-4{background-color:#c51162 !important}.pink-text.text-accent-4{color:#c51162 !important}.purple{background-color:#9c27b0 !important}.purple-text{color:#9c27b0 !important}.purple.lighten-5{background-color:#f3e5f5 !important}.purple-text.text-lighten-5{color:#f3e5f5 !important}.purple.lighten-4{background-color:#e1bee7 !important}.purple-text.text-lighten-4{color:#e1bee7 !important}.purple.lighten-3{background-color:#ce93d8 !important}.purple-text.text-lighten-3{color:#ce93d8 !important}.purple.lighten-2{background-color:#ba68c8 !important}.purple-text.text-lighten-2{color:#ba68c8 !important}.purple.lighten-1{background-color:#ab47bc !important}.purple-text.text-lighten-1{color:#ab47bc !important}.purple.darken-1{background-color:#8e24aa !important}.purple-text.text-darken-1{color:#8e24aa !important}.purple.darken-2{background-color:#7b1fa2 !important}.purple-text.text-darken-2{color:#7b1fa2 !important}.purple.darken-3{background-color:#6a1b9a !important}.purple-text.text-darken-3{color:#6a1b9a !important}.purple.darken-4{background-color:#4a148c !important}.purple-text.text-darken-4{color:#4a148c !important}.purple.accent-1{background-color:#ea80fc !important}.purple-text.text-accent-1{color:#ea80fc !important}.purple.accent-2{background-color:#e040fb !important}.purple-text.text-accent-2{color:#e040fb !important}.purple.accent-3{background-color:#d500f9 !important}.purple-text.text-accent-3{color:#d500f9 !important}.purple.accent-4{background-color:#a0f !important}.purple-text.text-accent-4{color:#a0f !important}.deep-purple{background-color:#673ab7 !important}.deep-purple-text{color:#673ab7 !important}.deep-purple.lighten-5{background-color:#ede7f6 !important}.deep-purple-text.text-lighten-5{color:#ede7f6 !important}.deep-purple.lighten-4{background-color:#d1c4e9 !important}.deep-purple-text.text-lighten-4{color:#d1c4e9 !important}.deep-purple.lighten-3{background-color:#b39ddb !important}.deep-purple-text.text-lighten-3{color:#b39ddb !important}.deep-purple.lighten-2{background-color:#9575cd !important}.deep-purple-text.text-lighten-2{color:#9575cd !important}.deep-purple.lighten-1{background-color:#7e57c2 !important}.deep-purple-text.text-lighten-1{color:#7e57c2 !important}.deep-purple.darken-1{background-color:#5e35b1 !important}.deep-purple-text.text-darken-1{color:#5e35b1 !important}.deep-purple.darken-2{background-color:#512da8 !important}.deep-purple-text.text-darken-2{color:#512da8 !important}.deep-purple.darken-3{background-color:#4527a0 !important}.deep-purple-text.text-darken-3{color:#4527a0 !important}.deep-purple.darken-4{background-color:#311b92 !important}.deep-purple-text.text-darken-4{color:#311b92 !important}.deep-purple.accent-1{background-color:#b388ff !important}.deep-purple-text.text-accent-1{color:#b388ff !important}.deep-purple.accent-2{background-color:#7c4dff !important}.deep-purple-text.text-accent-2{color:#7c4dff !important}.deep-purple.accent-3{background-color:#651fff !important}.deep-purple-text.text-accent-3{color:#651fff !important}.deep-purple.accent-4{background-color:#6200ea !important}.deep-purple-text.text-accent-4{color:#6200ea !important}.indigo{background-color:#3f51b5 !important}.indigo-text{color:#3f51b5 !important}.indigo.lighten-5{background-color:#e8eaf6 !important}.indigo-text.text-lighten-5{color:#e8eaf6 !important}.indigo.lighten-4{background-color:#c5cae9 !important}.indigo-text.text-lighten-4{color:#c5cae9 !important}.indigo.lighten-3{background-color:#9fa8da !important}.indigo-text.text-lighten-3{color:#9fa8da !important}.indigo.lighten-2{background-color:#7986cb !important}.indigo-text.text-lighten-2{color:#7986cb !important}.indigo.lighten-1{background-color:#5c6bc0 !important}.indigo-text.text-lighten-1{color:#5c6bc0 !important}.indigo.darken-1{background-color:#3949ab !important}.indigo-text.text-darken-1{color:#3949ab !important}.indigo.darken-2{background-color:#303f9f !important}.indigo-text.text-darken-2{color:#303f9f !important}.indigo.darken-3{background-color:#283593 !important}.indigo-text.text-darken-3{color:#283593 !important}.indigo.darken-4{background-color:#1a237e !important}.indigo-text.text-darken-4{color:#1a237e !important}.indigo.accent-1{background-color:#8c9eff !important}.indigo-text.text-accent-1{color:#8c9eff !important}.indigo.accent-2{background-color:#536dfe !important}.indigo-text.text-accent-2{color:#536dfe !important}.indigo.accent-3{background-color:#3d5afe !important}.indigo-text.text-accent-3{color:#3d5afe !important}.indigo.accent-4{background-color:#304ffe !important}.indigo-text.text-accent-4{color:#304ffe !important}.blue{background-color:#2196f3 !important}.blue-text{color:#2196f3 !important}.blue.lighten-5{background-color:#e3f2fd !important}.blue-text.text-lighten-5{color:#e3f2fd !important}.blue.lighten-4{background-color:#bbdefb !important}.blue-text.text-lighten-4{color:#bbdefb !important}.blue.lighten-3{background-color:#90caf9 !important}.blue-text.text-lighten-3{color:#90caf9 !important}.blue.lighten-2{background-color:#64b5f6 !important}.blue-text.text-lighten-2{color:#64b5f6 !important}.blue.lighten-1{background-color:#42a5f5 !important}.blue-text.text-lighten-1{color:#42a5f5 !important}.blue.darken-1{background-color:#1e88e5 !important}.blue-text.text-darken-1{color:#1e88e5 !important}.blue.darken-2{background-color:#1976d2 !important}.blue-text.text-darken-2{color:#1976d2 !important}.blue.darken-3{background-color:#1565c0 !important}.blue-text.text-darken-3{color:#1565c0 !important}.blue.darken-4{background-color:#0d47a1 !important}.blue-text.text-darken-4{color:#0d47a1 !important}.blue.accent-1{background-color:#82b1ff !important}.blue-text.text-accent-1{color:#82b1ff !important}.blue.accent-2{background-color:#448aff !important}.blue-text.text-accent-2{color:#448aff !important}.blue.accent-3{background-color:#2979ff !important}.blue-text.text-accent-3{color:#2979ff !important}.blue.accent-4{background-color:#2962ff !important}.blue-text.text-accent-4{color:#2962ff !important}.light-blue{background-color:#03a9f4 !important}.light-blue-text{color:#03a9f4 !important}.light-blue.lighten-5{background-color:#e1f5fe !important}.light-blue-text.text-lighten-5{color:#e1f5fe !important}.light-blue.lighten-4{background-color:#b3e5fc !important}.light-blue-text.text-lighten-4{color:#b3e5fc !important}.light-blue.lighten-3{background-color:#81d4fa !important}.light-blue-text.text-lighten-3{color:#81d4fa !important}.light-blue.lighten-2{background-color:#4fc3f7 !important}.light-blue-text.text-lighten-2{color:#4fc3f7 !important}.light-blue.lighten-1{background-color:#29b6f6 !important}.light-blue-text.text-lighten-1{color:#29b6f6 !important}.light-blue.darken-1{background-color:#039be5 !important}.light-blue-text.text-darken-1{color:#039be5 !important}.light-blue.darken-2{background-color:#0288d1 !important}.light-blue-text.text-darken-2{color:#0288d1 !important}.light-blue.darken-3{background-color:#0277bd !important}.light-blue-text.text-darken-3{color:#0277bd !important}.light-blue.darken-4{background-color:#01579b !important}.light-blue-text.text-darken-4{color:#01579b !important}.light-blue.accent-1{background-color:#80d8ff !important}.light-blue-text.text-accent-1{color:#80d8ff !important}.light-blue.accent-2{background-color:#40c4ff !important}.light-blue-text.text-accent-2{color:#40c4ff !important}.light-blue.accent-3{background-color:#00b0ff !important}.light-blue-text.text-accent-3{color:#00b0ff !important}.light-blue.accent-4{background-color:#0091ea !important}.light-blue-text.text-accent-4{color:#0091ea !important}.cyan{background-color:#00bcd4 !important}.cyan-text{color:#00bcd4 !important}.cyan.lighten-5{background-color:#e0f7fa !important}.cyan-text.text-lighten-5{color:#e0f7fa !important}.cyan.lighten-4{background-color:#b2ebf2 !important}.cyan-text.text-lighten-4{color:#b2ebf2 !important}.cyan.lighten-3{background-color:#80deea !important}.cyan-text.text-lighten-3{color:#80deea !important}.cyan.lighten-2{background-color:#4dd0e1 !important}.cyan-text.text-lighten-2{color:#4dd0e1 !important}.cyan.lighten-1{background-color:#26c6da !important}.cyan-text.text-lighten-1{color:#26c6da !important}.cyan.darken-1{background-color:#00acc1 !important}.cyan-text.text-darken-1{color:#00acc1 !important}.cyan.darken-2{background-color:#0097a7 !important}.cyan-text.text-darken-2{color:#0097a7 !important}.cyan.darken-3{background-color:#00838f !important}.cyan-text.text-darken-3{color:#00838f !important}.cyan.darken-4{background-color:#006064 !important}.cyan-text.text-darken-4{color:#006064 !important}.cyan.accent-1{background-color:#84ffff !important}.cyan-text.text-accent-1{color:#84ffff !important}.cyan.accent-2{background-color:#18ffff !important}.cyan-text.text-accent-2{color:#18ffff !important}.cyan.accent-3{background-color:#00e5ff !important}.cyan-text.text-accent-3{color:#00e5ff !important}.cyan.accent-4{background-color:#00b8d4 !important}.cyan-text.text-accent-4{color:#00b8d4 !important}.teal{background-color:#009688 !important}.teal-text{color:#009688 !important}.teal.lighten-5{background-color:#e0f2f1 !important}.teal-text.text-lighten-5{color:#e0f2f1 !important}.teal.lighten-4{background-color:#b2dfdb !important}.teal-text.text-lighten-4{color:#b2dfdb !important}.teal.lighten-3{background-color:#80cbc4 !important}.teal-text.text-lighten-3{color:#80cbc4 !important}.teal.lighten-2{background-color:#4db6ac !important}.teal-text.text-lighten-2{color:#4db6ac !important}.teal.lighten-1{background-color:#26a69a !important}.teal-text.text-lighten-1{color:#26a69a !important}.teal.darken-1{background-color:#00897b !important}.teal-text.text-darken-1{color:#00897b !important}.teal.darken-2{background-color:#00796b !important}.teal-text.text-darken-2{color:#00796b !important}.teal.darken-3{background-color:#00695c !important}.teal-text.text-darken-3{color:#00695c !important}.teal.darken-4{background-color:#004d40 !important}.teal-text.text-darken-4{color:#004d40 !important}.teal.accent-1{background-color:#a7ffeb !important}.teal-text.text-accent-1{color:#a7ffeb !important}.teal.accent-2{background-color:#64ffda !important}.teal-text.text-accent-2{color:#64ffda !important}.teal.accent-3{background-color:#1de9b6 !important}.teal-text.text-accent-3{color:#1de9b6 !important}.teal.accent-4{background-color:#00bfa5 !important}.teal-text.text-accent-4{color:#00bfa5 !important}.green{background-color:#4caf50 !important}.green-text{color:#4caf50 !important}.green.lighten-5{background-color:#e8f5e9 !important}.green-text.text-lighten-5{color:#e8f5e9 !important}.green.lighten-4{background-color:#c8e6c9 !important}.green-text.text-lighten-4{color:#c8e6c9 !important}.green.lighten-3{background-color:#a5d6a7 !important}.green-text.text-lighten-3{color:#a5d6a7 !important}.green.lighten-2{background-color:#81c784 !important}.green-text.text-lighten-2{color:#81c784 !important}.green.lighten-1{background-color:#66bb6a !important}.green-text.text-lighten-1{color:#66bb6a !important}.green.darken-1{background-color:#43a047 !important}.green-text.text-darken-1{color:#43a047 !important}.green.darken-2{background-color:#388e3c !important}.green-text.text-darken-2{color:#388e3c !important}.green.darken-3{background-color:#2e7d32 !important}.green-text.text-darken-3{color:#2e7d32 !important}.green.darken-4{background-color:#1b5e20 !important}.green-text.text-darken-4{color:#1b5e20 !important}.green.accent-1{background-color:#b9f6ca !important}.green-text.text-accent-1{color:#b9f6ca !important}.green.accent-2{background-color:#69f0ae !important}.green-text.text-accent-2{color:#69f0ae !important}.green.accent-3{background-color:#00e676 !important}.green-text.text-accent-3{color:#00e676 !important}.green.accent-4{background-color:#00c853 !important}.green-text.text-accent-4{color:#00c853 !important}.light-green{background-color:#8bc34a !important}.light-green-text{color:#8bc34a !important}.light-green.lighten-5{background-color:#f1f8e9 !important}.light-green-text.text-lighten-5{color:#f1f8e9 !important}.light-green.lighten-4{background-color:#dcedc8 !important}.light-green-text.text-lighten-4{color:#dcedc8 !important}.light-green.lighten-3{background-color:#c5e1a5 !important}.light-green-text.text-lighten-3{color:#c5e1a5 !important}.light-green.lighten-2{background-color:#aed581 !important}.light-green-text.text-lighten-2{color:#aed581 !important}.light-green.lighten-1{background-color:#9ccc65 !important}.light-green-text.text-lighten-1{color:#9ccc65 !important}.light-green.darken-1{background-color:#7cb342 !important}.light-green-text.text-darken-1{color:#7cb342 !important}.light-green.darken-2{background-color:#689f38 !important}.light-green-text.text-darken-2{color:#689f38 !important}.light-green.darken-3{background-color:#558b2f !important}.light-green-text.text-darken-3{color:#558b2f !important}.light-green.darken-4{background-color:#33691e !important}.light-green-text.text-darken-4{color:#33691e !important}.light-green.accent-1{background-color:#ccff90 !important}.light-green-text.text-accent-1{color:#ccff90 !important}.light-green.accent-2{background-color:#b2ff59 !important}.light-green-text.text-accent-2{color:#b2ff59 !important}.light-green.accent-3{background-color:#76ff03 !important}.light-green-text.text-accent-3{color:#76ff03 !important}.light-green.accent-4{background-color:#64dd17 !important}.light-green-text.text-accent-4{color:#64dd17 !important}.lime{background-color:#cddc39 !important}.lime-text{color:#cddc39 !important}.lime.lighten-5{background-color:#f9fbe7 !important}.lime-text.text-lighten-5{color:#f9fbe7 !important}.lime.lighten-4{background-color:#f0f4c3 !important}.lime-text.text-lighten-4{color:#f0f4c3 !important}.lime.lighten-3{background-color:#e6ee9c !important}.lime-text.text-lighten-3{color:#e6ee9c !important}.lime.lighten-2{background-color:#dce775 !important}.lime-text.text-lighten-2{color:#dce775 !important}.lime.lighten-1{background-color:#d4e157 !important}.lime-text.text-lighten-1{color:#d4e157 !important}.lime.darken-1{background-color:#c0ca33 !important}.lime-text.text-darken-1{color:#c0ca33 !important}.lime.darken-2{background-color:#afb42b !important}.lime-text.text-darken-2{color:#afb42b !important}.lime.darken-3{background-color:#9e9d24 !important}.lime-text.text-darken-3{color:#9e9d24 !important}.lime.darken-4{background-color:#827717 !important}.lime-text.text-darken-4{color:#827717 !important}.lime.accent-1{background-color:#f4ff81 !important}.lime-text.text-accent-1{color:#f4ff81 !important}.lime.accent-2{background-color:#eeff41 !important}.lime-text.text-accent-2{color:#eeff41 !important}.lime.accent-3{background-color:#c6ff00 !important}.lime-text.text-accent-3{color:#c6ff00 !important}.lime.accent-4{background-color:#aeea00 !important}.lime-text.text-accent-4{color:#aeea00 !important}.yellow{background-color:#ffeb3b !important}.yellow-text{color:#ffeb3b !important}.yellow.lighten-5{background-color:#fffde7 !important}.yellow-text.text-lighten-5{color:#fffde7 !important}.yellow.lighten-4{background-color:#fff9c4 !important}.yellow-text.text-lighten-4{color:#fff9c4 !important}.yellow.lighten-3{background-color:#fff59d !important}.yellow-text.text-lighten-3{color:#fff59d !important}.yellow.lighten-2{background-color:#fff176 !important}.yellow-text.text-lighten-2{color:#fff176 !important}.yellow.lighten-1{background-color:#ffee58 !important}.yellow-text.text-lighten-1{color:#ffee58 !important}.yellow.darken-1{background-color:#fdd835 !important}.yellow-text.text-darken-1{color:#fdd835 !important}.yellow.darken-2{background-color:#fbc02d !important}.yellow-text.text-darken-2{color:#fbc02d !important}.yellow.darken-3{background-color:#f9a825 !important}.yellow-text.text-darken-3{color:#f9a825 !important}.yellow.darken-4{background-color:#f57f17 !important}.yellow-text.text-darken-4{color:#f57f17 !important}.yellow.accent-1{background-color:#ffff8d !important}.yellow-text.text-accent-1{color:#ffff8d !important}.yellow.accent-2{background-color:#ff0 !important}.yellow-text.text-accent-2{color:#ff0 !important}.yellow.accent-3{background-color:#ffea00 !important}.yellow-text.text-accent-3{color:#ffea00 !important}.yellow.accent-4{background-color:#ffd600 !important}.yellow-text.text-accent-4{color:#ffd600 !important}.amber{background-color:#ffc107 !important}.amber-text{color:#ffc107 !important}.amber.lighten-5{background-color:#fff8e1 !important}.amber-text.text-lighten-5{color:#fff8e1 !important}.amber.lighten-4{background-color:#ffecb3 !important}.amber-text.text-lighten-4{color:#ffecb3 !important}.amber.lighten-3{background-color:#ffe082 !important}.amber-text.text-lighten-3{color:#ffe082 !important}.amber.lighten-2{background-color:#ffd54f !important}.amber-text.text-lighten-2{color:#ffd54f !important}.amber.lighten-1{background-color:#ffca28 !important}.amber-text.text-lighten-1{color:#ffca28 !important}.amber.darken-1{background-color:#ffb300 !important}.amber-text.text-darken-1{color:#ffb300 !important}.amber.darken-2{background-color:#ffa000 !important}.amber-text.text-darken-2{color:#ffa000 !important}.amber.darken-3{background-color:#ff8f00 !important}.amber-text.text-darken-3{color:#ff8f00 !important}.amber.darken-4{background-color:#ff6f00 !important}.amber-text.text-darken-4{color:#ff6f00 !important}.amber.accent-1{background-color:#ffe57f !important}.amber-text.text-accent-1{color:#ffe57f !important}.amber.accent-2{background-color:#ffd740 !important}.amber-text.text-accent-2{color:#ffd740 !important}.amber.accent-3{background-color:#ffc400 !important}.amber-text.text-accent-3{color:#ffc400 !important}.amber.accent-4{background-color:#ffab00 !important}.amber-text.text-accent-4{color:#ffab00 !important}.orange{background-color:#ff9800 !important}.orange-text{color:#ff9800 !important}.orange.lighten-5{background-color:#fff3e0 !important}.orange-text.text-lighten-5{color:#fff3e0 !important}.orange.lighten-4{background-color:#ffe0b2 !important}.orange-text.text-lighten-4{color:#ffe0b2 !important}.orange.lighten-3{background-color:#ffcc80 !important}.orange-text.text-lighten-3{color:#ffcc80 !important}.orange.lighten-2{background-color:#ffb74d !important}.orange-text.text-lighten-2{color:#ffb74d !important}.orange.lighten-1{background-color:#ffa726 !important}.orange-text.text-lighten-1{color:#ffa726 !important}.orange.darken-1{background-color:#fb8c00 !important}.orange-text.text-darken-1{color:#fb8c00 !important}.orange.darken-2{background-color:#f57c00 !important}.orange-text.text-darken-2{color:#f57c00 !important}.orange.darken-3{background-color:#ef6c00 !important}.orange-text.text-darken-3{color:#ef6c00 !important}.orange.darken-4{background-color:#e65100 !important}.orange-text.text-darken-4{color:#e65100 !important}.orange.accent-1{background-color:#ffd180 !important}.orange-text.text-accent-1{color:#ffd180 !important}.orange.accent-2{background-color:#ffab40 !important}.orange-text.text-accent-2{color:#ffab40 !important}.orange.accent-3{background-color:#ff9100 !important}.orange-text.text-accent-3{color:#ff9100 !important}.orange.accent-4{background-color:#ff6d00 !important}.orange-text.text-accent-4{color:#ff6d00 !important}.deep-orange{background-color:#ff5722 !important}.deep-orange-text{color:#ff5722 !important}.deep-orange.lighten-5{background-color:#fbe9e7 !important}.deep-orange-text.text-lighten-5{color:#fbe9e7 !important}.deep-orange.lighten-4{background-color:#ffccbc !important}.deep-orange-text.text-lighten-4{color:#ffccbc !important}.deep-orange.lighten-3{background-color:#ffab91 !important}.deep-orange-text.text-lighten-3{color:#ffab91 !important}.deep-orange.lighten-2{background-color:#ff8a65 !important}.deep-orange-text.text-lighten-2{color:#ff8a65 !important}.deep-orange.lighten-1{background-color:#ff7043 !important}.deep-orange-text.text-lighten-1{color:#ff7043 !important}.deep-orange.darken-1{background-color:#f4511e !important}.deep-orange-text.text-darken-1{color:#f4511e !important}.deep-orange.darken-2{background-color:#e64a19 !important}.deep-orange-text.text-darken-2{color:#e64a19 !important}.deep-orange.darken-3{background-color:#d84315 !important}.deep-orange-text.text-darken-3{color:#d84315 !important}.deep-orange.darken-4{background-color:#bf360c !important}.deep-orange-text.text-darken-4{color:#bf360c !important}.deep-orange.accent-1{background-color:#ff9e80 !important}.deep-orange-text.text-accent-1{color:#ff9e80 !important}.deep-orange.accent-2{background-color:#ff6e40 !important}.deep-orange-text.text-accent-2{color:#ff6e40 !important}.deep-orange.accent-3{background-color:#ff3d00 !important}.deep-orange-text.text-accent-3{color:#ff3d00 !important}.deep-orange.accent-4{background-color:#dd2c00 !important}.deep-orange-text.text-accent-4{color:#dd2c00 !important}.brown{background-color:#795548 !important}.brown-text{color:#795548 !important}.brown.lighten-5{background-color:#efebe9 !important}.brown-text.text-lighten-5{color:#efebe9 !important}.brown.lighten-4{background-color:#d7ccc8 !important}.brown-text.text-lighten-4{color:#d7ccc8 !important}.brown.lighten-3{background-color:#bcaaa4 !important}.brown-text.text-lighten-3{color:#bcaaa4 !important}.brown.lighten-2{background-color:#a1887f !important}.brown-text.text-lighten-2{color:#a1887f !important}.brown.lighten-1{background-color:#8d6e63 !important}.brown-text.text-lighten-1{color:#8d6e63 !important}.brown.darken-1{background-color:#6d4c41 !important}.brown-text.text-darken-1{color:#6d4c41 !important}.brown.darken-2{background-color:#5d4037 !important}.brown-text.text-darken-2{color:#5d4037 !important}.brown.darken-3{background-color:#4e342e !important}.brown-text.text-darken-3{color:#4e342e !important}.brown.darken-4{background-color:#3e2723 !important}.brown-text.text-darken-4{color:#3e2723 !important}.blue-grey{background-color:#607d8b !important}.blue-grey-text{color:#607d8b !important}.blue-grey.lighten-5{background-color:#eceff1 !important}.blue-grey-text.text-lighten-5{color:#eceff1 !important}.blue-grey.lighten-4{background-color:#cfd8dc !important}.blue-grey-text.text-lighten-4{color:#cfd8dc !important}.blue-grey.lighten-3{background-color:#b0bec5 !important}.blue-grey-text.text-lighten-3{color:#b0bec5 !important}.blue-grey.lighten-2{background-color:#90a4ae !important}.blue-grey-text.text-lighten-2{color:#90a4ae !important}.blue-grey.lighten-1{background-color:#78909c !important}.blue-grey-text.text-lighten-1{color:#78909c !important}.blue-grey.darken-1{background-color:#546e7a !important}.blue-grey-text.text-darken-1{color:#546e7a !important}.blue-grey.darken-2{background-color:#455a64 !important}.blue-grey-text.text-darken-2{color:#455a64 !important}.blue-grey.darken-3{background-color:#37474f !important}.blue-grey-text.text-darken-3{color:#37474f !important}.blue-grey.darken-4{background-color:#263238 !important}.blue-grey-text.text-darken-4{color:#263238 !important}.grey{background-color:#9e9e9e !important}.grey-text{color:#9e9e9e !important}.grey.lighten-5{background-color:#fafafa !important}.grey-text.text-lighten-5{color:#fafafa !important}.grey.lighten-4{background-color:#f5f5f5 !important}.grey-text.text-lighten-4{color:#f5f5f5 !important}.grey.lighten-3{background-color:#eee !important}.grey-text.text-lighten-3{color:#eee !important}.grey.lighten-2{background-color:#e0e0e0 !important}.grey-text.text-lighten-2{color:#e0e0e0 !important}.grey.lighten-1{background-color:#bdbdbd !important}.grey-text.text-lighten-1{color:#bdbdbd !important}.grey.darken-1{background-color:#757575 !important}.grey-text.text-darken-1{color:#757575 !important}.grey.darken-2{background-color:#616161 !important}.grey-text.text-darken-2{color:#616161 !important}.grey.darken-3{background-color:#424242 !important}.grey-text.text-darken-3{color:#424242 !important}.grey.darken-4{background-color:#212121 !important}.grey-text.text-darken-4{color:#212121 !important}.black{background-color:#000 !important}.black-text{color:#000 !important}.white{background-color:#fff !important}.white-text{color:#fff !important}.transparent{background-color:transparent !important}.transparent-text{color:transparent !important}.jupyter-flex-page{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji";background-color:#f8fafb;color:#333;margin:0}
+.jupyter-widgets.widget-output .jp-OutputArea-prompt{display:none}
+/*!
+ *  Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
+ *  License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */@font-face{font-family:"FontAwesome";src:url(3c5f86a14ac61c80f6af.eot?v=4.7.0);src:url(3c5f86a14ac61c80f6af.eot?#iefix&v=4.7.0) format("embedded-opentype"),url(7d6ec71e2466a9fd777f.woff2?v=4.7.0) format("woff2"),url(7a065a1c0cb2d586cecb.woff?v=4.7.0) format("woff"),url(d4cbe6fb154cf9e9036c.ttf?v=4.7.0) format("truetype"),url(213a070ccb5dfb80f3b1.svg?v=4.7.0#fontawesomeregular) format("svg");font-weight:normal;font-style:normal}.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}.fa-lg{font-size:1.33333333em;line-height:.75em;vertical-align:-15%}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em}.fa-fw{width:1.28571429em;text-align:center}.fa-ul{padding-left:0;margin-left:2.14285714em;list-style-type:none}.fa-ul>li{position:relative}.fa-li{position:absolute;left:-2.14285714em;width:2.14285714em;top:.14285714em;text-align:center}.fa-li.fa-lg{left:-1.85714286em}.fa-border{padding:.2em .25em .15em;border:solid .08em #eee;border-radius:.1em}.fa-pull-left{float:left}.fa-pull-right{float:right}.fa.fa-pull-left{margin-right:.3em}.fa.fa-pull-right{margin-left:.3em}.pull-right{float:right}.pull-left{float:left}.fa.pull-left{margin-right:.3em}.fa.pull-right{margin-left:.3em}.fa-spin{-webkit-animation:fa-spin 2s infinite linear;animation:fa-spin 2s infinite linear}.fa-pulse{-webkit-animation:fa-spin 1s infinite steps(8);animation:fa-spin 1s infinite steps(8)}@-webkit-keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}@keyframes fa-spin{0%{-webkit-transform:rotate(0deg);transform:rotate(0deg)}100%{-webkit-transform:rotate(359deg);transform:rotate(359deg)}}.fa-rotate-90{-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=1)";-webkit-transform:rotate(90deg);-ms-transform:rotate(90deg);transform:rotate(90deg)}.fa-rotate-180{-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2)";-webkit-transform:rotate(180deg);-ms-transform:rotate(180deg);transform:rotate(180deg)}.fa-rotate-270{-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=3)";-webkit-transform:rotate(270deg);-ms-transform:rotate(270deg);transform:rotate(270deg)}.fa-flip-horizontal{-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=0, mirror=1)";-webkit-transform:scale(-1, 1);-ms-transform:scale(-1, 1);transform:scale(-1, 1)}.fa-flip-vertical{-ms-filter:"progid:DXImageTransform.Microsoft.BasicImage(rotation=2, mirror=1)";-webkit-transform:scale(1, -1);-ms-transform:scale(1, -1);transform:scale(1, -1)}:root .fa-rotate-90,:root .fa-rotate-180,:root .fa-rotate-270,:root .fa-flip-horizontal,:root .fa-flip-vertical{filter:none}.fa-stack{position:relative;display:inline-block;width:2em;height:2em;line-height:2em;vertical-align:middle}.fa-stack-1x,.fa-stack-2x{position:absolute;left:0;width:100%;text-align:center}.fa-stack-1x{line-height:inherit}.fa-stack-2x{font-size:2em}.fa-inverse{color:#fff}.fa-glass:before{content:""}.fa-music:before{content:""}.fa-search:before{content:""}.fa-envelope-o:before{content:""}.fa-heart:before{content:""}.fa-star:before{content:""}.fa-star-o:before{content:""}.fa-user:before{content:""}.fa-film:before{content:""}.fa-th-large:before{content:""}.fa-th:before{content:""}.fa-th-list:before{content:""}.fa-check:before{content:""}.fa-remove:before,.fa-close:before,.fa-times:before{content:""}.fa-search-plus:before{content:""}.fa-search-minus:before{content:""}.fa-power-off:before{content:""}.fa-signal:before{content:""}.fa-gear:before,.fa-cog:before{content:""}.fa-trash-o:before{content:""}.fa-home:before{content:""}.fa-file-o:before{content:""}.fa-clock-o:before{content:""}.fa-road:before{content:""}.fa-download:before{content:""}.fa-arrow-circle-o-down:before{content:""}.fa-arrow-circle-o-up:before{content:""}.fa-inbox:before{content:""}.fa-play-circle-o:before{content:""}.fa-rotate-right:before,.fa-repeat:before{content:""}.fa-refresh:before{content:""}.fa-list-alt:before{content:""}.fa-lock:before{content:""}.fa-flag:before{content:""}.fa-headphones:before{content:""}.fa-volume-off:before{content:""}.fa-volume-down:before{content:""}.fa-volume-up:before{content:""}.fa-qrcode:before{content:""}.fa-barcode:before{content:""}.fa-tag:before{content:""}.fa-tags:before{content:""}.fa-book:before{content:""}.fa-bookmark:before{content:""}.fa-print:before{content:""}.fa-camera:before{content:""}.fa-font:before{content:""}.fa-bold:before{content:""}.fa-italic:before{content:""}.fa-text-height:before{content:""}.fa-text-width:before{content:""}.fa-align-left:before{content:""}.fa-align-center:before{content:""}.fa-align-right:before{content:""}.fa-align-justify:before{content:""}.fa-list:before{content:""}.fa-dedent:before,.fa-outdent:before{content:""}.fa-indent:before{content:""}.fa-video-camera:before{content:""}.fa-photo:before,.fa-image:before,.fa-picture-o:before{content:""}.fa-pencil:before{content:""}.fa-map-marker:before{content:""}.fa-adjust:before{content:""}.fa-tint:before{content:""}.fa-edit:before,.fa-pencil-square-o:before{content:""}.fa-share-square-o:before{content:""}.fa-check-square-o:before{content:""}.fa-arrows:before{content:""}.fa-step-backward:before{content:""}.fa-fast-backward:before{content:""}.fa-backward:before{content:""}.fa-play:before{content:""}.fa-pause:before{content:""}.fa-stop:before{content:""}.fa-forward:before{content:""}.fa-fast-forward:before{content:""}.fa-step-forward:before{content:""}.fa-eject:before{content:""}.fa-chevron-left:before{content:""}.fa-chevron-right:before{content:""}.fa-plus-circle:before{content:""}.fa-minus-circle:before{content:""}.fa-times-circle:before{content:""}.fa-check-circle:before{content:""}.fa-question-circle:before{content:""}.fa-info-circle:before{content:""}.fa-crosshairs:before{content:""}.fa-times-circle-o:before{content:""}.fa-check-circle-o:before{content:""}.fa-ban:before{content:""}.fa-arrow-left:before{content:""}.fa-arrow-right:before{content:""}.fa-arrow-up:before{content:""}.fa-arrow-down:before{content:""}.fa-mail-forward:before,.fa-share:before{content:""}.fa-expand:before{content:""}.fa-compress:before{content:""}.fa-plus:before{content:""}.fa-minus:before{content:""}.fa-asterisk:before{content:""}.fa-exclamation-circle:before{content:""}.fa-gift:before{content:""}.fa-leaf:before{content:""}.fa-fire:before{content:""}.fa-eye:before{content:""}.fa-eye-slash:before{content:""}.fa-warning:before,.fa-exclamation-triangle:before{content:""}.fa-plane:before{content:""}.fa-calendar:before{content:""}.fa-random:before{content:""}.fa-comment:before{content:""}.fa-magnet:before{content:""}.fa-chevron-up:before{content:""}.fa-chevron-down:before{content:""}.fa-retweet:before{content:""}.fa-shopping-cart:before{content:""}.fa-folder:before{content:""}.fa-folder-open:before{content:""}.fa-arrows-v:before{content:""}.fa-arrows-h:before{content:""}.fa-bar-chart-o:before,.fa-bar-chart:before{content:""}.fa-twitter-square:before{content:""}.fa-facebook-square:before{content:""}.fa-camera-retro:before{content:""}.fa-key:before{content:""}.fa-gears:before,.fa-cogs:before{content:""}.fa-comments:before{content:""}.fa-thumbs-o-up:before{content:""}.fa-thumbs-o-down:before{content:""}.fa-star-half:before{content:""}.fa-heart-o:before{content:""}.fa-sign-out:before{content:""}.fa-linkedin-square:before{content:""}.fa-thumb-tack:before{content:""}.fa-external-link:before{content:""}.fa-sign-in:before{content:""}.fa-trophy:before{content:""}.fa-github-square:before{content:""}.fa-upload:before{content:""}.fa-lemon-o:before{content:""}.fa-phone:before{content:""}.fa-square-o:before{content:""}.fa-bookmark-o:before{content:""}.fa-phone-square:before{content:""}.fa-twitter:before{content:""}.fa-facebook-f:before,.fa-facebook:before{content:""}.fa-github:before{content:""}.fa-unlock:before{content:""}.fa-credit-card:before{content:""}.fa-feed:before,.fa-rss:before{content:""}.fa-hdd-o:before{content:""}.fa-bullhorn:before{content:""}.fa-bell:before{content:""}.fa-certificate:before{content:""}.fa-hand-o-right:before{content:""}.fa-hand-o-left:before{content:""}.fa-hand-o-up:before{content:""}.fa-hand-o-down:before{content:""}.fa-arrow-circle-left:before{content:""}.fa-arrow-circle-right:before{content:""}.fa-arrow-circle-up:before{content:""}.fa-arrow-circle-down:before{content:""}.fa-globe:before{content:""}.fa-wrench:before{content:""}.fa-tasks:before{content:""}.fa-filter:before{content:""}.fa-briefcase:before{content:""}.fa-arrows-alt:before{content:""}.fa-group:before,.fa-users:before{content:""}.fa-chain:before,.fa-link:before{content:""}.fa-cloud:before{content:""}.fa-flask:before{content:""}.fa-cut:before,.fa-scissors:before{content:""}.fa-copy:before,.fa-files-o:before{content:""}.fa-paperclip:before{content:""}.fa-save:before,.fa-floppy-o:before{content:""}.fa-square:before{content:""}.fa-navicon:before,.fa-reorder:before,.fa-bars:before{content:""}.fa-list-ul:before{content:""}.fa-list-ol:before{content:""}.fa-strikethrough:before{content:""}.fa-underline:before{content:""}.fa-table:before{content:""}.fa-magic:before{content:""}.fa-truck:before{content:""}.fa-pinterest:before{content:""}.fa-pinterest-square:before{content:""}.fa-google-plus-square:before{content:""}.fa-google-plus:before{content:""}.fa-money:before{content:""}.fa-caret-down:before{content:""}.fa-caret-up:before{content:""}.fa-caret-left:before{content:""}.fa-caret-right:before{content:""}.fa-columns:before{content:""}.fa-unsorted:before,.fa-sort:before{content:""}.fa-sort-down:before,.fa-sort-desc:before{content:""}.fa-sort-up:before,.fa-sort-asc:before{content:""}.fa-envelope:before{content:""}.fa-linkedin:before{content:""}.fa-rotate-left:before,.fa-undo:before{content:""}.fa-legal:before,.fa-gavel:before{content:""}.fa-dashboard:before,.fa-tachometer:before{content:""}.fa-comment-o:before{content:""}.fa-comments-o:before{content:""}.fa-flash:before,.fa-bolt:before{content:""}.fa-sitemap:before{content:""}.fa-umbrella:before{content:""}.fa-paste:before,.fa-clipboard:before{content:""}.fa-lightbulb-o:before{content:""}.fa-exchange:before{content:""}.fa-cloud-download:before{content:""}.fa-cloud-upload:before{content:""}.fa-user-md:before{content:""}.fa-stethoscope:before{content:""}.fa-suitcase:before{content:""}.fa-bell-o:before{content:""}.fa-coffee:before{content:""}.fa-cutlery:before{content:""}.fa-file-text-o:before{content:""}.fa-building-o:before{content:""}.fa-hospital-o:before{content:""}.fa-ambulance:before{content:""}.fa-medkit:before{content:""}.fa-fighter-jet:before{content:""}.fa-beer:before{content:""}.fa-h-square:before{content:""}.fa-plus-square:before{content:""}.fa-angle-double-left:before{content:""}.fa-angle-double-right:before{content:""}.fa-angle-double-up:before{content:""}.fa-angle-double-down:before{content:""}.fa-angle-left:before{content:""}.fa-angle-right:before{content:""}.fa-angle-up:before{content:""}.fa-angle-down:before{content:""}.fa-desktop:before{content:""}.fa-laptop:before{content:""}.fa-tablet:before{content:""}.fa-mobile-phone:before,.fa-mobile:before{content:""}.fa-circle-o:before{content:""}.fa-quote-left:before{content:""}.fa-quote-right:before{content:""}.fa-spinner:before{content:""}.fa-circle:before{content:""}.fa-mail-reply:before,.fa-reply:before{content:""}.fa-github-alt:before{content:""}.fa-folder-o:before{content:""}.fa-folder-open-o:before{content:""}.fa-smile-o:before{content:""}.fa-frown-o:before{content:""}.fa-meh-o:before{content:""}.fa-gamepad:before{content:""}.fa-keyboard-o:before{content:""}.fa-flag-o:before{content:""}.fa-flag-checkered:before{content:""}.fa-terminal:before{content:""}.fa-code:before{content:""}.fa-mail-reply-all:before,.fa-reply-all:before{content:""}.fa-star-half-empty:before,.fa-star-half-full:before,.fa-star-half-o:before{content:""}.fa-location-arrow:before{content:""}.fa-crop:before{content:""}.fa-code-fork:before{content:""}.fa-unlink:before,.fa-chain-broken:before{content:""}.fa-question:before{content:""}.fa-info:before{content:""}.fa-exclamation:before{content:""}.fa-superscript:before{content:""}.fa-subscript:before{content:""}.fa-eraser:before{content:""}.fa-puzzle-piece:before{content:""}.fa-microphone:before{content:""}.fa-microphone-slash:before{content:""}.fa-shield:before{content:""}.fa-calendar-o:before{content:""}.fa-fire-extinguisher:before{content:""}.fa-rocket:before{content:""}.fa-maxcdn:before{content:""}.fa-chevron-circle-left:before{content:""}.fa-chevron-circle-right:before{content:""}.fa-chevron-circle-up:before{content:""}.fa-chevron-circle-down:before{content:""}.fa-html5:before{content:""}.fa-css3:before{content:""}.fa-anchor:before{content:""}.fa-unlock-alt:before{content:""}.fa-bullseye:before{content:""}.fa-ellipsis-h:before{content:""}.fa-ellipsis-v:before{content:""}.fa-rss-square:before{content:""}.fa-play-circle:before{content:""}.fa-ticket:before{content:""}.fa-minus-square:before{content:""}.fa-minus-square-o:before{content:""}.fa-level-up:before{content:""}.fa-level-down:before{content:""}.fa-check-square:before{content:""}.fa-pencil-square:before{content:""}.fa-external-link-square:before{content:""}.fa-share-square:before{content:""}.fa-compass:before{content:""}.fa-toggle-down:before,.fa-caret-square-o-down:before{content:""}.fa-toggle-up:before,.fa-caret-square-o-up:before{content:""}.fa-toggle-right:before,.fa-caret-square-o-right:before{content:""}.fa-euro:before,.fa-eur:before{content:""}.fa-gbp:before{content:""}.fa-dollar:before,.fa-usd:before{content:""}.fa-rupee:before,.fa-inr:before{content:""}.fa-cny:before,.fa-rmb:before,.fa-yen:before,.fa-jpy:before{content:""}.fa-ruble:before,.fa-rouble:before,.fa-rub:before{content:""}.fa-won:before,.fa-krw:before{content:""}.fa-bitcoin:before,.fa-btc:before{content:""}.fa-file:before{content:""}.fa-file-text:before{content:""}.fa-sort-alpha-asc:before{content:""}.fa-sort-alpha-desc:before{content:""}.fa-sort-amount-asc:before{content:""}.fa-sort-amount-desc:before{content:""}.fa-sort-numeric-asc:before{content:""}.fa-sort-numeric-desc:before{content:""}.fa-thumbs-up:before{content:""}.fa-thumbs-down:before{content:""}.fa-youtube-square:before{content:""}.fa-youtube:before{content:""}.fa-xing:before{content:""}.fa-xing-square:before{content:""}.fa-youtube-play:before{content:""}.fa-dropbox:before{content:""}.fa-stack-overflow:before{content:""}.fa-instagram:before{content:""}.fa-flickr:before{content:""}.fa-adn:before{content:""}.fa-bitbucket:before{content:""}.fa-bitbucket-square:before{content:""}.fa-tumblr:before{content:""}.fa-tumblr-square:before{content:""}.fa-long-arrow-down:before{content:""}.fa-long-arrow-up:before{content:""}.fa-long-arrow-left:before{content:""}.fa-long-arrow-right:before{content:""}.fa-apple:before{content:""}.fa-windows:before{content:""}.fa-android:before{content:""}.fa-linux:before{content:""}.fa-dribbble:before{content:""}.fa-skype:before{content:""}.fa-foursquare:before{content:""}.fa-trello:before{content:""}.fa-female:before{content:""}.fa-male:before{content:""}.fa-gittip:before,.fa-gratipay:before{content:""}.fa-sun-o:before{content:""}.fa-moon-o:before{content:""}.fa-archive:before{content:""}.fa-bug:before{content:""}.fa-vk:before{content:""}.fa-weibo:before{content:""}.fa-renren:before{content:""}.fa-pagelines:before{content:""}.fa-stack-exchange:before{content:""}.fa-arrow-circle-o-right:before{content:""}.fa-arrow-circle-o-left:before{content:""}.fa-toggle-left:before,.fa-caret-square-o-left:before{content:""}.fa-dot-circle-o:before{content:""}.fa-wheelchair:before{content:""}.fa-vimeo-square:before{content:""}.fa-turkish-lira:before,.fa-try:before{content:""}.fa-plus-square-o:before{content:""}.fa-space-shuttle:before{content:""}.fa-slack:before{content:""}.fa-envelope-square:before{content:""}.fa-wordpress:before{content:""}.fa-openid:before{content:""}.fa-institution:before,.fa-bank:before,.fa-university:before{content:""}.fa-mortar-board:before,.fa-graduation-cap:before{content:""}.fa-yahoo:before{content:""}.fa-google:before{content:""}.fa-reddit:before{content:""}.fa-reddit-square:before{content:""}.fa-stumbleupon-circle:before{content:""}.fa-stumbleupon:before{content:""}.fa-delicious:before{content:""}.fa-digg:before{content:""}.fa-pied-piper-pp:before{content:""}.fa-pied-piper-alt:before{content:""}.fa-drupal:before{content:""}.fa-joomla:before{content:""}.fa-language:before{content:""}.fa-fax:before{content:""}.fa-building:before{content:""}.fa-child:before{content:""}.fa-paw:before{content:""}.fa-spoon:before{content:""}.fa-cube:before{content:""}.fa-cubes:before{content:""}.fa-behance:before{content:""}.fa-behance-square:before{content:""}.fa-steam:before{content:""}.fa-steam-square:before{content:""}.fa-recycle:before{content:""}.fa-automobile:before,.fa-car:before{content:""}.fa-cab:before,.fa-taxi:before{content:""}.fa-tree:before{content:""}.fa-spotify:before{content:""}.fa-deviantart:before{content:""}.fa-soundcloud:before{content:""}.fa-database:before{content:""}.fa-file-pdf-o:before{content:""}.fa-file-word-o:before{content:""}.fa-file-excel-o:before{content:""}.fa-file-powerpoint-o:before{content:""}.fa-file-photo-o:before,.fa-file-picture-o:before,.fa-file-image-o:before{content:""}.fa-file-zip-o:before,.fa-file-archive-o:before{content:""}.fa-file-sound-o:before,.fa-file-audio-o:before{content:""}.fa-file-movie-o:before,.fa-file-video-o:before{content:""}.fa-file-code-o:before{content:""}.fa-vine:before{content:""}.fa-codepen:before{content:""}.fa-jsfiddle:before{content:""}.fa-life-bouy:before,.fa-life-buoy:before,.fa-life-saver:before,.fa-support:before,.fa-life-ring:before{content:""}.fa-circle-o-notch:before{content:""}.fa-ra:before,.fa-resistance:before,.fa-rebel:before{content:""}.fa-ge:before,.fa-empire:before{content:""}.fa-git-square:before{content:""}.fa-git:before{content:""}.fa-y-combinator-square:before,.fa-yc-square:before,.fa-hacker-news:before{content:""}.fa-tencent-weibo:before{content:""}.fa-qq:before{content:""}.fa-wechat:before,.fa-weixin:before{content:""}.fa-send:before,.fa-paper-plane:before{content:""}.fa-send-o:before,.fa-paper-plane-o:before{content:""}.fa-history:before{content:""}.fa-circle-thin:before{content:""}.fa-header:before{content:""}.fa-paragraph:before{content:""}.fa-sliders:before{content:""}.fa-share-alt:before{content:""}.fa-share-alt-square:before{content:""}.fa-bomb:before{content:""}.fa-soccer-ball-o:before,.fa-futbol-o:before{content:""}.fa-tty:before{content:""}.fa-binoculars:before{content:""}.fa-plug:before{content:""}.fa-slideshare:before{content:""}.fa-twitch:before{content:""}.fa-yelp:before{content:""}.fa-newspaper-o:before{content:""}.fa-wifi:before{content:""}.fa-calculator:before{content:""}.fa-paypal:before{content:""}.fa-google-wallet:before{content:""}.fa-cc-visa:before{content:""}.fa-cc-mastercard:before{content:""}.fa-cc-discover:before{content:""}.fa-cc-amex:before{content:""}.fa-cc-paypal:before{content:""}.fa-cc-stripe:before{content:""}.fa-bell-slash:before{content:""}.fa-bell-slash-o:before{content:""}.fa-trash:before{content:""}.fa-copyright:before{content:""}.fa-at:before{content:""}.fa-eyedropper:before{content:""}.fa-paint-brush:before{content:""}.fa-birthday-cake:before{content:""}.fa-area-chart:before{content:""}.fa-pie-chart:before{content:""}.fa-line-chart:before{content:""}.fa-lastfm:before{content:""}.fa-lastfm-square:before{content:""}.fa-toggle-off:before{content:""}.fa-toggle-on:before{content:""}.fa-bicycle:before{content:""}.fa-bus:before{content:""}.fa-ioxhost:before{content:""}.fa-angellist:before{content:""}.fa-cc:before{content:""}.fa-shekel:before,.fa-sheqel:before,.fa-ils:before{content:""}.fa-meanpath:before{content:""}.fa-buysellads:before{content:""}.fa-connectdevelop:before{content:""}.fa-dashcube:before{content:""}.fa-forumbee:before{content:""}.fa-leanpub:before{content:""}.fa-sellsy:before{content:""}.fa-shirtsinbulk:before{content:""}.fa-simplybuilt:before{content:""}.fa-skyatlas:before{content:""}.fa-cart-plus:before{content:""}.fa-cart-arrow-down:before{content:""}.fa-diamond:before{content:""}.fa-ship:before{content:""}.fa-user-secret:before{content:""}.fa-motorcycle:before{content:""}.fa-street-view:before{content:""}.fa-heartbeat:before{content:""}.fa-venus:before{content:""}.fa-mars:before{content:""}.fa-mercury:before{content:""}.fa-intersex:before,.fa-transgender:before{content:""}.fa-transgender-alt:before{content:""}.fa-venus-double:before{content:""}.fa-mars-double:before{content:""}.fa-venus-mars:before{content:""}.fa-mars-stroke:before{content:""}.fa-mars-stroke-v:before{content:""}.fa-mars-stroke-h:before{content:""}.fa-neuter:before{content:""}.fa-genderless:before{content:""}.fa-facebook-official:before{content:""}.fa-pinterest-p:before{content:""}.fa-whatsapp:before{content:""}.fa-server:before{content:""}.fa-user-plus:before{content:""}.fa-user-times:before{content:""}.fa-hotel:before,.fa-bed:before{content:""}.fa-viacoin:before{content:""}.fa-train:before{content:""}.fa-subway:before{content:""}.fa-medium:before{content:""}.fa-yc:before,.fa-y-combinator:before{content:""}.fa-optin-monster:before{content:""}.fa-opencart:before{content:""}.fa-expeditedssl:before{content:""}.fa-battery-4:before,.fa-battery:before,.fa-battery-full:before{content:""}.fa-battery-3:before,.fa-battery-three-quarters:before{content:""}.fa-battery-2:before,.fa-battery-half:before{content:""}.fa-battery-1:before,.fa-battery-quarter:before{content:""}.fa-battery-0:before,.fa-battery-empty:before{content:""}.fa-mouse-pointer:before{content:""}.fa-i-cursor:before{content:""}.fa-object-group:before{content:""}.fa-object-ungroup:before{content:""}.fa-sticky-note:before{content:""}.fa-sticky-note-o:before{content:""}.fa-cc-jcb:before{content:""}.fa-cc-diners-club:before{content:""}.fa-clone:before{content:""}.fa-balance-scale:before{content:""}.fa-hourglass-o:before{content:""}.fa-hourglass-1:before,.fa-hourglass-start:before{content:""}.fa-hourglass-2:before,.fa-hourglass-half:before{content:""}.fa-hourglass-3:before,.fa-hourglass-end:before{content:""}.fa-hourglass:before{content:""}.fa-hand-grab-o:before,.fa-hand-rock-o:before{content:""}.fa-hand-stop-o:before,.fa-hand-paper-o:before{content:""}.fa-hand-scissors-o:before{content:""}.fa-hand-lizard-o:before{content:""}.fa-hand-spock-o:before{content:""}.fa-hand-pointer-o:before{content:""}.fa-hand-peace-o:before{content:""}.fa-trademark:before{content:""}.fa-registered:before{content:""}.fa-creative-commons:before{content:""}.fa-gg:before{content:""}.fa-gg-circle:before{content:""}.fa-tripadvisor:before{content:""}.fa-odnoklassniki:before{content:""}.fa-odnoklassniki-square:before{content:""}.fa-get-pocket:before{content:""}.fa-wikipedia-w:before{content:""}.fa-safari:before{content:""}.fa-chrome:before{content:""}.fa-firefox:before{content:""}.fa-opera:before{content:""}.fa-internet-explorer:before{content:""}.fa-tv:before,.fa-television:before{content:""}.fa-contao:before{content:""}.fa-500px:before{content:""}.fa-amazon:before{content:""}.fa-calendar-plus-o:before{content:""}.fa-calendar-minus-o:before{content:""}.fa-calendar-times-o:before{content:""}.fa-calendar-check-o:before{content:""}.fa-industry:before{content:""}.fa-map-pin:before{content:""}.fa-map-signs:before{content:""}.fa-map-o:before{content:""}.fa-map:before{content:""}.fa-commenting:before{content:""}.fa-commenting-o:before{content:""}.fa-houzz:before{content:""}.fa-vimeo:before{content:""}.fa-black-tie:before{content:""}.fa-fonticons:before{content:""}.fa-reddit-alien:before{content:""}.fa-edge:before{content:""}.fa-credit-card-alt:before{content:""}.fa-codiepie:before{content:""}.fa-modx:before{content:""}.fa-fort-awesome:before{content:""}.fa-usb:before{content:""}.fa-product-hunt:before{content:""}.fa-mixcloud:before{content:""}.fa-scribd:before{content:""}.fa-pause-circle:before{content:""}.fa-pause-circle-o:before{content:""}.fa-stop-circle:before{content:""}.fa-stop-circle-o:before{content:""}.fa-shopping-bag:before{content:""}.fa-shopping-basket:before{content:""}.fa-hashtag:before{content:""}.fa-bluetooth:before{content:""}.fa-bluetooth-b:before{content:""}.fa-percent:before{content:""}.fa-gitlab:before{content:""}.fa-wpbeginner:before{content:""}.fa-wpforms:before{content:""}.fa-envira:before{content:""}.fa-universal-access:before{content:""}.fa-wheelchair-alt:before{content:""}.fa-question-circle-o:before{content:""}.fa-blind:before{content:""}.fa-audio-description:before{content:""}.fa-volume-control-phone:before{content:""}.fa-braille:before{content:""}.fa-assistive-listening-systems:before{content:""}.fa-asl-interpreting:before,.fa-american-sign-language-interpreting:before{content:""}.fa-deafness:before,.fa-hard-of-hearing:before,.fa-deaf:before{content:""}.fa-glide:before{content:""}.fa-glide-g:before{content:""}.fa-signing:before,.fa-sign-language:before{content:""}.fa-low-vision:before{content:""}.fa-viadeo:before{content:""}.fa-viadeo-square:before{content:""}.fa-snapchat:before{content:""}.fa-snapchat-ghost:before{content:""}.fa-snapchat-square:before{content:""}.fa-pied-piper:before{content:""}.fa-first-order:before{content:""}.fa-yoast:before{content:""}.fa-themeisle:before{content:""}.fa-google-plus-circle:before,.fa-google-plus-official:before{content:""}.fa-fa:before,.fa-font-awesome:before{content:""}.fa-handshake-o:before{content:""}.fa-envelope-open:before{content:""}.fa-envelope-open-o:before{content:""}.fa-linode:before{content:""}.fa-address-book:before{content:""}.fa-address-book-o:before{content:""}.fa-vcard:before,.fa-address-card:before{content:""}.fa-vcard-o:before,.fa-address-card-o:before{content:""}.fa-user-circle:before{content:""}.fa-user-circle-o:before{content:""}.fa-user-o:before{content:""}.fa-id-badge:before{content:""}.fa-drivers-license:before,.fa-id-card:before{content:""}.fa-drivers-license-o:before,.fa-id-card-o:before{content:""}.fa-quora:before{content:""}.fa-free-code-camp:before{content:""}.fa-telegram:before{content:""}.fa-thermometer-4:before,.fa-thermometer:before,.fa-thermometer-full:before{content:""}.fa-thermometer-3:before,.fa-thermometer-three-quarters:before{content:""}.fa-thermometer-2:before,.fa-thermometer-half:before{content:""}.fa-thermometer-1:before,.fa-thermometer-quarter:before{content:""}.fa-thermometer-0:before,.fa-thermometer-empty:before{content:""}.fa-shower:before{content:""}.fa-bathtub:before,.fa-s15:before,.fa-bath:before{content:""}.fa-podcast:before{content:""}.fa-window-maximize:before{content:""}.fa-window-minimize:before{content:""}.fa-window-restore:before{content:""}.fa-times-rectangle:before,.fa-window-close:before{content:""}.fa-times-rectangle-o:before,.fa-window-close-o:before{content:""}.fa-bandcamp:before{content:""}.fa-grav:before{content:""}.fa-etsy:before{content:""}.fa-imdb:before{content:""}.fa-ravelry:before{content:""}.fa-eercast:before{content:""}.fa-microchip:before{content:""}.fa-snowflake-o:before{content:""}.fa-superpowers:before{content:""}.fa-wpexplorer:before{content:""}.fa-meetup:before{content:""}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0, 0, 0, 0);border:0}.sr-only-focusable:active,.sr-only-focusable:focus{position:static;width:auto;height:auto;margin:0;overflow:visible;clip:auto}
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-Widget, /* </DEPRECATED> */
+.lm-Widget {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+
+/* <DEPRECATED> */
+.p-Widget.p-mod-hidden, /* </DEPRECATED> */
+.lm-Widget.lm-mod-hidden {
+  display: none !important;
+}
+
+.lm-AccordionPanel[data-orientation='horizontal'] > .lm-AccordionPanel-title {
+  /* Title is rotated for horizontal accordion panel using CSS */
+  display: block;
+  transform-origin: top left;
+  transform: rotate(-90deg) translate(-100%);
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-CommandPalette, /* </DEPRECATED> */
+.lm-CommandPalette {
+  display: flex;
+  flex-direction: column;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-search, /* </DEPRECATED> */
+.lm-CommandPalette-search {
+  flex: 0 0 auto;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-content, /* </DEPRECATED> */
+.lm-CommandPalette-content {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0;
+  min-height: 0;
+  overflow: auto;
+  list-style-type: none;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-header, /* </DEPRECATED> */
+.lm-CommandPalette-header {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-item, /* </DEPRECATED> */
+.lm-CommandPalette-item {
+  display: flex;
+  flex-direction: row;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-itemIcon, /* </DEPRECATED> */
+.lm-CommandPalette-itemIcon {
+  flex: 0 0 auto;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-itemContent, /* </DEPRECATED> */
+.lm-CommandPalette-itemContent {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-itemShortcut, /* </DEPRECATED> */
+.lm-CommandPalette-itemShortcut {
+  flex: 0 0 auto;
+}
+
+/* <DEPRECATED> */
+.p-CommandPalette-itemLabel, /* </DEPRECATED> */
+.lm-CommandPalette-itemLabel {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.lm-close-icon {
+  border: 1px solid transparent;
+  background-color: transparent;
+  position: absolute;
+  z-index: 1;
+  right: 3%;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  padding: 7px 0;
+  display: none;
+  vertical-align: middle;
+  outline: 0;
+  cursor: pointer;
+}
+.lm-close-icon:after {
+  content: 'X';
+  display: block;
+  width: 15px;
+  height: 15px;
+  text-align: center;
+  color: #000;
+  font-weight: normal;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-DockPanel, /* </DEPRECATED> */
+.lm-DockPanel {
+  z-index: 0;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-widget, /* </DEPRECATED> */
+.lm-DockPanel-widget {
+  z-index: 0;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-tabBar, /* </DEPRECATED> */
+.lm-DockPanel-tabBar {
+  z-index: 1;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle, /* </DEPRECATED> */
+.lm-DockPanel-handle {
+  z-index: 2;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle.p-mod-hidden, /* </DEPRECATED> */
+.lm-DockPanel-handle.lm-mod-hidden {
+  display: none !important;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle:after, /* </DEPRECATED> */
+.lm-DockPanel-handle:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle[data-orientation='horizontal'],
+/* </DEPRECATED> */
+.lm-DockPanel-handle[data-orientation='horizontal'] {
+  cursor: ew-resize;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle[data-orientation='vertical'],
+/* </DEPRECATED> */
+.lm-DockPanel-handle[data-orientation='vertical'] {
+  cursor: ns-resize;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle[data-orientation='horizontal']:after,
+/* </DEPRECATED> */
+.lm-DockPanel-handle[data-orientation='horizontal']:after {
+  left: 50%;
+  min-width: 8px;
+  transform: translateX(-50%);
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-handle[data-orientation='vertical']:after,
+/* </DEPRECATED> */
+.lm-DockPanel-handle[data-orientation='vertical']:after {
+  top: 50%;
+  min-height: 8px;
+  transform: translateY(-50%);
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-overlay, /* </DEPRECATED> */
+.lm-DockPanel-overlay {
+  z-index: 3;
+  box-sizing: border-box;
+  pointer-events: none;
+}
+
+/* <DEPRECATED> */
+.p-DockPanel-overlay.p-mod-hidden, /* </DEPRECATED> */
+.lm-DockPanel-overlay.lm-mod-hidden {
+  display: none !important;
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-Menu, /* </DEPRECATED> */
+.lm-Menu {
+  z-index: 10000;
+  position: absolute;
+  white-space: nowrap;
+  overflow-x: hidden;
+  overflow-y: auto;
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* <DEPRECATED> */
+.p-Menu-content, /* </DEPRECATED> */
+.lm-Menu-content {
+  margin: 0;
+  padding: 0;
+  display: table;
+  list-style-type: none;
+}
+
+/* <DEPRECATED> */
+.p-Menu-item, /* </DEPRECATED> */
+.lm-Menu-item {
+  display: table-row;
+}
+
+/* <DEPRECATED> */
+.p-Menu-item.p-mod-hidden,
+.p-Menu-item.p-mod-collapsed,
+/* </DEPRECATED> */
+.lm-Menu-item.lm-mod-hidden,
+.lm-Menu-item.lm-mod-collapsed {
+  display: none !important;
+}
+
+/* <DEPRECATED> */
+.p-Menu-itemIcon,
+.p-Menu-itemSubmenuIcon,
+/* </DEPRECATED> */
+.lm-Menu-itemIcon,
+.lm-Menu-itemSubmenuIcon {
+  display: table-cell;
+  text-align: center;
+}
+
+/* <DEPRECATED> */
+.p-Menu-itemLabel, /* </DEPRECATED> */
+.lm-Menu-itemLabel {
+  display: table-cell;
+  text-align: left;
+}
+
+/* <DEPRECATED> */
+.p-Menu-itemShortcut, /* </DEPRECATED> */
+.lm-Menu-itemShortcut {
+  display: table-cell;
+  text-align: right;
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-MenuBar, /* </DEPRECATED> */
+.lm-MenuBar {
+  outline: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* <DEPRECATED> */
+.p-MenuBar-content, /* </DEPRECATED> */
+.lm-MenuBar-content {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  list-style-type: none;
+}
+
+/* <DEPRECATED> */
+.p--MenuBar-item, /* </DEPRECATED> */
+.lm-MenuBar-item {
+  box-sizing: border-box;
+}
+
+/* <DEPRECATED> */
+.p-MenuBar-itemIcon,
+.p-MenuBar-itemLabel,
+/* </DEPRECATED> */
+.lm-MenuBar-itemIcon,
+.lm-MenuBar-itemLabel {
+  display: inline-block;
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-ScrollBar, /* </DEPRECATED> */
+.lm-ScrollBar {
+  display: flex;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* <DEPRECATED> */
+.p-ScrollBar[data-orientation='horizontal'],
+/* </DEPRECATED> */
+.lm-ScrollBar[data-orientation='horizontal'] {
+  flex-direction: row;
+}
+
+/* <DEPRECATED> */
+.p-ScrollBar[data-orientation='vertical'],
+/* </DEPRECATED> */
+.lm-ScrollBar[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+/* <DEPRECATED> */
+.p-ScrollBar-button, /* </DEPRECATED> */
+.lm-ScrollBar-button {
+  box-sizing: border-box;
+  flex: 0 0 auto;
+}
+
+/* <DEPRECATED> */
+.p-ScrollBar-track, /* </DEPRECATED> */
+.lm-ScrollBar-track {
+  box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  flex: 1 1 auto;
+}
+
+/* <DEPRECATED> */
+.p-ScrollBar-thumb, /* </DEPRECATED> */
+.lm-ScrollBar-thumb {
+  box-sizing: border-box;
+  position: absolute;
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-SplitPanel-child, /* </DEPRECATED> */
+.lm-SplitPanel-child {
+  z-index: 0;
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel-handle, /* </DEPRECATED> */
+.lm-SplitPanel-handle {
+  z-index: 1;
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel-handle.p-mod-hidden, /* </DEPRECATED> */
+.lm-SplitPanel-handle.lm-mod-hidden {
+  display: none !important;
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel-handle:after, /* </DEPRECATED> */
+.lm-SplitPanel-handle:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  content: '';
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel[data-orientation='horizontal'] > .p-SplitPanel-handle,
+/* </DEPRECATED> */
+.lm-SplitPanel[data-orientation='horizontal'] > .lm-SplitPanel-handle {
+  cursor: ew-resize;
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel[data-orientation='vertical'] > .p-SplitPanel-handle,
+/* </DEPRECATED> */
+.lm-SplitPanel[data-orientation='vertical'] > .lm-SplitPanel-handle {
+  cursor: ns-resize;
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel[data-orientation='horizontal'] > .p-SplitPanel-handle:after,
+/* </DEPRECATED> */
+.lm-SplitPanel[data-orientation='horizontal'] > .lm-SplitPanel-handle:after {
+  left: 50%;
+  min-width: 8px;
+  transform: translateX(-50%);
+}
+
+/* <DEPRECATED> */
+.p-SplitPanel[data-orientation='vertical'] > .p-SplitPanel-handle:after,
+/* </DEPRECATED> */
+.lm-SplitPanel[data-orientation='vertical'] > .lm-SplitPanel-handle:after {
+  top: 50%;
+  min-height: 8px;
+  transform: translateY(-50%);
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-TabBar, /* </DEPRECATED> */
+.lm-TabBar {
+  display: flex;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* <DEPRECATED> */
+.p-TabBar[data-orientation='horizontal'], /* </DEPRECATED> */
+.lm-TabBar[data-orientation='horizontal'] {
+  flex-direction: row;
+  align-items: flex-end;
+}
+
+/* <DEPRECATED> */
+.p-TabBar[data-orientation='vertical'], /* </DEPRECATED> */
+.lm-TabBar[data-orientation='vertical'] {
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+/* <DEPRECATED> */
+.p-TabBar-content, /* </DEPRECATED> */
+.lm-TabBar-content {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex: 1 1 auto;
+  list-style-type: none;
+}
+
+/* <DEPRECATED> */
+.p-TabBar[data-orientation='horizontal'] > .p-TabBar-content,
+/* </DEPRECATED> */
+.lm-TabBar[data-orientation='horizontal'] > .lm-TabBar-content {
+  flex-direction: row;
+}
+
+/* <DEPRECATED> */
+.p-TabBar[data-orientation='vertical'] > .p-TabBar-content,
+/* </DEPRECATED> */
+.lm-TabBar[data-orientation='vertical'] > .lm-TabBar-content {
+  flex-direction: column;
+}
+
+/* <DEPRECATED> */
+.p-TabBar-tab, /* </DEPRECATED> */
+.lm-TabBar-tab {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  overflow: hidden;
+  touch-action: none; /* Disable native Drag/Drop */
+}
+
+/* <DEPRECATED> */
+.p-TabBar-tabIcon,
+.p-TabBar-tabCloseIcon,
+/* </DEPRECATED> */
+.lm-TabBar-tabIcon,
+.lm-TabBar-tabCloseIcon {
+  flex: 0 0 auto;
+}
+
+/* <DEPRECATED> */
+.p-TabBar-tabLabel, /* </DEPRECATED> */
+.lm-TabBar-tabLabel {
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.lm-TabBar-tabInput {
+  user-select: all;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* <DEPRECATED> */
+.p-TabBar-tab.p-mod-hidden, /* </DEPRECATED> */
+.lm-TabBar-tab.lm-mod-hidden {
+  display: none !important;
+}
+
+.lm-TabBar-addButton.lm-mod-hidden {
+  display: none !important;
+}
+
+/* <DEPRECATED> */
+.p-TabBar.p-mod-dragging .p-TabBar-tab, /* </DEPRECATED> */
+.lm-TabBar.lm-mod-dragging .lm-TabBar-tab {
+  position: relative;
+}
+
+/* <DEPRECATED> */
+.p-TabBar.p-mod-dragging[data-orientation='horizontal'] .p-TabBar-tab,
+/* </DEPRECATED> */
+.lm-TabBar.lm-mod-dragging[data-orientation='horizontal'] .lm-TabBar-tab {
+  left: 0;
+  transition: left 150ms ease;
+}
+
+/* <DEPRECATED> */
+.p-TabBar.p-mod-dragging[data-orientation='vertical'] .p-TabBar-tab,
+/* </DEPRECATED> */
+.lm-TabBar.lm-mod-dragging[data-orientation='vertical'] .lm-TabBar-tab {
+  top: 0;
+  transition: top 150ms ease;
+}
+
+/* <DEPRECATED> */
+.p-TabBar.p-mod-dragging .p-TabBar-tab.p-mod-dragging,
+/* </DEPRECATED> */
+.lm-TabBar.lm-mod-dragging .lm-TabBar-tab.lm-mod-dragging {
+  transition: none;
+}
+
+.lm-TabBar-tabLabel .lm-TabBar-tabInput {
+  user-select: all;
+  width: 100%;
+  box-sizing: border-box;
+  background: inherit;
+}
+
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Copyright (c) 2014-2017, PhosphorJS Contributors
+|
+| Distributed under the terms of the BSD 3-Clause License.
+|
+| The full license is in the file LICENSE, distributed with this software.
+|----------------------------------------------------------------------------*/
+
+/* <DEPRECATED> */
+.p-TabPanel-tabBar, /* </DEPRECATED> */
+.lm-TabPanel-tabBar {
+  z-index: 1;
+}
+
+/* <DEPRECATED> */
+.p-TabPanel-stackedPanel, /* </DEPRECATED> */
+.lm-TabPanel-stackedPanel {
+  z-index: 0;
+}
+
+
+/**
+ * The material design colors are adapted from google-material-color v1.2.6
+ * https://github.com/danlevan/google-material-color
+ * https://github.com/danlevan/google-material-color/blob/f67ca5f4028b2f1b34862f64b0ca67323f91b088/dist/palette.var.css
+ *
+ * The license for the material design color CSS variables is as follows (see
+ * https://github.com/danlevan/google-material-color/blob/f67ca5f4028b2f1b34862f64b0ca67323f91b088/LICENSE)
+ *
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2014 Dan Le Van
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in
+ * all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+:root {
+  --md-red-50: #FFEBEE;
+  --md-red-100: #FFCDD2;
+  --md-red-200: #EF9A9A;
+  --md-red-300: #E57373;
+  --md-red-400: #EF5350;
+  --md-red-500: #F44336;
+  --md-red-600: #E53935;
+  --md-red-700: #D32F2F;
+  --md-red-800: #C62828;
+  --md-red-900: #B71C1C;
+  --md-red-A100: #FF8A80;
+  --md-red-A200: #FF5252;
+  --md-red-A400: #FF1744;
+  --md-red-A700: #D50000;
+
+  --md-pink-50: #FCE4EC;
+  --md-pink-100: #F8BBD0;
+  --md-pink-200: #F48FB1;
+  --md-pink-300: #F06292;
+  --md-pink-400: #EC407A;
+  --md-pink-500: #E91E63;
+  --md-pink-600: #D81B60;
+  --md-pink-700: #C2185B;
+  --md-pink-800: #AD1457;
+  --md-pink-900: #880E4F;
+  --md-pink-A100: #FF80AB;
+  --md-pink-A200: #FF4081;
+  --md-pink-A400: #F50057;
+  --md-pink-A700: #C51162;
+
+  --md-purple-50: #F3E5F5;
+  --md-purple-100: #E1BEE7;
+  --md-purple-200: #CE93D8;
+  --md-purple-300: #BA68C8;
+  --md-purple-400: #AB47BC;
+  --md-purple-500: #9C27B0;
+  --md-purple-600: #8E24AA;
+  --md-purple-700: #7B1FA2;
+  --md-purple-800: #6A1B9A;
+  --md-purple-900: #4A148C;
+  --md-purple-A100: #EA80FC;
+  --md-purple-A200: #E040FB;
+  --md-purple-A400: #D500F9;
+  --md-purple-A700: #AA00FF;
+
+  --md-deep-purple-50: #EDE7F6;
+  --md-deep-purple-100: #D1C4E9;
+  --md-deep-purple-200: #B39DDB;
+  --md-deep-purple-300: #9575CD;
+  --md-deep-purple-400: #7E57C2;
+  --md-deep-purple-500: #673AB7;
+  --md-deep-purple-600: #5E35B1;
+  --md-deep-purple-700: #512DA8;
+  --md-deep-purple-800: #4527A0;
+  --md-deep-purple-900: #311B92;
+  --md-deep-purple-A100: #B388FF;
+  --md-deep-purple-A200: #7C4DFF;
+  --md-deep-purple-A400: #651FFF;
+  --md-deep-purple-A700: #6200EA;
+
+  --md-indigo-50: #E8EAF6;
+  --md-indigo-100: #C5CAE9;
+  --md-indigo-200: #9FA8DA;
+  --md-indigo-300: #7986CB;
+  --md-indigo-400: #5C6BC0;
+  --md-indigo-500: #3F51B5;
+  --md-indigo-600: #3949AB;
+  --md-indigo-700: #303F9F;
+  --md-indigo-800: #283593;
+  --md-indigo-900: #1A237E;
+  --md-indigo-A100: #8C9EFF;
+  --md-indigo-A200: #536DFE;
+  --md-indigo-A400: #3D5AFE;
+  --md-indigo-A700: #304FFE;
+
+  --md-blue-50: #E3F2FD;
+  --md-blue-100: #BBDEFB;
+  --md-blue-200: #90CAF9;
+  --md-blue-300: #64B5F6;
+  --md-blue-400: #42A5F5;
+  --md-blue-500: #2196F3;
+  --md-blue-600: #1E88E5;
+  --md-blue-700: #1976D2;
+  --md-blue-800: #1565C0;
+  --md-blue-900: #0D47A1;
+  --md-blue-A100: #82B1FF;
+  --md-blue-A200: #448AFF;
+  --md-blue-A400: #2979FF;
+  --md-blue-A700: #2962FF;
+
+  --md-light-blue-50: #E1F5FE;
+  --md-light-blue-100: #B3E5FC;
+  --md-light-blue-200: #81D4FA;
+  --md-light-blue-300: #4FC3F7;
+  --md-light-blue-400: #29B6F6;
+  --md-light-blue-500: #03A9F4;
+  --md-light-blue-600: #039BE5;
+  --md-light-blue-700: #0288D1;
+  --md-light-blue-800: #0277BD;
+  --md-light-blue-900: #01579B;
+  --md-light-blue-A100: #80D8FF;
+  --md-light-blue-A200: #40C4FF;
+  --md-light-blue-A400: #00B0FF;
+  --md-light-blue-A700: #0091EA;
+
+  --md-cyan-50: #E0F7FA;
+  --md-cyan-100: #B2EBF2;
+  --md-cyan-200: #80DEEA;
+  --md-cyan-300: #4DD0E1;
+  --md-cyan-400: #26C6DA;
+  --md-cyan-500: #00BCD4;
+  --md-cyan-600: #00ACC1;
+  --md-cyan-700: #0097A7;
+  --md-cyan-800: #00838F;
+  --md-cyan-900: #006064;
+  --md-cyan-A100: #84FFFF;
+  --md-cyan-A200: #18FFFF;
+  --md-cyan-A400: #00E5FF;
+  --md-cyan-A700: #00B8D4;
+
+  --md-teal-50: #E0F2F1;
+  --md-teal-100: #B2DFDB;
+  --md-teal-200: #80CBC4;
+  --md-teal-300: #4DB6AC;
+  --md-teal-400: #26A69A;
+  --md-teal-500: #009688;
+  --md-teal-600: #00897B;
+  --md-teal-700: #00796B;
+  --md-teal-800: #00695C;
+  --md-teal-900: #004D40;
+  --md-teal-A100: #A7FFEB;
+  --md-teal-A200: #64FFDA;
+  --md-teal-A400: #1DE9B6;
+  --md-teal-A700: #00BFA5;
+
+  --md-green-50: #E8F5E9;
+  --md-green-100: #C8E6C9;
+  --md-green-200: #A5D6A7;
+  --md-green-300: #81C784;
+  --md-green-400: #66BB6A;
+  --md-green-500: #4CAF50;
+  --md-green-600: #43A047;
+  --md-green-700: #388E3C;
+  --md-green-800: #2E7D32;
+  --md-green-900: #1B5E20;
+  --md-green-A100: #B9F6CA;
+  --md-green-A200: #69F0AE;
+  --md-green-A400: #00E676;
+  --md-green-A700: #00C853;
+
+  --md-light-green-50: #F1F8E9;
+  --md-light-green-100: #DCEDC8;
+  --md-light-green-200: #C5E1A5;
+  --md-light-green-300: #AED581;
+  --md-light-green-400: #9CCC65;
+  --md-light-green-500: #8BC34A;
+  --md-light-green-600: #7CB342;
+  --md-light-green-700: #689F38;
+  --md-light-green-800: #558B2F;
+  --md-light-green-900: #33691E;
+  --md-light-green-A100: #CCFF90;
+  --md-light-green-A200: #B2FF59;
+  --md-light-green-A400: #76FF03;
+  --md-light-green-A700: #64DD17;
+
+  --md-lime-50: #F9FBE7;
+  --md-lime-100: #F0F4C3;
+  --md-lime-200: #E6EE9C;
+  --md-lime-300: #DCE775;
+  --md-lime-400: #D4E157;
+  --md-lime-500: #CDDC39;
+  --md-lime-600: #C0CA33;
+  --md-lime-700: #AFB42B;
+  --md-lime-800: #9E9D24;
+  --md-lime-900: #827717;
+  --md-lime-A100: #F4FF81;
+  --md-lime-A200: #EEFF41;
+  --md-lime-A400: #C6FF00;
+  --md-lime-A700: #AEEA00;
+
+  --md-yellow-50: #FFFDE7;
+  --md-yellow-100: #FFF9C4;
+  --md-yellow-200: #FFF59D;
+  --md-yellow-300: #FFF176;
+  --md-yellow-400: #FFEE58;
+  --md-yellow-500: #FFEB3B;
+  --md-yellow-600: #FDD835;
+  --md-yellow-700: #FBC02D;
+  --md-yellow-800: #F9A825;
+  --md-yellow-900: #F57F17;
+  --md-yellow-A100: #FFFF8D;
+  --md-yellow-A200: #FFFF00;
+  --md-yellow-A400: #FFEA00;
+  --md-yellow-A700: #FFD600;
+
+  --md-amber-50: #FFF8E1;
+  --md-amber-100: #FFECB3;
+  --md-amber-200: #FFE082;
+  --md-amber-300: #FFD54F;
+  --md-amber-400: #FFCA28;
+  --md-amber-500: #FFC107;
+  --md-amber-600: #FFB300;
+  --md-amber-700: #FFA000;
+  --md-amber-800: #FF8F00;
+  --md-amber-900: #FF6F00;
+  --md-amber-A100: #FFE57F;
+  --md-amber-A200: #FFD740;
+  --md-amber-A400: #FFC400;
+  --md-amber-A700: #FFAB00;
+
+  --md-orange-50: #FFF3E0;
+  --md-orange-100: #FFE0B2;
+  --md-orange-200: #FFCC80;
+  --md-orange-300: #FFB74D;
+  --md-orange-400: #FFA726;
+  --md-orange-500: #FF9800;
+  --md-orange-600: #FB8C00;
+  --md-orange-700: #F57C00;
+  --md-orange-800: #EF6C00;
+  --md-orange-900: #E65100;
+  --md-orange-A100: #FFD180;
+  --md-orange-A200: #FFAB40;
+  --md-orange-A400: #FF9100;
+  --md-orange-A700: #FF6D00;
+
+  --md-deep-orange-50: #FBE9E7;
+  --md-deep-orange-100: #FFCCBC;
+  --md-deep-orange-200: #FFAB91;
+  --md-deep-orange-300: #FF8A65;
+  --md-deep-orange-400: #FF7043;
+  --md-deep-orange-500: #FF5722;
+  --md-deep-orange-600: #F4511E;
+  --md-deep-orange-700: #E64A19;
+  --md-deep-orange-800: #D84315;
+  --md-deep-orange-900: #BF360C;
+  --md-deep-orange-A100: #FF9E80;
+  --md-deep-orange-A200: #FF6E40;
+  --md-deep-orange-A400: #FF3D00;
+  --md-deep-orange-A700: #DD2C00;
+
+  --md-brown-50: #EFEBE9;
+  --md-brown-100: #D7CCC8;
+  --md-brown-200: #BCAAA4;
+  --md-brown-300: #A1887F;
+  --md-brown-400: #8D6E63;
+  --md-brown-500: #795548;
+  --md-brown-600: #6D4C41;
+  --md-brown-700: #5D4037;
+  --md-brown-800: #4E342E;
+  --md-brown-900: #3E2723;
+
+  --md-grey-50: #FAFAFA;
+  --md-grey-100: #F5F5F5;
+  --md-grey-200: #EEEEEE;
+  --md-grey-300: #E0E0E0;
+  --md-grey-400: #BDBDBD;
+  --md-grey-500: #9E9E9E;
+  --md-grey-600: #757575;
+  --md-grey-700: #616161;
+  --md-grey-800: #424242;
+  --md-grey-900: #212121;
+
+  --md-blue-grey-50: #ECEFF1;
+  --md-blue-grey-100: #CFD8DC;
+  --md-blue-grey-200: #B0BEC5;
+  --md-blue-grey-300: #90A4AE;
+  --md-blue-grey-400: #78909C;
+  --md-blue-grey-500: #607D8B;
+  --md-blue-grey-600: #546E7A;
+  --md-blue-grey-700: #455A64;
+  --md-blue-grey-800: #37474F;
+  --md-blue-grey-900: #263238;
+}
+/*-----------------------------------------------------------------------------
+| Copyright (c) Jupyter Development Team.
+| Distributed under the terms of the Modified BSD License.
+|----------------------------------------------------------------------------*/
+
+/*
+This file is copied from the JupyterLab project to define default styling for
+when the widget styling is compiled down to eliminate CSS variables. We make one
+change - we comment out the font import below.
+*/
+
+/*
+The following CSS variables define the main, public API for styling JupyterLab.
+These variables should be used by all plugins wherever possible. In other
+words, plugins should not define custom colors, sizes, etc unless absolutely
+necessary. This enables users to change the visual theme of JupyterLab
+by changing these variables.
+
+Many variables appear in an ordered sequence (0,1,2,3). These sequences
+are designed to work well together, so for example, `--jp-border-color1` should
+be used with `--jp-layout-color1`. The numbers have the following meanings:
+
+* 0: super-primary, reserved for special emphasis
+* 1: primary, most important under normal situations
+* 2: secondary, next most important under normal situations
+* 3: tertiary, next most important under normal situations
+
+Throughout JupyterLab, we are mostly following principles from Google's
+Material Design when selecting colors. We are not, however, following
+all of MD as it is not optimized for dense, information rich UIs.
+*/
+
+
+/*
+ * Optional monospace font for input/output prompt.
+ */
+ /* Commented out in ipywidgets since we don't need it. */
+/* @import url('https://fonts.googleapis.com/css?family=Roboto+Mono'); */
+
+/*
+ * Added for compabitility with output area
+ */
+:root {
+  --jp-icon-search: none;
+  --jp-ui-select-caret: none;
+}
+
+
+:root {
+
+  /* Borders
+
+  The following variables, specify the visual styling of borders in JupyterLab.
+   */
+
+  --jp-border-width: 1px;
+  --jp-border-color0: var(--md-grey-700);
+  --jp-border-color1: var(--md-grey-500);
+  --jp-border-color2: var(--md-grey-300);
+  --jp-border-color3: var(--md-grey-100);
+
+  /* UI Fonts
+
+  The UI font CSS variables are used for the typography all of the JupyterLab
+  user interface elements that are not directly user generated content.
+  */
+
+  --jp-ui-font-scale-factor: 1.2;
+  --jp-ui-font-size0: calc(var(--jp-ui-font-size1)/var(--jp-ui-font-scale-factor));
+  --jp-ui-font-size1: 13px; /* Base font size */
+  --jp-ui-font-size2: calc(var(--jp-ui-font-size1)*var(--jp-ui-font-scale-factor));
+  --jp-ui-font-size3: calc(var(--jp-ui-font-size2)*var(--jp-ui-font-scale-factor));
+  --jp-ui-icon-font-size: 14px; /* Ensures px perfect FontAwesome icons */
+  --jp-ui-font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+
+  /* Use these font colors against the corresponding main layout colors.
+     In a light theme, these go from dark to light.
+  */
+
+  --jp-ui-font-color0: rgba(0,0,0,1.0);
+  --jp-ui-font-color1: rgba(0,0,0,0.8);
+  --jp-ui-font-color2: rgba(0,0,0,0.5);
+  --jp-ui-font-color3: rgba(0,0,0,0.3);
+
+  /* Use these against the brand/accent/warn/error colors.
+     These will typically go from light to darker, in both a dark and light theme
+   */
+
+  --jp-ui-inverse-font-color0: rgba(255, 255, 255, 1);
+  --jp-ui-inverse-font-color1: rgba(255, 255, 255, 1);
+  --jp-ui-inverse-font-color2: rgba(255, 255, 255, 0.7);
+  --jp-ui-inverse-font-color3: rgba(255, 255, 255, 0.5);
+
+  /* For backwards compatibility, we still define these below until ipywidgets 8.0.
+  See https://github.com/jupyter-widgets/ipywidgets/pull/2801 */
+  --jp-inverse-ui-font-color0: rgba(255,255,255,1);
+  --jp-inverse-ui-font-color1: rgba(255,255,255,1.0);
+  --jp-inverse-ui-font-color2: rgba(255,255,255,0.7);
+  --jp-inverse-ui-font-color3: rgba(255,255,255,0.5);
+
+  /* Content Fonts
+
+  Content font variables are used for typography of user generated content.
+  */
+
+  --jp-content-font-size: 13px;
+  --jp-content-line-height: 1.5;
+  --jp-content-font-color0: black;
+  --jp-content-font-color1: black;
+  --jp-content-font-color2: var(--md-grey-700);
+  --jp-content-font-color3: var(--md-grey-500);
+
+  --jp-ui-font-scale-factor: 1.2;
+  --jp-ui-font-size0: calc(var(--jp-ui-font-size1)/var(--jp-ui-font-scale-factor));
+  --jp-ui-font-size1: 13px; /* Base font size */
+  --jp-ui-font-size2: calc(var(--jp-ui-font-size1)*var(--jp-ui-font-scale-factor));
+  --jp-ui-font-size3: calc(var(--jp-ui-font-size2)*var(--jp-ui-font-scale-factor));
+
+  --jp-code-font-size: 13px;
+  --jp-code-line-height: 1.307;
+  --jp-code-padding: 5px;
+  --jp-code-font-family: monospace;
+
+
+  /* Layout
+
+  The following are the main layout colors use in JupyterLab. In a light
+  theme these would go from light to dark.
+  */
+
+  --jp-layout-color0: white;
+  --jp-layout-color1: white;
+  --jp-layout-color2: var(--md-grey-200);
+  --jp-layout-color3: var(--md-grey-400);
+
+  /* Brand/accent */
+
+  --jp-brand-color0: var(--md-blue-700);
+  --jp-brand-color1: var(--md-blue-500);
+  --jp-brand-color2: var(--md-blue-300);
+  --jp-brand-color3: var(--md-blue-100);
+
+  --jp-accent-color0: var(--md-green-700);
+  --jp-accent-color1: var(--md-green-500);
+  --jp-accent-color2: var(--md-green-300);
+  --jp-accent-color3: var(--md-green-100);
+
+  /* State colors (warn, error, success, info) */
+
+  --jp-warn-color0: var(--md-orange-700);
+  --jp-warn-color1: var(--md-orange-500);
+  --jp-warn-color2: var(--md-orange-300);
+  --jp-warn-color3: var(--md-orange-100);
+
+  --jp-error-color0: var(--md-red-700);
+  --jp-error-color1: var(--md-red-500);
+  --jp-error-color2: var(--md-red-300);
+  --jp-error-color3: var(--md-red-100);
+
+  --jp-success-color0: var(--md-green-700);
+  --jp-success-color1: var(--md-green-500);
+  --jp-success-color2: var(--md-green-300);
+  --jp-success-color3: var(--md-green-100);
+
+  --jp-info-color0: var(--md-cyan-700);
+  --jp-info-color1: var(--md-cyan-500);
+  --jp-info-color2: var(--md-cyan-300);
+  --jp-info-color3: var(--md-cyan-100);
+
+  /* Cell specific styles */
+
+  --jp-cell-padding: 5px;
+  --jp-cell-editor-background: #f7f7f7;
+  --jp-cell-editor-border-color: #cfcfcf;
+  --jp-cell-editor-background-edit: var(--jp-ui-layout-color1);
+  --jp-cell-editor-border-color-edit: var(--jp-brand-color1);
+  --jp-cell-prompt-width: 100px;
+  --jp-cell-prompt-font-family: 'Roboto Mono', monospace;
+  --jp-cell-prompt-letter-spacing: 0px;
+  --jp-cell-prompt-opacity: 1.0;
+  --jp-cell-prompt-opacity-not-active: 0.4;
+  --jp-cell-prompt-font-color-not-active: var(--md-grey-700);
+  /* A custom blend of MD grey and blue 600
+   * See https://meyerweb.com/eric/tools/color-blend/#546E7A:1E88E5:5:hex */
+  --jp-cell-inprompt-font-color: #307FC1;
+  /* A custom blend of MD grey and orange 600
+   * https://meyerweb.com/eric/tools/color-blend/#546E7A:F4511E:5:hex */
+  --jp-cell-outprompt-font-color: #BF5B3D;
+
+  /* Notebook specific styles */
+
+  --jp-notebook-padding: 10px;
+  --jp-notebook-scroll-padding: 100px;
+
+  /* Console specific styles */
+
+  --jp-console-background: var(--md-grey-100);
+
+  /* Toolbar specific styles */
+
+  --jp-toolbar-border-color: var(--md-grey-400);
+  --jp-toolbar-micro-height: 8px;
+  --jp-toolbar-background: var(--jp-layout-color0);
+  --jp-toolbar-box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.24);
+  --jp-toolbar-header-margin: 4px 4px 0px 4px;
+  --jp-toolbar-active-background: var(--md-grey-300);
+}
+
+/* This file has code derived from PhosphorJS CSS files, as noted below. The license for this PhosphorJS code is:
+
+Copyright (c) 2014-2017, PhosphorJS Contributors
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright notice, this
+  list of conditions and the following disclaimer.
+
+* Redistributions in binary form must reproduce the above copyright notice,
+  this list of conditions and the following disclaimer in the documentation
+  and/or other materials provided with the distribution.
+
+* Neither the name of the copyright holder nor the names of its
+  contributors may be used to endorse or promote products derived from
+  this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+*/
+
+/*
+ * The following section is derived from https://github.com/phosphorjs/phosphor/blob/23b9d075ebc5b73ab148b6ebfc20af97f85714c4/packages/widgets/style/tabbar.css 
+ * We've scoped the rules so that they are consistent with exactly our code.
+ */
+
+.jupyter-widgets.widget-tab > .p-TabBar {
+  display: flex;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar[data-orientation='horizontal'] {
+  flex-direction: row;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar[data-orientation='vertical'] {
+  flex-direction: column;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar > .p-TabBar-content {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex: 1 1 auto;
+  list-style-type: none;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar[data-orientation='horizontal'] > .p-TabBar-content {
+  flex-direction: row;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar[data-orientation='vertical'] > .p-TabBar-content {
+  flex-direction: column;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab {
+  display: flex;
+  flex-direction: row;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tabIcon,
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tabCloseIcon {
+  flex: 0 0 auto;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tabLabel {
+  flex: 1 1 auto;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab.p-mod-hidden {
+  display: none !important;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar.p-mod-dragging .p-TabBar-tab {
+  position: relative;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar.p-mod-dragging[data-orientation='horizontal'] .p-TabBar-tab {
+  left: 0;
+  transition: left 150ms ease;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar.p-mod-dragging[data-orientation='vertical'] .p-TabBar-tab {
+  top: 0;
+  transition: top 150ms ease;
+}
+
+
+.jupyter-widgets.widget-tab > .p-TabBar.p-mod-dragging .p-TabBar-tab.p-mod-dragging {
+  transition: none;
+}
+
+/* End tabbar.css */
+
+/* Copyright (c) Jupyter Development Team.
+ * Distributed under the terms of the Modified BSD License.
+ */
+
+/*
+ * We assume that the CSS variables in
+ * https://github.com/jupyterlab/jupyterlab/blob/master/src/default-theme/variables.css
+ * have been defined.
+ */
+
+:root {
+    --jp-widgets-color: var(--jp-content-font-color1);
+    --jp-widgets-label-color: var(--jp-widgets-color);
+    --jp-widgets-readout-color: var(--jp-widgets-color);
+    --jp-widgets-font-size: var(--jp-ui-font-size1);
+    --jp-widgets-margin: 2px;
+    --jp-widgets-inline-height: 28px;
+    --jp-widgets-inline-width: 300px;
+    --jp-widgets-inline-width-short: calc(var(--jp-widgets-inline-width) / 2 - var(--jp-widgets-margin));
+    --jp-widgets-inline-width-tiny: calc(var(--jp-widgets-inline-width-short) / 2 - var(--jp-widgets-margin));
+    --jp-widgets-inline-margin: 4px; /* margin between inline elements */
+    --jp-widgets-inline-label-width: 80px;
+    --jp-widgets-border-width: var(--jp-border-width);
+    --jp-widgets-vertical-height: 200px;
+    --jp-widgets-horizontal-tab-height: 24px;
+    --jp-widgets-horizontal-tab-width: 144px;
+    --jp-widgets-horizontal-tab-top-border: 2px;
+    --jp-widgets-progress-thickness: 20px;
+    --jp-widgets-container-padding: 15px;
+    --jp-widgets-input-padding: 4px;
+    --jp-widgets-radio-item-height-adjustment: 8px;
+    --jp-widgets-radio-item-height: calc(var(--jp-widgets-inline-height) - var(--jp-widgets-radio-item-height-adjustment));
+    --jp-widgets-slider-track-thickness: 4px;
+    --jp-widgets-slider-border-width: var(--jp-widgets-border-width);
+    --jp-widgets-slider-handle-size: 16px;
+    --jp-widgets-slider-handle-border-color: var(--jp-border-color1);
+    --jp-widgets-slider-handle-background-color: var(--jp-layout-color1);
+    --jp-widgets-slider-active-handle-color: var(--jp-brand-color1);
+    --jp-widgets-menu-item-height: 24px;
+    --jp-widgets-dropdown-arrow: url(data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4KPCEtLSBHZW5lcmF0b3I6IEFkb2JlIElsbHVzdHJhdG9yIDE5LjIuMSwgU1ZHIEV4cG9ydCBQbHVnLUluIC4gU1ZHIFZlcnNpb246IDYuMDAgQnVpbGQgMCkgIC0tPgo8c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IgoJIHZpZXdCb3g9IjAgMCAxOCAxOCIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgMTggMTg7IiB4bWw6c3BhY2U9InByZXNlcnZlIj4KPHN0eWxlIHR5cGU9InRleHQvY3NzIj4KCS5zdDB7ZmlsbDpub25lO30KPC9zdHlsZT4KPHBhdGggZD0iTTUuMiw1LjlMOSw5LjdsMy44LTMuOGwxLjIsMS4ybC00LjksNWwtNC45LTVMNS4yLDUuOXoiLz4KPHBhdGggY2xhc3M9InN0MCIgZD0iTTAtMC42aDE4djE4SDBWLTAuNnoiLz4KPC9zdmc+Cg);
+    --jp-widgets-input-color: var(--jp-ui-font-color1);
+    --jp-widgets-input-background-color: var(--jp-layout-color1);
+    --jp-widgets-input-border-color: var(--jp-border-color1);
+    --jp-widgets-input-focus-border-color: var(--jp-brand-color2);
+    --jp-widgets-input-border-width: var(--jp-widgets-border-width);
+    --jp-widgets-disabled-opacity: 0.6;
+
+    /* From Material Design Lite */
+    --md-shadow-key-umbra-opacity: 0.2;
+    --md-shadow-key-penumbra-opacity: 0.14;
+    --md-shadow-ambient-shadow-opacity: 0.12;
+}
+
+.jupyter-widgets {
+    margin: var(--jp-widgets-margin);
+    box-sizing: border-box;
+    color: var(--jp-widgets-color);
+    overflow: visible;
+}
+
+.jupyter-widgets.jupyter-widgets-disconnected::before {
+    line-height: var(--jp-widgets-inline-height);
+    height: var(--jp-widgets-inline-height);
+}
+
+.jp-Output-result > .jupyter-widgets {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+/* vbox and hbox */
+
+.widget-inline-hbox {
+    /* Horizontal widgets */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    align-items: baseline;
+}
+
+.widget-inline-vbox {
+    /* Vertical Widgets */
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.widget-box {
+    box-sizing: border-box;
+    display: flex;
+    margin: 0;
+    overflow: auto;
+}
+
+.widget-gridbox {
+    box-sizing: border-box;
+    display: grid;
+    margin: 0;
+    overflow: auto;
+}
+
+.widget-hbox {
+    flex-direction: row;
+}
+
+.widget-vbox {
+    flex-direction: column;
+}
+
+/* General Button Styling */
+
+.jupyter-button {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    font-size: var(--jp-widgets-font-size);
+    cursor: pointer;
+
+    height: var(--jp-widgets-inline-height);
+    border: 0px solid;
+    line-height: var(--jp-widgets-inline-height);
+    box-shadow: none;
+
+    color: var(--jp-ui-font-color1);
+    background-color: var(--jp-layout-color2);
+    border-color: var(--jp-border-color2);
+    border: none;
+    user-select: none;
+}
+
+.jupyter-button i.fa {
+    margin-right: var(--jp-widgets-inline-margin);
+    pointer-events: none;
+}
+
+.jupyter-button:empty:before {
+    content: "\200b"; /* zero-width space */
+}
+
+.jupyter-widgets.jupyter-button:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+.jupyter-button i.fa.center {
+    margin-right: 0;
+}
+
+.jupyter-button:hover:enabled, .jupyter-button:focus:enabled {
+    /* MD Lite 2dp shadow */
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, var(--md-shadow-key-penumbra-opacity)),
+                0 3px 1px -2px rgba(0, 0, 0, var(--md-shadow-key-umbra-opacity)),
+                0 1px 5px 0 rgba(0, 0, 0, var(--md-shadow-ambient-shadow-opacity));
+}
+
+.jupyter-button:active, .jupyter-button.mod-active {
+    /* MD Lite 4dp shadow */
+    box-shadow: 0 4px 5px 0 rgba(0, 0, 0, var(--md-shadow-key-penumbra-opacity)),
+                0 1px 10px 0 rgba(0, 0, 0, var(--md-shadow-ambient-shadow-opacity)),
+                0 2px 4px -1px rgba(0, 0, 0, var(--md-shadow-key-umbra-opacity));
+    color: var(--jp-ui-font-color1);
+    background-color: var(--jp-layout-color3);
+}
+
+.jupyter-button:focus:enabled {
+    outline: 1px solid var(--jp-widgets-input-focus-border-color);
+}
+
+/* Button "Primary" Styling */
+
+.jupyter-button.mod-primary {
+    color: var(--jp-ui-inverse-font-color1, var(--jp-inverse-ui-font-color1));
+    background-color: var(--jp-brand-color1);
+}
+
+.jupyter-button.mod-primary.mod-active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-brand-color0);
+}
+
+.jupyter-button.mod-primary:active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-brand-color0);
+}
+
+/* Button "Success" Styling */
+
+.jupyter-button.mod-success {
+    color: var(--jp-ui-inverse-font-color1, var(--jp-inverse-ui-font-color1));
+    background-color: var(--jp-success-color1);
+}
+
+.jupyter-button.mod-success.mod-active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-success-color0);
+}
+
+.jupyter-button.mod-success:active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-success-color0);
+}
+
+ /* Button "Info" Styling */
+
+.jupyter-button.mod-info {
+    color: var(--jp-ui-inverse-font-color1, var(--jp-inverse-ui-font-color1));
+    background-color: var(--jp-info-color1);
+}
+
+.jupyter-button.mod-info.mod-active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-info-color0);
+}
+
+.jupyter-button.mod-info:active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-info-color0);
+}
+
+/* Button "Warning" Styling */
+
+.jupyter-button.mod-warning {
+    color: var(--jp-ui-inverse-font-color1, var(--jp-inverse-ui-font-color1));
+    background-color: var(--jp-warn-color1);
+}
+
+.jupyter-button.mod-warning.mod-active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-warn-color0);
+}
+
+.jupyter-button.mod-warning:active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-warn-color0);
+}
+
+/* Button "Danger" Styling */
+
+.jupyter-button.mod-danger {
+    color: var(--jp-ui-inverse-font-color1, var(--jp-inverse-ui-font-color1));
+    background-color: var(--jp-error-color1);
+}
+
+.jupyter-button.mod-danger.mod-active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-error-color0);
+}
+
+.jupyter-button.mod-danger:active {
+    color: var(--jp-ui-inverse-font-color0, var(--jp-inverse-ui-font-color0));
+    background-color: var(--jp-error-color0);
+}
+
+/* Widget Button, Widget Toggle Button, Widget Upload */
+
+.widget-button, .widget-toggle-button, .widget-upload {
+    width: var(--jp-widgets-inline-width-short);
+}
+
+/* Widget Label Styling */
+
+/* Override Bootstrap label css */
+.jupyter-widgets label {
+    margin-bottom: initial;
+}
+
+.widget-label-basic {
+    /* Basic Label */
+    color: var(--jp-widgets-label-color);
+    font-size: var(--jp-widgets-font-size);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-label {
+    /* Label */
+    color: var(--jp-widgets-label-color);
+    font-size: var(--jp-widgets-font-size);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-inline-hbox .widget-label {
+    /* Horizontal Widget Label */
+    color: var(--jp-widgets-label-color);
+    text-align: right;
+    margin-right: calc( var(--jp-widgets-inline-margin) * 2 );
+    width: var(--jp-widgets-inline-label-width);
+    flex-shrink: 0;
+}
+
+.widget-inline-vbox .widget-label {
+    /* Vertical Widget Label */
+    color: var(--jp-widgets-label-color);
+    text-align: center;
+    line-height: var(--jp-widgets-inline-height);
+}
+
+/* Widget Readout Styling */
+
+.widget-readout {
+    color: var(--jp-widgets-readout-color);
+    font-size: var(--jp-widgets-font-size);
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.widget-readout.overflow {
+    /* Overflowing Readout */
+
+    /* From Material Design Lite
+        shadow-key-umbra-opacity: 0.2;
+        shadow-key-penumbra-opacity: 0.14;
+        shadow-ambient-shadow-opacity: 0.12;
+     */
+    -webkit-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2),
+                        0 3px 1px -2px rgba(0, 0, 0, 0.14),
+                        0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+    -moz-box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2),
+                     0 3px 1px -2px rgba(0, 0, 0, 0.14),
+                     0 1px 5px 0 rgba(0, 0, 0, 0.12);
+
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.2),
+                0 3px 1px -2px rgba(0, 0, 0, 0.14),
+                0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+
+.widget-inline-hbox .widget-readout {
+    /* Horizontal Readout */
+    text-align: center;
+    max-width: var(--jp-widgets-inline-width-short);
+    min-width: var(--jp-widgets-inline-width-tiny);
+    margin-left: var(--jp-widgets-inline-margin);
+}
+
+.widget-inline-vbox .widget-readout {
+    /* Vertical Readout */
+    margin-top: var(--jp-widgets-inline-margin);
+    /* as wide as the widget */
+    width: inherit;
+}
+
+/* Widget Checkbox Styling */
+
+.widget-checkbox {
+    width: var(--jp-widgets-inline-width);
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-checkbox input[type="checkbox"] {
+    margin: 0px calc( var(--jp-widgets-inline-margin) * 2 ) 0px 0px;
+    line-height: var(--jp-widgets-inline-height);
+    font-size: large;
+    flex-grow: 1;
+    flex-shrink: 0;
+    align-self: center;
+}
+
+/* Widget Valid Styling */
+
+.widget-valid {
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+    width: var(--jp-widgets-inline-width-short);
+    font-size: var(--jp-widgets-font-size);
+}
+
+.widget-valid i:before {
+    line-height: var(--jp-widgets-inline-height);
+    margin-right: var(--jp-widgets-inline-margin);
+    margin-left: var(--jp-widgets-inline-margin);
+}
+
+.widget-valid.mod-valid i:before {
+    color: green;
+}
+
+.widget-valid.mod-invalid i:before {
+    color: red;
+}
+
+.widget-valid.mod-valid .widget-valid-readout {
+    display: none;
+}
+
+/* Widget Text and TextArea Stying */
+
+.widget-textarea, .widget-text {
+    width: var(--jp-widgets-inline-width);
+}
+
+.widget-text input[type="text"], .widget-text input[type="number"], .widget-text input[type="password"] {
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-text input[type="text"]:disabled, .widget-text input[type="number"]:disabled, .widget-text input[type="password"]:disabled, .widget-textarea textarea:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+.widget-text input[type="text"], .widget-text input[type="number"], .widget-text input[type="password"], .widget-textarea textarea {
+    box-sizing: border-box;
+    border: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+    background-color: var(--jp-widgets-input-background-color);
+    color: var(--jp-widgets-input-color);
+    font-size: var(--jp-widgets-font-size);
+    flex-grow: 1;
+    min-width: 0; /* This makes it possible for the flexbox to shrink this input */
+    flex-shrink: 1;
+    outline: none !important;
+}
+    
+.widget-text input[type="text"], .widget-text input[type="password"], .widget-textarea textarea {
+    padding: var(--jp-widgets-input-padding) calc( var(--jp-widgets-input-padding) *  2);
+}
+
+.widget-text input[type="number"] {
+    padding: var(--jp-widgets-input-padding) 0 var(--jp-widgets-input-padding) calc(var(--jp-widgets-input-padding) *  2);
+}
+
+.widget-textarea textarea {
+    height: inherit;
+    width: inherit;
+}
+
+.widget-text input:focus, .widget-textarea textarea:focus {
+    border-color: var(--jp-widgets-input-focus-border-color);
+}
+
+/* Widget Slider */
+
+.widget-slider .ui-slider {
+    /* Slider Track */
+    border: var(--jp-widgets-slider-border-width) solid var(--jp-layout-color3);
+    background: var(--jp-layout-color3);
+    box-sizing: border-box;
+    position: relative;
+    border-radius: 0px;
+}
+
+.widget-slider .ui-slider .ui-slider-handle {
+    /* Slider Handle */
+    outline: none !important; /* focused slider handles are colored - see below */
+    position: absolute;
+    background-color: var(--jp-widgets-slider-handle-background-color);
+    border: var(--jp-widgets-slider-border-width) solid var(--jp-widgets-slider-handle-border-color);
+    box-sizing: border-box;
+    z-index: 1;
+    background-image: none; /* Override jquery-ui */
+}
+
+/* Override jquery-ui */
+.widget-slider .ui-slider .ui-slider-handle:hover, .widget-slider .ui-slider .ui-slider-handle:focus {
+    background-color: var(--jp-widgets-slider-active-handle-color);
+    border: var(--jp-widgets-slider-border-width) solid var(--jp-widgets-slider-active-handle-color);
+}
+
+.widget-slider .ui-slider .ui-slider-handle:active {
+    background-color: var(--jp-widgets-slider-active-handle-color);
+    border-color: var(--jp-widgets-slider-active-handle-color);
+    z-index: 2;
+    transform: scale(1.2);
+}
+
+.widget-slider  .ui-slider .ui-slider-range {
+    /* Interval between the two specified value of a double slider */
+    position: absolute;
+    background: var(--jp-widgets-slider-active-handle-color);
+    z-index: 0;
+}
+
+/* Shapes of Slider Handles */
+
+.widget-hslider .ui-slider .ui-slider-handle {
+    width: var(--jp-widgets-slider-handle-size);
+    height: var(--jp-widgets-slider-handle-size);
+    margin-top: calc((var(--jp-widgets-slider-track-thickness) - var(--jp-widgets-slider-handle-size)) / 2 - var(--jp-widgets-slider-border-width));
+    margin-left: calc(var(--jp-widgets-slider-handle-size) / -2 + var(--jp-widgets-slider-border-width));
+    border-radius: 50%;
+    top: 0;
+}
+
+.widget-vslider .ui-slider .ui-slider-handle {
+    width: var(--jp-widgets-slider-handle-size);
+    height: var(--jp-widgets-slider-handle-size);
+    margin-bottom: calc(var(--jp-widgets-slider-handle-size) / -2 + var(--jp-widgets-slider-border-width));
+    margin-left: calc((var(--jp-widgets-slider-track-thickness) - var(--jp-widgets-slider-handle-size)) / 2 - var(--jp-widgets-slider-border-width));
+    border-radius: 50%;
+    left: 0;
+}
+
+.widget-hslider .ui-slider .ui-slider-range {
+    height: calc( var(--jp-widgets-slider-track-thickness) * 2 );
+    margin-top: calc((var(--jp-widgets-slider-track-thickness) - var(--jp-widgets-slider-track-thickness) * 2 ) / 2 - var(--jp-widgets-slider-border-width));
+}
+
+.widget-vslider .ui-slider .ui-slider-range {
+    width: calc( var(--jp-widgets-slider-track-thickness) * 2 );
+    margin-left: calc((var(--jp-widgets-slider-track-thickness) - var(--jp-widgets-slider-track-thickness) * 2 ) / 2 - var(--jp-widgets-slider-border-width));
+}
+
+/* Horizontal Slider */
+
+.widget-hslider {
+    width: var(--jp-widgets-inline-width);
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+
+    /* Override the align-items baseline. This way, the description and readout
+    still seem to align their baseline properly, and we don't have to have
+    align-self: stretch in the .slider-container. */
+    align-items: center;
+}
+
+.widgets-slider .slider-container {
+    overflow: visible;
+}
+
+.widget-hslider .slider-container {
+    height: var(--jp-widgets-inline-height);
+    margin-left: calc(var(--jp-widgets-slider-handle-size) / 2 - 2 * var(--jp-widgets-slider-border-width));
+    margin-right: calc(var(--jp-widgets-slider-handle-size) / 2 - 2 * var(--jp-widgets-slider-border-width));
+    flex: 1 1 var(--jp-widgets-inline-width-short);
+}
+
+.widget-hslider .ui-slider {
+    /* Inner, invisible slide div */
+    height: var(--jp-widgets-slider-track-thickness);
+    margin-top: calc((var(--jp-widgets-inline-height) - var(--jp-widgets-slider-track-thickness)) / 2);
+    width: 100%;
+}
+
+/* Vertical Slider */
+
+.widget-vbox .widget-label {
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-vslider {
+    /* Vertical Slider */
+    height: var(--jp-widgets-vertical-height);
+    width: var(--jp-widgets-inline-width-tiny);
+}
+
+.widget-vslider .slider-container {
+    flex: 1 1 var(--jp-widgets-inline-width-short);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: calc(var(--jp-widgets-slider-handle-size) / 2 - 2 * var(--jp-widgets-slider-border-width));
+    margin-top: calc(var(--jp-widgets-slider-handle-size) / 2 - 2 * var(--jp-widgets-slider-border-width));
+    display: flex;
+    flex-direction: column;
+}
+
+.widget-vslider .ui-slider-vertical {
+    /* Inner, invisible slide div */
+    width: var(--jp-widgets-slider-track-thickness);
+    flex-grow: 1;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Widget Progress Styling */
+
+.progress-bar {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
+.progress-bar {
+    height: var(--jp-widgets-inline-height);
+}
+
+.progress-bar {
+    background-color: var(--jp-brand-color1);
+}
+
+.progress-bar-success {
+    background-color: var(--jp-success-color1);
+}
+
+.progress-bar-info {
+    background-color: var(--jp-info-color1);
+}
+
+.progress-bar-warning {
+    background-color: var(--jp-warn-color1);
+}
+
+.progress-bar-danger {
+    background-color: var(--jp-error-color1);
+}
+
+.progress {
+    background-color: var(--jp-layout-color2);
+    border: none;
+    box-shadow: none;
+}
+
+/* Horisontal Progress */
+
+.widget-hprogress {
+    /* Progress Bar */
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+    width: var(--jp-widgets-inline-width);
+    align-items: center;
+
+}
+
+.widget-hprogress .progress {
+    flex-grow: 1;
+    margin-top: var(--jp-widgets-input-padding);
+    margin-bottom: var(--jp-widgets-input-padding);
+    align-self: stretch;
+    /* Override bootstrap style */
+    height: initial;
+}
+
+/* Vertical Progress */
+
+.widget-vprogress {
+    height: var(--jp-widgets-vertical-height);
+    width: var(--jp-widgets-inline-width-tiny);
+}
+
+.widget-vprogress .progress {
+    flex-grow: 1;
+    width: var(--jp-widgets-progress-thickness);
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 0;
+}
+
+/* Select Widget Styling */
+
+.widget-dropdown {
+    height: var(--jp-widgets-inline-height);
+    width: var(--jp-widgets-inline-width);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-dropdown > select {
+    padding-right: 20px;
+    border: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+    border-radius: 0;
+    height: inherit;
+    flex: 1 1 var(--jp-widgets-inline-width-short);
+    min-width: 0; /* This makes it possible for the flexbox to shrink this input */
+    box-sizing: border-box;
+    outline: none !important;
+    box-shadow: none;
+    background-color: var(--jp-widgets-input-background-color);
+    color: var(--jp-widgets-input-color);
+    font-size: var(--jp-widgets-font-size);
+    vertical-align: top;
+    padding-left: calc( var(--jp-widgets-input-padding) * 2);
+	appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+    background-repeat: no-repeat;
+	background-size: 20px;
+	background-position: right center;
+    background-image: var(--jp-widgets-dropdown-arrow);
+}
+.widget-dropdown > select:focus {
+    border-color: var(--jp-widgets-input-focus-border-color);
+}
+
+.widget-dropdown > select:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+/* To disable the dotted border in Firefox around select controls.
+   See http://stackoverflow.com/a/18853002 */
+.widget-dropdown > select:-moz-focusring {
+    color: transparent;
+    text-shadow: 0 0 0 #000;
+}
+
+/* Select and SelectMultiple */
+
+.widget-select {
+    width: var(--jp-widgets-inline-width);
+    line-height: var(--jp-widgets-inline-height);
+
+    /* Because Firefox defines the baseline of a select as the bottom of the
+    control, we align the entire control to the top and add padding to the
+    select to get an approximate first line baseline alignment. */
+    align-items: flex-start;
+}
+
+.widget-select > select {
+    border: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+    background-color: var(--jp-widgets-input-background-color);
+    color: var(--jp-widgets-input-color);
+    font-size: var(--jp-widgets-font-size);
+    flex: 1 1 var(--jp-widgets-inline-width-short);
+    outline: none !important;
+    overflow: auto;
+    height: inherit;
+
+    /* Because Firefox defines the baseline of a select as the bottom of the
+    control, we align the entire control to the top and add padding to the
+    select to get an approximate first line baseline alignment. */
+    padding-top: 5px;
+}
+
+.widget-select > select:focus {
+    border-color: var(--jp-widgets-input-focus-border-color);
+}
+
+.wiget-select > select > option {
+    padding-left: var(--jp-widgets-input-padding);
+    line-height: var(--jp-widgets-inline-height);
+    /* line-height doesn't work on some browsers for select options */
+    padding-top: calc(var(--jp-widgets-inline-height)-var(--jp-widgets-font-size)/2);
+    padding-bottom: calc(var(--jp-widgets-inline-height)-var(--jp-widgets-font-size)/2);
+}
+
+
+
+/* Toggle Buttons Styling */
+
+.widget-toggle-buttons {
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-toggle-buttons .widget-toggle-button {
+    margin-left: var(--jp-widgets-margin);
+    margin-right: var(--jp-widgets-margin);
+}
+
+.widget-toggle-buttons .jupyter-button:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+/* Radio Buttons Styling */
+
+.widget-radio {
+    width: var(--jp-widgets-inline-width);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-radio-box {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    box-sizing: border-box;
+    flex-grow: 1;
+    margin-bottom: var(--jp-widgets-radio-item-height-adjustment);
+}
+
+.widget-radio-box label {
+    height: var(--jp-widgets-radio-item-height);
+    line-height: var(--jp-widgets-radio-item-height);
+    font-size: var(--jp-widgets-font-size);
+}
+
+.widget-radio-box input {
+    height: var(--jp-widgets-radio-item-height);
+    line-height: var(--jp-widgets-radio-item-height);
+    margin: 0 calc( var(--jp-widgets-input-padding) * 2 ) 0 1px;
+    float: left;
+}
+
+/* Color Picker Styling */
+
+.widget-colorpicker {
+    width: var(--jp-widgets-inline-width);
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-colorpicker > .widget-colorpicker-input {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: var(--jp-widgets-inline-width-tiny);
+}
+
+.widget-colorpicker input[type="color"] {
+    width: var(--jp-widgets-inline-height);
+    height: var(--jp-widgets-inline-height);
+    padding: 0 2px; /* make the color square actually square on Chrome on OS X */
+    background: var(--jp-widgets-input-background-color);
+    color: var(--jp-widgets-input-color);
+    border: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+    border-left: none;
+    flex-grow: 0;
+    flex-shrink: 0;
+    box-sizing: border-box;
+    align-self: stretch;
+    outline: none !important;
+}
+
+.widget-colorpicker.concise input[type="color"] {
+    border-left: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+}
+
+.widget-colorpicker input[type="color"]:focus, .widget-colorpicker input[type="text"]:focus {
+    border-color: var(--jp-widgets-input-focus-border-color);
+}
+
+.widget-colorpicker input[type="text"] {
+    flex-grow: 1;
+    outline: none !important;
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+    background: var(--jp-widgets-input-background-color);
+    color: var(--jp-widgets-input-color);
+    border: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+    font-size: var(--jp-widgets-font-size);
+    padding: var(--jp-widgets-input-padding) calc( var(--jp-widgets-input-padding) *  2 );
+    min-width: 0; /* This makes it possible for the flexbox to shrink this input */
+    flex-shrink: 1;
+    box-sizing: border-box;
+}
+
+.widget-colorpicker input[type="text"]:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+/* Date Picker Styling */
+
+.widget-datepicker {
+    width: var(--jp-widgets-inline-width);
+    height: var(--jp-widgets-inline-height);
+    line-height: var(--jp-widgets-inline-height);
+}
+
+.widget-datepicker input[type="date"] {
+    flex-grow: 1;
+    flex-shrink: 1;
+    min-width: 0; /* This makes it possible for the flexbox to shrink this input */
+    outline: none !important;
+    height: var(--jp-widgets-inline-height);
+    border: var(--jp-widgets-input-border-width) solid var(--jp-widgets-input-border-color);
+    background-color: var(--jp-widgets-input-background-color);
+    color: var(--jp-widgets-input-color);
+    font-size: var(--jp-widgets-font-size);
+    padding: var(--jp-widgets-input-padding) calc( var(--jp-widgets-input-padding) *  2 );
+    box-sizing: border-box;
+}
+
+.widget-datepicker input[type="date"]:focus {
+    border-color: var(--jp-widgets-input-focus-border-color);
+}
+
+.widget-datepicker input[type="date"]:invalid {
+    border-color: var(--jp-warn-color1);
+}
+
+.widget-datepicker input[type="date"]:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+/* Play Widget */
+
+.widget-play {
+    width: var(--jp-widgets-inline-width-short);
+    display: flex;
+    align-items: stretch;
+}
+
+.widget-play .jupyter-button {
+    flex-grow: 1;
+    height: auto;
+}
+
+.widget-play .jupyter-button:disabled {
+    opacity: var(--jp-widgets-disabled-opacity);
+}
+
+/* Tab Widget */
+
+.jupyter-widgets.widget-tab {
+    display: flex;
+    flex-direction: column;
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar {
+    /* Necessary so that a tab can be shifted down to overlay the border of the box below. */
+    overflow-x: visible;
+    overflow-y: visible;
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar > .p-TabBar-content {
+    /* Make sure that the tab grows from bottom up */
+    align-items: flex-end;
+    min-width: 0;
+    min-height: 0;
+}
+
+.jupyter-widgets.widget-tab > .widget-tab-contents {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    border: var(--jp-border-width) solid var(--jp-border-color1);
+    padding: var(--jp-widgets-container-padding);
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar {
+    font: var(--jp-widgets-font-size) Helvetica, Arial, sans-serif;
+    min-height: calc(var(--jp-widgets-horizontal-tab-height) + var(--jp-border-width));
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab {
+    flex: 0 1 var(--jp-widgets-horizontal-tab-width);
+    min-width: 35px;
+    min-height: calc(var(--jp-widgets-horizontal-tab-height) + var(--jp-border-width));
+    line-height: var(--jp-widgets-horizontal-tab-height);
+    margin-left: calc(-1 * var(--jp-border-width));
+    padding: 0px 10px;
+    background: var(--jp-layout-color2);
+    color: var(--jp-ui-font-color2);
+    border: var(--jp-border-width) solid var(--jp-border-color1);
+    border-bottom: none;
+    position: relative;
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab.p-mod-current {
+    color: var(--jp-ui-font-color0);
+    /* We want the background to match the tab content background */
+    background: var(--jp-layout-color1);
+    min-height: calc(var(--jp-widgets-horizontal-tab-height) + 2 * var(--jp-border-width));
+    transform: translateY(var(--jp-border-width));
+    overflow: visible;
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab.p-mod-current:before {
+    position: absolute;
+    top: calc(-1 * var(--jp-border-width));
+    left: calc(-1 * var(--jp-border-width));
+    content: '';
+    height: var(--jp-widgets-horizontal-tab-top-border);
+    width: calc(100% + 2 * var(--jp-border-width));
+    background: var(--jp-brand-color1);
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab:first-child {
+    margin-left: 0;
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tab:hover:not(.p-mod-current) {
+    background: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-mod-closable > .p-TabBar-tabCloseIcon {
+    margin-left: 4px;
+}
+
+/* This font-awesome strategy may not work across FA4 and FA5, but we don't
+actually support closable tabs, so it really doesn't matter */
+.jupyter-widgets.widget-tab > .p-TabBar .p-mod-closable > .p-TabBar-tabCloseIcon:before {
+    font-family: FontAwesome;
+    content: '\f00d'; /* close */
+}
+
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tabIcon,
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tabLabel,
+.jupyter-widgets.widget-tab > .p-TabBar .p-TabBar-tabCloseIcon {
+    line-height: var(--jp-widgets-horizontal-tab-height);
+}
+
+/* Accordion Widget */
+
+.p-Collapse {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.p-Collapse-header {
+    padding: var(--jp-widgets-input-padding);
+    cursor: pointer;
+    color: var(--jp-ui-font-color2);
+    background-color: var(--jp-layout-color2);
+    border: var(--jp-widgets-border-width) solid var(--jp-border-color1);
+    padding: calc(var(--jp-widgets-container-padding) * 2 / 3) var(--jp-widgets-container-padding);
+    font-weight: bold;
+}
+
+.p-Collapse-header:hover {
+    background-color: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+}
+
+.p-Collapse-open > .p-Collapse-header {
+    background-color: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color0);
+    cursor: default;
+    border-bottom: none;
+}
+
+.p-Collapse-contents {
+    padding: var(--jp-widgets-container-padding);
+    background-color: var(--jp-layout-color1);
+    color: var(--jp-ui-font-color1);
+    border-left: var(--jp-widgets-border-width) solid var(--jp-border-color1);
+    border-right: var(--jp-widgets-border-width) solid var(--jp-border-color1);
+    border-bottom: var(--jp-widgets-border-width) solid var(--jp-border-color1);
+    overflow: auto;
+}
+
+.p-Accordion {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.p-Accordion .p-Collapse {
+    margin-bottom: 0;
+}
+
+.p-Accordion .p-Collapse + .p-Collapse {
+    margin-top: 4px;
+}
+
+
+
+/* HTML widget */
+
+.widget-html, .widget-htmlmath {
+    font-size: var(--jp-widgets-font-size);
+}
+
+.widget-html > .widget-html-content, .widget-htmlmath > .widget-html-content {
+    /* Fill out the area in the HTML widget */
+    align-self: stretch;
+    flex-grow: 1;
+    flex-shrink: 1;
+    /* Makes sure the baseline is still aligned with other elements */
+    line-height: var(--jp-widgets-inline-height);
+    /* Make it possible to have absolutely-positioned elements in the html */
+    position: relative;
+}
+
+
+/* Image widget  */
+
+.widget-image {
+    max-width: 100%;
+    height: auto;
+}
+
+
+
+/*# sourceMappingURL=jupyter-flex-embed.css.map*/
