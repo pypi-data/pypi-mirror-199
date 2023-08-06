@@ -1,0 +1,36 @@
+Metadata-Version: 2.1
+Name: vChatGPT
+Version: 0.11
+Summary: Verbal ChatGPT
+Home-page: https://github.com/ywatanabe1989/vChatGPT
+Author: ywatanabe1989
+Author-email: ywata1989@gmail.com
+License: GPL3.0
+Keywords: verbal ChatGPT,AI language model,learning English
+Platform: UNKNOWN
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Requires-Python: >=3.0
+Description-Content-Type: text/markdown
+Requires-Dist: SpeechRecognition
+Requires-Dist: Whisper
+Requires-Dist: audio2numpy
+Requires-Dist: gtts
+Requires-Dist: openai
+Requires-Dist: readchar
+Requires-Dist: scipy
+Requires-Dist: soundcard
+
+## Installation
+``` bash
+$ pip install git+https://github.com/openai/whisper.git
+$ pip install vChatGPT
+```
+
+## Execute verbal ChatGPT
+``` bash
+$ export OPENAI_API_KEY="16-DIGIT-YOUR_API_KEY"
+$ python -m vChatGPT
+```
+
+
