@@ -1,0 +1,57 @@
+# Author:KuoYuan Li
+[![N|Solid](https://images2.imgbox.com/8f/03/gv0QnOdH_o.png)](https://sites.google.com/ms2.ccsh.tn.edu.tw/pclearn0915)  
+wrap the javascript code to handle image from webcam in colab  
+本package提供一系列在 colab 中操作webcam的方法  
+在colab中使用之前請先進行安裝  
+```
+!pip install colabcam
+```
+	
+##### webcam 拍照存檔
+##### (take a photo from webcam and save to 1.jpg)
+```python
+import colabcam
+colabcam.take_photo("1.jpg")
+```
+### 動態顯示人臉框及文字(cv2只支援英數字)
+### (demo with mediapipe face_detection)
+```python
+#Note:bbox(人臉框)是另外疊加顯示的，速度會有延遲是正常的
+import mediapipe as mp
+import colabcam
+import numpy as np
+import cv2
+mp_face_detection = mp.solutions.face_detection
+face_detection = mp_face_detection.FaceDetection()
+# start streaming video from webcam
+colabcam.video_stream()
+# label for video
+label_html = '顯示中...(點擊畫面以結束顯示)'
+# initialze bounding box to empty
+bbox = ''
+while True:  
+  js_reply = colabcam.video_frame(label_html, bbox)  
+  if not js_reply:break  
+  # convert JS response to OpenCV Image  
+  img = colabcam.js_to_image(js_reply["img"])  
+  results = face_detection.process(img)  
+  frame_height,frame_width=np.shape(img)[0:2]  
+  overlapImg = np.zeros([frame_height,frame_width,4], dtype=np.uint8)  
+  if results.detections:  
+    for detection in results.detections:  
+      box = detection.location_data.relative_bounding_box  
+      x, y, w, h =int(box.xmin*frame_width),int(box.ymin*frame_height), \
+              int(box.width*frame_width),int(box.height*frame_height)         
+      if w>0 and h>0:  
+        overlapImg = cv2.rectangle(overlapImg,(x,y),(x+w,y+h),(255,0,0),2)  
+        cv2.putText(overlapImg,'text test',(x,y-20),cv2.FONT_HERSHEY_SIMPLEX,1,(255,0,0),2)  
+    bbox = colabcam.cvImg2bbox(overlapImg)  
+```
+
+
+
+
+License
+----
+
+MIT
