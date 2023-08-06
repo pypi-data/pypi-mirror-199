@@ -1,0 +1,1 @@
+from ucsd_ece_courses.ece_catalog import ECECatalog
