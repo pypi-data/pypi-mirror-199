@@ -1,0 +1,188 @@
+Metadata-Version: 2.1
+Name: aquila-borg
+Version: 2.1
+Summary: ARES/BORG engine packaged in a Python module
+Keywords: cosmology,inference,simulation,statistics
+Classifier: Intended Audience :: Developers
+Classifier: Natural Language :: English
+Classifier: License :: OSI Approved :: GNU Lesser General Public License v3 (LGPLv3)
+Classifier: License :: OSI Approved :: CEA CNRS Inria Logiciel Libre License, version 2.1 (CeCILL-2.1)
+Classifier: Programming Language :: C
+Classifier: Programming Language :: C++
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: Implementation :: CPython
+Requires-Python: >=3.6
+Description-Content-Type: text/plain
+License-File: License_CeCILL_V2.1.txt
+License-File: License_GPL-3.0.txt
+Requires-Dist: numpy
+
+==================================================
+BORG: Bayesian Origin Reconstruction from Galaxies
+==================================================
+
+Copyright(c) 2009-2020 Jens Jasche, 2014-2020 Guilhem Lavaux
+
+Version 2.1
+
+Description
+-----------
+
+This is the main component of the Bayesian Large Scale Structure inference
+pipeline.
+
+A lot of complementary informations are available on the wiki https://www.aquila-consortium.org/.
+
+Cloning all the modules
+-----------------------
+
+The ARES software is only the foundation for other modules that adds many more functionalities to the framework.
+
+Notably, the Aquila collaboration has developped the BORG extension that encodes advanced forward model and complex likelihoods
+to run inferences on galaxy clustering, lyman-alpha, and more.
+
+To get access to the extra modules please contact Aquila consortium members, who will tell you what are the policy in places.
+Once your account on bitbucket is authorized you may use the script `get-aquila-modules.sh`. The procedure is as follow:
+
+* first change to the desired branch (i.e. develop/2.1) with `git checkout the_interesting_branch`
+* clone all the adequate modules `get-aquila-modules.sh --clone`
+* setup the branches for the modules `get-aquila-modules.sh --branch-set`
+* Polish up your environment by installing the git hooks `get-aquila-modules.sh --hooks`
+
+**NOTE** the git hook require the availability `clang-format` to check on the formatting. If it is not present, then it will fail
+the execution.
+
+Building
+--------
+
+There is a special command line that prepares prepares build system to compile
+all tools and libraries. It resides in the root directory of the ares source
+tree and is called "build.sh". By default it will build everything in the
+"build" subdirectory. To get all the options please run with the option
+"--help".
+
+After the tool has bee run, you can move to the build directory and execute
+"make", which will build everything.
+
+Please pay attention warnings and error messages. The most important are color marked.
+Notably some problems may occur if two versions of the same compiler are used for C and C++.
+To adjust that it is sufficient to explicitly specify the compiler path with the options '--c-compiler'
+and '--cxx-compiler' of "build.sh".
+
+*Note*: When modules are present in extra/, you may prevent them from building by putting an empty file called `DO_NOT_BUILD` in the
+corresponding directory folder of the concerned module. For example, to prevent `borg` from building do `touch extra/borg/DO_NOT_BUILD`
+from the present directory and the build system will ignore `borg`.
+
+Compiler compatibilities
+------------------------
+
+Tested on GCC 7.0 - 10.2.
+Some performance regressions were noted with gcc 8.1.
+Countermeasures have been introduced though some corner cases
+may still be a bit slower. Clang is unaffected by this regression.
+
+Note that GCC <= 6 fails because it does not support correctly C++14 features.
+
+
+Documentation
+-------------
+
+Please refer to `docs/README.txt`.
+
+Modules
+-------
+
+The core package supports to have extensions statically linked to the core.
+They have to be put in extra/ and the cmake scripts will automatically link
+to it. Check 'extra/demo/' for an example.
+
+Usage policy
+------------
+
+If you are using |ares| for your project, please cite the following articles for ARES2, ARES3 and BORG3:
+
+* Jasche, Kitaura, Wandelt, 2010, MNRAS, 406, 1 (arXiv 0911.2493)
+* Jasche & Lavaux, 2015, MNRAS, 447, 2 (arXiv 1402.1763)
+* Lavaux & Jasche, 2016, MNRAS, 455, 3 (arXiv 1509.05040)
+* Jasche & Lavaux, 2019, A&A, 625, A64 (arXiv 1806.11117)
+
+However, bear in mind that depending on the features that you are using you may want to cite other papers as well.
+Here is a non-exhaustive list of those articles:
+
+* Model development:
+
+  * HADES epoch:
+
+    * HMC, exponential transform, linear bias: Jasche, Kitaura, Wandelt, 2010, 406, 1 (arXiv 0911.2493)
+    * HMC, exponential transform, power law bias:
+
+      * Jasche, Leclercq, Wandelt, 2015
+      * Jasche, Wandelt, 2012, MNRAS, 425, 1042 (arXiv 1106.2757)
+
+  * Foreground/Robustification:
+
+    * Jasche, Lavaux, 2017, A&A (arXiv:1706.08971)
+    * Porqueres, Kodi Ramanah, Jasche, Lavaux, 2019, A&A (arXiv: 1812.05113)
+
+  * Cosmic expansion model:
+
+    * Kodi Ramanah, Lavaux, Jasche, Wandelt, 2019, A&A (arXiv: 1808.07496)
+
+  * Photometric redshifts
+
+    * HADES with Photo-Z: Jasche & Wandelt, 2012, MNRAS, 425, 1042 (arXiv: 1106.2757)
+
+  * Galaxy shear:
+
+    * Porqueres, Heavens, Mortlock & Lavaux, 2021, MNRAS, 502, 3035 (arXiv 2011.07722)
+    * Porqueres, Heavens, Mortlock & Lavaux, 2022, MNRAS, 509, 3194 (arXiv 2108.04825)
+
+  * Cosmic velocity field:
+
+    * Prideaux-Ghee, Leclercq, Lavaux, Heavens, Jasche, 2022, MNRAS (arXiv: 2204.00023)
+    * Boruah, Lavaux, Hudson, 2022, MNRAS (arXiv 2111.15535)
+
+  * BORG-PM
+
+    * Jasche & Lavaux, 2019, A&A, 625, A64 (arXiv 1806.11117)
+
+  * EFT bias model and likelihood
+
+    * Schmidt, Elsner, Jasche, Nguyen, Lavaux, JCAP 01, 042 (2019) (arXiv:1808.02002)
+    * Schmidt, Cabass, Jasche, Lavaux, JCAP 11, 008 (2020) (arXiv:2004.06707)
+
+
+* Data applications
+
+  * SDSS Main Galaxy sample:
+  * SDSS3 LRG sample:
+
+    * Lavaux, Jasche & Leclercq, 2019, arXiv:1909.06396
+
+  * 2M++ sample:
+
+    * Lavaux & Jasche, 2016, MNRAS, 455, 3 (arXiv 1509.05040)
+    * Jasche & Lavaux, 2019, A&A, 625, A64 (arXiv 1806.11117)
+
+|hades| and |borg| papers have a different listing.
+
+For a full listing of publications from the Aquila consortium. Please check
+https://aquila-consortium.org/publications.html
+
+Acknowledgements
+----------------
+
+This work has been funded by the following grants and institutions over the
+years:
+
+* the DFG cluster of excellence "Origin and Structure of the Universe"
+  (http://www.universe-cluster.de).
+* Institut Lagrange de Paris (grant ANR-10-LABX-63, http://ilp.upmc.fr) within
+  the context of the Idex SUPER subsidized by the French government through
+  the Agence Nationale de la Recherche (ANR-11-IDEX-0004-02).
+* BIG4 (ANR-16-CE23-0002) (https://big4.iap.fr)
+* The "Programme National de Cosmologie et Galaxies" (PNCG, CNRS/INSU)
+* Through the grant code ORIGIN, it has received support from
+  the "Domaine d'Interet Majeur (DIM) Astrophysique et Conditions d'Apparitions
+  de la Vie (ACAV)" from Ile-de-France region.
