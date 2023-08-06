@@ -1,0 +1,99 @@
+[tool.pytest.ini_options]
+minversion = "6.0"
+#addopts = '--cov=lumo'
+testpaths = [
+    "tests",
+]
+pythonpath = [
+    "src"
+]
+filterwarnings = [
+    "ignore::pytest.PytestDeprecationWarning", # from pytest-cov
+    "ignore::DeprecationWarning:", # from tensorboard
+    "ignore:.*ssl.SSLSocket:pytest.PytestUnraisableExceptionWarning",
+    "ignore:.*ssl.SSLSocket:ResourceWarning",
+    "ignore::ResourceWarning:asyncio",
+    # From plotting doctests
+    "ignore:More than 20 figures have been opened:RuntimeWarning",
+    # Will be fixed in numba 0.56: https://github.com/numba/numba/issues/7758
+    "ignore:`np.MachAr` is deprecated:DeprecationWarning:numba",
+    "ignore:.*urllib3:DeprecationWarning:botocore",
+    "ignore:Setuptools is replacing distutils.:UserWarning:_distutils_hack",
+    # https://github.com/PyTables/PyTables/issues/822
+    "ignore:a closed node found in the registry:UserWarning:tables",
+    "ignore:`np.object` is a deprecated:DeprecationWarning:tables",
+    "ignore:tostring:DeprecationWarning:tables",
+    "ignore:distutils Version classes are deprecated:DeprecationWarning:numexpr",
+    "ignore:distutils Version classes are deprecated:DeprecationWarning:fastparquet",
+    "ignore:distutils Version classes are deprecated:DeprecationWarning:fsspec",
+]
+
+#
+[tool.coverage.run]
+source = ['tests']
+
+
+[tool.coverage.report]
+ignore_errors = false
+show_missing = true
+omit = [
+    'src/lumo/contrib/*',
+    'src/lumo/cli/*',
+    'src/lumo/vis/*',
+    'src/lumo/decorators/*',
+    'src/lumo/exp/agent.py',
+    'src/lumo/exp/lazy_panel.py',
+    'src/lumo/analyse/*',
+    'src/lumo/sketch/*',
+    'src/lumo/core/record_backend/*',
+    'src/lumo/utils/memory_grab.py',
+    'src/lumo/data/collate.py',
+    'src/lumo/utils/screen.py',
+    'src/lumo/utils/timer.py',
+    'src/lumo/utils/exithook.py',
+    'src/lumo/utils/filelock.py',
+    'src/lumo/utils/filelock2.py',
+    'src/lumo/utils/fmt.py',
+    'src/lumo/utils/hash.py',
+    'src/lumo/utils/logger.py',
+    'src/lumo/utils/cache.py',
+    'src/lumo/utils/ast.py',
+    'src/lumo/utils/memory_grab.py',
+]
+
+exclude_lines = [
+    # Have to re-enable the standard pragma
+    "pragma: no cover",
+    # Don't complain about missing debug-only code:s
+    "def __repr__",
+    "if self.debug",
+    # Don't complain if tests don't hit defensive assertion code:
+    "raise AssertionError",
+    "raise NotImplementedError",
+    "AbstractMethodError",
+    # Don't complain if non-runnable code isn't run:
+    "if 0:",
+    "if __name__ == .__main__.:",
+    "if TYPE_CHECKING:",
+    # some tricky object that can not well tested.
+    "except ImportError",
+    "pass",
+    "return None",
+    "break", #
+
+    # Hard to test
+    "class RecordAbort",
+    "class GitCommit",
+    "def summary_experiment",
+    "def plot",
+    "if torch.cuda.is_available()", # ignore cuda
+    "if is_dist():", # ignore distribution
+
+    # Deprecated method:
+    "def add_input_transform",
+    "def add_output_transform",
+    "raise StopIteration"
+]
+
+[tool.coverage.html]
+directory = 'coverage_html_report'
