@@ -1,0 +1,28 @@
+Metadata-Version: 2.1
+Name: FlamingText
+Version: 0.0.5
+Summary: Unofficial API of flamingtext.com
+Home-page: https://github.com/Firdavs-coder/FlamingText
+Author: Firdavs Shodiyev
+Author-email: firdavscoder1@gmail.com
+License: UNKNOWN
+Keywords: python,effects,text,flamingtext
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Education
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 3
+Classifier: Operating System :: MacOS :: MacOS X
+Classifier: Operating System :: Microsoft :: Windows
+Description-Content-Type: text/markdown
+
+
+# FlamingText
+
+```python
+from flamingText import FlamingText 
+obj = FlamingText()
+print(obj.process())
+```
+
+
