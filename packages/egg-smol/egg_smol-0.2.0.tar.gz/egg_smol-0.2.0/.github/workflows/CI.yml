@@ -1,0 +1,154 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    tags:
+      - "*"
+  pull_request:
+
+# Allow one concurrent deployment
+concurrency:
+  group: ${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: test ${{ matrix.py }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        py:
+          - "3.11"
+          - "3.10"
+          - "3.9"
+          - "3.8"
+    steps:
+      - name: Setup python ${{ matrix.py }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.py }}
+      - uses: actions/checkout@v2
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - run: pip install -e .[test]
+      - run: pytest
+  mypy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - uses: actions/checkout@v2
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - run: pip install -e .[test] mypy pre-commit
+      - run: pre-commit run --all-files mypy
+      - run: pre-commit run --all-files stubtest
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+      - uses: actions/checkout@v2
+      - name: Cache cargo
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+      - run: pip install -e .[docs] pre-commit
+      - run: pre-commit run --all-files docs
+  linux:
+    name: build linux
+    runs-on: ubuntu-latest
+    if: "startsWith(github.ref, 'refs/tags/')"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: PyO3/maturin-action@v1.31.0
+        with:
+          manylinux: auto
+          command: build
+          args: --release --sdist -o dist --find-interpreter
+          # Pin rust toolchain, so it won't install 1.65.0, otherwise get this error:
+          # Attempting to include the sdist output tarball dist/egg_smol-0.1.0.tar.gz into itself! Check 'cargo package --list' output.
+          # https://github.com/metadsl/egg-smol-python/actions/runs/3388178229/jobs/5629843303
+          rust-toolchain: "1.64.0"
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: dist
+
+  windows:
+    name: build windows
+    runs-on: windows-latest
+    if: "startsWith(github.ref, 'refs/tags/')"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: PyO3/maturin-action@v1.31.0
+        with:
+          command: build
+          args: --release -o dist --find-interpreter
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: dist
+
+  macos:
+    name: build macos
+    runs-on: macos-latest
+    if: "startsWith(github.ref, 'refs/tags/')"
+    steps:
+      - uses: actions/checkout@v3
+      - uses: PyO3/maturin-action@v1.31.0
+        with:
+          command: build
+          args: --release -o dist --universal2 --find-interpreter
+      - name: Upload wheels
+        uses: actions/upload-artifact@v2
+        with:
+          name: wheels
+          path: dist
+
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    if: "startsWith(github.ref, 'refs/tags/')"
+    needs: [macos, windows, linux]
+    steps:
+      - uses: actions/download-artifact@v2
+        with:
+          name: wheels
+      - name: Publish to PyPI
+        uses: PyO3/maturin-action@v1.31.0
+        env:
+          MATURIN_PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+        with:
+          command: upload
+          args: --skip-existing *
