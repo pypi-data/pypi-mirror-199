@@ -1,0 +1,17 @@
+Metadata-Version: 2.1
+Name: carbonizer
+Version: 0.1.0
+Summary: A Small CLI to utilize Carbon.now.sh
+License: MIT
+Author: marvin taschenberger
+Author-email: marvin.taschenberger@gmail.com
+Requires-Python: >=3.10,<4.0
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: loguru (>=0.6.0,<0.7.0)
+Requires-Dist: pyppeteer (>=1.0.2,<2.0.0)
+Description-Content-Type: text/markdown
+
+
