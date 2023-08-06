@@ -1,0 +1,5 @@
+[console_scripts]
+charpacker = c64tools.charpacker:main
+charset2png = c64tools.charset2png:main
+filemerge = c64tools.filemerge:main
+mem2png = c64tools.mem2png:main
