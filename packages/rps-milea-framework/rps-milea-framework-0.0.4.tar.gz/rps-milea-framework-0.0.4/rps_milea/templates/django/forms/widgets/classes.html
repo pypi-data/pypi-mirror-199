@@ -1,0 +1,5 @@
+{% if widget.type == 'checkbox' %}
+    class="form-check-input {{ widget.attrs.class|stringformat:'s' }}"
+{% else %}
+    class="form-control {{ widget.attrs.class|stringformat:'s' }}"
+{% endif %}
