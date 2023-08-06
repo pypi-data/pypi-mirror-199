@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: linear-py
+Version: 0.0.1
+Summary: Integrate with the linear graphQL in a pythonic way
+Home-page: https://gitlab.com/thinkhuman-public/linear-py
+Author: valeness
+Author-email: james@thinkhuman.co
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: GNU General Public License v3 (GPLv3)
+Classifier: Operating System :: OS Independent
+Requires-Python: >=3.6
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: requests (~=2.25.1)
+
+# Linear Python SDK
