@@ -1,0 +1,16 @@
+Metadata-Version: 2.1
+Name: zeuscloud-iamspy
+Version: 0.6.0
+Summary: ZeusCloud fork of IAMSpy
+Author: Varun Jain
+Author-email: varun@zeuscloud.io
+Requires-Python: >=3.8,<4.0
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Requires-Dist: pydantic
+Requires-Dist: python-dateutil (>=2.8.2,<3.0.0)
+Requires-Dist: typer
+Requires-Dist: z3-solver
