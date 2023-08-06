@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "squad-ds-utils"
+version = "0.1.0"
+description = ""
+authors = ["Ayush Shanker <ayush--s@users.noreply.github.com>"]
+readme = "README.md"
+packages = [{include = "squad_ds_utils"}]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+boto3 = "^1.26.99"
+requests = "^2.28.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
