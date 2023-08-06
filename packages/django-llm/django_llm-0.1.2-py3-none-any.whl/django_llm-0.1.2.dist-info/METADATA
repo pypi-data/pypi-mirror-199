@@ -1,0 +1,76 @@
+Metadata-Version: 2.1
+Name: django-llm
+Version: 0.1.2
+Summary: A LLM (Large Language Model) app for Django
+Home-page: https://github.com/mikrl/django-llm
+Author: Michael Lynch
+Author-email: michael@flatlander.dev
+License: MIT
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 4
+Classifier: Framework :: Django :: 4.1
+Classifier: Intended Audience :: Developers
+Classifier: Intended Audience :: Information Technology
+Classifier: Intended Audience :: Science/Research
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3 :: Only
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.11
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Topic :: Scientific/Engineering
+Classifier: Topic :: Scientific/Engineering :: Artificial Intelligence
+Classifier: Topic :: Scientific/Engineering :: Human Machine Interfaces
+Classifier: Topic :: Software Development :: User Interfaces
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+License-File: LICENSE.md
+License-File: AUTHORS
+Requires-Dist: Django (==4.1.7)
+Requires-Dist: openai (==0.27.2)
+Requires-Dist: langchain (==0.0.121)
+Requires-Dist: llama-index (==0.4.36)
+Requires-Dist: pytest (==7.2.2)
+
+[![Python 3.11](https://img.shields.io/badge/python-3.11-blue.svg)](https://www.python.org/downloads/release/python-3112/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
+# Django LLM
+An app for Django to aid development of large language model (LLM) workflows.
+
+Have you ever wanted to store ChatGPT queries in your database? Now you can.
+
+Powered by [langchain](https://github.com/hwchase17/langchain)
+
+
+* [Wiki](https://github.com/mikrl/django-llm/wiki)
+* [Sample Project](https://github.com/mikrl/django-llm-sample)
+
+# Information
+Configure your LLM workflow from Django.
+
+Build a business layer for your LLM application.
+
+## Install latest binary
+```bash
+pip install django-llm
+```
+
+## Build and install from source
+```bash
+./build.sh
+pip install dist/*.whl
+```
+
+# Tests
+```bash
+pip install -r static.txt
+./static.sh
+pytest tests/
+```
+
+# Features
+* Model to configure and execute ChatGPT query
+* Model to hold prompt and determine prompt variables
+* Model to store API keys for various services
