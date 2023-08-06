@@ -1,0 +1,10 @@
+include LICENSE
+recursive-include dist *.gz
+recursive-include dist *.whl
+recursive-include src *.h
+recursive-include src *.c
+recursive-include src *.cpp
+recursive-include src *.py
+recursive-include tests *.py
+
+
