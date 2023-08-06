@@ -1,0 +1,29 @@
+Metadata-Version: 2.1
+Name: example_package_lmm
+Version: 0.0.1
+Summary: A small example package by limanman
+Project-URL: Homepage, https://github.com/DriveSlowly/OpenSIL
+Project-URL: Bug Tracker, https://github.com/DriveSlowly/OpenSI/issues
+Author-email: li manman <li_mammam@example.com>
+License-File: LICENSE
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Requires-Python: >=3.7
+Description-Content-Type: text/markdown
+
+# Example Package
+
+This is a simple example package by limanman. 
+
+.
+└── example_package_lmm
+    ├── example.py
+    └── __init__.py
+
+usage:
+
+pip install example_package_lmm
+python3.8
+import example_package_lmm.example as e
+print("input 2222, output:", e.add_one(2222))
