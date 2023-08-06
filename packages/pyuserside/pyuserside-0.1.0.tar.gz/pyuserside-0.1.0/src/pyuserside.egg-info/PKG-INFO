@@ -1,0 +1,97 @@
+Metadata-Version: 2.1
+Name: pyuserside
+Version: 0.1.0
+Summary: Small module to work with Userside ERP
+Home-page: https://github.com/nekonekun/pyuserside
+Author: Ivan Balakin
+Author-email: nekonekun@gmail.com
+Project-URL: Bug Tracker, https://github.com/nekonekun/pyuserside/issues/
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Topic :: Utilities
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
+Userside module for python
+==========================
+
+Install
+-------
+
+You can install userside module via pip
+
+     pip install pyuserside
+     
+
+
+Examples
+--------
+
+Sync API
+~~~~~~~~~
+
+.. code:: python
+
+    from pyuserside.api.synchronous import UsersideAPI
+
+    usapi = UsersideAPI(url='https://localhost/api.php', key='my_secret_key')
+
+    device_id = usapi.device.get_device_id(object_type='switch',
+                                           data_typer='ip',
+                                           data_value='10.90.90.90')
+    devices = uapi.device.get_data(object_type='switch', object_id=device_id)
+    target_device = devices[str(device_id)]
+
+Or context manager:
+
+.. code:: python
+
+    from pyuserside.api.synchronous import UsersideAPI
+
+    with UsersideAPI(url='https://localhost/api.php', key='my_secret_key') as uapi:
+        device_id = usapi.device.get_device_id(object_type='switch',
+                                               data_typer='ip',
+                                               data_value='10.90.90.90')
+        devices = uapi.device.get_data(object_type='switch', object_id=device_id)
+        target_device = devices[str(device_id)]
+
+Async API
+~~~~~~~~~
+
+Same here
+
+.. code:: python
+
+    from pyuserside.api.asynchronous import UsersideAPI
+    import asyncio
+
+    async def main():
+        usapi = UsersideAPI(url='https://localhost/api.php', key='my_secret_key')
+
+        device_id = await usapi.device.get_device_id(object_type='switch',
+                                                     data_typer='ip',
+                                                     data_value='10.90.90.90')
+        devices = await usapi.device.get_data(object_type='switch', object_id=device_id)
+        target_device = devices[str(device_id)]
+
+    asyncio.run(main())
+
+Or async context manager:
+
+.. code:: python
+
+    from pyuserside.api.asynchronous import UsersideAPI
+    import asyncio
+
+    async def main():
+        async with UsersideAPI(url='https://localhost/api.php', key='my_secret_key') as usapi:
+            device_id = await usapi.device.get_device_id(object_type='switch',
+                                                         data_typer='ip',
+                                                         data_value='10.90.90.90')
+            devices = await usapi.device.get_data(object_type='switch', object_id=device_id)
+            target_device = devices[str(device_id)]
+    
+    asyncio.run(main())
