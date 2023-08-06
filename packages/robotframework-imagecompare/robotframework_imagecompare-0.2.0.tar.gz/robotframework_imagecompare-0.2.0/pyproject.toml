@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "robotframework-imagecompare"
+version = "0.2.0"
+description = "A Robot Framework Library for image comparisons"
+authors = ["Many Kasiriha <many.kasiriha@dbschenker.com>"]
+license = "Apache 2.0"
+packages = [
+    { include = "ImageCompare" },
+]
+readme = "./docs/README.md"
+homepage = "https://github.com/manykarim/robotframework-imagecompare"
+
+[tool.poetry.dependencies]
+python = ">=3.8,<3.12"
+opencv-python-headless = "*"
+robotframework = ">=4"
+numpy = "*"
+scikit-image = "*"
+imutils = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+invoke = "*"
+coverage = "*"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
