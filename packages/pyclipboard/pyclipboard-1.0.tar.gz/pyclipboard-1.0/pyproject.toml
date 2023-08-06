@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyclipboard"
+version = "1.0"
+authors = [
+  { name="Fu Ruochen", email="mail.by.ray@gmail.com" },
+]
+description = "A all-in-one tool for clipboard management for MAC OS only."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: MacOS",
+]
+dependencies = [
+    "pillow >= 1.0",
+    "pyobjc >= 8.0"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/RuochenFu21/pyclipboard"
+"Bug Tracker" = "https://github.com/RuochenFu21/pyclipboard/issues"

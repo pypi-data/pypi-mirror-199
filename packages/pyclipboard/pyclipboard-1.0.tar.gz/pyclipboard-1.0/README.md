@@ -1,0 +1,46 @@
+# PyClipboard
+
+This is a simple example package. With the purpose of a easy-use advance clipboard package for mac.
+
+And it *is* very easy to use.
+
+```python
+import pyclipboard
+
+clipboard = ClipBoard()
+```
+
+### Copy text
+```python
+clipboard.copy_text("Hello World")
+```
+
+### Copy image
+```python
+clipboard.copy_image("image.png")
+```
+
+### Copy image from url
+```python
+clipboard.copy_image("./Users/username/Desktop/image.png")
+```
+
+### Copy color
+```python
+clipboard.copy_color(0x000000)
+```
+
+### Copy html
+```python
+clipboard.copy_html("<h1>Hello World</h1>")
+```
+
+### Copy url
+```python
+clipboard.copy_url("https://example.com")
+```
+
+### Copy file/directory
+```python
+clipboard.copy_file("./Users/")
+```
