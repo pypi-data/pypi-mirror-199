@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "noggin-messages"
+version = "1.0.3"
+description = "Fedora Messaging message schemas for Noggin."
+
+license = "MIT"
+
+authors = [
+  "Fedora Infrastructure <admin@fedoraproject.org>"
+]
+
+# readme = 'README.md'  # Markdown files are supported
+
+repository = "https://github.com/fedora-infra/noggin-messages"
+homepage = "https://github.com/fedora-infra/noggin-messages"
+
+keywords = ['security']
+
+include = [
+    "tox.ini",
+    "docs/*",
+    "docs/*/*",
+]
+
+[tool.poetry.plugins."fedora.messages"]
+"noggin.group.member.sponsor.v1"="noggin_messages:MemberSponsorV1"
+"noggin.user.create.v1"="noggin_messages:UserCreateV1"
+"noggin.user.update.v1"="noggin_messages:UserUpdateV1"
+
+
+[tool.poetry.dependencies]
+python = "^3.7.0"
+fedora-messaging = ">=2.0.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+pytest-cov = "*"
+sphinx = "*"
+bandit = ">=1.6"
+black = "*"
+flake8 = ">=3.7"
+liccheck = "*"
+# For the licenses check, follow Poetry's dep
+platformdirs = "^2.5.2"
+
+
+[tool.liccheck]
+authorized_licenses = [
+  "bsd",
+  "new bsd",
+  "simplified bsd",
+  "apache",
+  "apache 2.0",
+  "apache software",
+  "Apache License 2.0",
+  "gnu lgpl",
+  "gpl v2",
+  "GNU General Public License v2 or later (GPLv2+)",
+  "gpl v3",
+  "GNU Library or Lesser General Public License (LGPL)",
+  "lgpl with exceptions or zpl",
+  "isc",
+  "isc license (iscl)",
+  "mit",
+  "python software foundation",
+  "zpl 2.1",
+  "mpl-2.0",
+  "MPL 2.0",
+  "Mozilla Public License 2.0 (MPL 2.0)",
+  "lgpl",
+  "wtfpl",
+  "GNU GPLv3+",
+  "GNU General Public License v3 (GPLv3)",
+  "GNU Lesser General Public License v3 or later (LGPLv3+)",
+  "Apache License, Version 2.0",
+  "Zope Public",
+  "The Unlicense (Unlicense)",
+]
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
