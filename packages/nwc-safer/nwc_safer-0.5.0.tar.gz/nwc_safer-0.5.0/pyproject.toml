@@ -1,0 +1,39 @@
+[tool.poetry]
+name = "nwc-safer"
+version = "0.5.0"
+description = "NWC-SAFer CLI tool simplifying NetCDF data extraction and conversion of NWC-SAF products."
+authors = ["dfotiou <fotioudimitris93@vodafone.com>"]
+readme = "README.md"
+license = "MIT"
+repository = "https://github.com/fotioudim/NWC-SAFer"
+keywords = ["nwc-saf", "netcdf", "typer", "python", "poetry", "watchdog"]
+classifiers = ["Topic :: Software Development :: Libraries :: Python Modules"]
+packages = [{include = "nwc_safer"}]
+
+[tool.poetry.scripts]
+nwc-safer = "nwc_safer.cli:app"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+typer = {extras = ["all"], version = "^0.7.0"}
+watchdog = "^2.3.1"
+xarray = "^2023.2.0"
+netcdf4 = "^1.6.3"
+dask = "^2023.3.1"
+openpyxl = "^3.1.2"
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^2.0.2"
+
+[tool.poetry.group.test.dependencies]
+pytest = "^7.2.2"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+filterwarnings = [
+    "ignore::RuntimeWarning",
+    "ignore:'autocompletion' is renamed to 'shell_complete'. The old name is deprecated and will be removed in Click 8.1. See the docs about 'Parameter' for information about new behavior.:DeprecationWarning:typer"
+]
