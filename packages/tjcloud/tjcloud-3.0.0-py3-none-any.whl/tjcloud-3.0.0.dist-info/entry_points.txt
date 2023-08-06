@@ -1,0 +1,4 @@
+[console_scripts]
+disable_firewall=tjcloud.linode:disable_firewall
+enable_firewall=tjcloud.linode:enable_firewall
+
