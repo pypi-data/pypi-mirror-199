@@ -1,0 +1,12 @@
+README.md
+pyproject.toml
+src/lzsslib/__init__.py
+src/lzsslib/compress.py
+src/lzsslib/decompress.py
+src/lzsslib/windowed_buffer.py
+src/lzsslib.egg-info/PKG-INFO
+src/lzsslib.egg-info/SOURCES.txt
+src/lzsslib.egg-info/dependency_links.txt
+src/lzsslib.egg-info/requires.txt
+src/lzsslib.egg-info/top_level.txt
+tests/test_windowed_buffer.py
